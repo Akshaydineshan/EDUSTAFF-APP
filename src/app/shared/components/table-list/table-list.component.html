@@ -1,0 +1,46 @@
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th *ngFor="let column of displayedColumns" (click)="sortColumn(column)">
+          {{ column | titlecase }}
+          <ng-container *ngIf="sortedColumn === column">
+            <i class="fas" [ngClass]="sortDirection === 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+          </ng-container>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of paginatedData">
+        <td *ngFor="let column of displayedColumns">
+          <ng-container *ngIf="column === 'documentCount'; else defaultColumn">
+            <span [class]="[row.documentStatus.icon ? 'doc-count' : '']">
+              <i [class]="row.documentStatus.icon"></i> {{ row.documentStatus.text }}
+            </span>
+          </ng-container>
+          <ng-template #defaultColumn>
+            {{ row[column] }}
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination-controls d-flex justify-content-start align-items-center mt-3">
+  <button class="btn btn-outline-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <ul class="pagination-list d-flex mx-3">
+    <li *ngFor="let page of totalPagesArray" class="page-item">
+      <button class="btn" [class.active]="currentPage === page" (click)="goToPage(page)">
+        {{ page }}
+      </button>
+    </li>
+  </ul>
+
+  <button class="btn btn-outline-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+    <i class="fas fa-chevron-right"></i>
+  </button>
+</div>

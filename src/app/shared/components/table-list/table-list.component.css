@@ -1,0 +1,40 @@
+.table-responsive {
+  margin-top: 1rem;
+}
+
+table th,
+table td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.pagination-controls {
+  margin-top: 15px;
+}
+.pagination-controls .pagination-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+}
+.pagination-controls .pagination-list .page-item button {
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  cursor: pointer;
+}
+.pagination-controls .pagination-list .page-item button.active {
+  background-color: #800020;
+  color: white;
+  border-color: #800020;
+}
+.pagination-controls .pagination-list .page-item button:hover {
+  background-color: #f0f0f0;
+}
+.pagination-controls button {
+  min-width: 40px;
+  border-radius: 4px;
+}/*# sourceMappingURL=table-list.component.css.map */

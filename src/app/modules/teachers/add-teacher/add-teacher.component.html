@@ -1,0 +1,59 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+<div class="container" [class.shifted]="isSidebarClosed">
+
+  <div class="container-fluid d-flex flex-column align-items-center" [class.shifted]="isSidebarClosed">
+    <div class="step-indicator mb-4">
+      <ul class="d-flex justify-content-between align-items-center p-0">
+        <li *ngFor="let step of steps; let i = index"
+          [ngClass]="{'active': currentStep === i + 1,  'completed': currentStep > i + 1 }">
+          <div class="step-circle">
+            <ng-container *ngIf="currentStep > i + 1; else stepNumber">
+              <span class="step-checkmark">✔</span>
+            </ng-container>
+            <ng-template #stepNumber>{{ i + 1 }}</ng-template>
+          </div>
+          <div class="step-text">{{ step }}</div>
+        </li>
+      </ul>
+    </div>
+
+
+    <div *ngIf="currentStep === 1" class="step-page">
+      <app-personal-details [(personalDetailsForm)]="personalDetailsForm!" [religions]="religions"
+        [casteCategories]="casteCategories" [bloodGroups]="bloodGroups" [genders]="genders"
+        [maritalStatuses]="maritalStatuses"  [submitted]="submitBtnStatus.personal"></app-personal-details>
+    </div>
+
+    <div *ngIf="currentStep === 2" class="step-page">
+      <app-educational-details [(educationForm)]="educationForm!" [coursesByEducation]="coursesByEducation"
+        [allEducationTypes]="allEducationTypes"  [submitted]="submitBtnStatus.education"
+        (educationFormChange)="onFormChange($event, 'educational')"></app-educational-details>
+    </div>
+
+    <div *ngIf="currentStep === 3" class="step-page">
+      <app-professional-details [(professionalForm)]="professionalForm" [districts]="districts"
+        [employeeTypes]="employeeTypes" [employeeCategories]="employeeCategories"[schoolNameWithCity]="schoolNameWithCity" [subjects]="subjects" [designationList]="designationsList"
+        [approvalTypes]="approvalTypes"  [submitted]="submitBtnStatus.professional">
+      </app-professional-details>
+    </div>
+
+    <div *ngIf="currentStep === 4" class="step-page-summary">
+      <app-teacher-details  [showTopbarAndSidebar]="false" [fullFormData]="fullFormData" (EditBtnClickPreview)="editBtnClickFromPreview()"></app-teacher-details>
+    </div>
+
+
+    <div class="row mt-4">
+      <div class="col-12 d-flex justify-content-center">
+        <span *ngIf="currentStep !== 1">
+          <button type="button" class="btn btn-secondary me-2" (click)="switchToPrevious()">Previous</button>
+        </span>
+        <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">Cancel</button>
+
+        <button type="submit" class="btn btn-success" (click)="saveAndContinue()">
+          {{ currentStep === steps.length ? 'Submit' : 'Save & Continue' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

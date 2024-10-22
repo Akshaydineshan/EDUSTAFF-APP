@@ -1,0 +1,5 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+<div class="container mt-4" [class.shifted]="isSidebarClosed">
+    <p>non-teacher-list works!</p>
+</div>

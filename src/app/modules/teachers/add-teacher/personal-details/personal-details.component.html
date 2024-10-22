@@ -1,0 +1,624 @@
+<form [formGroup]="personalDetailsForm">
+
+    <div class="row mb-3">
+        <label for="profileImage" class="col-sm-3 col-form-label ">Profile Image</label>
+        <div class="col-sm-9 text-center">
+            <img [src]="profileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
+                class="rounded-circle" style="width: 100px; height: 100px;">
+            <div class="mt-2">
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;"
+                    id="profileImageUpload">
+                <button *ngIf="!file" type="button" class="btn btn-sm btn-outline-primary me-2"
+                    (click)="fileInput.click()">Upload</button>
+                <button *ngIf="file" type="button" class="btn btn-sm btn-outline-primary me-2"
+                    (click)="fileInput.click()">Upgrade</button>
+                <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">Remove</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="pen" class="col-sm-3 col-form-label">Permanent Employee Number (PEN)</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="pen" formControlName="permanentEmployeeNumber" required>
+            <div
+                *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.invalid && (personalDetailsForm.get('permanentEmployeeNumber')?.['dirty'] || personalDetailsForm.get('permanentEmployeeNumber')?.['touched']  || submitted)">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.errors?.['required']">Employee ID is
+                    required.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.errors?.['pattern']">Invalid
+                    Pattern</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="identification-marks-one" class="col-sm-3 col-form-label">Identification Marks</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="identification-marks-one"
+                formControlName="identificationMarksOne" maxlength="100" required placeholder="Mark 1" />
+            <div
+                *ngIf="personalDetailsForm.get('identificationMarksOne')?.errors && personalDetailsForm.get('identificationMarksOne')?.touched  || submitted">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('identificationMarksOne')?.errors?.['maxlength']">
+                    Identification mark must be less than 100 characters.
+                </small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('identificationMarksOne')?.errors?.['required']">
+                    Identification mark is required.
+                </small>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="identification-marks-two"
+                formControlName="identificationMarksTwo" maxlength="100" required placeholder="Mark 2" />
+            <div
+                *ngIf="personalDetailsForm.get('identificationMarksTwo')?.errors && personalDetailsForm.get('identificationMarksTwo')?.touched  || submitted">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('identificationMarksTwo')?.errors?.['maxlength']">
+                    Identification mark must be less than 100 characters.
+                </small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('identificationMarksTwo')?.errors?.['required']">
+                    Identification mark is required.
+                </small>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <label for="height" class="col-sm-3 col-form-label">Height (in cm)</label>
+        <div class="col-sm-9">
+            <input type="number" class="form-control" id="height" formControlName="height" required>
+            <div
+                *ngIf="personalDetailsForm.get('height')?.invalid && personalDetailsForm.get('height')?.touched  || submitted">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('height')?.errors?.['required']">
+                    Height is required.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('height')?.errors?.['min']">
+                    Height must be greater than 30 cm.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('height')?.errors?.['max']">
+                    Height must be less than 300 cm.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="ex-servicemen" class="col-sm-3 col-form-label">Ex-Servicemen</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="ex-servicemen" formControlName="exServicemen" required>
+                <option [value]="null" disabled>Select...</option>
+                <option [value]="true">Yes</option>
+                <option [value]="false">No</option>
+            </select>
+
+            <div
+                *ngIf="personalDetailsForm.get('exServicemen')?.invalid && personalDetailsForm.get('exServicemen')?.touched  || submitted">
+                <small *ngIf="personalDetailsForm.get('exServicemen')?.errors?.['required']" class="text-danger">
+                    Ex-servicemen status is required.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="firstName" class="col-sm-3 col-form-label">First Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="firstName" formControlName="firstName" required>
+            <div
+                *ngIf="personalDetailsForm.get('firstName')?.invalid && personalDetailsForm.get('firstName')?.touched  || submitted">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('firstName')?.errors?.['required']">
+                    Fist name is required.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('firstName')?.errors?.['minlength']">
+                    Fist name must be at least 2 characters long.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('firstName')?.errors?.['maxlength']">
+                    Fist name cannot be more than 50 characters long.
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="lastName" class="col-sm-3 col-form-label">Last Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="lastName" formControlName="lastName" required>
+            <div
+                *ngIf="personalDetailsForm.get('lastName')?.invalid && personalDetailsForm.get('lastName')?.touched  || submitted">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('lastName')?.errors?.['required']">
+                    Last name is required.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('lastName')?.errors?.['minlength']">
+                    Last name must be at least 2 characters long.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('lastName')?.errors?.['maxlength']">
+                    Last name cannot be more than 50 characters long.
+                </small>
+            </div>
+        </div>
+    </div>
+    <!-- 
+    <div class="row mb-3">
+        <label for="sex" class="col-sm-3 col-form-label">Sex</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="sex" formControlName="sex" required>
+                <option value="">Select...</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('sex')?.['invalid'] && personalDetailsForm.get('sex')?.touched">
+                <small class="text-danger">
+                    Sex is required.
+                </small>
+            </div>
+        </div>
+    </div> -->
+    <div class="row mb-3">
+        <label for="sex" class="col-sm-3 col-form-label">Sex</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="sex" formControlName="sex" required>
+                <option value="" disabled>Select...</option>
+                <option *ngFor="let gender of genders" [ngValue]="gender">{{ gender.genderName }}</option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('sex')?.invalid && (personalDetailsForm.get('sex')?.dirty || personalDetailsForm.get('sex')?.touched)  || submitted"
+                class="text-danger">
+                <small *ngIf="personalDetailsForm.get('sex')?.errors?.['required']">Sex is required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="dob" class="col-sm-3 col-form-label">Date of Birth</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="dob" formControlName="dob" required>
+            <div
+                *ngIf="personalDetailsForm.get('dob')?.invalid && personalDetailsForm.get('dob')?.touched  || submitted">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.errors?.['required']">
+                    Date of birth is required.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="phone" class="col-sm-3 col-form-label">Contact Number</label>
+        <div class="col-sm-9">
+            <div class="input-group">
+                <span class="input-group-text">+91</span>
+                <input type="tel" class="form-control" id="phone" formControlName="phone" required pattern="[0-9]{10}">
+            </div>
+            <div
+                *ngIf="personalDetailsForm.get('phone')?.invalid && personalDetailsForm.get('phone')?.['touched']  || submitted">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('phone')?.errors?.['pattern']">
+                    Enter a valid 10-digit phone number.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('phone')?.errors?.['required']">
+                    Phone Number is required.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="email" class="col-sm-3 col-form-label">Email Address</label>
+        <div class="col-sm-9">
+            <input type="email" class="form-control" id="email" formControlName="email" required>
+            <div *ngIf="personalDetailsForm.get('email')?.invalid && (personalDetailsForm.get('email')?.['dirty'] || personalDetailsForm.get('email')?.['touched']  || submitted)"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('email')?.errors?.['required']">Email is required.</div>
+                <div *ngIf="personalDetailsForm.get('email')?.errors?.['email']">Invalid email address.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row mb-3">
+        <label for="religion" class="col-sm-3 col-form-label">Religion</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="religion" formControlName="religion" required>
+                <option value="">Select...</option>
+                <option value="hinduism">Hinduism</option>
+                <option value="islam">Islam</option>
+                <option value="christianity">Christianity</option>
+                <option value="sikhism">Sikhism</option>
+                <option value="buddhism">Buddhism</option>
+                <option value="jainism">Jainism</option>
+                <option value="other">Other</option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('religion')?.invalid && (personalDetailsForm.get('religion')?.['dirty'] || personalDetailsForm.get('religion')?.['touched'])"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('religion')?.errors?.['required']">Religion is required.</div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row mb-3">
+        <label for="religion" class="col-sm-3 col-form-label">Religion</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="religion" formControlName="religion" required>
+                <option value="" disabled>Select...</option>
+                <option *ngFor="let religion of religions" [ngValue]="religion">{{ religion.religionName }}</option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('religion')?.invalid && (personalDetailsForm.get('religion')?.dirty || personalDetailsForm.get('religion')?.touched)  || submitted"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('religion')?.errors?.['required']">Religion is required.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row mb-3">
+        <label for="category" class="col-sm-3 col-form-label">Category</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="category" formControlName="category" required>
+                <option value="">Select...</option>
+                <option value="general">General</option>
+                <option value="obc">OBC</option>
+                <option value="sc">SC</option>
+                <option value="st">ST</option>
+                <option value="other">Other</option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('category')?.invalid && (personalDetailsForm.get('category')?.['dirty'] || personalDetailsForm.get('category')?.['touched'])"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('category')?.errors?.['required']">Category is required.</div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row mb-3">
+        <label for="category" class="col-sm-3 col-form-label">Category</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="category" formControlName="category" required>
+                <option value="" disabled>Select...</option>
+                <option *ngFor="let category of casteCategories" [ngValue]="category">{{ category.casteCategoryName }}
+                </option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('category')?.invalid && (personalDetailsForm.get('category')?.dirty || personalDetailsForm.get('category')?.touched)  || submitted"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('category')?.errors?.['required']">Category is required.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="caste" class="col-sm-3 col-form-label">Caste</label>
+        <div class="col-sm-9">
+            <!-- <select class="form-control" id="caste" formControlName="caste" required>
+                <option value="">Select...</option>
+                <option value="general">General</option>
+                <option value="obc">OBC</option>
+                <option value="sc">SC</option>
+                <option value="st">ST</option>
+                <option value="other">Other</option>
+            </select> -->
+            <input type="text" class="form-control" id="caste" formControlName="caste" required>
+            <div *ngIf="personalDetailsForm.get('caste')?.invalid && (personalDetailsForm.get('caste')?.['dirty'] || personalDetailsForm.get('caste')?.['touched']  || submitted)"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('caste')?.errors?.['required']">Caste is required.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row mb-3">
+        <label for="blood-group" class="col-sm-3 col-form-label">Blood Group</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="blood-group" formControlName="bloodGroup" required>
+                <option value="">Select...</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('bloodGroup')?.invalid && (personalDetailsForm.get('bloodGroup')?.['dirty'] || personalDetailsForm.get('bloodGroup')?.['touched'])"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('bloodGroup')?.errors?.['required']">Blood Group is required.</div>
+            </div>
+        </div>
+    </div> -->
+    <div class="row mb-3">
+        <label for="blood-group" class="col-sm-3 col-form-label">Blood Group</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="blood-group" formControlName="bloodGroup" required>
+                <option value="" disabled>Select...</option>
+                <option *ngFor="let bloodGroup of bloodGroups" [ngValue]="bloodGroup">{{ bloodGroup.bloodGroupName }}
+                </option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('bloodGroup')?.invalid && (personalDetailsForm.get('bloodGroup')?.dirty || personalDetailsForm.get('bloodGroup')?.touched)  || submitted"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('bloodGroup')?.errors?.['required']">Blood Group is required.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="whether-differently-abled" class="col-sm-3 col-form-label">Whether Differently Abled</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="whether-differently-abled" formControlName="whetherDifferentlyAbled"
+                required>
+                <option [value]="null" disabled>Select...</option>
+                <option [value]="true">Yes</option>
+                <option [value]="false">No</option>
+
+            </select>
+            <div *ngIf="personalDetailsForm.get('whetherDifferentlyAbled')?.invalid && (personalDetailsForm.get('whetherDifferentlyAbled')?.dirty || personalDetailsForm.get('whetherDifferentlyAbled')?.touched)  || submitted"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('whetherDifferentlyAbled')?.errors?.['required']">Whether Differently Abled Status
+                    is required.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="aadhar" class="col-sm-3 col-form-label">Aadhar ID</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="aadhar" formControlName="aadharId" required pattern="[0-9]{12}">
+            <div *ngIf="personalDetailsForm.get('aadharId')?.invalid && (personalDetailsForm.get('aadharId')?.['dirty'] || personalDetailsForm.get('aadharId')?.['touched']  || submitted)"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('aadharId')?.errors?.['required']">Aadhar ID is required.</div>
+                <div *ngIf="personalDetailsForm.get('aadharId')?.errors?.['pattern']">Aadhar ID must be 12 digits.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="pan" class="col-sm-3 col-form-label">PAN</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="pan" formControlName="pan" required
+                pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
+            <div *ngIf="personalDetailsForm.get('pan')?.invalid && (personalDetailsForm.get('pan')?.['dirty'] || personalDetailsForm.get('pan')?.['touched']  || submitted)"
+                class="text-danger">
+                <div *ngIf="personalDetailsForm.get('pan')?.errors?.['required']">PAN is required.</div>
+                <div *ngIf="personalDetailsForm.get('pan')?.errors?.['pattern']">PAN must follow the correct pattern (5
+                    letters, 4 digits, 1 letter).</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="ration-card" class="col-sm-3 col-form-label">Ration Card Number</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="ration-card" formControlName="rationCardNumber" required>
+            <div
+                *ngIf="personalDetailsForm.get('rationCardNumber')?.invalid && (personalDetailsForm.get('rationCardNumber')?.['dirty'] || personalDetailsForm.get('rationCardNumber')?.['touched']  || submitted)">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('rationCardNumber')?.errors?.['required']">Ration Card Number is
+                    required.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('rationCardNumber')?.errors?.['maxlength']">Ration Card Number must
+                    not exceed 20 characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="voter-id" class="col-sm-3 col-form-label">Voter ID</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="voter-id" formControlName="voterId" required>
+            <div
+                *ngIf="personalDetailsForm.get('voterId')?.invalid && (personalDetailsForm.get('voterId')?.['dirty'] || personalDetailsForm.get('voterId')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('voterId')?.errors?.['required']">Voter ID is
+                    required.</small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('voterId')?.errors?.['pattern']">Voter ID must
+                    be in the format ABC1234567.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="current-address" class="col-sm-3 col-form-label">Current Address</label>
+        <div class="col-sm-9">
+            <textarea class="form-control" id="current-address" rows="3" formControlName="currentAddress"
+                required></textarea>
+            <div
+                *ngIf="personalDetailsForm.get('currentAddress')?.invalid && (personalDetailsForm.get('currentAddress')?.['dirty'] || personalDetailsForm.get('currentAddress')?.['touched']  || submitted)">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('currentAddress')?.errors?.['required']">Current Address is
+                    required.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('currentAddress')?.errors?.['minlength']">Current Address must be at
+                    least 10 characters.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('currentAddress')?.errors?.['maxlength']">Current Address must not
+                    exceed 255 characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="permanent-address" class="col-sm-3 col-form-label">Permanent Address</label>
+        <div class="col-sm-9">
+            <textarea class="form-control" id="permanent-address" rows="3" formControlName="permanentAddress"
+                required></textarea>
+            <div
+                *ngIf="personalDetailsForm.get('permanentAddress')?.invalid && (personalDetailsForm.get('permanentAddress')?.['dirty'] || personalDetailsForm.get('permanentAddress')?.['touched']  || submitted)">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('permanentAddress')?.errors?.['required']">Permanent Address is
+                    required.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('permanentAddress')?.errors?.['minlength']">Permanent Address must be
+                    at least 10 characters.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('permanentAddress')?.errors?.['maxlength']">Permanent Address must
+                    not
+                    exceed 255 characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="father-name" class="col-sm-3 col-form-label">Father's Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="father-name" formControlName="fathersName" required>
+            <div
+                *ngIf="personalDetailsForm.get('fathersName')?.invalid && (personalDetailsForm.get('fathersName')?.['dirty'] || personalDetailsForm.get('fathersName')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('fathersName')?.errors?.['required']">Father's
+                    Name is required.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('fathersName')?.errors?.['minlength']">Father's Name must be at least
+                    2 characters.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('fathersName')?.errors?.['maxlength']">Father's Name must not exceed
+                    50 characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="mother-name" class="col-sm-3 col-form-label">Mother's Name</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="mother-name" formControlName="mothersName" required>
+            <div
+                *ngIf="personalDetailsForm.get('mothersName')?.invalid && (personalDetailsForm.get('mothersName')?.dirty || personalDetailsForm.get('mothersName')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('mothersName')?.errors?.['required']">Mother's
+                    Name is required.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('mothersName')?.errors?.['minlength']">Mother's Name must be at least
+                    2 characters.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('mothersName')?.errors?.['maxlength']">Mother's Name must not exceed
+                    50 characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="inter-religion" class="col-sm-3 col-form-label">Inter Religion</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="inter-religion" formControlName="interReligion" required>
+                <option [value]="null" disabled>Select...</option>
+                <option [value]="true">Yes</option>
+                <option [value]="false">No</option>
+            </select>
+            <div
+                *ngIf="personalDetailsForm.get('interReligion')?.invalid && (personalDetailsForm.get('interReligion')?.['dirty'] || personalDetailsForm.get('interReligion')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="personalDetailsForm.get('interReligion')?.errors?.['required']">
+                    Inter Religion selection is required.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row mb-3">
+        <label for="marital-status" class="col-sm-3 col-form-label">Marital Status</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="marital-status" formControlName="maritalStatus" required>
+                <option value="">Select...</option>
+                <option value="married">Married</option>
+                <option value="unmarried">Unmarried</option>
+                <option value="divorced">Divorced</option>
+            </select>
+            <div
+                *ngIf="personalDetailsForm.get('maritalStatus')?.invalid && (personalDetailsForm.get('maritalStatus')?.['dirty'] || personalDetailsForm.get('maritalStatus')?.['touched'])">
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('maritalStatus')?.errors?.['required']">Marital Status selection is
+                    required.</small>
+            </div>
+        </div>
+    </div> -->
+    <div class="row mb-3">
+        <label for="marital-status" class="col-sm-3 col-form-label">Marital Status</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="marital-status" formControlName="maritalStatus" required>
+                <option value="" disabled>Select...</option>
+                <option *ngFor="let status of maritalStatuses" [ngValue]="status">{{ status.maritalStatusName }}
+                </option>
+            </select>
+            <div *ngIf="personalDetailsForm.get('maritalStatus')?.invalid && personalDetailsForm.get('maritalStatus')?.touched  || submitted"
+                class="text-danger">
+                <small *ngIf="personalDetailsForm.get('maritalStatus')?.errors?.['required']">Marital Status selection
+                    is required.</small>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div *ngIf="this.personalDetailsForm.value.maritalStatus.maritalStatusID == '2'">
+        <div class="row mb-3">
+            <label for="spouse-name" class="col-sm-3 col-form-label">Spouse's Name</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="spouse-name" formControlName="spousesName">
+                <div
+                    *ngIf="personalDetailsForm.get('spousesName')?.invalid && (personalDetailsForm.get('spousesName')?.['dirty'] || personalDetailsForm.get('spousesName')?.['touched'])  || submitted">
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('spousesName')?.errors?.['maxlength']">Spouse's Name must not
+                        exceed
+                        50 characters.</small>
+                    <small class="text-danger" *ngIf="personalDetailsForm.get('spousesName')?.errors?.['required']">Spouse's Name is
+                        required.</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row mb-3">
+            <label for="spouse-religion" class="col-sm-3 col-form-label">Spouse's Religion</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="spouse-religion" formControlName="spousesReligion">
+                <div
+                    *ngIf="personalDetailsForm.get('spousesReligion')?.invalid && (personalDetailsForm.get('spousesReligion')?.['dirty'] || personalDetailsForm.get('spousesReligion')?.['touched'])">
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('spousesReligion')?.errors?.['maxlength']">Spouse's Religion must
+                        not
+                        exceed 50 characters.</small>
+                </div>
+            </div>
+        </div> -->
+        <div class="row mb-3">
+            <label for="spouse-religion" class="col-sm-3 col-form-label">Spouse's Religion</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="spouse-religion" formControlName="spousesReligion">
+                    <option value="" disabled>Select...</option>
+                    <option *ngFor="let rel of religions" [ngValue]="rel">{{ rel.religionName }}</option>
+                </select>
+                <div *ngIf="personalDetailsForm.get('spousesReligion')?.invalid && personalDetailsForm.get('spousesReligion')?.touched  || submitted"
+                    class="text-danger">
+                    <small *ngIf="personalDetailsForm.get('spousesReligion')?.errors?.['maxlength']">
+                        Spouse's Religion must not exceed 50 characters.
+                    </small>
+                    <small *ngIf="personalDetailsForm.get('spousesReligion')?.errors?.['required']">Spouse's Religion is
+                        required.</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row mb-3">
+            <label for="spouse-caste" class="col-sm-3 col-form-label">Spouse's Caste</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="spouse-caste" formControlName="spousesCase">
+                <div
+                    *ngIf="personalDetailsForm.get('spousesCase')?.invalid && (personalDetailsForm.get('spousesCase')?.['dirty'] || personalDetailsForm.get('spousesCase')?.['touched'])">
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('spousesCase')?.errors?.['maxlength']">Spouse's Caste must not
+                        exceed
+                        50 characters.</small>
+                </div>
+            </div>
+        </div> -->
+        <div class="row mb-3">
+            <label for="spouse-caste" class="col-sm-3 col-form-label">Spouse's Caste</label>
+            <div class="col-sm-9">
+                <!-- <select class="form-control" id="spouse-caste" formControlName="spousesCaste"> -->
+                <!-- <option value="">Select...</option> -->
+                <!-- <option *ngFor="let caste of casteCategories" [value]="caste.casteCategoryID">{{ caste.casteCategoryName }}</option> -->
+                <input type="text" class="form-control" id="spouse-caste" formControlName="spousesCaste">
+                <!-- </select> -->
+                <div *ngIf="personalDetailsForm.get('spousesCaste')?.invalid && personalDetailsForm.get('spousesCaste')?.touched  || submitted"
+                    class="text-danger">
+                    <small *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['maxlength']">
+                        Spouse's Caste must not exceed 50 characters.
+                    </small>
+                    <small *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['required']">Spouse's Cast is
+                        required.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</form>

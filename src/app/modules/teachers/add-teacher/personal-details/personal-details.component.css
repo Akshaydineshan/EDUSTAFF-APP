@@ -1,0 +1,9 @@
+img {
+  height: 100px;
+  width: 100px;
+}
+
+input[readonly] {
+  pointer-events: none;
+  cursor: default;
+}/*# sourceMappingURL=personal-details.component.css.map */

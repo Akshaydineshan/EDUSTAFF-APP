@@ -1,0 +1,70 @@
+.container {
+  padding: 10%;
+  max-width: 95rem;
+}
+
+.login-container {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  width: 100%;
+}
+
+.header-text {
+  color: #800000;
+  font-weight: bold;
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.sub-text {
+  color: #800000;
+  text-align: center;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-header img {
+  width: 50px;
+}
+
+.login-header h3 {
+  margin-top: 10px;
+  color: #800000;
+  font-size: 1.5rem;
+}
+
+.login-header p {
+  font-size: 1.25rem;
+}
+
+.form-check-label {
+  margin-left: 5px;
+}
+
+.login-footer {
+  text-align: center;
+  margin-top: 20px;
+  color: #666666;
+  font-size: 0.875rem;
+}
+
+.help-contact {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+.help-contact a {
+  color: #800000;
+  margin-left: 10px;
+  font-size: 1rem;
+}/*# sourceMappingURL=login.component.css.map */

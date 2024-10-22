@@ -1,0 +1,79 @@
+/* Global styles */
+*{
+    margin:0;padding: 0;
+    
+}
+body {
+    // background-color: #f8f9fa;
+    font-family: 'Roboto',Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+}
+
+.badge {
+    color: black;
+    background-color: #a1a1a1;
+}
+
+.doc-count {
+    background-color: #cccaca;
+    padding: 0.375rem;
+    border-radius: 0.375rem;
+}
+
+.container.shifted {
+    margin-left: 0 !important;
+}
+
+.container {
+    padding: 2rem;
+    margin-left: 60px;
+    padding-top: 50px !important;
+    transition: margin-left 0.3s;
+}
+
+
+.login {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: url('assets/images/login-bg.png') no-repeat center center fixed;
+    background-size: cover;
+    backdrop-filter: blur(10px);
+    z-index: 1;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to top left, rgba(158, 158, 158, 0.5), rgb(255, 255, 255));
+        z-index: -1;
+    }
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    transform: translate(0, -25%);
+    opacity: 0;
+}
+
+#filterDropdown {
+    transition: all 0.3s ease-in-out;
+}
+
+// #filterDropdown.open {
+//     overflow-y: auto;
+//     max-height: 400px;
+// }
+.step-page {
+    min-width: 50% !important;
+    padding-top: 0;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

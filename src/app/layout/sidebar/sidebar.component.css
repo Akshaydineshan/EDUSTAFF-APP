@@ -1,0 +1,33 @@
+.sidebar {
+  width: 60px;
+  background-color: #333;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+  transition: width 0.3s;
+  z-index: 1;
+}
+
+.sidebar.closed {
+  width: 0;
+  overflow: hidden;
+}
+
+.sidebar i {
+  color: white;
+  margin: 20px 0;
+  font-size: 20px;
+}
+
+.sidebar a.active i {
+  color: #8d9094;
+}
+
+.sidebar a {
+  text-decoration: none;
+}/*# sourceMappingURL=sidebar.component.css.map */

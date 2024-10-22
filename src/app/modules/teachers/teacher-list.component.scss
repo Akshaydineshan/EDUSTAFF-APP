@@ -1,0 +1,247 @@
+.table-responsive {
+  margin-top: 1rem;
+}
+
+table {
+
+  th,
+  td {
+    text-align: center;
+    vertical-align: middle;
+  }
+}
+
+
+.pagination-controls {
+  margin-top: 15px;
+
+  .pagination-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px;
+
+    .page-item button {
+      padding: 6px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: white;
+      color: #333;
+      cursor: pointer;
+
+      &.active {
+        background-color: #800020;
+        color: white;
+        border-color: #800020;
+      }
+    }
+
+    .page-item button:hover {
+      background-color: #f0f0f0;
+    }
+  }
+
+  button {
+    min-width: 40px;
+    border-radius: 4px;
+  }
+}
+
+.popup-teacher-info {
+  position: fixed;
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 450px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+}
+
+.popup-photo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.popup-title h5 {
+  margin: 0;
+}
+
+.popup-body {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.popup-body p {
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Backdrop styling */
+.filter-dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* Modal dialog styling */
+.filter-dialog {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  max-width: 100%;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-weight: bold;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.val {
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+}
+
+.btn-secondary {
+  background-color: #fff;
+  color: #000000;
+}
+
+.btn-secondary:hover {
+  background-color: #a5a5a5;
+  color: #ffffff;
+}
+
+#filterDropdown.dropdown-menu {
+  min-width: 20rem;
+}
+
+
+
+
+
+// .experience-range-container {
+//   width: 100%;
+//   max-width: 500px;
+//   margin: 0 auto;
+//   padding: 20px;
+//   box-sizing: border-box;
+// }
+.range-form {
+  position: relative;
+  height: 50px;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  margin-top: 25px;
+}
+
+.range-slider {
+  position: absolute;
+  top: -7px;
+  width: 100%;
+  -webkit-appearance: none;
+  background: transparent;
+  pointer-events: none;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.range-slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.slider-track {
+  position: absolute;
+  width: 100%;
+  height: 5px;
+  background: #ddd;
+}
+
+.slider-track::before {
+  content: '';
+  position: absolute;
+  left: 30%;
+  right: 60%;
+  height: 5px;
+  background: #4CAF50;
+}
+
+.range-inputs {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.range-input {
+  width: 60px;
+  text-align: center;
+}
+
+.dropdown {
+  position: relative;
+}
+
+.dropdown-menu {
+  min-width: 150px;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+.fas.fa-ellipsis-v {
+  cursor: pointer;
+  color: #000000;
+}
+
+
+.form-group.form-label {
+  text-align: left !important;
+}

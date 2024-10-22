@@ -1,0 +1,286 @@
+<form [formGroup]="professionalForm">
+    <div class="row mb-3">
+        <label for="department" class="col-sm-3 col-form-label">Department</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="department" formControlName="department">
+                <option value="">Select Department</option>
+                <option *ngFor="let department of employeeTypes" [ngValue]="department">{{ department.employeeTypeName }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('department')?.invalid && (professionalForm.get('department')?.touched || professionalForm.get('department')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('department')?.errors?.['required']">Department is required.</small>
+                <small *ngIf="professionalForm.get('department')?.errors?.['maxlength']">Department name cannot exceed
+                    50 characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="district" class="col-sm-3 col-form-label">District</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="district" formControlName="district">
+                <option value="">Select District</option>
+                <option *ngFor="let district of districts" [ngValue]="district">{{ district.districtName }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('district')?.invalid && (professionalForm.get('district')?.touched || professionalForm.get('district')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('district')?.errors?.['required']">District is required.</small>
+                <small *ngIf="professionalForm.get('district')?.errors?.['maxlength']">District name cannot exceed 50
+                    characters.</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="row mb-3">
+        <label for="serviceCategory" class="col-sm-3 col-form-label">Service Category</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="serviceCategory" formControlName="serviceCategory">
+                <option value="">Select Service Category</option>
+                <option value="Teaching Staff">Teaching Staff</option>
+                <option value="Non-Teaching Staff">Non-Teaching Staff</option>
+                <option value="Administrative Staff">Administrative Staff</option>
+                <option value="Technical Staff">Technical Staff</option>
+            </select>
+            <div *ngIf="professionalForm.get('serviceCategory')?.invalid && (professionalForm.get('serviceCategory')?.touched || professionalForm.get('serviceCategory')?.dirty)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('serviceCategory')?.errors?.['required']">Service Category is
+                    required.</small>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row mb-3">
+        <label for="employeeType" class="col-sm-3 col-form-label">Employee Type</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="employeeType" formControlName="employeeType">
+                <option value="">Select Employee Type</option>
+                <option *ngFor="let emp of employeeTypes" [ngValue]="emp">{{emp.employeeTypeName }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('employeeType')?.invalid && (professionalForm.get('employeeType')?.touched || professionalForm.get('employeeType')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('employeeType')?.errors?.['required']">Employee Type is
+                    required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="designation" class="col-sm-3 col-form-label">Designation</label>
+        <div class="col-sm-9">
+            <!-- <select class="form-control" id="designation" formControlName="designation">
+                <option value="">Select Designation</option>
+                <option value="Primary Teacher">Primary Teacher</option>
+                <option value="TGT">TGT (Trained Graduate Teacher)</option>
+                <option value="PGT">PGT (Post Graduate Teacher)</option>
+                <option value="Assistant Teacher">Assistant Teacher</option>
+                <option value="Senior Teacher">Senior Teacher</option>
+            </select> -->
+            <select class="form-control" id="designation" formControlName="designation">
+                <option value="" disabled>Select Designation</option>
+                <option *ngFor="let des of designationList" [ngValue]="des">{{des.designationName}}</option>
+              </select>
+            <div *ngIf="professionalForm.get('designation')?.invalid && (professionalForm.get('designation')?.touched || professionalForm.get('designation')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('designation')?.errors?.['required']">Designation is
+                    required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="subject" class="col-sm-3 col-form-label">Subject</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="subject" formControlName="subject">
+                <option value="">Select Subject</option>
+                <option *ngFor="let subject of subjects" [ngValue]="subject">{{ subject.subjectName }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('subject')?.invalid && (professionalForm.get('subject')?.touched || professionalForm.get('subject')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('subject')?.errors?.['required']">Subject is required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="pfNumber" class="col-sm-3 col-form-label">PF Number</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="pfNumber" formControlName="pfNumber"
+                placeholder="E.g., PF1234567">
+            <div *ngIf="professionalForm.get('pfNumber')?.invalid && (professionalForm.get('pfNumber')?.touched || professionalForm.get('pfNumber')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('pfNumber')?.errors?.['required']">PF Number is required.</small>
+                <small *ngIf="professionalForm.get('pfNumber')?.errors?.['pattern']">PF Number format is
+                    invalid.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="pran" class="col-sm-3 col-form-label">PRAN</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control" id="pran" formControlName="pran" placeholder="E.g., PRAN123456">
+            <div *ngIf="professionalForm.get('pran')?.invalid && (professionalForm.get('pran')?.touched || professionalForm.get('pran')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('pran')?.errors?.['required']">PRAN is required.</small>
+                <small *ngIf="professionalForm.get('pran')?.errors?.['pattern']">PRAN format is invalid.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="fromDate" class="col-sm-3 col-form-label">Date Of Join</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="fromDate" formControlName="fromDate">
+            <div *ngIf="professionalForm.get('fromDate')?.invalid && (professionalForm.get('fromDate')?.touched || professionalForm.get('fromDate')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('fromDate')?.errors?.['required']">Date of Joining is
+                    required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="toDate" class="col-sm-3 col-form-label">Date Of Join In The Department</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="toDate" formControlName="toDate">
+            <div *ngIf="professionalForm.get('toDate')?.invalid && (professionalForm.get('toDate')?.touched || professionalForm.get('toDate')?.dirty)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('toDate')?.errors?.['required']">Date of Leaving is required.</small>
+                <!-- <small *ngIf="professionalForm..errors?.invalidDateRange">End date must be greater than start date.</small> -->
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="row mb-3">
+        <label for="toDate" class="col-sm-3 col-form-label">Retirement Date</label>
+        <div class="col-sm-9">
+            <input type="date" class="form-control" id="toDate" formControlName="retirement">
+            <div *ngIf="professionalForm.get('retirement')?.invalid && (professionalForm.get('retirement')?.touched || professionalForm.get('retirement')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('retirement')?.errors?.['required']">Date of Retirement is required.</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <label for="category" class="col-sm-3 col-form-label">Approval Types</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="category" formControlName="approvalType">
+                <option value="">Select Approval Type</option>
+                <option *ngFor="let approvalType of approvalTypes" [ngValue]="approvalType">{{approvalType.approvalTypeName }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('approvalType')?.invalid && (professionalForm.get('approvalType')?.touched || professionalForm.get('approvalType')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('approvalType')?.errors?.['required']">Approval Type is required.</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-3">
+        <label for="trainingAttended" class="col-sm-3 col-form-label">Protected Teacher</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="protectedTeacher" formControlName="protectedTeacher">
+                <option value="" disabled>Select</option>
+                <option *ngFor="let option of yesNoOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('protectedTeacher')?.invalid && (professionalForm.get('protectedTeacher')?.touched || professionalForm.get('protectedTeacher')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('protectedTeacher')?.errors?.['required']">Protected Teacher Status
+                    is required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="schoolName" class="col-sm-3 col-form-label">School Name</label>
+        <div class="col-sm-9">
+            <!-- <input type="text" class="form-control" id="schoolName" formControlName="schoolName"
+                placeholder="E.g., XYZ Public School"> -->
+                <select class="form-control" id="schoolNameId" formControlName="schoolName">
+                    <option value="">Select School Type</option>
+                    <option *ngFor="let school of schoolNameWithCity;" [ngValue]="school">{{school.schoolName}},{{ school.cityName}}</option>
+                </select>
+            <div *ngIf="professionalForm.get('schoolName')?.invalid && (professionalForm.get('schoolName')?.touched || professionalForm.get('schoolName')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('schoolName')?.errors?.['required']">School Name is required.</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="category" class="col-sm-3 col-form-label">Category</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="category" formControlName="pCategory">
+                <option value="">Select Category</option>
+                <option *ngFor="let category of employeeCategories" [ngValue]="category">{{ category.employeeCategoryName }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('category')?.invalid && (professionalForm.get('category')?.touched || professionalForm.get('category')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('category')?.errors?.['required']">Category is required.</small>
+            </div>
+        </div>
+    </div>
+
+<!-- 
+    <div class="row mb-3">
+        <label for="schoolType" class="col-sm-3 col-form-label">School Type</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="schoolType" formControlName="schoolType">
+                <option value="">Select School Type</option>
+                <option value="Government">Government</option>
+                <option value="Private">Private</option>
+                <option value="International">International</option>
+            </select>
+            <div *ngIf="professionalForm.get('schoolType')?.invalid && (professionalForm.get('schoolType')?.touched || professionalForm.get('schoolType')?.dirty)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('schoolType')?.errors?.['required']">School Type is required.</small>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="row mb-3">
+        <label for="trained" class="col-sm-3 col-form-label">Trained</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="trained" formControlName="trained">
+                <option value="" disabled>Select</option>
+                <option *ngFor="let option of yesNoOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('trained')?.invalid && (professionalForm.get('trained')?.touched || professionalForm.get('trained')?.dirty)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('trained')?.errors?.['required']">Training status is
+                    required.</small>
+            </div>
+        </div>
+    </div> -->
+
+    <!-- <div class="row mb-3">
+        <label for="trainingAttended" class="col-sm-3 col-form-label">Training Attended</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="trainingAttended" formControlName="trainingAttended">
+                <option value="" disabled>Select</option>
+                <option *ngFor="let option of yesNoOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('trainingAttended')?.invalid && (professionalForm.get('trainingAttended')?.touched || professionalForm.get('trainingAttended')?.dirty)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('trainingAttended')?.errors?.['required']">Training attendance status
+                    is required.</small>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="row mb-3">
+        <label for="eligibleTestQualified" class="col-sm-3 col-form-label">Eligible Test Qualified</label>
+        <div class="col-sm-9">
+            <select class="form-control" id="eligibleTestQualified" formControlName="eligibleTestQualified">
+                <option value="" disabled>Select</option>
+                <option disabled *ngFor="let option of yesNoOptions" [value]="option.value">{{ option.label }}</option>
+            </select>
+            <div *ngIf="professionalForm.get('eligibleTestQualified')?.invalid && (professionalForm.get('eligibleTestQualified')?.touched || professionalForm.get('eligibleTestQualified')?.dirty||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('eligibleTestQualified')?.errors?.['required']">Test qualification
+                    status is required.</small>
+            </div>
+        </div>
+    </div>
+</form>

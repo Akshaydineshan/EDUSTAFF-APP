@@ -1,0 +1,147 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+
+<div class="container" [class.shifted]="isSidebarClosed">
+    <div class="stats-panel">
+        <h2 class="text-center mb-4">Welcome Admin</h2>
+        <div class="d-flex justify-content-center mb-5">
+            <div class="row text-center mb-4 cards-container">
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center" [routerLink]="['/teachers/teacher-list']">
+                            <i class="fas fa-user icon-lg mr-3"></i>
+                            <div class="text-left">
+                                <h5 class="card-title mb-1">Total Teachers</h5>
+                                <h3>{{dashboardStats.activeTeachers}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center" [routerLink]="['/schools/school-list']">
+                            <i class="fas fa-school icon-lg mr-3"></i>
+                            <div class="text-left">
+                                <h5 class="card-title mb-1">Total Schools</h5>
+                                <h3>{{dashboardStats.openSchools}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center">
+                            <i class="fas fa-briefcase icon-lg mr-3"></i>
+                            <div class="text-left">
+                                <h5 class="card-title mb-1">Vacant Positions</h5>
+                                <h3>{{dashboardStats.vacantPositions}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-center"
+                            [routerLink]="['/teachers/eligible-promotions']">
+                            <i class="fas fa-user-check icon-lg mr-3"></i>
+                            <div class="text-left">
+                                <h5 class="card-title mb-1">Promotion Eligible</h5>
+                                <h3>{{dashboardStats.promotionEligible}}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-panel">
+        <!-- Teaching Staff Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="mb-2">Teaching Staff</h4>
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="sub-card" [routerLink]="['/teachers/teacher-list']">
+                        <img src="../../../assets/icons/image 6.png" alt="Help Icon" width="30" height="30">
+                        <h6>Teachers List</h6>
+                    </div>
+                    <div class="sub-card" [routerLink]="['/teachers/add-teacher']">
+                        <img src="../../../assets/icons/image 6.png" alt="Help Icon" width="30" height="30">
+                        <h6>Add New Teacher</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/image 6.png" alt="Help Icon" width="30" height="30">
+                        <h6>Update Teacher Details</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/image 8.png" alt="Help Icon" width="30" height="30">
+                        <h6>Transfer Request</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
+                        <h6>Leave Application</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
+                        <h6>Promotion Application</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Non-Teaching Staff Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="mb-2">Non Teaching Staff</h4>
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="sub-card" [routerLink]="['/non-teachers/non-teacher-list']">
+                        <img src="../../../assets/icons/image 6.png" alt="Help Icon" width="30" height="30">
+                        <h6>List</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/image 6.png" alt="Help Icon" width="30" height="30">
+                        <h6>Add New</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/image 6.png" alt="Help Icon" width="30" height="30">
+                        <h6>Update Details</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/image 8.png" alt="Help Icon" width="30" height="30">
+                        <h6>Transfer Request</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
+                        <h6>Leave Application</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
+                        <h6>Promotion Application</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Schools Section -->
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-2">Schools</h4>
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="sub-card" [routerLink]="['/schools/school-list']">
+                        <img src="../../../assets/icons/Group 1640.png" alt="Help Icon" width="30" height="30">
+                        <h6>School List</h6>
+                    </div>
+                    <div class="sub-card">
+                        <img src="../../../assets/icons/Group 1640.png" alt="Help Icon" width="30" height="30">
+                        <h6>Update School Details</h6>
+                    </div>
+                    <div class="sub-card" [routerLink]="['/schools/eligible-promotions']">
+                        <img src="../../../assets/icons/Group 1640.png" alt="Help Icon" width="30" height="30">
+                        <h6>Promotion Eligible List</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

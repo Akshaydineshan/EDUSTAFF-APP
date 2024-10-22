@@ -1,0 +1,53 @@
+.navbar {
+  background-color: #800000;
+  color: white;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .logo i {
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.navbar .logo span {
+  font-size: 20px;
+}
+
+.navbar .user-info {
+  display: flex;
+  align-items: center;
+}
+
+.navbar .user-info i {
+  margin-right: 15px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.navbar .user-info span {
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.navbar .user-info span i {
+  margin-right: 5px;
+}
+
+.navbar .user-info i:last-child {
+  margin-right: 0;
+}/*# sourceMappingURL=topbar.component.css.map */

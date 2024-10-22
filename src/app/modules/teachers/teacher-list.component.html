@@ -1,0 +1,193 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+
+
+<div class="container mt-4" [class.shifted]="isSidebarClosed">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Teachers List
+      <span class="badge badge-secondary">{{ teacherList.length }}</span>
+    </h4>
+    <div class="d-flex justify-content-between align-items-end gap-3">
+      <div class="dropdown">
+        <button id="filterButton" class="btn btn-outline-secondary" (click)="toggleFilterDropdown()">
+          <i class="fas fa-filter"></i> Filter
+        </button>
+        <div id="filterDropdown" class="dropdown-menu p-3" [class.show]="showFilterModal">
+          <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+            <h5>Filter</h5>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <select formControlName="subjectFilter" class="form-control">
+                <option value="">All Subjects</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Physics">Physics</option>
+                <option value="Chemistry">Chemistry</option>
+                <option value="Malayalam">Malayalam</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="retiringIn">Retiring In</label>
+              <input formControlName="retiringInMonths" type="number" class="form-control" placeholder="Retiring In">
+            </div>
+
+            <div class="form-group">
+              <label for="school">School</label>
+              <input formControlName="schoolNameFilter" type="text" class="form-control" placeholder="School Name">
+            </div>
+
+            <!-- <div class="form-group">
+              <label for="maxExperienceYear">Experience (Years)</label>
+              <input type="number" formControlName="ExperienceYear" id="maxExperienceYear" class="form-control"
+                placeholder="Enter experience">
+            </div> -->
+            <div class="form-group">
+              <div class="experience-range-container">
+                <label for="experienceYearRange">Experience Year Range</label>
+                <div class="slider-container">
+                  <input type="range" id="experienceYearRange" formControlName="minExperienceYear" [min]="0" [max]="100"
+                    class="range-slider min-slider" (input)="onSliderChange()">
+                  <input type="range" id="experienceYearRange" formControlName="maxExperienceYear" [min]="0" [max]="100"
+                    class="range-slider max-slider" (input)="onSliderChange()">
+                  <div class="slider-track"></div>
+                </div>
+                <div class="range-inputs">
+                  <input type="number" formControlName="minExperienceYear" class="range-input" min="0" max="100"
+                    (input)="onInputChange()">
+                  <input type="number" formControlName="maxExperienceYear" class="range-input" min="0" max="100"
+                    (input)="onInputChange()">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <input type="checkbox" formControlName="newRecruit">
+                Check if New Recruit
+              </label>
+            </div>
+
+            <div class="form-group d-flex justify-content-between mt-3">
+              <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset Filter</button>
+              <button type="submit" class="btn btn-success">Apply</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <button class="btn btn-success" [routerLink]="['/teachers/add-teacher']">
+        <i class="fas fa-plus-circle"></i> Add Teacher Details
+      </button>
+    </div>
+  </div>
+
+
+  <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
+    <div class="popup-header">
+      <img [src]="'assets/images/'+selectedTeacher?.photo" alt="Teacher Photo" class="popup-photo">
+      <div class="popup-title">
+        <h6 style="font-weight: bold;">{{ selectedTeacher?.name }}</h6>
+        <div>{{ selectedTeacher?.subject }}</div>
+        <div>{{ selectedTeacher?.schoolName }}</div>
+        <div>{{ selectedTeacher?.email }}</div>
+        <div>{{ selectedTeacher?.phoneNumber }}</div>
+
+      </div>
+    </div>
+    <div class="popup-body">
+      <p><strong>Date of Join:</strong> {{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
+      <p><strong>Reports To:</strong> {{ selectedTeacher?.reportedTo }}</p>
+    </div>
+
+  </div>
+  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
+    <div class="popup-header">
+      <img [src]="'assets/images/'+selectedSchool?.photo" alt="School Photo" class="popup-photo">
+      <div class="popup-title">
+        <h6 style="font-weight: bold;">{{ selectedSchool?.name }}</h6>
+        <span>{{ selectedSchool?.address }}</span>
+        <div>{{ selectedSchool?.email }}</div>
+        <div>{{ selectedSchool?.phone }}</div>
+        <div class="popup-body">
+          <h6 style="font-weight: bold;">Authorities</h6>
+          <div>
+            <h6 class="val"><strong>{{ selectedSchool?.principal }}</strong></h6>
+            <span>Principal</span>
+          </div>
+          <div class="mt-1">
+            <h6 class="val"><strong>{{ selectedSchool?.vicePrincipal }}</strong></h6>
+            <span>Vice Principal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="table-responsive">
+    <!-- <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th *ngFor="let column of displayColumns" (click)="sortColumn(column)">
+            {{ column | titlecase }}
+            <ng-container *ngIf="sortedColumn === column">
+              <i class="fas" [ngClass]="sortDirection === 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+            </ng-container>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teacher of paginatedData">
+          <td *ngFor="let column of displayColumns"
+            (mouseover)="column === 'name' ? onTeacherHover(teacher.teacherId, $event) : column === 'schoolName' ? onSchoolHover(teacher.schoolId, $event) : null"
+            (mouseleave)="column === 'name' ? onTeacherMouseOut() : column === 'schoolName' ? onSchoolMouseOut() : null">
+
+            <ng-container *ngIf="column === 'documentCount'; else defaultColumn">
+              <span [class]="teacher.documentStatus?.icon ? 'doc-count' : ''">
+                <i [class]="teacher.documentStatus?.icon"></i> {{ teacher.documentStatus?.text }}
+              </span>
+            </ng-container>
+
+            <ng-template #defaultColumn>
+              <span *ngIf="column === 'name' || column === 'schoolName'">
+                {{ teacher[column] }}
+              </span>
+              <span *ngIf="column !== 'name' && column !== 'schoolName'">
+                {{ teacher[column] }}
+              </span>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+
+
+
+    </table> -->
+    <app-table
+     [rowData]="teacherTableRows" 
+     [colDefs]="teacherTableColumns"
+     [paginationConfig]="paginationConfig"
+    
+     ></app-table>
+  </div>
+
+  <!-- <div class="pagination-controls d-flex justify-content-start align-items-center mt-3">
+    <button class="btn btn-outline-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <ul class="pagination-list d-flex mx-3">
+      <li *ngFor="let page of totalPagesArray" class="page-item">
+        <button class="btn" [class.active]="currentPage === page" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </li>
+    </ul>
+
+    <button class="btn btn-outline-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div> -->
+</div>
