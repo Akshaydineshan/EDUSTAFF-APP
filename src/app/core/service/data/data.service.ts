@@ -171,7 +171,14 @@ export class DataService {
     debugger
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
-    return this.http.post(this.apiUrl + 'Teacher/AddPhoto' , formData);
+    return this.http.post(this.apiUrl + 'FileUpload/AddPhoto' , formData);
+  }
+  uploadDocument( documentFile: File): Observable<any> {
+    const formData = new FormData();
+    
+    formData.append('DocumentName',"educationCertificate");
+    formData.append('DocumentFile', documentFile);
+    return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
   }
 
   addTeacher(teachersData: any): Observable<any> {

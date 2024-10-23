@@ -122,6 +122,22 @@
         </div>
       </div>
 
+      
+      <div class="row mb-3" *ngIf="course.get('courseName')?.value?.courseName === 'Others'">
+        <label for="" class="col-sm-3 col-form-label">Course Name</label>
+        <div class="col-sm-7">
+          <input type="text" id="courseNameOther{{i}}" class="form-control" formControlName="courseNameOther"
+            [ngClass]="{'is-invalid': course.get('courseNameOther')?.invalid && (course.get('courseNameOther')?.touched ||submitted)}"
+            placeholder="Enter Course Name" />
+          <div class="invalid-feedback"
+            *ngIf="course.get('courseNameOther')?.invalid && course.get('courseNameOther')?.touched ||submitted">
+            <small class="text-danger" *ngIf="course.get('courseNameOther')?.errors?.['required']"> Course Name  is
+              required.</small>
+
+          </div>
+        </div>
+      </div>
+
       <div class="row mb-3">
         <label for="schoolName{{i}}" class="col-sm-3 col-form-label">School/University</label>
         <div class="col-sm-7">
@@ -168,8 +184,13 @@
 
       <div class="row mb-3">
         <label class="col-sm-3 col-form-label">Upload Certificate</label>
-        <div class="col-sm-7">
-          <input type="file" (change)="onCertificateUpload($event, i)" class="form-control">
+        <div class="col-sm-7 position-relative">
+          <input type="file" accept=".pdf" (change)="onCertificateUpload($event, i)" class="form-control pr-5">
+          
+          <!-- Image positioned on the right side -->
+          <span *ngIf="course.get('certificate')?.value?.documentName" class="pdf-icon">
+            <img [src]="'../../../../assets/icons/pdf.png'" alt="PDF Icon">
+          </span>
         </div>
       </div>
 

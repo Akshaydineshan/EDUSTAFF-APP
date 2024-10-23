@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
 
-interface SubmitBtnStatus{
-  personal:boolean,education:boolean,professional:boolean
+interface SubmitBtnStatus {
+  personal: boolean, education: boolean, professional: boolean
 }
 
 @Component({
@@ -44,7 +44,7 @@ export class AddTeacherComponent implements OnInit {
   fullFormData: any
   designationsList!: any[];
   schoolNameWithCity!: any[];
-  submitBtnStatus:SubmitBtnStatus={personal:false,education:false,professional:false}
+  submitBtnStatus: SubmitBtnStatus = { personal: false, education: false, professional: false }
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -80,9 +80,9 @@ export class AddTeacherComponent implements OnInit {
       spousesName: ['',],
       spousesReligion: ['',],
       spousesCaste: ['',],
-      photoId:['']
+      photoId: ['']
     },
-   );
+    );
     // this.educationForm = this.fb.group({
     //   educations: this.fb.array([])
     // });
@@ -98,25 +98,26 @@ export class AddTeacherComponent implements OnInit {
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       retirement: ['', Validators.required],
-     schoolName: ['', Validators.required],
+      schoolName: ['', Validators.required],
       pCategory: ['', Validators.required],
       // schoolType: ['', Validators.required],
       // trained: ['', Validators.required],
       // trainingAttended: ['', Validators.required],
       eligibleTestQualified: ['', Validators.required],
-      approvalType:['',Validators.required],
-      protectedTeacher:['',Validators.required]
+      approvalType: ['', Validators.required],
+      protectedTeacher: ['', Validators.required]
     },
-    //  { validators: dateRangeValidator('startDate', 'endDate') }
+      //  { validators: dateRangeValidator('startDate', 'endDate') }
     );
 
     this.educationForm = this.fb.group({
       educations: this.fb.array([]) // Initialize as empty array
-     
+
     });
 
     // this function invoke when change married field 
     this.onMaritalStatusChange()
+    this.onCourseNameSelectOtherToAddValidation()
     this.checkEducationTypeToSetEligibilityTest()
 
   }
@@ -129,18 +130,20 @@ export class AddTeacherComponent implements OnInit {
     }
   }
 
-  checkEducationTypeToSetEligibilityTest(){
+  checkEducationTypeToSetEligibilityTest() {
     debugger
     this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
       debugger
-   
-      const hasTeacherTraining = educationArray.some((edu:any) => edu.educationType.educationTypeID === 4);
-      
+
+      const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 4);
+
       if (hasTeacherTraining) {
         this.professionalForm.get('eligibleTestQualified')?.setValue(true);
       } else {
         this.professionalForm.get('eligibleTestQualified')?.setValue(false);
       }
+
+
     });
 
   }
@@ -148,7 +151,7 @@ export class AddTeacherComponent implements OnInit {
   // Method to update validators based on marital status
   onMaritalStatusChange(): void {
     debugger
-     this.personalDetailsForm.get('maritalStatus')?.valueChanges.subscribe((status) => {
+    this.personalDetailsForm.get('maritalStatus')?.valueChanges.subscribe((status) => {
       debugger
       if (status.maritalStatusID == '2') {
         // Add Validators.required to spouse-related fields
@@ -161,11 +164,37 @@ export class AddTeacherComponent implements OnInit {
         this.personalDetailsForm.get('spousesReligion')?.clearValidators();
         this.personalDetailsForm.get('spousesCaste')?.clearValidators();
       }
-      
+
       // Update validation status after modifying validators
       this.personalDetailsForm.get('spousesName')?.updateValueAndValidity();
       this.personalDetailsForm.get('spousesReligion')?.updateValueAndValidity();
       this.personalDetailsForm.get('spousesCaste')?.updateValueAndValidity();
+    });
+  }
+
+  onCourseNameSelectOtherToAddValidation(): void {
+    debugger
+    this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
+      debugger
+      const educations = this.educationForm.get('educations') as FormArray;
+    
+      educationArray.forEach((education: any, index: number) => {
+        debugger
+        const educationGroup = educations.at(index) as FormGroup;
+        const courseNameControl = educationGroup.get('courseName');
+        const courseNameOtherControl = educationGroup.get('courseNameOther');
+    
+        if (courseNameControl?.value.courseName === 'Others') {
+          // Add 'required' validator to courseNameOther if courseName is 'Others'
+          courseNameOtherControl?.setValidators([Validators.required]);
+        } else {
+          // Remove 'required' validator from courseNameOther
+          courseNameOtherControl?.clearValidators();
+        }
+    
+        // Recalculate validation status
+        courseNameOtherControl?.updateValueAndValidity();
+      });
     });
   }
 
@@ -247,11 +276,12 @@ export class AddTeacherComponent implements OnInit {
     const courseGroup = this.fb.group({
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
+      courseNameOther: [''],
       schoolName: ['', Validators.required],
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       certificate: ['']
-    },{ validators: dateRangeValidator('fromDate', 'toDate') });
+    }, { validators: dateRangeValidator('fromDate', 'toDate') });
     (this.educationForm.get('educations') as FormArray).push(courseGroup);
   }
 
@@ -270,7 +300,7 @@ export class AddTeacherComponent implements OnInit {
   toggleSidebar() {
     this.isSidebarClosed = !this.isSidebarClosed;
   }
-  get getSidebarToggle(){
+  get getSidebarToggle() {
     return this.isSidebarClosed;
   }
 
@@ -313,19 +343,19 @@ export class AddTeacherComponent implements OnInit {
   saveAndContinue() {
     debugger
     let currentForm: FormGroup;
-    
-    switch (this.currentStep) {  
+
+    switch (this.currentStep) {
       case 1:
         currentForm = this.personalDetailsForm;
-        this.submitBtnStatus.personal=true
+        this.submitBtnStatus.personal = true
         break;
       case 2:
         currentForm = this.educationForm;
-        this.submitBtnStatus.education=true
+        this.submitBtnStatus.education = true
         break;
       case 3:
         currentForm = this.professionalForm;
-        this.submitBtnStatus.professional=true
+        this.submitBtnStatus.professional = true
         break;
       default:
         currentForm = this.professionalForm;
@@ -335,7 +365,7 @@ export class AddTeacherComponent implements OnInit {
     if (currentForm.valid) {
       if (this.currentStep <= this.steps.length) {
         this.currentStep++;
-      
+
         if (this.currentStep === this.steps.length) {
           this.onSubmit(); // Collect form data for preview
         }
@@ -343,21 +373,22 @@ export class AddTeacherComponent implements OnInit {
           this.previewSubmit()
         }
       }
-     
+
     } else {
       console.log('Form is invalid. Please check your inputs.');
     }
-    
+
   }
 
   previewSubmit() {
     let educationData = this.fullFormData.educations.map((edu: any) => ({
       educationTypeID: parseInt(edu.educationType.educationTypeID),
       courseID: parseInt(edu.courseName.courseID),
+      courseName: edu.courseNameOther,
       schoolName: edu.schoolName,
       fromDate: this.dataService.formatDateToISO(edu.fromDate),
       toDate: this.dataService.formatDateToISO(edu.toDate),
-      certificate: edu.certificate || ""
+      DocumentID: parseInt(edu.certificate?.documentID) || ""
     }));
 
     let data = {
@@ -396,8 +427,8 @@ export class AddTeacherComponent implements OnInit {
       districtID: parseInt(this.fullFormData.district.districtID),
       pfNummber: this.fullFormData.pfNumber,
       pran: this.fullFormData.pran,
-      SchoolID:parseInt(this.fullFormData.schoolName.schoolID),
-      ApprovalTypeID:parseInt(this.fullFormData.approvalType.approvalTypeID),
+      SchoolID: parseInt(this.fullFormData.schoolName.schoolID),
+      ApprovalTypeID: parseInt(this.fullFormData.approvalType.approvalTypeID),
       // dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.dateOfJoin),
       // dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.dateOfJoinDepartment),
       categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),
@@ -405,8 +436,8 @@ export class AddTeacherComponent implements OnInit {
       // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
       // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
       documentID: parseInt(this.fullFormData.documentID),
-      eligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
-      ProtectedTeacher:Boolean(this.fullFormData.protectedTeacher),
+      EligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
+      ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
       // trainingAttended: Boolean(this.fullFormData.trainingAttended),
       designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
       subjectID: parseInt(this.fullFormData.subject.subjectID),
@@ -415,18 +446,18 @@ export class AddTeacherComponent implements OnInit {
       dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
       RetirementDate: this.dataService.formatDateToISO(this.fullFormData.retirement),
       promotionEligible: Boolean(this.fullFormData.promotionEligible),
-      PhotoID:parseInt(this.fullFormData.photoId.photoId),
+      PhotoID: parseInt(this.fullFormData.photoId.photoID),
     }
-   
+
 
 
     this.dataService.addTeacher(data).subscribe(
       (response) => {
         console.log('Employee added successfully:', response);
         if (response.employeeID) {
-          this.submitBtnStatus.personal=false;
-          this.submitBtnStatus.education=false;
-          this.submitBtnStatus.professional=false;
+          this.submitBtnStatus.personal = false;
+          this.submitBtnStatus.education = false;
+          this.submitBtnStatus.professional = false;
           console.log(response.employeeID);
           this.router.navigate(['/teachers/teacher-list'])
 
@@ -559,7 +590,7 @@ export class AddTeacherComponent implements OnInit {
         // );
 
       }
-    
+
       this.fullFormData = formData
 
     }

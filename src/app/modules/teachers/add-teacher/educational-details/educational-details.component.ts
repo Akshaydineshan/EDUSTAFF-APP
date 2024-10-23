@@ -19,6 +19,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   selectedEducationType!: string;
   
   filteredCoursesByEducation: any[] = []; // this is for courseName select list value storing index wice by education type
+  file: any;
+  profileImage: string | ArrayBuffer | null=null;
 
   constructor(
     private fb: FormBuilder,
@@ -42,6 +44,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     const courseGroup = this.fb.group({
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
+      courseNameOther:[''],
       schoolName: ['', Validators.required],
       fromDate: ['',Validators.required],
       toDate: ['', Validators.required],
@@ -60,14 +63,54 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     this.educations.removeAt(index);
   }
 
-  onCertificateUpload(event: Event, index: number) {
+  // onCertificateUpload(event: Event, index: number) {
+  //   debugger
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files[0]) {
+  //     const file = input.files[0];
+  //     this.educations.at(index).patchValue({ certificate: file });
+  //   }
+  // }
+
+
+
+  onCertificateUpload(event: any,index:number): void {
     debugger
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      this.educations.at(index).patchValue({ certificate: file });
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.profileImage = reader.result;
+        // this.teacherService.setProfileImage(this.profileImage)
+      };
+      reader.readAsDataURL(file);
+    }
+    this.uploadFile(index)
+  }
+
+  uploadFile(index:number): void {
+    debugger
+    if (this.file) {
+     
+      let file=this.file
+      this.dataService.uploadDocument(file).subscribe(
+        (response) => {
+          console.log('File uploaded successfully', response);
+          const educations = this.educationForm.get('educations') as FormArray;
+          educations.at(index).get('certificate')?.patchValue(response)
+        },
+        (error) => {
+          console.error('Error uploading file', error);
+        }
+      );
+
+      
+    } else {
+      console.error('No file selected');
     }
   }
+
 
   // Triggered when education type is changed, and also when navigating back
   onEducationTypeChange(event: any, index: number) {

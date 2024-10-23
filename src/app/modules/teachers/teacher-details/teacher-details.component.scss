@@ -18,7 +18,7 @@ body {
   padding-top: 0;
 }
 
-img {
+img .prof-img {
   width: 112px;
   height: 112px;
   position: relative;
@@ -146,4 +146,9 @@ hr {
   font-size: 14px;
   font-weight: 400;
 
+}
+
+.key-value-item span img{
+  width: 49px;
+  height: 39px;
 }

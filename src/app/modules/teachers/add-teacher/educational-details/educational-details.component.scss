@@ -1,0 +1,21 @@
+.position-relative {
+    position: relative;
+    
+  }
+  
+  .pdf-icon {
+    position: absolute;
+    top: 40%;
+    right: -39px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+  
+  input[type="file"].pr-5 {
+    padding-right: 40px;    /* Add space to the right for the icon */
+  }
+  .pdf-icon img{
+    width:42px;
+    height:36px;
+  }
+  
