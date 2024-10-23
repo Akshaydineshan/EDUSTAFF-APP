@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
 
 @Component({
   selector: 'app-educational-details',
@@ -45,7 +46,9 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       fromDate: ['',Validators.required],
       toDate: ['', Validators.required],
       certificate: ['']
-    });
+    },
+    { validators: dateRangeValidator('fromDate', 'toDate') });
+
     this.educations.push(courseGroup);
   }
   

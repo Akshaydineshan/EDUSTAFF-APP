@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { TeacherDataService } from '../../teacher-data.service';
 
 @Component({
   selector: 'app-personal-details',
@@ -16,13 +17,19 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   @Input() submitted:boolean=false;
   @Input() maritalStatuses!: any[];
   @Output() personalDetailsFormChange = new EventEmitter<any>();
+  @ViewChild('fileInput') fileInput!: ElementRef; // Reference to the file input
 
   profileImage: string | ArrayBuffer | null = null;
   file!: File | null;
 
-  constructor(private fb: FormBuilder,private dataService:DataService) { }
+  constructor(private fb: FormBuilder,private dataService:DataService,private teacherService:TeacherDataService) { }
 
   ngOnInit(): void {
+    debugger
+    this.teacherService.$profileImage.subscribe((data:any)=>{
+      this.profileImage=data;
+      debugger
+    })
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -45,6 +52,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
       const reader = new FileReader();
       reader.onload = () => {
         this.profileImage = reader.result;
+        this.teacherService.setProfileImage(this.profileImage)
       };
       reader.readAsDataURL(file);
     }
@@ -73,7 +81,9 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   }
 
   removeImage() {
+    this.fileInput.nativeElement.value = ''; // Clear the input value
     this.file = null;
     this.profileImage = null;
+    this,this.teacherService.setProfileImage("")
   }
 }

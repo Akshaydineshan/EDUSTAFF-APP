@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@ang
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
-import { dateRangeValidator } from 'src/app/validators/date-range-validator';
+import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
 
 interface SubmitBtnStatus{
   personal:boolean,education:boolean,professional:boolean
@@ -251,7 +251,7 @@ export class AddTeacherComponent implements OnInit {
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       certificate: ['']
-    });
+    },{ validators: dateRangeValidator('fromDate', 'toDate') });
     (this.educationForm.get('educations') as FormArray).push(courseGroup);
   }
 
