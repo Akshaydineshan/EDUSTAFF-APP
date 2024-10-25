@@ -1,11 +1,14 @@
+import { ColDef } from 'ag-grid-community';
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Teacher, TeacherDocument, TransferRequest } from 'src/app/core/models/teacher/teacher';
 import { DataService } from 'src/app/core/service/data/data.service';
-interface PagonationConfig{
-  pagination:boolean,
-  paginationPageSize:number,
-  paginationPageSizeSelector:number[]
+import { environment } from 'src/environments/environment';
+
+interface PagonationConfig {
+  pagination: boolean,
+  paginationPageSize: number,
+  paginationPageSizeSelector: number[]
 }
 
 @Component({
@@ -19,7 +22,7 @@ export class TeacherListComponent implements OnInit {
   teacherList: any[] = [];
   teacherTableRows: any[] = []
   teacherTableColumns: any[] = []
-  paginationConfig:PagonationConfig={pagination:true,paginationPageSize:10,paginationPageSizeSelector:[5,10,15,20,25,30,35]}
+  paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
   displayColumns: string[] = ['teacherId', 'name', 'schoolName', 'designation', 'employeeType', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
 
@@ -57,7 +60,9 @@ export class TeacherListComponent implements OnInit {
   positions = ['Teacher', 'Headmaster', 'Vice Principal'];
   teacherId!: any;
   schoolId!: any;
- 
+
+  API_BASE_IMAGE:any=environment.imageBaseUrl
+
   constructor(private fb: FormBuilder, private dataService: DataService) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
@@ -89,11 +94,33 @@ export class TeacherListComponent implements OnInit {
   onMenuAction(action: string, teacher: any) {
   }
 
+
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
-    this.mouseX = event.clientX + 15;
-    this.mouseY = event.clientY + 15;
+    const offset = 15; // Offset for positioning
+    this.mouseX = event.clientX + offset;
+    this.mouseY = event.clientY + offset;
+    const popupWidth = 420; // Assume a fixed width for the popup
+    const popupHeight = 220; // Assume a fixed height for the popup
+
+    // Check right edge
+    if (this.mouseX + popupWidth > window.innerWidth) {
+      console.log("with chaged", this.mouseX + popupWidth, window.innerWidth)
+      this.mouseX = window.innerWidth - popupWidth - offset; // Position left
+    }
+
+    // Check bottom edge
+    if (this.mouseY + popupHeight > window.innerHeight) {
+      this.mouseY = event.clientY - popupHeight+20; // Position above the mouse
+    }
+
+
   }
+
+  // updateMousePosition(event: MouseEvent): void {
+  //   this.mouseX = event.clientX + 15;
+  //   this.mouseY = event.clientY + 15;
+  // }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -163,7 +190,7 @@ export class TeacherListComponent implements OnInit {
 
   loadTeachersList(): void {
     debugger
-   
+
     this.dataService.getTeachersData().subscribe(
       (data) => {
         this.teacherList = data.map((teacher: Teacher) => ({
@@ -181,12 +208,12 @@ export class TeacherListComponent implements OnInit {
         { field: "age", filter: true, floatingFilter: false },
         { field: "documentCount", filter: true, floatingFilter: false },
         { field: "phoneNumber", filter: true, floatingFilter: false },
-      
+
         ];
         console.log(this.teacherList);
-        // this.updatePaginatedData();
-     
-       
+        this.updatePaginatedData();
+
+
 
 
       },
@@ -255,14 +282,20 @@ export class TeacherListComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  onTeacherHover(teacherId: number, event: MouseEvent): void {
+  onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
+    debugger
     this.teacherId = teacherId;
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
     }
     this.hoveredTeacherId = teacherId;
-    if (teacherId) {
+    if (teacherId && teacherData) {
       this.hoverTimeout = setTimeout(() => {
+        this.selectedTeacher = teacherData; // Store the detailed info
+
+        // this.showPopup = true;
+        // this.updateMousePosition(event);
+
         this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
           (data) => {
             this.selectedTeacher = data; // Store the detailed info
@@ -279,14 +312,17 @@ export class TeacherListComponent implements OnInit {
     }
   }
 
-  onSchoolHover(schoolId: number, event: MouseEvent): void {
+  onSchoolHover(schoolId: number, schoolData: any, event: MouseEvent): void {
     this.schoolId = schoolId
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
     }
     this.hoveredTeacherId = schoolId;
-    if (schoolId) {
+    if (schoolId && schoolData) {
       this.hoverTimeout = setTimeout(() => {
+        // this.selectedSchool = schoolData;
+        // this.showSchoolPopup = true;
+        // this.updateMousePosition(event);
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
@@ -335,7 +371,7 @@ export class TeacherListComponent implements OnInit {
         ...teacher,
         documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
       }));
-      this.teacherTableRows=this.teacherList;
+      this.teacherTableRows = this.teacherList;
       this.updatePaginatedData();
       this.showFilterModal = false;
     });
@@ -353,6 +389,41 @@ export class TeacherListComponent implements OnInit {
       newRecruit: [false]
     });
     this.loadTeachersList();
+  }
+
+
+
+  get getTeacherImage() {
+    let result = '';
+    if (this.API_BASE_IMAGE && this.selectedTeacher.photo) {
+      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
+
+
+  rowMouseHover(event: any) {
+    debugger
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+
+    console.log("teacher", event)
+    if (event.colDef.field === "name") {
+      this.onTeacherHover(rowData.teacherId, rowData, event.event)
+    } else if (event.colDef.field === "schoolName") {
+      this.onSchoolHover(rowData.schoolId, rowData, event.event)
+
+    }
+  }
+  rowMouseHoverOut(event: any) {
+    if (event.colDef.field === "name") {
+      this.onTeacherMouseOut()
+    } else if (event.colDef.field === "schoolName") {
+      this.onSchoolMouseOut()
+
+    }
+
   }
 
 }

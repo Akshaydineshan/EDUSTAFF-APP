@@ -25,7 +25,6 @@ export class TeacherDetailsComponent {
 
   }
   get getImage() {
-    debugger
     let result = '';
     if (this.apiUrl && this.fullFormData?.photoId?.photoImageName) {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName.replace(/^\/+/, '');

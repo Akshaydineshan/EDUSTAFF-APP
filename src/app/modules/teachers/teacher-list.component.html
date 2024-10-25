@@ -85,7 +85,7 @@
   <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info">
     <div class="popup-header">
-      <img [src]="'assets/images/'+selectedTeacher?.photo" alt="Teacher Photo" class="popup-photo">
+      <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
       <div class="popup-title">
         <h6 style="font-weight: bold;">{{ selectedTeacher?.name }}</h6>
         <div>{{ selectedTeacher?.subject }}</div>
@@ -104,7 +104,7 @@
   <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info">
     <div class="popup-header">
-      <img [src]="'assets/images/'+selectedSchool?.photo" alt="School Photo" class="popup-photo">
+      <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
       <div class="popup-title">
         <h6 style="font-weight: bold;">{{ selectedSchool?.name }}</h6>
         <span>{{ selectedSchool?.address }}</span>
@@ -169,6 +169,8 @@
      [rowData]="teacherTableRows" 
      [colDefs]="teacherTableColumns"
      [paginationConfig]="paginationConfig"
+     (OnRowMouseOverEvent)="rowMouseHover($event)"
+     (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
     
      ></app-table>
   </div>

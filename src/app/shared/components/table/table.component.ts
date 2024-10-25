@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
-import { ColDef } from 'ag-grid-community'; // Column Definition Type Interface
+import { ColDef, GridOptions, IRowNode, MouseEnterEvent } from 'ag-grid-community'; // Column Definition Type Interface
 interface PagonationConfig{
   pagination:boolean,
   paginationPageSize:number,
@@ -16,35 +16,26 @@ export class TableComponent {
    @Input() rowData!:any[]
    @Input() colDefs!:any[]
    @Input() paginationConfig!:PagonationConfig
-  //  @Input() paginationPageSize!:number;
-  //  @Input() paginationPageSizeSelector!:number[];
-//  rowData = [
-//   { teacherId: 1, name: "Model Y", schoolName: 64950, designation: "fuh",employeeType:"a" },
-//   { teacherId: 2, name: "F-Series", schoolName: 33850, designation: "fjg",employeeType:"b" },
-//   { teacherId: 3, name: "Corolla", schoolName: 29600, designation: "dfhg",employeeType:"ab" },
-//   { teacherId: 4, name: "Model Y", schoolName: 64950, designation: "fuh" ,employeeType:"ac"},
-//   { teacherId: 5, name: "F-Series", schoolName: 33850, designation: "fjg",employeeType:"ad" },
-//   { teacherId: 6, name: "Corolla", schoolName: 29600, designation: "dfhg",employeeType:"e" },
-//   { teacherId: 8, name: "Model Y", schoolName: 64950, designation: "fuh",employeeType:"f" },
-//   { teacherId: 7, name: "F-Series", schoolName: 33850, designation: "fjg",employeeType:"g" },
-//   { teacherId: 9, name: "Corolla", schoolName: 29600, designation: "dfhg" ,employeeType:"hiop"},
-//   { teacherId: 10, name: "Model Y", schoolName: 64950, designation: "fuh" ,employeeType:"j"},
-//   { teacherId: 11, name: "F-Series", schoolName: 33850, designation: "fjg" ,employeeType:"k"},
-//   { teacherId: 12, name: "Corolla", schoolName: 29600, designation: "dfhg",employeeType:"m" },
-// ];
+   @Output() OnRowMouseOverEvent:any=new EventEmitter()
+   @Output() OnRowMouseOutEvent:any=new EventEmitter()
 
-// Column Definitions: Defines the columns to be displayed.
-// colDefs: ColDef[] = [
-  
-//   { field: "teacherId", },
-//   { field: "name" ,filter: true, floatingFilter: true },
-//   { field: "schoolName" },
-//   { field: "designation" },
-//   { field: "employeeType" },
-//   { field: "experienceYear" },
-//   { field: "age" },
-//   { field: "phoneNumber" },
-//   { field: "documentCount" },
-// ];
+  //  gridOptions: GridOptions = {
+  //   onCellMouseOver: this.rowMouseEnter.bind(this) , // Bind the cell mouse over event
+  //   onCellMouseOut: this.onCellMouseOut.bind(this)
+  // };
+
+
+
+   onRowMouseEnter(event: any): void {
+    debugger
+    this.OnRowMouseOverEvent.emit(event)
+  }
+  onCellMouseOut(event: any): void {
+    // const rowNode: IRowNode = event.node;  // Get the row node
+    // const rowData = rowNode.data;          // Get the row data
+    // console.log('Mouse left row:', rowData);
+    this.OnRowMouseOutEvent.emit(event)
+  }
+
 
 }

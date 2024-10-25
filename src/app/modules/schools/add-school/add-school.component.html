@@ -1,0 +1,208 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+
+
+<!-- add-school comntainer start -->
+<div class="container" [class.shifted]="isSidebarClosed">
+    <div class="container-fluid d-flex flex-column  ">
+
+
+        <!-- add-school form start -->
+        <form style="margin-top:100px; margin:80px 25%;" [formGroup]="schoolDetailsForm" (ngSubmit)="onSubmit()"
+            novalidate>
+
+            <!-- School Name -->
+            <div class="row mb-3">
+                <label for="schoolName" class="col-sm-3 col-form-label">School Name</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="schoolName" formControlName="schoolName" required>
+                    <div
+                        *ngIf="schoolDetailsForm.get('schoolName')?.invalid && (schoolDetailsForm.get('schoolName')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolName')?.errors?.['required']">
+                            School Name is required.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolName')?.errors?.['maxlength']">
+                            School Name must not exceed 100 characters.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- School Type -->
+            <div class="row mb-3">
+                <label for="schoolType" class="col-sm-3 col-form-label">School Type</label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="schoolType" formControlName="schoolTypeID" required>
+                        <option value="" disabled>Select School Type</option>
+                        <option *ngFor="let type of schoolTypes" [ngValue]="type">{{ type.schoolTypeName }}</option>
+                    </select>
+                    <div
+                        *ngIf="schoolDetailsForm.get('schoolTypeID')?.invalid && (schoolDetailsForm.get('schoolTypeID')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolTypeID')?.errors?.['required']">
+                            School Type is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="row mb-3">
+                <label for="address" class="col-sm-3 col-form-label">Address</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="address" rows="3" formControlName="address" required></textarea>
+                    <div
+                        *ngIf="schoolDetailsForm.get('address')?.invalid && (schoolDetailsForm.get('address')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('address')?.errors?.['required']">
+                            Address is required.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('address')?.errors?.['maxlength']">
+                            Address must not exceed 255 characters.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- City ID -->
+            <div class="row mb-3">
+                <label for="cityID" class="col-sm-3 col-form-label">City </label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="schoolType" formControlName="cityID" required>
+                        <option value="" disabled>Select School Type</option>
+                        <option *ngFor="let city of cities" [ngValue]="city">{{ city.city }}</option>
+                    </select>
+                    <div
+                        *ngIf="schoolDetailsForm.get('cityID')?.invalid && (schoolDetailsForm.get('cityID')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('cityID')?.errors?.['required']">
+                            City ID is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- State -->
+            <div class="row mb-3">
+                <label for="state" class="col-sm-3 col-form-label">State</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="state" formControlName="state" required>
+                    <div
+                        *ngIf="schoolDetailsForm.get('state')?.invalid && (schoolDetailsForm.get('state')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('state')?.errors?.['required']">
+                            State is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pincode -->
+            <div class="row mb-3">
+                <label for="pincode" class="col-sm-3 col-form-label">Pincode</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" id="pincode" formControlName="pincode" required>
+                    <div
+                        *ngIf="schoolDetailsForm.get('pincode')?.invalid && (schoolDetailsForm.get('pincode')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('pincode')?.errors?.['required']">
+                            Pincode is required.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('pincode')?.errors?.['pattern']">
+                            Pincode must be a 6-digit number.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="row mb-3">
+                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <div class="col-sm-9">
+                    <input type="email" class="form-control" id="email" formControlName="email" required>
+                    <div
+                        *ngIf="schoolDetailsForm.get('email')?.invalid && (schoolDetailsForm.get('email')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['required']">
+                            Email is required.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['email']">
+                            Invalid email format.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="row mb-3">
+                <label for="phone" class="col-sm-3 col-form-label">Phone</label>
+                <div class="col-sm-9">
+                   
+                    <div class="input-group">
+                        <span class="input-group-text">+91</span>
+                        <input type="text" class="form-control" id="phone" formControlName="phone" required>
+                    </div>
+                    <div
+                        *ngIf="schoolDetailsForm.get('phone')?.invalid && (schoolDetailsForm.get('phone')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('phone')?.errors?.['required']">
+                            Phone number is required.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('phone')?.errors?.['pattern']">
+                            Phone number must be a 10-digit number.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status ID -->
+            <!-- <div class="row mb-3">
+            <label for="statusID" class="col-sm-3 col-form-label">Status</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="statusID" formControlName="statusID" required>
+                    <option value="" disabled>Select Status</option>
+                    <option *ngFor="let status of statusList" [value]="status.id">{{ status.statusName }}</option>
+                </select>
+                <div *ngIf="schoolDetailsForm.get('statusID')?.invalid && (schoolDetailsForm.get('statusID')?.touched || submitted)">
+                    <small class="text-danger" *ngIf="schoolDetailsForm.get('statusID')?.errors?.['required']">
+                        Status selection is required.
+                    </small>
+                </div>
+            </div>
+        </div> -->
+
+            <!-- Photo ID -->
+            <div class="row mb-3">
+                <label for="photoID" class="col-sm-3 col-form-label">Photo</label>
+                <div class="col-sm-9">
+                    <input type="file" class="form-control" id="photoID" (change)="onFileSelected($event)" required>
+                    <div
+                        *ngIf="schoolDetailsForm.get('photoID')?.invalid && (schoolDetailsForm.get('photoID')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('photoID')?.errors?.['required']">
+                            Photo ID is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+        <!-- add-school form end -->
+
+
+        <!-- buttons starts -->
+        <div class="row ">
+            <div class="col-12 d-flex justify-content-center">
+                <!-- <span >
+                <button type="button" class="btn btn-secondary me-2">Previous</button>
+              </span> -->
+                <button type="button" class="btn btn-secondary me-2">Cancel</button>
+
+                <button type="submit" class="btn btn-success" (click)="onSubmit()">
+                    Submit
+                </button>
+            </div>
+        </div>
+        <!-- buttons ends -->
+
+
+
+
+
+
+    </div>
+</div>
+<!-- add-school comntainer end -->
