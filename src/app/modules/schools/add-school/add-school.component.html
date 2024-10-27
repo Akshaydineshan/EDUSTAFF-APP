@@ -67,7 +67,7 @@
                 <label for="cityID" class="col-sm-3 col-form-label">City </label>
                 <div class="col-sm-9">
                     <select class="form-control" id="schoolType" formControlName="cityID" required>
-                        <option value="" disabled>Select School Type</option>
+                        <option value="" disabled>Select City</option>
                         <option *ngFor="let city of cities" [ngValue]="city">{{ city.city }}</option>
                     </select>
                     <div

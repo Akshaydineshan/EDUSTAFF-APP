@@ -20,7 +20,7 @@ export class SchoolListComponent implements OnInit {
   schoolList: any[] = [];
   schoolTableRows: any;
   schoolTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
-
+  apiUrl = environment.imageBaseUrl;
   showSchoolPopup: boolean = false;
   selectedSchool: any;
   hoverTimeout!: any;
@@ -186,6 +186,15 @@ export class SchoolListComponent implements OnInit {
 
     }
 
+  }
+
+  get getschoolImage() {
+    let result = '';
+    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool.photo !== 'null') {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
   }
 
 

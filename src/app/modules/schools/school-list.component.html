@@ -2,75 +2,111 @@
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
 <!-- container start -->
 <div class="container mt-4" [class.shifted]="isSidebarClosed">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>School List
-            <span class="badge badge-secondary">{{ this.schoolList.length }}</span>
-        </h4>
-        <button class="btn btn-success" [routerLink]="['/schools/add-school']">
-            <i class="fas fa-plus-circle"></i> Add School Details
-        </button>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>School List
+      <span class="badge badge-secondary">{{ this.schoolList.length }}</span>
+    </h4>
+    <button class="btn btn-success" [routerLink]="['/schools/add-school']">
+      <i class="fas fa-plus-circle"></i> Add School Details
+    </button>
+  </div>
+
+
+
+  <!-- teacherHoverPopup start -->
+  <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
+    <div class="popup-header">
+      <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
+      <div class="popup-title">
+        <h6 style="font-weight: bold;">{{ selectedTeacher?.name }}</h6>
+        <div>{{ selectedTeacher?.subject }}</div>
+        <div>{{ selectedTeacher?.schoolName }}</div>
+        <div>{{ selectedTeacher?.email }}</div>
+        <div>{{ selectedTeacher?.phoneNumber }}</div>
+
+      </div>
+    </div>
+    <div class="popup-body">
+      <p><strong>Date of Join:</strong> {{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
+      <p><strong>Reports To:</strong> {{ selectedTeacher?.reportedTo }}</p>
     </div>
 
-  
-
-   <!-- teacherHoverPopup start -->
-   <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
-   class="popup-teacher-info">
-   <div class="popup-header">
-     <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
-     <div class="popup-title">
-       <h6 style="font-weight: bold;">{{ selectedTeacher?.name }}</h6>
-       <div>{{ selectedTeacher?.subject }}</div>
-       <div>{{ selectedTeacher?.schoolName }}</div>
-       <div>{{ selectedTeacher?.email }}</div>
-       <div>{{ selectedTeacher?.phoneNumber }}</div>
-
-     </div>
-   </div>
-   <div class="popup-body">
-     <p><strong>Date of Join:</strong> {{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
-     <p><strong>Reports To:</strong> {{ selectedTeacher?.reportedTo }}</p>
-   </div>
-
- </div>
- <!-- teacher hover popup end -->
+  </div>
+  <!-- teacher hover popup end -->
 
 
 
-    <!-- schoolHover Popup start -->
-    <div class="popup-teacher-info" *ngIf="showSchoolPopup && selectedSchool "   [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
-        <div class="popup-header">
-            <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
-            <div class="popup-title">
-              <h6 style="font-weight: bold;">{{ selectedSchool?.name }}</h6>
-              <span>{{ selectedSchool?.address }}</span>
-              <div>{{ selectedSchool?.email }}</div>
-              <div>{{ selectedSchool?.phone }}</div>
-              <div class="popup-body">
-                <h6 style="font-weight: bold;">Authorities</h6>
-                <div>
-                  <h6 class="val"><strong>{{ selectedSchool?.principal }}</strong></h6>
-                  <span>Principal</span>
-                </div>
-                <div class="mt-1">
-                  <h6 class="val"><strong>{{ selectedSchool?.vicePrincipal }}</strong></h6>
-                  <span>Vice Principal</span>
-                </div>
-              </div>
-            </div>
+  <!-- schoolHover Popup start -->
+  <div class="popup-teacher-info" *ngIf="showSchoolPopup && selectedSchool "
+    [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
+    <div class="popup-header">
+      <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+      <div class="popup-title">
+        <h6 style="font-weight: bold;">{{ selectedSchool?.name }}</h6>
+        <span>{{ selectedSchool?.address }}</span>
+        <div>{{ selectedSchool?.email }}</div>
+        <div>{{ selectedSchool?.phone }}</div>
+        <div class="popup-body">
+          <h6 style="font-weight: bold;">Authorities</h6>
+          <div>
+            <h6 class="val"><strong>{{ selectedSchool?.principal }}</strong></h6>
+            <span>Principal</span>
           </div>
+          <div class="mt-1">
+            <h6 class="val"><strong>{{ selectedSchool?.vicePrincipal }}</strong></h6>
+            <span>Vice Principal</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <!-- schoolHover Popup start -->
-     
-    <!-- <app-table-list [tableData]="schoolList" [displayedColumns]="displayColumns"></app-table-list> -->
+  </div>
 
-    <!-- table start -->
-    <app-table [rowData]="schoolTableRows" [colDefs]="schoolTableColumns"
-        [paginationConfig]="paginationConfig"
-        (OnRowMouseOverEvent)="rowMouseHover($event)"
-        (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-        ></app-table>
-    <!-- table end -->
+  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
+    <div class="popup-header p-3">
+      <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+      <div class="popup-title">
+        <p class="p-s">{{ selectedSchool?.name }}</p>
+        <p class="p-a">{{ selectedSchool?.address }}</p>
+        <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
+        <p class="p-m">{{ selectedSchool?.phone }}</p>
+      </div>
+    </div>
+    <hr class="line">
+    <div class="popup-body p-2">
+      <div class="">
+        <p class="p-a">Authorities</p>
+        <div>
+          <p class="val">{{ selectedSchool?.principal }}</p>
+          <p class="p-p">Principal</p>
+        </div>
+        <div class="">
+          <p class="val">{{ selectedSchool?.vicePrincipal }}</p>
+          <p class="p-p">Vice Principal</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+
+  </div>
+
+
+
+
+
+
+  <!-- schoolHover Popup end -->
+
+  <!-- <app-table-list [tableData]="schoolList" [displayedColumns]="displayColumns"></app-table-list> -->
+
+  <!-- table start -->
+  <app-table [rowData]="schoolTableRows" [colDefs]="schoolTableColumns" [paginationConfig]="paginationConfig"
+    (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"></app-table>
+  <!-- table end -->
 
 </div>
 <!-- container end -->

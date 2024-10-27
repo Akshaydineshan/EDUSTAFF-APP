@@ -35,6 +35,7 @@ export class TeacherListComponent implements OnInit {
   showPopup: boolean = false;
   showSchoolPopup: boolean = false;
   selectedSchool: any = null;
+  apiUrl = environment.imageBaseUrl;
 
   currentPage: number = 1;
   itemsPerPage: number = 10;
@@ -328,6 +329,7 @@ export class TeacherListComponent implements OnInit {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
+            console.log("school",this.selectedSchool)
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -440,6 +442,15 @@ export class TeacherListComponent implements OnInit {
       this.router.navigate(['/teachers/view-teacher',teacherId])
     }
   
+  }
+
+  get getschoolImage() {
+    let result = '';
+    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool.photo !== 'null') {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
   }
 
 }

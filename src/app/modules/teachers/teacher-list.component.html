@@ -103,7 +103,7 @@
   </div>
   <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}" class="popup-teacher-info">
     <div class="popup-header p-3">
-      <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+      <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
       <div class="popup-title">
         <p class="p-s">{{ selectedSchool?.name }}</p>
         <p class="p-a">{{ selectedSchool?.address }}</p>
