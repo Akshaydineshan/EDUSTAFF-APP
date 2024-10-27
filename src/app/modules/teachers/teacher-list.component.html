@@ -83,25 +83,39 @@
 
 
   <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
-    class="popup-teacher-info">
+    class="popup-teacher-info p-5">
     <div class="popup-header">
       <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
-      <div class="popup-title">
-        <h6 style="font-weight: bold;">{{ selectedTeacher?.name }}</h6>
-        <div>{{ selectedTeacher?.subject }}</div>
-        <div>{{ selectedTeacher?.schoolName }}</div>
-        <div>{{ selectedTeacher?.email }}</div>
-        <div>{{ selectedTeacher?.phoneNumber }}</div>
+      <div class="popup-title ">
 
+        <p class="p-s">{{ selectedTeacher?.name }}</p>
+        <p class="p-a">{{ selectedTeacher?.subject }}</p>
+        <p class="p-sc">{{ selectedTeacher?.schoolName }}</p>
+        <p class="p-e"><a href="">{{ selectedTeacher?.email }}</a></p>
+        <p class="p-m">{{ selectedTeacher?.phoneNumber }}</p>
       </div>
+
     </div>
-    <div class="popup-body">
-      <p><strong>Date of Join:</strong> {{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
-      <p><strong>Reports To:</strong> {{ selectedTeacher?.reportedTo }}</p>
+    <hr class="line">
+    <div class="popup-body-t p-2">
+      <div class="d-flex justify-content-between pe-4">
+        <div>
+          <p class="p-h">Date Of Join</p>
+          <p class="p-v">{{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
+        </div>
+        <div>
+          <p class="p-h">Report To</p>
+          <p class="p-v">{{ selectedTeacher?.reportedTo }}</p>
+        </div>
+      </div>
+
     </div>
 
   </div>
-  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}" class="popup-teacher-info">
+
+
+  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
     <div class="popup-header p-3">
       <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
       <div class="popup-title">
@@ -190,12 +204,10 @@
 
 
     </table> -->
-    <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns"
-      [paginationConfig]="paginationConfig"
-      (OnRowMouseOverEvent)="rowMouseHover($event)"
-      (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+    <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns" [paginationConfig]="paginationConfig"
+      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
       (onCellClickedEvent)="onCellClicked($event)"></app-table>
-  
+
   </div>
 
   <!-- <div class="pagination-controls d-flex justify-content-start align-items-center mt-3">

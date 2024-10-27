@@ -286,7 +286,7 @@ export class TeacherListComponent implements OnInit {
   }
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    debugger
+    this.selectedTeacher=null
     this.teacherId = teacherId;
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
@@ -302,6 +302,7 @@ export class TeacherListComponent implements OnInit {
         this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
           (data) => {
             this.selectedTeacher = data; // Store the detailed info
+            console.log("teachres",data)
             if (this.selectedTeacher && teacherId) {
               this.showPopup = true;
               this.updateMousePosition(event);
@@ -311,7 +312,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 200);
+      }, 300);
     }
   }
 
@@ -337,7 +338,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 200);
+      }, 300);
     }
   }
 
@@ -401,7 +402,7 @@ export class TeacherListComponent implements OnInit {
     debugger
     let result = '';
     
-    if (this.API_BASE_IMAGE && this.selectedTeacher.photo && this.selectedTeacher.photo !== 'null') {
+    if (this.API_BASE_IMAGE && this.selectedTeacher?.photo && this.selectedTeacher?.photo !== 'null') {
       result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
@@ -414,8 +415,9 @@ export class TeacherListComponent implements OnInit {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
 
-    console.log("teacher", event)
+  
     if (event.colDef.field === "name") {
+      console.log("teacher", event)
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     } else if (event.colDef.field === "schoolName") {
       this.onSchoolHover(rowData.schoolId, rowData, event.event)
@@ -433,11 +435,11 @@ export class TeacherListComponent implements OnInit {
   }
   onCellClicked(event:any){
     debugger
-    console.log("event--->",event)
+  
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     let teacherId:number=rowData.teacherId
-    console.log('teache',teacherId)
+    
     if (event.colDef.field === "name") {
       this.router.navigate(['/teachers/view-teacher',teacherId])
     }

@@ -61,7 +61,7 @@ table {
 
 .popup-header {
   display: flex;
-  align-items: center;
+
   gap: 8px;
 }
 
@@ -89,8 +89,26 @@ table {
     text-align: left;
 
   }
+  .p-sc{
+    font-family: Inter;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 12px;
+    text-align: left;
+  }
 
-  .p-e,
+  .p-e{
+    font-family: Inter;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 4px;
+    text-align: left;
+   
+    a{
+      text-decoration: none;
+    }
+
+  }
   .p-m {
     font-family: Inter;
     font-size: 12px;
@@ -133,14 +151,23 @@ table {
 
 }
 
-.popup-body {
-  .p-a {
+.popup-body-t {
+  .p-h {
     font-family: Inter;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     line-height: 16px;
     text-align: left;
+    
 
+  }
+  .p-v{
+    font-family: Inter;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    text-align: left;
+    
   }
 }
 
