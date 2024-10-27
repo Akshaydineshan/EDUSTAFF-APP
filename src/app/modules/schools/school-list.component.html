@@ -11,7 +11,33 @@
         </button>
     </div>
 
+  
 
+   <!-- teacherHoverPopup start -->
+   <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+   class="popup-teacher-info">
+   <div class="popup-header">
+     <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
+     <div class="popup-title">
+       <h6 style="font-weight: bold;">{{ selectedTeacher?.name }}</h6>
+       <div>{{ selectedTeacher?.subject }}</div>
+       <div>{{ selectedTeacher?.schoolName }}</div>
+       <div>{{ selectedTeacher?.email }}</div>
+       <div>{{ selectedTeacher?.phoneNumber }}</div>
+
+     </div>
+   </div>
+   <div class="popup-body">
+     <p><strong>Date of Join:</strong> {{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
+     <p><strong>Reports To:</strong> {{ selectedTeacher?.reportedTo }}</p>
+   </div>
+
+ </div>
+ <!-- teacher hover popup end -->
+
+
+
+    <!-- schoolHover Popup start -->
     <div class="popup-teacher-info" *ngIf="showSchoolPopup && selectedSchool "   [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
         <div class="popup-header">
             <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
@@ -34,7 +60,8 @@
             </div>
           </div>
     </div>
-
+    <!-- schoolHover Popup start -->
+     
     <!-- <app-table-list [tableData]="schoolList" [displayedColumns]="displayColumns"></app-table-list> -->
 
     <!-- table start -->

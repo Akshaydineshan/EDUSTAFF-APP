@@ -18,6 +18,7 @@ export class TableComponent {
    @Input() paginationConfig!:PagonationConfig
    @Output() OnRowMouseOverEvent:any=new EventEmitter()
    @Output() OnRowMouseOutEvent:any=new EventEmitter()
+   @Output() onCellClickedEvent:any=new EventEmitter()
 
   //  gridOptions: GridOptions = {
   //   onCellMouseOver: this.rowMouseEnter.bind(this) , // Bind the cell mouse over event
@@ -35,6 +36,10 @@ export class TableComponent {
     // const rowData = rowNode.data;          // Get the row data
     // console.log('Mouse left row:', rowData);
     this.OnRowMouseOutEvent.emit(event)
+  }
+  onCellClicked(event:any){
+  
+  this.onCellClickedEvent.emit(event)
   }
 
 

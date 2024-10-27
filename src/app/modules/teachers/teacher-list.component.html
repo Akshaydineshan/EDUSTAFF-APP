@@ -101,9 +101,34 @@
     </div>
 
   </div>
-  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
-    class="popup-teacher-info">
-    <div class="popup-header">
+  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}" class="popup-teacher-info">
+    <div class="popup-header p-3">
+      <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+      <div class="popup-title">
+        <p class="p-s">{{ selectedSchool?.name }}</p>
+        <p class="p-a">{{ selectedSchool?.address }}</p>
+        <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
+        <p class="p-m">{{ selectedSchool?.phone }}</p>
+      </div>
+    </div>
+    <hr class="line">
+    <div class="popup-body p-2">
+      <div class="">
+        <p class="p-a">Authorities</p>
+        <div>
+          <p class="val">{{ selectedSchool?.principal }}</p>
+          <p class="p-p">Principal</p>
+        </div>
+        <div class="">
+          <p class="val">{{ selectedSchool?.vicePrincipal }}</p>
+          <p class="p-p">Vice Principal</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- <div class="popup-header">
       <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
       <div class="popup-title">
         <h6 style="font-weight: bold;">{{ selectedSchool?.name }}</h6>
@@ -122,7 +147,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
   </div>
 
@@ -165,14 +190,12 @@
 
 
     </table> -->
-    <app-table
-     [rowData]="teacherTableRows" 
-     [colDefs]="teacherTableColumns"
-     [paginationConfig]="paginationConfig"
-     (OnRowMouseOverEvent)="rowMouseHover($event)"
-     (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-    
-     ></app-table>
+    <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns"
+      [paginationConfig]="paginationConfig"
+      (OnRowMouseOverEvent)="rowMouseHover($event)"
+      (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+      (onCellClickedEvent)="onCellClicked($event)"></app-table>
+  
   </div>
 
   <!-- <div class="pagination-controls d-flex justify-content-start align-items-center mt-3">

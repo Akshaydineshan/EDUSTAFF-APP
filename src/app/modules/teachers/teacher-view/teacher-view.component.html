@@ -1,0 +1,440 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+
+<div class="main-container " [class.shifted]="isSidebarClosed">
+        <div class="container-fluid top-banner"></div>
+
+        <div class="content-main pb-3">
+                <div class="prof-img-btns-sec d-flex justify-content-between   ">
+                        <div class="d-flex flex-column   ">
+                                <img [src]="getImage || 'assets/icons/user.png' "
+                                        class="prof-img img-fluid rounded-circle " alt="Profile Image" />
+                                <div class=" prof-sec-text ms-2 ">
+                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + currentTeacher.lastName}}</p>
+                                        <p class="text-muted mb-0 p-d">{{currentTeacher.departmentName}}</p>
+                                        <p class="text-muted mb-0 p-a">
+                                                {{currentTeacher.schoolName?currentTeacher.schoolName + ",":""}}
+                                                {{currentTeacher.district?currentTeacher.district:""}}
+                                        </p>
+                                </div>
+                        </div>
+
+                        <div class="  d-flex align-items-center ">
+                                <div class="dropdown ">
+                                        <button class="btn btn-light dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li><a class="dropdown-item"
+                                                                [routerLink]="['/teachers/add-teacher']">Edit</a>
+                                                </li>
+                                                <li><a class="dropdown-item" href="#">Option 2</a></li>
+                                        </ul>
+                                </div>
+
+                                <button class="btn btn-outline-secondary me-2">
+                                        <i class="bi bi-printer"></i> Message
+                                </button>
+
+                                <button class="btn btn-success">
+                                        <i class="bi bi-telephone-fill"></i> Call
+                                </button>
+                        </div>
+                </div>
+
+                <hr class="styled-hr">
+
+                <!-- <div class=" mt-2">
+            Personal Details Card
+            <div class="card">
+                <div class="card-header">Personal Details</div>
+                <div class="card-body">
+                    <p><strong>Email:</strong> elizabeth.james@example.com</p>
+                    <p><strong>Phone:</strong> +1 (234) 567-890</p>
+                    <p><strong>Address:</strong> 123 Main St, Kochi</p>
+                </div>
+            </div>
+
+
+
+        </div> -->
+
+                <div class="data-container">
+                        <!-- Personal Details Card -->
+                        <div class="card">
+                                <div class="card-header">Personal Details</div>
+                                <div class="card-body">
+                                        <!-- <ul class="info-list">
+                                                <li><strong class="field">Permanent Employee Number (PEN)<span
+                                                                        class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.employeeID}}</span>
+                                                </li>
+                                                <li><strong class="field">Identification Marks1<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.identificationMark1}}</span>
+                                                </li>
+                                                <li><strong class="field">Identification Marks2<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.identificationMark2}}</span>
+                                                </li>
+                                                <li><strong class="field">Height (in cm)<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.height}}</span></li>
+                                                <li><strong class="field">Ex-Servicemen<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.exServiceMen ? "YES"
+                                                                : "NO"}}</span></li>
+                                                <li><strong class="field">First Name<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.firstName}}</span>
+                                                </li>
+                                                <li><strong class="field">Last Name<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.lastName}}</span>
+                                                </li>
+                                                <li><strong class="field">Sex<span class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.gender}}</span></li>
+                                                <li><strong class="field">Date of Birth<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.dateOfBirth}}</span>
+                                                </li>
+                                                <li><strong class="field">Contact Number<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.phone}}</span></li>
+                                                <li><strong class="field">Email Address<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.email}}</span></li>
+                                                <li><strong class="field">Religion<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.religionName}}</span>
+                                                </li>
+                                                <li><strong class="field">Category<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.casteName}}</span>
+                                                </li>
+                                                <li><strong class="field">Caste<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.caste}}</span>
+                                                </li>
+                                                <li><strong class="field">Whether Differently Abled<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.differentlyAbled ?
+                                                                "YES" : "NO"}}</span></li>
+                                                <li><strong class="field">Aadhar ID<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.aadhaarID}}</span>
+                                                </li>
+                                                <li><strong class="field">PAN NO<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.panID}}</span>
+                                                </li>
+                                                <li><strong class="field">Ration Card Number<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.rationID}}</span>
+                                                </li>
+                                                <li><strong class="field">Voter ID<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.voterID}}</span>
+                                                </li>
+                                                <li><strong class="field">Current Address<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.presentAddress}}</span>
+                                                </li>
+                                                <li><strong class="field">Permanent Address<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.permanentAddress}}</span>
+                                                </li>
+                                                <li><strong class="field">Father's Name<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.fatherName}}</span>
+                                                </li>
+                                                <li><strong class="field">Mother's Name<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.motherName}}</span>
+                                                </li>
+                                                <li><strong class="field">Inter Religion<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.interReligion}}</span>
+                                                </li>
+                                                <li><strong class="field">Marital Status<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.maritalStatusName}}</span>
+                                                </li>
+                                                <ng-container *ngIf="currentTeacher.maritalStatusID == '2'">
+                                                        <li><strong class="field">Spouse's Name<span
+                                                                                class="ms-3">:</span></strong> <span
+                                                                        class="field-val">{{currentTeacher.spouseName}}</span>
+                                                        </li>
+                                                        <li><strong class="field">Spouse's Religion<span
+                                                                                class="ms-3">:</span></strong> <span
+                                                                        class="field-val">{{currentTeacher.spouseReligionName}}</span>
+                                                        </li>
+                                                        <li><strong class="field">Spouse's Caste<span
+                                                                                class="ms-3">:</span></strong> <span
+                                                                        class="field-val">{{currentTeacher.spouseCaste}}</span>
+                                                        </li>
+
+                                                </ng-container>
+
+                                        </ul> -->
+                                        <ul class="info-list">
+                                                <li *ngIf="currentTeacher.employeeID">
+                                                    <strong class="field">Permanent Employee Number (PEN):</strong>
+                                                    <span class="field-val">{{ currentTeacher.employeeID }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.identificationMark1">
+                                                    <strong class="field">Identification Marks1:</strong>
+                                                    <span class="field-val">{{ currentTeacher.identificationMark1 }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.identificationMark2">
+                                                    <strong class="field">Identification Marks2:</strong>
+                                                    <span class="field-val">{{ currentTeacher.identificationMark2 }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.height">
+                                                    <strong class="field">Height (in cm):</strong>
+                                                    <span class="field-val">{{ currentTeacher.height }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.exServiceMen !== undefined">
+                                                    <strong class="field">Ex-Servicemen:</strong>
+                                                    <span class="field-val">{{ currentTeacher.exServiceMen ? "YES" : "NO" }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.firstName">
+                                                    <strong class="field">First Name:</strong>
+                                                    <span class="field-val">{{ currentTeacher.firstName }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.lastName">
+                                                    <strong class="field">Last Name:</strong>
+                                                    <span class="field-val">{{ currentTeacher.lastName }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.gender">
+                                                    <strong class="field">Sex:</strong>
+                                                    <span class="field-val">{{ currentTeacher.gender }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.dateOfBirth">
+                                                    <strong class="field">Date of Birth:</strong>
+                                                    <span class="field-val">{{ currentTeacher.dateOfBirth | date: 'MMMM d, y' }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.phone">
+                                                    <strong class="field">Contact Number:</strong>
+                                                    <span class="field-val">{{ currentTeacher.phone }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.email">
+                                                    <strong class="field">Email Address:</strong>
+                                                    <span class="field-val">{{ currentTeacher.email }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.religionName">
+                                                    <strong class="field">Religion:</strong>
+                                                    <span class="field-val">{{ currentTeacher.religionName }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.casteName">
+                                                    <strong class="field">Category:</strong>
+                                                    <span class="field-val">{{ currentTeacher.casteName }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.caste">
+                                                    <strong class="field">Caste:</strong>
+                                                    <span class="field-val">{{ currentTeacher.caste }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.differentlyAbled !== undefined">
+                                                    <strong class="field">Whether Differently Abled:</strong>
+                                                    <span class="field-val">{{ currentTeacher.differentlyAbled ? "YES" : "NO" }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.aadhaarID">
+                                                    <strong class="field">Aadhar ID:</strong>
+                                                    <span class="field-val">{{ currentTeacher.aadhaarID }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.panID">
+                                                    <strong class="field">PAN NO:</strong>
+                                                    <span class="field-val">{{ currentTeacher.panID }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.rationID">
+                                                    <strong class="field">Ration Card Number:</strong>
+                                                    <span class="field-val">{{ currentTeacher.rationID }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.voterID">
+                                                    <strong class="field">Voter ID:</strong>
+                                                    <span class="field-val">{{ currentTeacher.voterID }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.presentAddress">
+                                                    <strong class="field">Current Address:</strong>
+                                                    <span class="field-val">{{ currentTeacher.presentAddress }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.permanentAddress">
+                                                    <strong class="field">Permanent Address:</strong>
+                                                    <span class="field-val">{{ currentTeacher.permanentAddress }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.fatherName">
+                                                    <strong class="field">Father's Name:</strong>
+                                                    <span class="field-val">{{ currentTeacher.fatherName }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.motherName">
+                                                    <strong class="field">Mother's Name:</strong>
+                                                    <span class="field-val">{{ currentTeacher.motherName }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.interReligion">
+                                                    <strong class="field">Inter Religion:</strong>
+                                                    <span class="field-val">{{ currentTeacher.interReligion }}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.maritalStatusName">
+                                                    <strong class="field">Marital Status:</strong>
+                                                    <span class="field-val">{{ currentTeacher.maritalStatusName }}</span>
+                                                </li>
+                                                <ng-container *ngIf="currentTeacher.maritalStatusID == '2'">
+                                                    <li *ngIf="currentTeacher.spouseName">
+                                                        <strong class="field">Spouse's Name:</strong>
+                                                        <span class="field-val">{{ currentTeacher.spouseName }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.spouseReligionName">
+                                                        <strong class="field">Spouse's Religion:</strong>
+                                                        <span class="field-val">{{ currentTeacher.spouseReligionName }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.spouseCaste">
+                                                        <strong class="field">Spouse's Caste:</strong>
+                                                        <span class="field-val">{{ currentTeacher.spouseCaste }}</span>
+                                                    </li>
+                                                </ng-container>
+                                            </ul>
+                                </div>
+                        </div>
+
+
+                        <div class="card mt-3">
+                                <div class="card-header">Education Details</div>
+                                <div class="card-body">
+                                        <!-- <ul class="info-list"
+                                                *ngFor="let item of currentTeacher.educations; let i=index;">
+                                                <strong>Education 1:</strong>
+                                                <li><strong class="field mt-2">Course Name<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{item.courseName}}</span></li>
+
+                                                <li><strong class="field">School/University<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{item.schoolName}}</span></li>
+
+                                                <li><strong class="field">From Date<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{item.fromDate}}</span>
+                                                </li>
+
+                                                <li><strong class="field">To Date<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{item.toDate}}</span>
+                                                </li>
+
+
+
+                                        </ul> -->
+                                        <ul class="info-list" *ngFor="let item of currentTeacher.educations; let i = index;">
+                                                <li *ngIf="item.courseName">
+                                                    <strong class="field">Course Name:</strong>
+                                                    <span class="field-val">{{ item.courseName }}</span>
+                                                </li>
+                                                <li *ngIf="item.schoolName">
+                                                    <strong class="field">School/University:</strong>
+                                                    <span class="field-val">{{ item.schoolName }}</span>
+                                                </li>
+                                                <li *ngIf="item.fromDate">
+                                                    <strong class="field">From Date:</strong>
+                                                    <span class="field-val">{{ item.fromDate | date: 'MMMM d, y' }}</span>
+                                                </li>
+                                                <li *ngIf="item.toDate">
+                                                    <strong class="field">To Date:</strong>
+                                                    <span class="field-val">{{ item.toDate | date: 'MMMM d, y' }}</span>
+                                                </li>
+                                            </ul>
+                                </div>
+                        </div>
+
+
+                        <div class="card mt-3">
+                                <div class="card-header">Professional Details</div>
+                                <div class="card-body">
+                                        <ul class="info-list">
+                                                <!-- <li><strong class="field">Department<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.departmentName}}</span>
+                                                </li>
+
+                                                <li><strong class="field">District<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.district}}</span>
+                                                </li>
+
+                                                <li><strong class="field">Designation<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.designationName}}</span>
+                                                </li>
+
+
+                                                <li><strong class="field">Employee Type<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val"></span></li>
+
+                                                <li><strong class="field"> Subject<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.subjectName}}</span>
+                                                </li>
+
+                                                <li><strong class="field">PF Number<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.pfNumber}}</span>
+                                                </li>
+
+                                                <li><strong class="field">PRAN<span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.pran}}</span>
+                                                </li> -->
+                                                <li *ngIf="currentTeacher.departmentName">
+                                                        <strong class="field">Department:</strong>
+                                                        <span class="field-val">{{ currentTeacher.departmentName }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.district">
+                                                        <strong class="field">District:</strong>
+                                                        <span class="field-val">{{ currentTeacher.district }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.designationName">
+                                                        <strong class="field">Designation:</strong>
+                                                        <span class="field-val">{{ currentTeacher.designationName }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.employeeType">
+                                                        <strong class="field">Employee Type:</strong>
+                                                        <span class="field-val">{{ currentTeacher.employeeType }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.subjectName">
+                                                        <strong class="field">Subject:</strong>
+                                                        <span class="field-val">{{ currentTeacher.subjectName }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.pfNumber">
+                                                        <strong class="field">PF Number:</strong>
+                                                        <span class="field-val">{{ currentTeacher.pfNumber }}</span>
+                                                    </li>
+                                                    <li *ngIf="currentTeacher.pran">
+                                                        <strong class="field">PRAN:</strong>
+                                                        <span class="field-val">{{ currentTeacher.pran }}</span>
+                                                    </li>
+                                    
+
+                                               
+
+                                                <li><strong class="field">Date OF Joining <span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.dateofJoin | date: 'MMMM d, y'}}</span>
+                                                </li>
+
+                                                <li><strong class="field">Date Of Join In The Department <span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.dateofDepartmentJoin | date: 'MMMM d, y'}}</span>
+                                                </li>
+                                                <li *ngIf="currentTeacher.retirementDate"><strong class="field">Retirement Date<span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.retirementDate | date: 'MMMM d, y'
+                                                                }}</span></li>
+
+                                                <li><strong class="field">School Name <span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.schoolName}}</span>
+                                                </li>
+
+                                                <li><strong class="field">Category <span class="ms-3">:</span></strong>
+                                                        <span class="field-val">{{currentTeacher.categoryName}}</span>
+                                                </li>
+
+                                                <li><strong class="field">Eligible Test Qualified <span
+                                                                        class="ms-3">:</span></strong> <span
+                                                                class="field-val">{{currentTeacher.eligibilityTestQualified
+                                                                ? "YES" : "NO"}}</span></li>
+
+
+                                        </ul>
+                                </div>
+                        </div>
+
+
+                </div>
+        </div>

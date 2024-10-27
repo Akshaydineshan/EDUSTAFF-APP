@@ -5,6 +5,7 @@ import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/
 import { PromotionEligibleListComponent } from './promotion-eligible-list/promotion-eligible-list.component';
 import { AddTeacherComponent } from './add-teacher/add-teacher.component';
 import { TeacherDetailsComponent } from './teacher-details/teacher-details.component';
+import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'add-teacher', component: AddTeacherComponent },
   { path: 'add-teacher/:id', component: AddTeacherComponent },
   { path: 'teacher-details', component: TeacherDetailsComponent },
+  { path: 'view-teacher/:id', component: TeacherViewComponent },
   { 
     path: '**',
     component: PageNotFoundComponent

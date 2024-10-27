@@ -1,0 +1,69 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { DataService } from 'src/app/core/service/data/data.service';
+import { environment } from 'src/environments/environment';
+
+@Component({
+  selector: 'app-teacher-view',
+  templateUrl: './teacher-view.component.html',
+  styleUrls: ['./teacher-view.component.scss']
+})
+export class TeacherViewComponent implements OnInit {
+  isSidebarClosed: boolean=false;
+
+  currentTeacher!:any
+  apiUrl = environment.imageBaseUrl;
+
+
+  constructor(private route: ActivatedRoute,private dataService:DataService){
+
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      let itemId =params['id']; // Convert to number
+    
+      this.loadItemDetails(itemId);
+    });
+  }
+
+  loadItemDetails(teacherId:any){
+    this.dataService.getTeacherById(teacherId).subscribe({
+      next:(response)=>{
+        console.log(response)
+        this.currentTeacher=response
+
+      },
+      error:(error)=>{
+
+      },
+      complete:()=>{
+
+      }
+    })
+
+  }
+
+  get getImage() {
+    let result = '';
+    if (this.apiUrl && this.currentTeacher?.photoImageName) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photoImageName.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
+
+
+
+
+
+
+
+  toggleSidebar() {
+    this.isSidebarClosed = !this.isSidebarClosed;
+  }
+  get getSidebarToggle() {
+    return this.isSidebarClosed;
+  }
+
+}

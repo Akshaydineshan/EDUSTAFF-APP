@@ -193,6 +193,11 @@ export class DataService {
   getAllSubjects(): Observable<any> {
     return this.http.get(`${this.apiUrl}ProfileDetails/GetAllSubjects`);
   }
+  
+  getTeacherById(teacherId:number): Observable<any> {
+    return this.http.get(`${this.apiUrl}Teacher/homepage/${teacherId}`);
+  }
+
 
   getAllStatuses(): Observable<any> {
     return this.http.get(`${this.apiUrl}ProfileDetails/GetAllStatuses`);

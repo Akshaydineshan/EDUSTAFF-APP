@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Teacher, TeacherDocument, TransferRequest } from 'src/app/core/models/teacher/teacher';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -24,7 +25,7 @@ export class TeacherListComponent implements OnInit {
   teacherTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
-  displayColumns: string[] = ['teacherId', 'name', 'schoolName', 'designation', 'employeeType', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
+  displayColumns: string[] = ['name', 'schoolName', 'designation', 'employeeType', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
 
   selectedTeacher: any = null;
   hoveredTeacherId: number | null = null;
@@ -63,7 +64,7 @@ export class TeacherListComponent implements OnInit {
 
   API_BASE_IMAGE:any=environment.imageBaseUrl
 
-  constructor(private fb: FormBuilder, private dataService: DataService) {
+  constructor(private fb: FormBuilder, private dataService: DataService,private router:Router) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -105,7 +106,7 @@ export class TeacherListComponent implements OnInit {
 
     // Check right edge
     if (this.mouseX + popupWidth > window.innerWidth) {
-      console.log("with chaged", this.mouseX + popupWidth, window.innerWidth)
+    
       this.mouseX = window.innerWidth - popupWidth - offset; // Position left
     }
 
@@ -198,8 +199,9 @@ export class TeacherListComponent implements OnInit {
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
         }));
         this.teacherTableRows = this.teacherList
-        this.teacherTableColumns = [{ field: "teacherId", filter: true, floatingFilter: false },
-        { field: "name", filter: true, floatingFilter: true },
+        this.teacherTableColumns = [
+        { field: "name", filter: true, floatingFilter: true,
+          cellRenderer: (params: any) => `<a style="cursor: pointer; color: blue;" target="_blank">${params.value}</a>` },
         { field: "schoolName", filter: true, floatingFilter: false },
         { field: "designation", filter: true, floatingFilter: false },
         { field: "subject", filter: true, floatingFilter: false },
@@ -308,7 +310,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 300);
+      }, 200);
     }
   }
 
@@ -333,7 +335,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      }, 200);
     }
   }
 
@@ -394,8 +396,10 @@ export class TeacherListComponent implements OnInit {
 
 
   get getTeacherImage() {
+    debugger
     let result = '';
-    if (this.API_BASE_IMAGE && this.selectedTeacher.photo) {
+    
+    if (this.API_BASE_IMAGE && this.selectedTeacher.photo && this.selectedTeacher.photo !== 'null') {
       result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
@@ -424,6 +428,18 @@ export class TeacherListComponent implements OnInit {
 
     }
 
+  }
+  onCellClicked(event:any){
+    debugger
+    console.log("event--->",event)
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+    let teacherId:number=rowData.teacherId
+    console.log('teache',teacherId)
+    if (event.colDef.field === "name") {
+      this.router.navigate(['/teachers/view-teacher',teacherId])
+    }
+  
   }
 
 }

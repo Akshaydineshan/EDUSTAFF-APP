@@ -1,0 +1,152 @@
+.main-container {
+
+    // padding: 2rem;
+    margin-left: 60px;
+    // padding-top: 50px !important;
+    transition: margin-left 0.3s;
+}
+
+.main-container.shifted {
+    margin-left: 0 !important;
+}
+
+.top-banner {
+    width: 100%;
+    max-width: 100%;
+    height: 139px;
+    opacity: 0px;
+    background: linear-gradient(to right, rgb(172, 38, 154), rgb(185, 122, 40))
+}
+
+.prof-img {
+    width: 112px;
+    height: 112px;
+    // top: 154px;
+    // left: 120px;
+    position: relative;
+    bottom: 5px;
+    object-fit: cover;
+
+    
+
+}
+
+.content-main {
+    margin: 0px 44px;
+  
+}
+
+.prof-img-btns-sec {
+    position: relative;
+    bottom: 50px;
+}
+
+.prof-img-btns-sec .p-n {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 14px;
+    text-align: left;
+    color: #000000;
+}
+
+.prof-img-btns-sec .p-d {
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+}
+
+.prof-img-btns-sec .p-a {
+    font-family: Inter;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+    text-align: left;
+
+
+}
+
+.styled-hr {
+    border: none;
+    border-top: 1px solid;
+    /* Customize color and thickness */
+    margin-top: -38px;
+    /* Slightly moves up to make closer */
+}
+
+
+
+.card {
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 7px;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #d6d9db;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+
+
+/* Layout Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+    .card-header {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .info-list {
+        list-style: none;
+    }
+}
+
+.info-list {
+    list-style: none;
+}
+
+
+
+li {
+    display: flex;
+  
+    align-items: center;
+    margin-bottom: 8px;
+    line-height: 30px;
+
+}
+
+/* Fixed width for labels to ensure consistent alignment */
+.info-list li strong {
+    min-width: 150px;
+    /* Adjust this for larger label area if needed */
+    margin-right: 7px;
+    /* Spacing between label and value */
+    color: #333;
+    font-weight:500;
+    font-size: 14px;
+    width: 300px;
+}
+
+/* Flexible width for values to adjust for variable content length */
+.info-list li span {
+    flex-grow: 1;
+    color: #555;
+    font-weight: 400;
+    font-size: 14px;
+  
+}
+
+.r-btns{
+    width:255px;
+    height:40px;
+
+}

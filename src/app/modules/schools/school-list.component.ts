@@ -1,5 +1,7 @@
+import { ColDef } from 'ag-grid-community';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { environment } from 'src/environments/environment';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -24,6 +26,9 @@ export class SchoolListComponent implements OnInit {
   hoverTimeout!: any;
   mouseX!: number
   mouseY!: number
+  selectedTeacher: any;
+  showPopup!: boolean;
+  API_BASE_IMAGE: any = environment.imageBaseUrl
 
 
   constructor(private dataService: DataService) { }
@@ -48,7 +53,7 @@ export class SchoolListComponent implements OnInit {
 
     // Check bottom edge
     if (this.mouseY + popupHeight > window.innerHeight) {
-      this.mouseY = event.clientY - popupHeight+20; // Position above the mouse
+      this.mouseY = event.clientY - popupHeight + 20; // Position above the mouse
     }
 
 
@@ -78,7 +83,14 @@ export class SchoolListComponent implements OnInit {
 
   // table row hover popup related functions
 
-
+  get getTeacherImage() {
+    let result = '';
+    if (this.API_BASE_IMAGE && this.selectedTeacher.photo) {
+      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
 
   onSchoolHover(schoolId: number, schoolData: any, event: MouseEvent): void {
     console.log("ush", schoolData, schoolId)
@@ -100,7 +112,7 @@ export class SchoolListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      }, 200);
     }
   }
 
@@ -114,20 +126,62 @@ export class SchoolListComponent implements OnInit {
     }
   }
 
+  onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
+    debugger
+    // this.teacherId = teacherId;
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+    // this.hoveredTeacherId = teacherId;
+    if (teacherId && teacherData) {
+      this.hoverTimeout = setTimeout(() => {
+
+
+        // this.showPopup = true;
+        // this.updateMousePosition(event);
+
+        this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
+          (data) => {
+            this.selectedTeacher = data; // Store the detailed info
+            if (this.selectedTeacher && teacherId) {
+              this.showPopup = true;
+              this.updateMousePosition(event);
+            }
+          },
+          (error) => {
+            console.error('Error fetching teacher details:', error);
+          }
+        );
+      }, 200);
+    }
+  }
+  onTeacherMouseOut(): void {
+
+    this.showPopup = false;
+    this.selectedTeacher = null;
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+  }
+
 
 
   rowMouseHover(event: any) {
 
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-
-    if (event.colDef.field === "schoolName") {
+    if (event.colDef.field === "principalName") {
+      this.onTeacherHover(rowData.teacherId, rowData, event.event)
+    } else if (event.colDef.field === "schoolName") {
       this.onSchoolHover(rowData.schoolID, rowData, event.event)
 
     }
   }
   rowMouseHoverOut(event: any) {
-    if (event.colDef.field === "schoolName") {
+    if (event.colDef.field === "principalName") {
+      this.onTeacherMouseOut()
+    } else if (event.colDef.field === "schoolName") {
       this.onSchoolMouseOut()
 
     }

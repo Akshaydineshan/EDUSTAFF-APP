@@ -11,6 +11,7 @@ import { TeacherDetailsComponent } from './teacher-details/teacher-details.compo
 import { PersonalDetailsComponent } from './add-teacher/personal-details/personal-details.component';
 import { EducationalDetailsComponent } from './add-teacher/educational-details/educational-details.component';
 import { ProfessionalDetailsComponent } from './add-teacher/professional-details/professional-details.component';
+import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProfessionalDetailsComponent } from './add-teacher/professional-details
     TeacherDetailsComponent,
     PersonalDetailsComponent,
     EducationalDetailsComponent,
-    ProfessionalDetailsComponent
+    ProfessionalDetailsComponent,
+    TeacherViewComponent
   ],
   imports: [
     CommonModule,
