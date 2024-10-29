@@ -4,6 +4,7 @@ import { SchoolService } from '../school.service';
 import { SchoolData } from '../models/add-school';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-school',
@@ -24,7 +25,7 @@ export class AddSchoolComponent implements OnInit {
     { cityID: 1, cityName: "dhfgdfh" }
   ]
 
-  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService) {
+  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService,private router:Router) {
 
   }
 
@@ -75,7 +76,9 @@ export class AddSchoolComponent implements OnInit {
         pincode: formDataValue.pincode,
         email: formDataValue.email,
         phone: formDataValue.phone,
-        photoID:formDataValue.photoID.photoID
+        photoID:formDataValue?.photoID?.photoID,
+        principalID: null,
+        vicePrincipalID: null,
 
       }
 
@@ -87,6 +90,8 @@ export class AddSchoolComponent implements OnInit {
             // Reset form and submitted flag if needed
             this.schoolDetailsForm.reset();
             this.submitted = false;
+            
+            this.router.navigate(['/schools/school-list'])
           },
           error: (err) => {
             console.error('Error adding school:', err);

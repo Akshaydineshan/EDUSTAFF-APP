@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { distinctUntilChanged } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
 
@@ -13,18 +14,21 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   educations!: FormArray;
   @Input() allEducationTypes!: any[];
   @Input() coursesByEducation!: any[];
-  @Input() submitted:boolean=false;
+  @Input() submitted: boolean = false;
   @Output() educationFormChange = new EventEmitter<any>();
 
   selectedEducationType!: string;
-  
+
   filteredCoursesByEducation: any[] = []; // this is for courseName select list value storing index wice by education type
   file: any;
-  profileImage: string | ArrayBuffer | null=null;
+  profileImage: string | ArrayBuffer | null = null;
+  educationValueChangesSubscription: any;
 
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService) { }
+    private dataService: DataService) { 
+     
+    }
 
   ngOnInit(): void {
 
@@ -32,29 +36,75 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     console.log(this.allEducationTypes);
     console.log(this.coursesByEducation);
     this.populateCoursesForSavedEducationTypes()
+  
   }
+ 
 
   ngOnChanges(changes: SimpleChanges): void {
+ 
+    debugger
     if (changes['educationForm']) {
+      debugger
       this.educations = this.educationForm.get('educations') as FormArray;
+         this.populateCoursesForSavedEducationTypes()
+     
     }
   }
 
+
   addCourse() {
+    debugger
     const courseGroup = this.fb.group({
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
-      courseNameOther:[''],
+      courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['',Validators.required],
+      fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       certificate: ['']
     },
-    { validators: dateRangeValidator('fromDate', 'toDate') });
+      { validators: dateRangeValidator('fromDate', 'toDate') }
+    );
 
     this.educations.push(courseGroup);
-  }
   
+  }
+
+  // onCourseNameSelectOtherToAddValidation(): void {
+  //   debugger
+
+  //   this.educationForm.get('educations')?.valueChanges.pipe(distinctUntilChanged()).subscribe((educationArray:any) => {
+  //     debugger
+  //     console.log(educationArray)
+
+  //     const educations = this.educationForm.get('educations') as FormArray;
+
+  //     educationArray.forEach((education: any, index: number) => {
+
+  //       const educationGroup = educations.at(index) as FormGroup;
+  //       const courseNameControl = educationGroup.get('courseName');
+  //       const courseNameOtherControl = educationGroup.get('courseNameOther');
+
+  //       if (courseNameControl?.value.courseName === 'Others') {
+  //         // Add 'required' validator to courseNameOther if courseName is 'Others'
+  //         courseNameOtherControl?.setValidators([Validators.required]);
+  //       } else {
+  //         // Remove 'required' validator from courseNameOther
+  //         courseNameOtherControl?.clearValidators();
+  //       }
+  //       debugger
+
+  //       // Recalculate validation status
+  //       courseNameOtherControl?.updateValueAndValidity();
+  //     });
+      
+  //     debugger
+  //   });
+  // }
+
+
+
+
   // getCoursesByIndex(index: number): any[] {
   //   return this.filteredCoursesByEducation[index] || [];
   // }
@@ -74,7 +124,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
 
 
 
-  onCertificateUpload(event: any,index:number): void {
+  onCertificateUpload(event: any, index: number): void {
     debugger
     const file = event.target.files[0];
     if (file) {
@@ -89,11 +139,11 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     this.uploadFile(index)
   }
 
-  uploadFile(index:number): void {
+  uploadFile(index: number): void {
     debugger
     if (this.file) {
-     
-      let file=this.file
+
+      let file = this.file
       this.dataService.uploadDocument(file).subscribe(
         (response) => {
           console.log('File uploaded successfully', response);
@@ -105,7 +155,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
         }
       );
 
-      
+
     } else {
       console.error('No file selected');
     }
@@ -126,21 +176,21 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   getCoursesByEducationType(educationTypeId: number, index: number): void {
     debugger
     this.dataService.getCoursesByEducationType(educationTypeId).subscribe((data: any) => {
-      this.filteredCoursesByEducation[index] = data.courses;
-      
+      this.filteredCoursesByEducation[index] = data;
 
-       // Ensure the previously selected course is set in the FormControl
-    // const selectedCourse = this.educations.at(index).get('courseName')?.value;
-    // this.educations.at(index).patchValue({ courseName: '' });
-    
-    // Check if the previously selected course exists in the new course list
-    // if (selectedCourse && data.courses.some((course: any) => course.courseName === selectedCourse.courseName)) {
-    //   this.educations.at(index).patchValue({ courseName: selectedCourse });
-    // } else {
-      
-    //   this.educations.at(index).patchValue({ courseName: '' });
-    // }
-   
+
+      // Ensure the previously selected course is set in the FormControl
+      // const selectedCourse = this.educations.at(index).get('courseName')?.value;
+      // this.educations.at(index).patchValue({ courseName: '' });
+
+      // Check if the previously selected course exists in the new course list
+      // if (selectedCourse && data.courses.some((course: any) => course.courseName === selectedCourse.courseName)) {
+      //   this.educations.at(index).patchValue({ courseName: selectedCourse });
+      // } else {
+
+      //   this.educations.at(index).patchValue({ courseName: '' });
+      // }
+
     }, (error) => {
       this.filteredCoursesByEducation[index] = [];
       console.error('Error fetching courses:', error);
@@ -151,8 +201,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     return this.filteredCoursesByEducation[index] || [];
   }
 
-   // This function will be called when navigating back to ensure the courses are populated
-   populateCoursesForSavedEducationTypes(): void {
+  // This function will be called when navigating back to ensure the courses are populated
+  populateCoursesForSavedEducationTypes(): void {
     debugger
     this.educations.controls.forEach((control, index) => {
       const selectedEducationType = control.get('educationType')?.value.educationTypeID;

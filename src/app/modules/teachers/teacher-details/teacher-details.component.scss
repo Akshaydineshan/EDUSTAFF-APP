@@ -18,7 +18,7 @@ body {
   padding-top: 0;
 }
 
-img .prof-img {
+.prof-img {
   width: 112px;
   height: 112px;
   position: relative;
@@ -130,7 +130,7 @@ hr {
   
   
   // width:100%;
-  background: linear-gradient(to right, rgb(172, 38, 154), rgb(185, 122, 40))
+  background:linear-gradient(90deg, #FCD3AD 0%, #C485E7 100%);
 }
 .prof-sec-text{
   margin-top: -3.5rem;

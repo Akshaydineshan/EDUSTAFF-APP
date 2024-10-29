@@ -9,35 +9,36 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./teacher-view.component.scss']
 })
 export class TeacherViewComponent implements OnInit {
-  isSidebarClosed: boolean=false;
+  isSidebarClosed: boolean = false;
 
-  currentTeacher!:any
+  currentTeacher!: any
   apiUrl = environment.imageBaseUrl;
+  itemId: any
 
 
-  constructor(private route: ActivatedRoute,private dataService:DataService){
+  constructor(private route: ActivatedRoute, private dataService: DataService) {
 
   }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      let itemId =params['id']; // Convert to number
-    
+      let itemId = params['id'];
+      this.itemId = itemId;
       this.loadItemDetails(itemId);
     });
   }
 
-  loadItemDetails(teacherId:any){
+  loadItemDetails(teacherId: any) {
     this.dataService.getTeacherById(teacherId).subscribe({
-      next:(response)=>{
+      next: (response) => {
         console.log(response)
-        this.currentTeacher=response
+        this.currentTeacher = response
 
       },
-      error:(error)=>{
+      error: (error) => {
 
       },
-      complete:()=>{
+      complete: () => {
 
       }
     })

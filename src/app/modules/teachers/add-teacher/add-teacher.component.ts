@@ -1,7 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { distinctUntilChanged, forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
 
@@ -44,11 +45,15 @@ export class AddTeacherComponent implements OnInit {
   fullFormData: any
   designationsList!: any[];
   schoolNameWithCity!: any[];
+  isEdited: boolean = true;
+  employee: any;
+  employeeId: any
   submitBtnStatus: SubmitBtnStatus = { personal: false, education: false, professional: false }
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private dataService: DataService,
+    private route: ActivatedRoute,
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
@@ -117,23 +122,302 @@ export class AddTeacherComponent implements OnInit {
 
     // this function invoke when change married field 
     this.onMaritalStatusChange()
-    this.onCourseNameSelectOtherToAddValidation()
+
     this.checkEducationTypeToSetEligibilityTest()
 
   }
 
   ngOnInit() {
+
     this.loadAllData();
     const coursesArray = this.educationForm.get('educations') as FormArray;
+
+
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isEdited = true;
+        this.employeeId = id;
+        this.loadEmployeeData(this.employeeId);
+      }
+    });
     if (coursesArray.length === 0) {
+      debugger
       this.addCourse();
+
+
+      // this.addCourse();
     }
+    // this.onCourseNameSelectOtherToAddValidation()
+
+  }
+
+  loadEmployeeData(id: number) {
+
+
+    this.dataService.getTeacherById(id).subscribe({
+      next: (response) => {
+        if (response) {
+          console.log(response)
+          this.employee = response
+          this.setValuesForEdit()
+        }
+
+      },
+      error: (error) => {
+
+      },
+      complete: () => {
+
+      }
+    })
+  }
+
+  setValuesForEdit() {
+    debugger
+    this.patchPersonalFormData()
+    this.patchEducationFormData()
+    this.patchExpForm();
+
+  }
+
+  patchPersonalFormData() {
+    debugger
+    forkJoin({
+      religions: this.dataService.getAllReligions(),
+      maritalStatuses: this.dataService.getAllMaritalStatuses(),
+      genders: this.dataService.getAllGenders(),
+      casteCategories: this.dataService.getAllCasteCategories(),
+      bloodGroups: this.dataService.getAllBloodGroups(),
+    }).subscribe((results: any) => {
+
+      this.religions = results.religions;
+      this.maritalStatuses = results.maritalStatuses;
+      this.genders = results.genders;
+      this.casteCategories = results.casteCategories;
+      this.bloodGroups = results.bloodGroups;
+
+
+      const personalData = {
+        firstName: this.employee.firstName,
+        lastName: this.employee.lastName,
+        email: this.employee.email,
+        phone: this.employee.phone,
+        presentAddress: this.employee.presentAddress,
+        permanentAddress: this.employee.permanentAddress,
+        dateOfBirth: this.employee.dateOfBirth,
+        gender: this.employee.gender,
+        sexID: this.employee.sexID,
+        religionID: this.employee.religionID,
+        casteID: this.employee.casteID,
+        caste: this.employee.caste,
+        bloodName: this.employee.bloodName,
+        bloodGroupID: this.employee.bloodGroupID,
+        rationID: this.employee.rationID,
+        differentlyAbled: this.employee.differentlyAbled,
+        exServiceMen: this.employee.exServiceMen,
+        aadhaarID: this.employee.aadhaarID,
+        identificationMark1: this.employee.identificationMark1,
+        identificationMark2: this.employee.identificationMark1,
+        height: this.employee.height,
+        fatherName: this.employee.fatherName,
+        motherName: this.employee.motherName,
+        interReligion: this.employee.interReligion,
+        maritalStatusID: this.employee.maritalStatusID,
+        spouseName: this.employee.spouseName,
+        spouseReligionID: this.employee.spouseReligionID,
+        spouseCaste: this.employee.spouseCaste,
+        panID: this.employee.panID,
+        voterID: this.employee.voterID,
+        pen: this.employee.pen
+      };
+
+
+
+
+      this.personalDetailsForm.patchValue({
+        permanentEmployeeNumber: personalData.pen,
+        firstName: personalData.firstName,
+        lastName: personalData.lastName,
+        sex: this.genders.find((gen) => gen.genderID === personalData.sexID),
+        dob: this.dataService.formatDateToLocal(personalData.dateOfBirth),
+        phone: personalData.phone,
+        email: personalData.email,
+        religion: this.religions.find(religion => religion.religionID === personalData.religionID),
+        category: this.casteCategories.find(category => category.casteCategoryID === personalData.casteID),
+        caste: personalData.caste,
+        bloodGroup: this.bloodGroups.find((blood) => blood.bloodGroupID === personalData.bloodGroupID),
+        whetherDifferentlyAbled: personalData.differentlyAbled,
+        exServicemen: personalData.exServiceMen,
+        identificationMarksOne: personalData.identificationMark1,
+        identificationMarksTwo: personalData.identificationMark2,
+        height: personalData.height,
+        aadharId: personalData.aadhaarID,
+        pan: personalData.panID,
+        rationCardNumber: personalData.rationID,
+        voterId: personalData.voterID,
+        currentAddress: personalData.presentAddress,
+        permanentAddress: personalData.permanentAddress,
+        fathersName: personalData.fatherName,
+        mothersName: personalData.motherName,
+        interReligion: personalData.interReligion,
+        maritalStatus: this.maritalStatuses.find(status => status.maritalStatusID === personalData.maritalStatusID),
+        spousesName: personalData.spouseName,
+        spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionName === personalData.spouseReligionID) : '',
+        spousesCaste: personalData.spouseCaste,
+      });
+
+    });
+
+  }
+
+  patchEducationFormData() {
+    debugger
+    forkJoin({
+      allEducationTypes: this.dataService.getAllCourses(),
+    }).subscribe((response: any) => {
+      this.allEducationTypes = response.allEducationTypes
+      debugger
+      const educationData = this.employee.educations;
+
+      this.educationForm.setControl('educations', this.fb.array(
+        educationData.map((education: any) => this.fb.group({
+          educationType: [this.allEducationTypes.find((item: any) => item.educationTypeID === education.educationTypeID)],
+          courseName: [{courseID:education.courseID,courseName:education.courseText}],
+          courseNameOther: [education.courseName],
+          schoolName: [education.schoolName, Validators.required],
+          fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
+          toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
+          certificate: [education.documentID]
+        },
+          {
+            validators: dateRangeValidator('fromDate', 'toDate')
+
+          }
+        ))
+      ));
+      // this.educationForm = { ...this.educationForm };
+      this.educationForm = new FormGroup(this.educationForm.controls);
+
+
+      debugger
+
+    })
+
+
+    // const educations = this.educationForm.get('educations') as FormArray;
+    // educationData.forEach((education: any) => {
+    //   educations.push(this.fb.group({
+    //     schoolName: [education.schoolName, Validators.required],
+    //     fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
+    //     toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
+    //     documentID: [education.documentID, Validators.required]
+    //   }));
+    // });
+
+  }
+
+  patchExpForm() {
+    debugger
+
+    forkJoin({
+      subjects: this.dataService.getAllSubjects(),
+      statuses: this.dataService.getAllStatuses(),
+      schools: this.dataService.getAllSchools(),
+
+
+
+      employeeTypes: this.dataService.getAllEmployeeTypes(),
+      designations: this.dataService.getAllDesignations(),
+      employeeCategories: this.dataService.getAllEmployeeCategories(),
+      schoolNameWithCity: this.dataService.getSchoolWithCity(),
+      districts: this.dataService.getAllDistricts(),
+      // allEducationTypes: this.dataService.getAllCourses(),
+      cities: this.dataService.getAllCities(),
+
+      approvalTypes: this.dataService.getAllApprovalTypes(),
+
+      // coursesByEducation: this.educationTypeId ? this.dataService.getCoursesByEducationType(this.educationTypeId) : []
+    }).subscribe((results) => {
+      console.log(results)
+      // Assign the results to your component variables
+      this.subjects = results.subjects;
+      this.statuses = results.statuses;
+      this.schools = results.schools;
+
+      this.employeeTypes = results.employeeTypes;
+      this.designationsList = results.designations;
+      this.employeeCategories = results.employeeCategories;
+      this.schoolNameWithCity = results.schoolNameWithCity;
+      this.districts = results.districts;
+
+      this.approvalTypes = results.approvalTypes;
+
+      const professionalData = {
+
+        departmentID: this.employee.departmentID,
+        districtID: this.employee.districtID,
+        pfNummber: this.employee.pfNumber,
+        pran: this.employee.pran,
+        SchoolID: this.employee.schoolID,
+        ApprovalTypeID: this.employee.approvalTypeID,
+
+        categoryID: this.employee.categoryID,
+
+        // documentID: parseInt(this.fullFormData.documentID),
+        EligibilityTestQualified: this.employee.eligibilityTestQualified,
+        ProtectedTeacher: this.employee.protectedTeacher,
+
+        designationID: this.employee.designationID,
+        subjectID: this.employee.subjectID,
+        employeeTypeID: this.employee.departmentID,
+        dateOfJoin: this.dataService.formatDateToLocal(this.employee.dateofJoin),
+        dateOfJoinDepartment: this.dataService.formatDateToLocal(this.employee.dateofDepartmentJoin),
+        RetirementDate: this.dataService.formatDateToLocal(this.employee.retirementDate),
+        promotionEligible: this.employee.promotionEligible,
+
+
+
+      };
+
+      console.log(professionalData)
+      debugger
+
+      this.professionalForm.patchValue({
+        department: this.employeeTypes.find((dep: any) => dep.employeeTypeID === professionalData.departmentID),
+        district: this.districts.find((dist: any) => dist.districtID === professionalData.districtID),
+        serviceCategory: [''],
+        employeeType: this.employeeTypes.find((dep: any) => dep.employeeTypeID === professionalData.employeeTypeID),
+        designation: this.designationsList.find((des: any) => des.designationID === professionalData.designationID),
+        subject: this.subjects.find((sub: any) => sub.subjectID === professionalData.subjectID),
+        pfNumber: professionalData.pfNummber,
+        pran: professionalData.pran,
+        fromDate: this.dataService.formatDateToLocal(professionalData.dateOfJoin),
+        toDate: this.dataService.formatDateToLocal(professionalData.dateOfJoinDepartment),
+        retirement: this.dataService.formatDateToLocal(professionalData.RetirementDate),
+        schoolName: this.schoolNameWithCity.find((school: any) => school.schoolID === professionalData.SchoolID),
+        pCategory: this.employeeCategories.find((emp: any) => emp.employeeCategoryId === professionalData.categoryID),
+        // schoolType: ['', Validators.required],
+        // trained: ['', Validators.required],
+        // trainingAttended: ['', Validators.required],
+        eligibleTestQualified: professionalData.EligibilityTestQualified,
+        approvalType: this.approvalTypes.find((apr: any) => apr.approvalTypeID === professionalData.ApprovalTypeID),
+        protectedTeacher: professionalData.ProtectedTeacher
+      })
+
+
+
+    });
+
+
+
   }
 
   checkEducationTypeToSetEligibilityTest() {
     debugger
+
     this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
-      debugger
+
 
       const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 4);
 
@@ -150,9 +434,9 @@ export class AddTeacherComponent implements OnInit {
 
   // Method to update validators based on marital status
   onMaritalStatusChange(): void {
-    debugger
+
     this.personalDetailsForm.get('maritalStatus')?.valueChanges.subscribe((status) => {
-      debugger
+
       if (status.maritalStatusID == '2') {
         // Add Validators.required to spouse-related fields
         this.personalDetailsForm.get('spousesName')?.setValidators([Validators.required]);
@@ -174,16 +458,19 @@ export class AddTeacherComponent implements OnInit {
 
   onCourseNameSelectOtherToAddValidation(): void {
     debugger
-    this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
+
+    this.educationForm.get('educations')?.valueChanges.pipe(distinctUntilChanged()).subscribe(educationArray => {
       debugger
+      console.log(educationArray)
+
       const educations = this.educationForm.get('educations') as FormArray;
-    
+
       educationArray.forEach((education: any, index: number) => {
-        debugger
+
         const educationGroup = educations.at(index) as FormGroup;
         const courseNameControl = educationGroup.get('courseName');
         const courseNameOtherControl = educationGroup.get('courseNameOther');
-    
+
         if (courseNameControl?.value.courseName === 'Others') {
           // Add 'required' validator to courseNameOther if courseName is 'Others'
           courseNameOtherControl?.setValidators([Validators.required]);
@@ -191,10 +478,13 @@ export class AddTeacherComponent implements OnInit {
           // Remove 'required' validator from courseNameOther
           courseNameOtherControl?.clearValidators();
         }
-    
+        debugger
+
         // Recalculate validation status
         courseNameOtherControl?.updateValueAndValidity();
       });
+
+      debugger
     });
   }
 
@@ -270,9 +560,12 @@ export class AddTeacherComponent implements OnInit {
       this.approvalTypes = data;
       console.log('Approval Types:', this.approvalTypes);
     });
+
   }
 
   addCourse() {
+    debugger
+
     const courseGroup = this.fb.group({
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
@@ -281,8 +574,13 @@ export class AddTeacherComponent implements OnInit {
       fromDate: ['', Validators.required],
       toDate: ['', Validators.required],
       certificate: ['']
-    }, { validators: dateRangeValidator('fromDate', 'toDate') });
+    },
+      { validators: dateRangeValidator('fromDate', 'toDate') }
+    );
     (this.educationForm.get('educations') as FormArray).push(courseGroup);
+
+
+    
   }
 
 
@@ -381,6 +679,7 @@ export class AddTeacherComponent implements OnInit {
   }
 
   previewSubmit() {
+    debugger
     let educationData = this.fullFormData.educations.map((edu: any) => ({
       educationTypeID: parseInt(edu.educationType.educationTypeID),
       courseID: parseInt(edu.courseName.courseID),
@@ -391,7 +690,7 @@ export class AddTeacherComponent implements OnInit {
       DocumentID: parseInt(edu.certificate?.documentID) || ""
     }));
 
-    let data = {
+    let data:any= {
       pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
       firstName: this.fullFormData.firstName ? this.fullFormData.firstName : "",
       lastName: this.fullFormData.lastName ? this.fullFormData.lastName : "",
@@ -449,25 +748,67 @@ export class AddTeacherComponent implements OnInit {
       PhotoID: parseInt(this.fullFormData.photoId.photoID),
     }
 
-
-
-    this.dataService.addTeacher(data).subscribe(
-      (response) => {
-        console.log('Employee added successfully:', response);
-        if (response.employeeID) {
-          this.submitBtnStatus.personal = false;
-          this.submitBtnStatus.education = false;
-          this.submitBtnStatus.professional = false;
-          console.log(response.employeeID);
-          this.router.navigate(['/teachers/teacher-list'])
-
+    if(this.isEdited){
+      debugger
+      const employeeId:number=Number(this.employeeId)
+      this.dataService.updateTeacher(data,employeeId).subscribe(
+        (response) => {
+          debugger
+          console.log('Employee Updated successfully:', response);
+          if (response.employeeID) {
+            this.submitBtnStatus.personal = false;
+            this.submitBtnStatus.education = false;
+            this.submitBtnStatus.professional = false;
+            console.log(response.employeeID);
+            window.alert("Teacher Updated Successfully")
+            this.router.navigate(['/teachers/teacher-list'])
+  
+          } else {
+            window.alert("Teacher Update Failed")
+            this.currentStep = 1
+          }
+  
+        },
+        (error) => {
+          debugger
+          window.alert("Somthing Went Wrong")
+          console.error(error);
+          this.currentStep = 1
         }
+      );
 
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
+    }else{
+      debugger
+      this.dataService.addTeacher(data).subscribe(
+        (response) => {
+          debugger
+          console.log('Employee added successfully:', response);
+          if (response.employeeID) {
+            this.submitBtnStatus.personal = false;
+            this.submitBtnStatus.education = false;
+            this.submitBtnStatus.professional = false;
+            console.log(response.employeeID);
+            window.alert("Teacher Added Successfully")
+            this.router.navigate(['/teachers/teacher-list'])
+  
+          } else {
+            window.alert("Teacher Add Failed")
+            this.currentStep = 1
+          }
+  
+        },
+        (error) => {
+          debugger
+          window.alert("Somthing Went Wrong")
+          console.error(error);
+          this.currentStep = 1
+        }
+      );
+    }
+
+
+
+   
   }
 
   onSubmit(): void {

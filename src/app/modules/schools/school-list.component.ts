@@ -15,7 +15,7 @@ interface PagonationConfig {
 })
 export class SchoolListComponent implements OnInit {
   isSidebarClosed = false;
-  displayColumns: string[] = ['schoolID', 'schoolName', 'address', 'cityName', 'state', 'pincode', 'email', 'contactNumber', 'principalName', 'vicePrincipalName'];
+  displayColumns: string[] = [ 'schoolName', 'address', 'cityName', 'state', 'pincode', 'email', 'contactNumber', 'principalName', 'vicePrincipalName'];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   schoolList: any[] = [];
   schoolTableRows: any;
@@ -61,15 +61,17 @@ export class SchoolListComponent implements OnInit {
 
 
   loadSchoolList(): void {
+    debugger
     this.dataService.getSchoolData().subscribe(
       (data) => {
+        debugger
         this.schoolList = data;
-        console.log(this.schoolList);
+        console.log("school list data",this.schoolList);
         this.schoolTableRows = this.schoolList
         this.schoolTableColumns = this.displayColumns.map((column) => ({
           field: column,
           filter: true,
-          floatingFilter: column === 'name' || column === 'schoolName', // For example, only these columns have floating filters
+          floatingFilter:  column === 'schoolName', // For example, only these columns have floating filters
 
         }));
 
@@ -85,7 +87,7 @@ export class SchoolListComponent implements OnInit {
 
   get getTeacherImage() {
     let result = '';
-    if (this.API_BASE_IMAGE && this.selectedTeacher.photo) {
+    if (this.API_BASE_IMAGE && this.selectedTeacher?.photo) {
       result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
@@ -190,7 +192,7 @@ export class SchoolListComponent implements OnInit {
 
   get getschoolImage() {
     let result = '';
-    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool.photo !== 'null') {
+    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template

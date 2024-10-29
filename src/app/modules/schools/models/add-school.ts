@@ -9,6 +9,6 @@ export interface SchoolData {
     phone: string
     photoID?: any
     statusID?: number
-    principalID?: number
-    vicePrincipalID?: number
+    principalID?: number |null
+    vicePrincipalID?: number |null
 }

@@ -26,6 +26,13 @@ export class DataService {
     }
     return null;
   }
+  formatDateToLocal(dateString: string): string {
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(dateObj.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   getTotalActiveTeachersCount(): Observable<{ count: number }> {
     return this.http.get<{ count: number }>(this.apiUrl + '/Teacher/GetAllActiveTeachersCount');
@@ -165,18 +172,18 @@ export class DataService {
   uploadPhoto(teacherId: number, photoFile: File): Observable<any> {
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
-    return this.http.post(this.apiUrl + 'Teacher/UploadPhoto' +  '/' + teacherId, formData);
+    return this.http.post(this.apiUrl + 'Teacher/UploadPhoto' + '/' + teacherId, formData);
   }
-  uploadProfilePhoto( photoFile: File): Observable<any> {
+  uploadProfilePhoto(photoFile: File): Observable<any> {
     debugger
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
-    return this.http.post(this.apiUrl + 'FileUpload/AddPhoto' , formData);
+    return this.http.post(this.apiUrl + 'FileUpload/AddPhoto', formData);
   }
-  uploadDocument( documentFile: File): Observable<any> {
+  uploadDocument(documentFile: File): Observable<any> {
     const formData = new FormData();
-    
-    formData.append('DocumentName',"educationCertificate");
+
+    formData.append('DocumentName', "educationCertificate");
     formData.append('DocumentFile', documentFile);
     return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
   }
@@ -189,12 +196,21 @@ export class DataService {
       })
     );
   }
+  updateTeacher(teachersData: any,employeId:number): Observable<any> {
+    debugger
+    return this.http.put(`${this.apiUrl}Teacher/update-employee/${employeId}`, teachersData).pipe(
+      catchError((error) => {
+        console.error('Error adding teacher:', error);
+        return throwError('Failed to add teacher.');
+      })
+    );
+  }
 
   getAllSubjects(): Observable<any> {
     return this.http.get(`${this.apiUrl}ProfileDetails/GetAllSubjects`);
   }
-  
-  getTeacherById(teacherId:number): Observable<any> {
+
+  getTeacherById(teacherId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}Teacher/homepage/${teacherId}`);
   }
 
@@ -275,5 +291,5 @@ export class DataService {
   }
 
 
-  
+
 }

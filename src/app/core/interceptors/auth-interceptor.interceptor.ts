@@ -94,17 +94,23 @@ export class AuthInterceptor implements HttpInterceptor {
         next: () => {
 
 
-          this.spinnerService.hide();
+         
+          // setTimeout(()=>{
+            this.spinnerService.hide();
+          // },200)
 
           // Hide spinner on success
         },
         error: (error: HttpErrorResponse) => {
-          this.spinnerService.hide(); // Hide spinner on error
+          // setTimeout(()=>{
+            this.spinnerService.hide(); // Hide spinner on error
+          // },200)
+        
           if (error.status === 401) {
             this.authService.logout();
             this.router.navigate(['/login']);
           } else {
-            this.router.navigate(['/dashboard']);
+            // this.router.navigate(['/dashboard']);
           }
           return throwError(error); // Rethrow the error for further handling if needed
         },

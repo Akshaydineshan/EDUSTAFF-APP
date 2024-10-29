@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import { ColDef, GridOptions, IRowNode, MouseEnterEvent } from 'ag-grid-community'; // Column Definition Type Interface
 interface PagonationConfig{
@@ -11,7 +11,8 @@ interface PagonationConfig{
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent {
+export class TableComponent implements OnInit {
+
    // Row Data: The data to be displayed.
    @Input() rowData!:any[]
    @Input() colDefs!:any[]
@@ -24,6 +25,11 @@ export class TableComponent {
   //   onCellMouseOver: this.rowMouseEnter.bind(this) , // Bind the cell mouse over event
   //   onCellMouseOut: this.onCellMouseOut.bind(this)
   // };
+
+  ngOnInit(): void {
+    debugger
+   
+  }
 
 
 

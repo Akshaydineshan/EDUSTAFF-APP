@@ -312,7 +312,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 300);
+      },500);
     }
   }
 
@@ -338,7 +338,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      }, 500);
     }
   }
 
@@ -448,7 +448,7 @@ export class TeacherListComponent implements OnInit {
 
   get getschoolImage() {
     let result = '';
-    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool.photo !== 'null') {
+    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
