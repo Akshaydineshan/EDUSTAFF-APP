@@ -160,13 +160,19 @@ li {
     color: #555;
     font-weight: 600;
     font-size: 15px;
+   position: relative;
+   width:max-content;
 
 }
 .s-h::after{
- content: "";
- height:20px;
- width:100px;
- background-color: #bd1515;
+    content: "";
+    height: 2px;
+    width: 100%;
+    background-color: #bfbaba;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+
 
 }
 
