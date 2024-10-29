@@ -156,6 +156,19 @@ li {
     font-size: 14px;
 
 }
+.s-h{
+    color: #555;
+    font-weight: 600;
+    font-size: 15px;
+
+}
+.s-h::after{
+ content: "";
+ height:20px;
+ width:100px;
+ background-color: #bd1515;
+
+}
 
 .r-btns{
     width:255px;

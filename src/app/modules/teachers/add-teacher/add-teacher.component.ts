@@ -45,7 +45,7 @@ export class AddTeacherComponent implements OnInit {
   fullFormData: any
   designationsList!: any[];
   schoolNameWithCity!: any[];
-  isEdited: boolean = true;
+  isEdited: boolean = false;
   employee: any;
   employeeId: any
   submitBtnStatus: SubmitBtnStatus = { personal: false, education: false, professional: false }
@@ -263,7 +263,7 @@ export class AddTeacherComponent implements OnInit {
         interReligion: personalData.interReligion,
         maritalStatus: this.maritalStatuses.find(status => status.maritalStatusID === personalData.maritalStatusID),
         spousesName: personalData.spouseName,
-        spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionName === personalData.spouseReligionID) : '',
+        spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionID === personalData.spouseReligionID) : '',
         spousesCaste: personalData.spouseCaste,
       });
 
@@ -288,7 +288,7 @@ export class AddTeacherComponent implements OnInit {
           schoolName: [education.schoolName, Validators.required],
           fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
           toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
-          certificate: [education.documentID]
+          certificate: [{documentID:education.documentID,documentName:""}]
         },
           {
             validators: dateRangeValidator('fromDate', 'toDate')
@@ -687,7 +687,7 @@ export class AddTeacherComponent implements OnInit {
       schoolName: edu.schoolName,
       fromDate: this.dataService.formatDateToISO(edu.fromDate),
       toDate: this.dataService.formatDateToISO(edu.toDate),
-      DocumentID: parseInt(edu.certificate?.documentID) || ""
+      DocumentID: parseInt(edu.certificate?.documentID) || null
     }));
 
     let data:any= {
@@ -755,7 +755,7 @@ export class AddTeacherComponent implements OnInit {
         (response) => {
           debugger
           console.log('Employee Updated successfully:', response);
-          if (response.employeeID) {
+          if (response) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;

@@ -188,7 +188,7 @@
           <li class="key-value-item">
             <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM d, y' }}</span>
           </li>
-          <li class="key-value-item" *ngIf=" item.certificate?.documentName">
+          <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
             <strong>Certificate:</strong> <span><img [src]="'../../../../assets/icons/pdf.png'" alt=""></span>
           </li>
 

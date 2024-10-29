@@ -337,7 +337,7 @@
                                         </ul> -->
                                         <ul class="info-list mt-2"
                                                 *ngFor="let item of currentTeacher.educations; let i = index;">
-                                                <p>Education {{i+1}}</p>
+                                                <p class="s-h">Education {{i+1}}</p>
                                                 <li *ngIf="item.courseText; else otherName">
                                                         <strong class="field">Course Name:</strong>
                                                         <span class="field-val">{{ item.courseText }}</span>
