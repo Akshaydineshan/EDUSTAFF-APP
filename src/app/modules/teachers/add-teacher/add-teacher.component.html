@@ -38,7 +38,7 @@
       </app-professional-details>
     </div>
 
-    <div *ngIf="currentStep === 4" class="step-page-summary">
+    <div *ngIf="currentStep === 4 || currentStep === 5" class="step-page-summary">
       <app-teacher-details  [showTopbarAndSidebar]="false" [fullFormData]="fullFormData" (EditBtnClickPreview)="editBtnClickFromPreview()"></app-teacher-details>
     </div>
 

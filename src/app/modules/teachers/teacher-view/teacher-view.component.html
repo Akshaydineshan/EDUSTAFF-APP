@@ -181,7 +181,7 @@
                                         <ul class="info-list">
                                                 <li *ngIf="currentTeacher.employeeID">
                                                         <strong class="field">Permanent Employee Number (PEN):</strong>
-                                                        <span class="field-val">{{ currentTeacher.employeeID }}</span>
+                                                        <span class="field-val">{{ currentTeacher.pen }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.identificationMark1">
                                                         <strong class="field">Identification Marks1:</strong>
@@ -338,7 +338,7 @@
                                         <ul class="info-list mt-2"
                                                 *ngFor="let item of currentTeacher.educations; let i = index;">
                                                 <p class="s-h">Education {{i+1}}</p>
-                                                <li *ngIf="item.courseText; else otherName">
+                                                <li *ngIf="item.courseText !='Others'; else otherName">
                                                         <strong class="field">Course Name:</strong>
                                                         <span class="field-val">{{ item.courseText }}</span>
                                                 </li>

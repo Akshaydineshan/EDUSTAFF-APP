@@ -13,6 +13,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
 import { MaterialSpinnerComponent } from './material-spinner/material-spinner.component';
+import { AlertComponent } from './components/alerts/alert/alert.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { MaterialSpinnerComponent } from './material-spinner/material-spinner.co
     FilterDialogComponent,
     DetailDailogComponent,
     TableComponent,
-    MaterialSpinnerComponent
+    MaterialSpinnerComponent,
+    AlertComponent
     
   ],
   imports: [

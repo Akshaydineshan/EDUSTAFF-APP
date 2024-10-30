@@ -45,7 +45,7 @@
               <i class="bi bi-three-dots"></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item" [routerLink]="['/teachers/add-teacher']" (click)="editClick()">Edit</a>
+              <li><a class="dropdown-item"  (click)="editClick()">Edit</a>
               </li>
               <li><a class="dropdown-item" href="#">Option 2</a></li>
             </ul>
@@ -226,10 +226,13 @@
             <strong>PRAN:</strong> <span>{{this.fullFormData.pran}}</span>
           </li>
           <li class="key-value-item">
-            <strong>From Date:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
+            <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
           </li>
           <li class="key-value-item">
-            <strong>To Date:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y' }}</span>
+            <strong>Date Of Join In The Department:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>
           </li>
           <li class="key-value-item">
             <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}

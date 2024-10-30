@@ -138,7 +138,10 @@ export class AddTeacherComponent implements OnInit {
       if (id) {
         this.isEdited = true;
         this.employeeId = id;
+        this.personalDetailsForm.disable()
+        this.educationForm.disable()
         this.loadEmployeeData(this.employeeId);
+       
       }
     });
     if (coursesArray.length === 0) {
@@ -159,12 +162,13 @@ export class AddTeacherComponent implements OnInit {
       next: (response) => {
         if (response) {
           console.log(response)
-          this.employee = response
+           this.employee = response
           this.setValuesForEdit()
         }
 
       },
       error: (error) => {
+        this.router.navigate(['teachers/view-teacher',this.employeeId])
 
       },
       complete: () => {
@@ -178,7 +182,7 @@ export class AddTeacherComponent implements OnInit {
     this.patchPersonalFormData()
     this.patchEducationFormData()
     this.patchExpForm();
-
+ 
   }
 
   patchPersonalFormData() {
@@ -229,7 +233,9 @@ export class AddTeacherComponent implements OnInit {
         spouseCaste: this.employee.spouseCaste,
         panID: this.employee.panID,
         voterID: this.employee.voterID,
-        pen: this.employee.pen
+        pen: this.employee.pen,
+        photoPath:this.employee.photopath,
+        photoId:this.employee.photoID
       };
 
 
@@ -265,7 +271,11 @@ export class AddTeacherComponent implements OnInit {
         spousesName: personalData.spouseName,
         spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionID === personalData.spouseReligionID) : '',
         spousesCaste: personalData.spouseCaste,
+        photoId:{photoId:personalData.photoId,photoImageName:personalData.photoPath}
+
       });
+
+      this.personalDetailsForm.enable()
 
     });
 
@@ -288,7 +298,7 @@ export class AddTeacherComponent implements OnInit {
           schoolName: [education.schoolName, Validators.required],
           fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
           toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
-          certificate: [{documentID:education.documentID,documentName:""}]
+          certificate: [{documentID:education.documentID,documentName:education.documentpath}]
         },
           {
             validators: dateRangeValidator('fromDate', 'toDate')
@@ -298,6 +308,7 @@ export class AddTeacherComponent implements OnInit {
       ));
       // this.educationForm = { ...this.educationForm };
       this.educationForm = new FormGroup(this.educationForm.controls);
+      this.educationForm.enable()
 
 
       debugger
@@ -745,7 +756,7 @@ export class AddTeacherComponent implements OnInit {
       dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
       RetirementDate: this.dataService.formatDateToISO(this.fullFormData.retirement),
       promotionEligible: Boolean(this.fullFormData.promotionEligible),
-      PhotoID: parseInt(this.fullFormData.photoId.photoID),
+      PhotoID: parseInt(this.fullFormData.photoId.photoId),
     }
 
     if(this.isEdited){

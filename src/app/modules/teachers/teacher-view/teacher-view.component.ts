@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,7 +16,7 @@ export class TeacherViewComponent implements OnInit {
   itemId: any
 
 
-  constructor(private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router) {
 
   }
 
@@ -36,6 +36,7 @@ export class TeacherViewComponent implements OnInit {
 
       },
       error: (error) => {
+      
 
       },
       complete: () => {
@@ -47,8 +48,8 @@ export class TeacherViewComponent implements OnInit {
 
   get getImage() {
     let result = '';
-    if (this.apiUrl && this.currentTeacher?.photoImageName) {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photoImageName.replace(/^\/+/, '');
+    if (this.apiUrl && this.currentTeacher?.photopath) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photopath.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
