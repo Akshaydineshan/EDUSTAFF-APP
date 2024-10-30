@@ -291,7 +291,7 @@ export class AddTeacherComponent implements OnInit {
     }).subscribe((response: any) => {
       this.allEducationTypes = response.allEducationTypes
       debugger
-      const educationData = this.employee.educations;
+      const educationData = this.employee.getEducations;
 
       this.educationForm.setControl('educations', this.fb.array(
         educationData.map((education: any) => this.fb.group({

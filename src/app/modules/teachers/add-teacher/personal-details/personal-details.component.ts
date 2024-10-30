@@ -87,6 +87,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
     this.fileInput.nativeElement.value = ''; // Clear the input value
     this.file = null;
     this.profileImage = null;
+    this.personalDetailsForm.get("photoId")?.setValue({})
     // this,this.teacherService.setProfileImage("")
   }
 
