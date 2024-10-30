@@ -70,7 +70,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
       this.dataService.uploadProfilePhoto(file).subscribe(
         (response) => {
           console.log('File uploaded successfully', response);
-          this.personalDetailsForm.get('photoId')?.setValue(response)
+          this.personalDetailsForm.get('photoId')?.setValue({photoId:response.photoID,photoImageName:response.photoImageName})
         },
         (error) => {
           console.error('Error uploading file', error);

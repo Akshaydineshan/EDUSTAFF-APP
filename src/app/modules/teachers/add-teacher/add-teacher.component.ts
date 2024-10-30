@@ -194,6 +194,7 @@ export class AddTeacherComponent implements OnInit {
       casteCategories: this.dataService.getAllCasteCategories(),
       bloodGroups: this.dataService.getAllBloodGroups(),
     }).subscribe((results: any) => {
+      debugger
 
       this.religions = results.religions;
       this.maritalStatuses = results.maritalStatuses;
@@ -237,6 +238,8 @@ export class AddTeacherComponent implements OnInit {
         photoPath:this.employee.photopath,
         photoId:this.employee.photoID
       };
+
+
 
 
 
