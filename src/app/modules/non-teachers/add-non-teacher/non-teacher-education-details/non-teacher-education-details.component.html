@@ -1,0 +1,131 @@
+
+
+<form [formGroup]="educationForm">
+    <div formArrayName="educations">
+      <div *ngFor="let course of educations.controls; let i = index; " [formGroupName]="i">
+        <div class="row mb-3">
+          <label for="educationType{{i}}" class="col-sm-3 col-form-label">Education Type</label>
+          <div class="col-sm-7">
+            <select id="educationType{{i}}" class="form-control" formControlName="educationType"
+              (change)="onEducationTypeChange(course.get('educationType')?.value, i)"
+              [ngClass]="{'is-invalid': course.get('educationType')?.invalid && (course.get('educationType')?.touched ||submitted)}">
+              <option value="" disabled>Choose Education Type</option>
+              <option *ngFor="let eduType of allEducationTypes" [ngValue]="eduType">{{ eduType.educationTypeName }}
+              </option>
+            </select>
+            <div class="invalid-feedback"
+              *ngIf="course.get('educationType')?.invalid && course.get('educationType')?.touched ||submitted">
+              <small class="text-danger" *ngIf="course.get('educationType')?.errors?.['required']">Education type is
+                required.</small>
+  
+            </div>
+          </div>
+        </div>
+  
+        <div class="row mb-3">
+          <label for="courseName{{i}}" class="col-sm-3 col-form-label">Course Name</label>
+          <div class="col-sm-7">
+  
+            <select id="courseName{{i}}" class="form-control" formControlName="courseName" [compareWith]="compareCourses"
+              [ngClass]="{'is-invalid': course.get('courseName')?.invalid && (course.get('courseName')?.touched || submitted) }">
+              <option value="" disabled>Choose Course</option>
+              <option *ngFor="let c of getCoursesByIndex(i)" [ngValue]="c">{{ c.courseName }}</option>
+            </select>
+            <div class="invalid-feedback"
+              *ngIf="course.get('courseName')?.invalid && course.get('courseName')?.touched ||submitted">
+              <small class="text-danger" *ngIf="course.get('courseName')?.errors?.['required']">Course Name is
+                required.</small>
+              </div>
+          </div>
+        </div>
+  
+        
+        <div class="row mb-3" *ngIf="course.get('courseName')?.value?.courseName === 'Others'">
+          <label for="" class="col-sm-3 col-form-label">Course Name</label>
+          <div class="col-sm-7">
+            <input type="text" id="courseNameOther{{i}}" class="form-control" formControlName="courseNameOther"
+              [ngClass]="{'is-invalid': course.get('courseNameOther')?.invalid && (course.get('courseNameOther')?.touched ||submitted)}"
+              placeholder="Enter Course Name" />
+            <div class="invalid-feedback"
+              *ngIf="course.get('courseNameOther')?.invalid && course.get('courseNameOther')?.touched ||submitted">
+              <small class="text-danger" *ngIf="course.get('courseNameOther')?.errors?.['required']"> Course Name  is
+                required.</small>
+  
+            </div>
+          </div>
+        </div>
+  
+        <div class="row mb-3">
+          <label for="schoolName{{i}}" class="col-sm-3 col-form-label">School/University</label>
+          <div class="col-sm-7">
+            <input type="text" id="schoolName{{i}}" class="form-control" formControlName="schoolName"
+              [ngClass]="{'is-invalid': course.get('schoolName')?.invalid && (course.get('schoolName')?.touched ||submitted)}"
+              placeholder="Enter School/University" />
+            <div class="invalid-feedback"
+              *ngIf="course.get('schoolName')?.invalid && course.get('schoolName')?.touched ||submitted">
+              <small class="text-danger" *ngIf="course.get('schoolName')?.errors?.['required']"> School/University is
+                required.</small>
+  
+            </div>
+          </div>
+        </div>
+  
+        <div class="row mb-3">
+          <label for="dob" class="col-sm-3 col-form-label">From Date</label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control" id="fromDate" formControlName="fromDate" required
+            [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || submitted) }">
+            <div *ngIf="educationForm.get('fromDate')?.invalid &&  educationForm.get('fromDate')?.touched  || submitted">
+              <small class="text-danger" *ngIf="course.get('fromDate')?.errors?.['required']">
+                From Date is required.
+              </small>
+             </div>
+           
+          </div>
+        </div>
+        <div class="row mb-3">
+          <label for="dob" class="col-sm-3 col-form-label">To Date</label>
+          <div class="col-sm-9">
+            <input type="date" class="form-control" id="toDate" formControlName="toDate" required
+            [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('toDate')?.touched ||submitted)}">
+            <div *ngIf="educationForm.get('toDate')?.invalid && educationForm.get('toDate')?.touched ||submitted">
+              <small class="text-danger" *ngIf="course.get('toDate')?.errors?.['required']">
+                To Date is required.
+              </small>
+            </div>
+            <div *ngIf="course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || course.get('toDate')?.touched || submitted)">
+              <small class="text-danger">End Date must be greater than Start Date.</small>
+            </div>
+          </div>
+        </div>
+  
+        <div class="row mb-3">
+          <label class="col-sm-3 col-form-label">Upload Certificate</label>
+          <div class="col-sm-7 position-relative">
+            <input type="file" accept=".pdf" (change)="onCertificateUpload($event, i)" class="form-control pr-5">
+            
+            <!-- Image positioned on the right side -->
+            <span *ngIf="course.get('certificate')?.value?.documentName || course.get('certificate')?.value?.documentID " class="pdf-icon">
+              <img [src]="'../../../../assets/icons/pdf.png'" alt="PDF Icon">
+            </span>
+          </div>
+        </div>
+  
+        <div class="row mb-3">
+          <div class="col-sm-10 offset-sm-3">
+            <button type="button" class="btn btn-danger" (click)="removeCourse(i)" *ngIf="educations.length > 1">
+              Remove Course
+            </button>
+          </div>
+        </div>
+  
+        <hr>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-sm-12 text-right">
+        <button type="button" class="btn btn-outline-primary" (click)="addCourse()">Add New Course</button>
+      </div>
+    </div>
+  </form>

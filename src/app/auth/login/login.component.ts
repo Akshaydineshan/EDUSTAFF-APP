@@ -79,8 +79,16 @@ export class LoginComponent {
           }
         },
         error => {
-          console.error('Login failed', error);
-          this.errorMessage = 'Login failed. Please check your credentials.';
+          debugger
+          // console.error('Login failed', error);
+          // this.errorMessage = 'Login failed. Please check your credentials.';
+          // this.router.navigate(['auth/login']);
+          if (error.status === 401 && error.error.message === 'Invalid credentials') {
+            this.errorMessage = 'Invalid credentials. Please try again.';
+          } else {
+            this.errorMessage = 'Something went wrong. Please try again later.';
+          }
+          
           this.router.navigate(['auth/login']);
         }
       );

@@ -71,10 +71,10 @@ export class DataService {
 
   getTeachersData(): Observable<any[]> {
     debugger
-    if (this.teachersDataCache.value.length === 0) {
+    // if (this.teachersDataCache.value.length === 0) {
       return this.fetchTeachersData();
-    }
-    return this.teachersDataCache.asObservable();
+    // }
+    // return this.teachersDataCache.asObservable();
   }
 
   private fetchTeachersData(): Observable<any[]> {
@@ -89,10 +89,10 @@ export class DataService {
   }
 
   getSchoolData(): Observable<any[]> {
-    if (this.schoolDataCache.value.length === 0) {
+    // if (this.schoolDataCache.value.length === 0) {
       return this.fetchSchoolData();
-    }
-    return this.schoolDataCache.asObservable();
+    // }
+    // return this.schoolDataCache.asObservable();
   }
   private fetchSchoolData(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl + 'School').pipe(

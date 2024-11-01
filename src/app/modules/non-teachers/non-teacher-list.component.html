@@ -1,5 +1,157 @@
 <app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+
+
 <div class="container mt-4" [class.shifted]="isSidebarClosed">
-    <p>non-teacher-list works!</p>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Non Teachers List
+            <span class="badge badge-secondary">{{ nonTeacherList.length }}</span>
+        </h4>
+        <div class="d-flex justify-content-between align-items-end gap-3">
+            <!-- <div class="dropdown">
+                <button id="filterButton" class="btn btn-outline-secondary" (click)="toggleFilterDropdown()">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <div id="filterDropdown" class="dropdown-menu p-3" [class.show]="showFilterModal">
+                    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+                        <h5>Filter</h5>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select formControlName="subjectFilter" class="form-control">
+                                <option value="">All Subjects</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Malayalam">Malayalam</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="retiringIn">Retiring In</label>
+                            <input formControlName="retiringInMonths" type="number" class="form-control"
+                                placeholder="Retiring In">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="school">School</label>
+                            <input formControlName="schoolNameFilter" type="text" class="form-control"
+                                placeholder="School Name">
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="experience-range-container">
+                                <label for="experienceYearRange">Experience Year Range</label>
+                                <div class="slider-container">
+                                    <input type="range" id="experienceYearRange" formControlName="minExperienceYear"
+                                        [min]="0" [max]="100" class="range-slider min-slider"
+                                        (input)="onSliderChange()">
+                                    <input type="range" id="experienceYearRange" formControlName="maxExperienceYear"
+                                        [min]="0" [max]="100" class="range-slider max-slider"
+                                        (input)="onSliderChange()">
+                                    <div class="slider-track"></div>
+                                </div>
+                                <div class="range-inputs">
+                                    <input type="number" formControlName="minExperienceYear" class="range-input" min="0"
+                                        max="100" (input)="onInputChange()">
+                                    <input type="number" formControlName="maxExperienceYear" class="range-input" min="0"
+                                        max="100" (input)="onInputChange()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" formControlName="newRecruit">
+                                Check if New Recruit
+                            </label>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-between mt-3">
+                            <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset
+                                Filter</button>
+                            <button type="submit" class="btn btn-success">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div> -->
+            <button class="btn btn-success" [routerLink]="['/non-teachers/add']">
+                <i class="fas fa-plus-circle"></i> Add Non Teacher Details
+            </button>
+        </div>
+    </div>
+
+
+    <!-- <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info p-5">
+    <div class="popup-header">
+      <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
+      <div class="popup-title ">
+
+        <p class="p-s">{{ selectedTeacher?.name }}</p>
+        <p class="p-a">{{ selectedTeacher?.subject }}</p>
+        <p class="p-sc">{{ selectedTeacher?.schoolName }}</p>
+        <p class="p-e"><a href="">{{ selectedTeacher?.email }}</a></p>
+        <p class="p-m">{{ selectedTeacher?.phoneNumber }}</p>
+      </div>
+
+    </div>
+    <hr class="line">
+    <div class="popup-body-t p-2">
+      <div class="d-flex justify-content-between pe-4">
+        <div>
+          <p class="p-h">Date Of Join</p>
+          <p class="p-v">{{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
+        </div>
+        <div>
+          <p class="p-h">Report To</p>
+          <p class="p-v">{{ selectedTeacher?.reportedTo }}</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div> -->
+
+
+    <!-- <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
+    <div class="popup-header p-3">
+      <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+      <div class="popup-title">
+        <p class="p-s">{{ selectedSchool?.name }}</p>
+        <p class="p-a">{{ selectedSchool?.address }}</p>
+        <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
+        <p class="p-m">{{ selectedSchool?.phone }}</p>
+      </div>
+    </div>
+    <hr class="line">
+    <div class="popup-body p-2">
+      <div class="">
+        <p class="p-a">Authorities</p>
+        <div>
+          <p class="val">{{ selectedSchool?.principal }}</p>
+          <p class="p-p">Principal</p>
+        </div>
+        <div class="">
+          <p class="val">{{ selectedSchool?.vicePrincipal }}</p>
+          <p class="p-p">Vice Principal</p>
+        </div>
+      </div>
+
+    </div>
+
+
+ 
+  </div> -->
+
+    <div class="table-responsive">
+
+        <app-table [rowData]="nonTeacherTableRows" [colDefs]="nonTeacherTableColumns" [paginationConfig]="paginationConfig"
+            (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+            (onCellClickedEvent)="onCellClicked($event)"></app-table>
+
+    </div>
+
 </div>

@@ -312,7 +312,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      },500);
+      },300);
     }
   }
 
@@ -338,7 +338,7 @@ export class TeacherListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 500);
+      }, 300);
     }
   }
 
@@ -425,12 +425,12 @@ export class TeacherListComponent implements OnInit {
     }
   }
   rowMouseHoverOut(event: any) {
-    if (event.colDef.field === "name") {
+    // if (event.colDef.field === "name") {
       this.onTeacherMouseOut()
-    } else if (event.colDef.field === "schoolName") {
+    // } else if (event.colDef.field === "schoolName") {
       this.onSchoolMouseOut()
 
-    }
+    // }
 
   }
   onCellClicked(event:any){

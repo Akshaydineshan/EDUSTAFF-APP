@@ -31,11 +31,12 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     }
 
   ngOnInit(): void {
-
+    this.educationForm.disable()
     this.educations = this.educationForm.get('educations') as FormArray;
     console.log(this.allEducationTypes);
     console.log(this.coursesByEducation);
     this.populateCoursesForSavedEducationTypes()
+    this.educationForm.enable()
   
   }
  
@@ -177,19 +178,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     debugger
     this.dataService.getCoursesByEducationType(educationTypeId).subscribe((data: any) => {
       this.filteredCoursesByEducation[index] = data;
+      
 
-
-      // Ensure the previously selected course is set in the FormControl
-      // const selectedCourse = this.educations.at(index).get('courseName')?.value;
-      // this.educations.at(index).patchValue({ courseName: '' });
-
-      // Check if the previously selected course exists in the new course list
-      // if (selectedCourse && data.courses.some((course: any) => course.courseName === selectedCourse.courseName)) {
-      //   this.educations.at(index).patchValue({ courseName: selectedCourse });
-      // } else {
-
-      //   this.educations.at(index).patchValue({ courseName: '' });
-      // }
 
     }, (error) => {
       this.filteredCoursesByEducation[index] = [];
@@ -204,6 +194,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   // This function will be called when navigating back to ensure the courses are populated
   populateCoursesForSavedEducationTypes(): void {
     debugger
+   
     this.educations.controls.forEach((control, index) => {
       const selectedEducationType = control.get('educationType')?.value.educationTypeID;
       if (selectedEducationType) {

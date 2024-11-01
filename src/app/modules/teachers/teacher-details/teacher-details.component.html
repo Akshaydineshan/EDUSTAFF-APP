@@ -20,15 +20,15 @@
 
     <div [ngClass]="showTopbarAndSidebar? 'gradient-bg': ''">
       <div class="d-flex justify-content-between  align-items-center ">
-        <div class="d-flex flex-column   " >
-          <img  [src]='getImage || emptyImage' class="prof-img img-fluid rounded-circle me-4 " alt="Profile Image" />
+        <div class="d-flex flex-column   ">
+          <img [src]='getImage || emptyImage' class="prof-img img-fluid rounded-circle me-4 " alt="Profile Image" />
           <div class=" prof-sec-text  mb-3">
             <!-- <h5 class="mb-0 ">shfg</h5>
             <p class="text-muted mb-0">shdghg</p>
             <p class="text-muted mb-0">
              dhfgdh
             </p> -->
-           
+
             <h5 class="mb-0 ">{{this.fullFormData.firstName}} {{this.fullFormData.lastName}}</h5>
             <p class="text-muted mb-0">{{this.fullFormData.designation.designationName}}</p>
             <p class="text-muted mb-0">
@@ -45,7 +45,7 @@
               <i class="bi bi-three-dots"></i>
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <li><a class="dropdown-item"  (click)="editClick()">Edit</a>
+              <li><a class="dropdown-item" (click)="editClick()">Edit</a>
               </li>
               <li><a class="dropdown-item" href="#">Option 2</a></li>
             </ul>
@@ -176,9 +176,16 @@
           <li class="key-value-item">
             <strong>Education Type:</strong> <span>{{item.educationType['educationTypeName']}}</span>
           </li>
-          <li class="key-value-item">
+          <li class="key-value-item" *ngIf="item.courseName.courseName !== 'Others' ; else otherCouseName; ">
             <strong>Course Name:</strong> <span>{{item.courseName.courseName}}</span>
+
           </li>
+          <ng-template #otherCouseName>
+            <li class="key-value-item">
+              <strong>Course Name:</strong> <span>{{item.courseNameOther}}</span>
+  
+            </li>
+          </ng-template>
           <li class="key-value-item">
             <strong>School/University :</strong> <span>{{item.schoolName}}</span>
           </li>
@@ -210,15 +217,15 @@
           <li class="key-value-item">
             <strong>District:</strong> <span>{{this.fullFormData.district.districtName}}</span>
           </li>
-          <li class="key-value-item">
+          <!-- <li class="key-value-item">
             <strong>Employee Type:</strong> <span>{{this.fullFormData.employeeType.employeeTypeName}}</span>
-          </li>
+          </li> -->
           <li class="key-value-item">
             <strong>Designation:</strong> <span>{{this.fullFormData.designation.designationName}}</span>
           </li>
-          <li class="key-value-item">
+          <!-- <li class="key-value-item">
             <strong>Subject:</strong> <span>{{this.fullFormData.subject.subjectName}}</span>
-          </li>
+          </li> -->
           <li class="key-value-item">
             <strong>PF Number:</strong> <span>{{this.fullFormData.pfNumber}}</span>
           </li>
@@ -229,7 +236,8 @@
             <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
           </li>
           <li class="key-value-item">
-            <strong>Date Of Join In The Department:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y' }}</span>
+            <strong>Date Of Join In The Department:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y'
+              }}</span>
           </li>
           <li class="key-value-item">
             <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>

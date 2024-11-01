@@ -1,6 +1,6 @@
-import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { NonTeacherService } from './../non-teacher.service';
+import { Component } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { distinctUntilChanged, forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -9,13 +9,12 @@ import { dateRangeValidator } from 'src/app/utils/validators/date-range-validato
 interface SubmitBtnStatus {
   personal: boolean, education: boolean, professional: boolean
 }
-
 @Component({
-  selector: 'app-add-teacher',
-  templateUrl: './add-teacher.component.html',
-  styleUrls: ['./add-teacher.component.scss']
+  selector: 'app-add-non-teacher',
+  templateUrl: './add-non-teacher.component.html',
+  styleUrls: ['./add-non-teacher.component.scss']
 })
-export class AddTeacherComponent implements OnInit {
+export class AddNonTeacherComponent {
   isSidebarClosed = false;
   currentStep = 1;
   steps = ['Personal Details', 'Educational Details', 'Professional Details', 'Preview & Submit'];
@@ -54,6 +53,7 @@ export class AddTeacherComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute,
+    private nonTeacherService:NonTeacherService
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
@@ -92,12 +92,12 @@ export class AddTeacherComponent implements OnInit {
     //   educations: this.fb.array([])
     // });
     this.professionalForm = this.fb.group({
-      department: ['', [Validators.required, Validators.maxLength(50)]],
+      department: [ {employeeTypeID: 2, employeeTypeName: 'Non-Teaching Staff'}, [Validators.required, Validators.maxLength(50)]],
       district: ['', [Validators.required, Validators.maxLength(50)]],
       serviceCategory: [''],
       // employeeType: ['', Validators.required],
       designation: ['', Validators.required],
-      subject: ['', Validators.required],
+      // subject: ['', Validators.required],
       pfNumber: ['', [Validators.required, Validators.pattern('[A-Z]{2}[0-9]{7}')]],
       pran: ['', [Validators.required, Validators.pattern('[A-Z]{4}[0-9]{6}')]],
       fromDate: ['', Validators.required],
@@ -133,7 +133,7 @@ export class AddTeacherComponent implements OnInit {
     const coursesArray = this.educationForm.get('educations') as FormArray;
 
 
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params: any) => {
       const id = params.get('id');
       if (id) {
         this.isEdited = true;
@@ -141,7 +141,7 @@ export class AddTeacherComponent implements OnInit {
         this.personalDetailsForm.disable()
         this.educationForm.disable()
         this.loadEmployeeData(this.employeeId);
-       
+
       }
     });
     if (coursesArray.length === 0) {
@@ -156,19 +156,17 @@ export class AddTeacherComponent implements OnInit {
   }
 
   loadEmployeeData(id: number) {
-
-
     this.dataService.getTeacherById(id).subscribe({
-      next: (response) => {
+      next: (response: any) => {
         if (response) {
           console.log(response)
-           this.employee = response
+          this.employee = response
           this.setValuesForEdit()
         }
 
       },
-      error: (error) => {
-        this.router.navigate(['teachers/view-teacher',this.employeeId])
+      error: (error: any) => {
+        this.router.navigate(['teachers/view-teacher', this.employeeId])
 
       },
       complete: () => {
@@ -182,7 +180,7 @@ export class AddTeacherComponent implements OnInit {
     this.patchPersonalFormData()
     this.patchEducationFormData()
     this.patchExpForm();
- 
+
   }
 
   patchPersonalFormData() {
@@ -235,8 +233,8 @@ export class AddTeacherComponent implements OnInit {
         panID: this.employee.panID,
         voterID: this.employee.voterID,
         pen: this.employee.pen,
-        photoPath:this.employee.photopath,
-        photoId:this.employee.photoID
+        photoPath: this.employee.photopath,
+        photoId: this.employee.photoID
       };
 
 
@@ -274,7 +272,7 @@ export class AddTeacherComponent implements OnInit {
         spousesName: personalData.spouseName,
         spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionID === personalData.spouseReligionID) : '',
         spousesCaste: personalData.spouseCaste,
-        photoId:{photoId:personalData.photoId,photoImageName:personalData.photoPath}
+        photoId: { photoId: personalData.photoId, photoImageName: personalData.photoPath }
 
       });
 
@@ -296,12 +294,12 @@ export class AddTeacherComponent implements OnInit {
       this.educationForm.setControl('educations', this.fb.array(
         educationData.map((education: any) => this.fb.group({
           educationType: [this.allEducationTypes.find((item: any) => item.educationTypeID === education.educationTypeID)],
-          courseName: [{courseID:education.courseID,courseName:education.courseText}],
+          courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
           schoolName: [education.schoolName, Validators.required],
           fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
           toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
-          certificate: [{documentID:education.documentID,documentName:education.documentpath}]
+          certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
         },
           {
             validators: dateRangeValidator('fromDate', 'toDate')
@@ -359,7 +357,7 @@ export class AddTeacherComponent implements OnInit {
       this.statuses = results.statuses;
       this.schools = results.schools;
 
-      this.employeeTypes = results.employeeTypes;
+      this.employeeTypes = results.employeeTypes.filter((item:any)=>item.employeeTypeID === 2);
       this.designationsList = results.designations;
       this.employeeCategories = results.employeeCategories;
       this.schoolNameWithCity = results.schoolNameWithCity;
@@ -383,7 +381,7 @@ export class AddTeacherComponent implements OnInit {
         ProtectedTeacher: this.employee.protectedTeacher,
 
         designationID: this.employee.designationID,
-        subjectID: this.employee.subjectID,
+        // subjectID: this.employee.subjectID,
         // employeeTypeID: this.employee.departmentID,
         dateOfJoin: this.dataService.formatDateToLocal(this.employee.dateofJoin),
         dateOfJoinDepartment: this.dataService.formatDateToLocal(this.employee.dateofDepartmentJoin),
@@ -403,7 +401,7 @@ export class AddTeacherComponent implements OnInit {
         serviceCategory: [''],
         // employeeType: this.employeeTypes.find((dep: any) => dep.employeeTypeID === professionalData.employeeTypeID),
         designation: this.designationsList.find((des: any) => des.designationID === professionalData.designationID),
-        subject: this.subjects.find((sub: any) => sub.subjectID === professionalData.subjectID),
+        // subject: this.subjects.find((sub: any) => sub.subjectID === professionalData.subjectID),
         pfNumber: professionalData.pfNummber,
         pran: professionalData.pran,
         fromDate: this.dataService.formatDateToLocal(professionalData.dateOfJoin),
@@ -503,83 +501,130 @@ export class AddTeacherComponent implements OnInit {
   }
 
 
+  // loadAllData(): void {
+  //   this.dataService.getAllSubjects().subscribe(data => {
+  //     this.subjects = data;
+  //     console.log('Subjects:', this.subjects);
+  //   });
+  //   this.dataService.getAllStatuses().subscribe(data => {
+  //     this.statuses = data;
+  //     console.log('Statuses:', this.statuses);
+  //   });
+  //   this.dataService.getAllSchools().subscribe(data => {
+  //     this.schools = data;
+  //     console.log('Schools:', this.schools);
+  //   });
+  //   this.dataService.getAllReligions().subscribe(data => {
+  //     this.religions = data;
+  //     console.log('Religions:', this.religions);
+  //   });
+  //   this.dataService.getAllMaritalStatuses().subscribe(data => {
+  //     this.maritalStatuses = data;
+  //     console.log('Marital Statuses:', this.maritalStatuses);
+  //   });
+  //   this.dataService.getAllGenders().subscribe(data => {
+  //     this.genders = data;
+  //     console.log('Genders:', this.genders);
+  //   });
+  //   this.dataService.getAllEmployeeTypes().subscribe(data => {
+  //     this.employeeTypes = data;
+  //     console.log('Employee Types:', this.employeeTypes);
+  //   });
+  //   this.dataService.getAllDesignations().subscribe(data => {
+  //     this.designationsList = data;
+  //     console.log('Designation:', this.employeeTypes);
+  //   });
+  //   this.dataService.getAllEmployeeCategories().subscribe(data => {
+  //     this.employeeCategories = data;
+  //     console.log('Employee Categories:', this.employeeCategories);
+  //   });
+  //   this.dataService.getSchoolWithCity().subscribe(data => {
+  //     this.schoolNameWithCity = data;
+  //     console.log('Schoolname with city:', this.schoolNameWithCity);
+  //   });
+  //   this.dataService.getAllDistricts().subscribe(data => {
+  //     this.districts = data;
+  //     console.log('Districts:', this.districts);
+  //   });
+  //   this.dataService.getAllCourses().subscribe(data => {
+  //     this.allEducationTypes = data;
+  //     console.log('All Education Types:', this.allEducationTypes);
+  //   });
+  //   if (this.educationTypeId) {
+  //     this.dataService.getCoursesByEducationType(this.educationTypeId).subscribe(data => {
+  //       this.coursesByEducation = data;
+  //       console.log('Courses by Education:', this.coursesByEducation);
+  //     });
+  //   }
+  //   this.dataService.getAllCities().subscribe(data => {
+  //     this.cities = data;
+  //     console.log('Cities:', this.cities);
+  //   });
+  //   this.dataService.getAllCasteCategories().subscribe(data => {
+  //     this.casteCategories = data;
+  //     console.log('Caste Categories:', this.casteCategories);
+  //   });
+  //   this.dataService.getAllBloodGroups().subscribe(data => {
+  //     this.bloodGroups = data;
+  //     console.log('Blood Groups:', this.bloodGroups);
+  //   });
+  //   this.dataService.getAllApprovalTypes().subscribe(data => {
+  //     this.approvalTypes = data;
+  //     console.log('Approval Types:', this.approvalTypes);
+  //   });
+
+  // }
+
   loadAllData(): void {
-    this.dataService.getAllSubjects().subscribe(data => {
-      this.subjects = data;
-      console.log('Subjects:', this.subjects);
+    forkJoin({
+      // subjects: this.dataService.getAllSubjects(),
+      statuses: this.dataService.getAllStatuses(),
+      schools: this.dataService.getAllSchools(),
+      religions: this.dataService.getAllReligions(),
+      maritalStatuses: this.dataService.getAllMaritalStatuses(),
+      genders: this.dataService.getAllGenders(),
+      employeeTypes: this.dataService.getAllEmployeeTypes(),
+      designations: this.dataService.getAllDesignations(),
+      employeeCategories: this.dataService.getAllEmployeeCategories(),
+      schoolNameWithCity: this.dataService.getSchoolWithCity(),
+      districts: this.dataService.getAllDistricts(),
+      allEducationTypes: this.dataService.getAllCourses(),
+      cities: this.dataService.getAllCities(),
+      casteCategories: this.dataService.getAllCasteCategories(),
+      bloodGroups: this.dataService.getAllBloodGroups(),
+      approvalTypes: this.dataService.getAllApprovalTypes()
+    }).subscribe({
+      next: (data: any) => {
+        // this.subjects = data.subjects;
+        this.statuses = data.statuses;
+        this.schools = data.schools;
+        this.religions = data.religions;
+        this.maritalStatuses = data.maritalStatuses;
+        this.genders = data.genders;
+        this.employeeTypes = data.employeeTypes.filter((item:any)=> item.employeeTypeID === 2 );
+        this.designationsList = data.designations;
+        this.employeeCategories = data.employeeCategories;
+        this.schoolNameWithCity = data.schoolNameWithCity;
+        this.districts = data.districts;
+        this.allEducationTypes = data.allEducationTypes;
+        this.cities = data.cities;
+        this.casteCategories = data.casteCategories;
+        this.bloodGroups = data.bloodGroups;
+        this.approvalTypes = data.approvalTypes;
+
+        console.log('Data loaded successfully:', data,this.employeeTypes);
+      },
+      error: (err: any) => {
+        console.error('Failed to load dropdown data:', err);
+
+      }
     });
-    this.dataService.getAllStatuses().subscribe(data => {
-      this.statuses = data;
-      console.log('Statuses:', this.statuses);
-    });
-    this.dataService.getAllSchools().subscribe(data => {
-      this.schools = data;
-      console.log('Schools:', this.schools);
-    });
-    this.dataService.getAllReligions().subscribe(data => {
-      this.religions = data;
-      console.log('Religions:', this.religions);
-    });
-    this.dataService.getAllMaritalStatuses().subscribe(data => {
-      this.maritalStatuses = data;
-      console.log('Marital Statuses:', this.maritalStatuses);
-    });
-    this.dataService.getAllGenders().subscribe(data => {
-      this.genders = data;
-      console.log('Genders:', this.genders);
-    });
-    this.dataService.getAllEmployeeTypes().subscribe(data => {
-      this.employeeTypes = data;
-      console.log('Employee Types:', this.employeeTypes);
-    });
-    this.dataService.getAllDesignations().subscribe(data => {
-      this.designationsList = data;
-      console.log('Designation:', this.employeeTypes);
-    });
-    this.dataService.getAllEmployeeCategories().subscribe(data => {
-      this.employeeCategories = data;
-      console.log('Employee Categories:', this.employeeCategories);
-    });
-    this.dataService.getSchoolWithCity().subscribe(data => {
-      this.schoolNameWithCity = data;
-      console.log('Schoolname with city:', this.schoolNameWithCity);
-    });
-    this.dataService.getAllDistricts().subscribe(data => {
-      this.districts = data;
-      console.log('Districts:', this.districts);
-    });
-    this.dataService.getAllCourses().subscribe(data => {
-      this.allEducationTypes = data;
-      console.log('All Education Types:', this.allEducationTypes);
-    });
-    if (this.educationTypeId) {
-      this.dataService.getCoursesByEducationType(this.educationTypeId).subscribe(data => {
-        this.coursesByEducation = data;
-        console.log('Courses by Education:', this.coursesByEducation);
-      });
-    }
-    this.dataService.getAllCities().subscribe(data => {
-      this.cities = data;
-      console.log('Cities:', this.cities);
-    });
-    this.dataService.getAllCasteCategories().subscribe(data => {
-      this.casteCategories = data;
-      console.log('Caste Categories:', this.casteCategories);
-    });
-    this.dataService.getAllBloodGroups().subscribe(data => {
-      this.bloodGroups = data;
-      console.log('Blood Groups:', this.bloodGroups);
-    });
-    this.dataService.getAllApprovalTypes().subscribe(data => {
-      this.approvalTypes = data;
-      console.log('Approval Types:', this.approvalTypes);
-    });
+
 
   }
 
   addCourse() {
     debugger
-
     const courseGroup = this.fb.group({
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
@@ -594,7 +639,7 @@ export class AddTeacherComponent implements OnInit {
     (this.educationForm.get('educations') as FormArray).push(courseGroup);
 
 
-    
+
   }
 
 
@@ -609,6 +654,7 @@ export class AddTeacherComponent implements OnInit {
       this.detailViewForm = formData
     }
   }
+
   toggleSidebar() {
     this.isSidebarClosed = !this.isSidebarClosed;
   }
@@ -622,35 +668,7 @@ export class AddTeacherComponent implements OnInit {
     }
   }
 
-  // saveAndContinue() {
-  //   debugger
-  //   let currentForm: FormGroup;
-  //   switch (this.currentStep) {
-  //     case 1:
-  //       currentForm = this.personalDetailsForm;
-  //       break;
-  //     case 2:
-  //       currentForm = this.educationForm;
-  //       break;
-  //     case 3:
-  //       currentForm = this.professionalForm;
-  //       break;
-  //     default:
-  //       currentForm = this.detailViewForm;
-  //       break;
-  //   }
-  //   if (currentForm) {
-  //     if (this.currentStep < this.steps.length) {
-  //       this.currentStep++;
-  //       this.onSubmit();
-  //     } else {
-  //       this.onSubmit();
-  //       console.log('step execute');
-  //     }
-  //   } else {
-  //     console.log('Form is invalid. Please check your inputs.');
-  //   }
-  // }
+
 
   saveAndContinue() {
     debugger
@@ -704,7 +722,7 @@ export class AddTeacherComponent implements OnInit {
       DocumentID: parseInt(edu.certificate?.documentID) || null
     }));
 
-    let data:any= {
+    let data: any = {
       pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
       firstName: this.fullFormData.firstName ? this.fullFormData.firstName : "",
       lastName: this.fullFormData.lastName ? this.fullFormData.lastName : "",
@@ -731,7 +749,7 @@ export class AddTeacherComponent implements OnInit {
       maritalStatusID: parseInt(this.fullFormData.maritalStatus.maritalStatusID),
       spouseName: this.fullFormData.spousesName ? this.fullFormData.spousesName : "",
       spouseReligionID: parseInt(this.fullFormData.spousesReligion.religionID),
-      // statusID: 1,
+      statusID: 1,
       spouseCaste: this.fullFormData.spousesCaste ? this.fullFormData.spousesCaste : "",
       panID: this.fullFormData.pan,
       voterID: this.fullFormData.voterId ? this.fullFormData.voterId : "",
@@ -748,12 +766,12 @@ export class AddTeacherComponent implements OnInit {
       // schoolTypeID: parseInt(this.fullFormData.schoolTypeID),
       // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
       // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
-      documentID: parseInt(this.fullFormData.documentID),
+      // documentID: parseInt(this.fullFormData.documentID),
       EligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
       ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
       // trainingAttended: Boolean(this.fullFormData.trainingAttended),
       designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
-      subjectID: parseInt(this.fullFormData.subject.subjectID),
+      // subjectID: parseInt(this.fullFormData.subject.subjectID),
       // employeeTypeID: this.fullFormData.employeeType ? parseInt(this.fullFormData.employeeType.employeeTypeID) : null,
       dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.fromDate),
       dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
@@ -762,28 +780,29 @@ export class AddTeacherComponent implements OnInit {
       PhotoID: parseInt(this.fullFormData.photoId.photoId),
     }
 
-    if(this.isEdited){
+    if (this.isEdited) {
       debugger
-      const employeeId:number=Number(this.employeeId)
-      this.dataService.updateTeacher(data,employeeId).subscribe(
-        (response) => {
+      const employeeId: number = Number(this.employeeId)
+      this.nonTeacherService.updateTeacher(data, employeeId).subscribe(
+        (response: any) => {
           debugger
           console.log('Employee Updated successfully:', response);
-          if (response.status=== 200) {
+          if (response.status===200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
             console.log(response.employeeID);
             window.alert("Teacher Updated Successfully")
-            this.router.navigate(['/teachers/teacher-list'])
-  
+            this.router.navigate(['/non-teachers/non-teacher-list'])
+
+
           } else {
             window.alert("Teacher Update Failed")
             this.currentStep = 1
           }
-  
+
         },
-        (error) => {
+        (error: any) => {
           debugger
           window.alert("Somthing Went Wrong")
           console.error(error);
@@ -791,27 +810,27 @@ export class AddTeacherComponent implements OnInit {
         }
       );
 
-    }else{
+    } else {
       debugger
-      this.dataService.addTeacher(data).subscribe(
-        (response) => {
+      this.nonTeacherService.addTeacher(data).subscribe(
+        (response: any) => {
           debugger
           console.log('Employee added successfully:', response);
-          if (response.employeeID) {
+          if (response.status===200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
             console.log(response.employeeID);
             window.alert("Teacher Added Successfully")
-            this.router.navigate(['/teachers/teacher-list'])
-  
+            this.router.navigate(['/non-teachers/non-teacher-list'])
+
           } else {
             window.alert("Teacher Add Failed")
             this.currentStep = 1
           }
-  
+
         },
-        (error) => {
+        (error: any) => {
           debugger
           window.alert("Somthing Went Wrong")
           console.error(error);
@@ -822,7 +841,7 @@ export class AddTeacherComponent implements OnInit {
 
 
 
-   
+
   }
 
   onSubmit(): void {
@@ -836,114 +855,21 @@ export class AddTeacherComponent implements OnInit {
         formData = {
           ...formData,
           ...personalDetails
-          // pen: personalDetails.permanentEmployeeNumber ? personalDetails.permanentEmployeeNumber : "",
-          // firstName: personalDetails.firstName ? personalDetails.firstName : "",
-          // lastName: personalDetails.lastName ? personalDetails.lastName : "",
-          // email: personalDetails.email ? personalDetails.email : "",
-          // phone: personalDetails.phone ? personalDetails.phone : "",
-          // presentAddress: personalDetails.currentAddress ? personalDetails.currentAddress : "",
-          // permanentAddress: personalDetails.permanentAddress ? personalDetails.permanentAddress : "",
-          // dateOfBirth: this.dataService.formatDateToISO(personalDetails.dob),
-          // sexID: parseInt(personalDetails.sex),
-          // religionID: parseInt(personalDetails.religion),
-          // casteID: parseInt(personalDetails.category),
-          // caste: personalDetails.caste ? personalDetails.caste : "",
-          // bloodGroupID: parseInt(personalDetails.bloodGroup),
-          // rationID: personalDetails.rationCardNumber,
-          // differentlyAbled: Boolean(personalDetails.whetherDifferentlyAbled),
-          // exServiceMen: Boolean(personalDetails.exServicemen),
-          // aadhaarID: personalDetails.aadharId ? personalDetails.aadharId : "",
-          // identificationMark1: personalDetails.identificationMarksOne ? personalDetails.identificationMarksOne : "",
-          // identificationMark2: personalDetails.identificationMarksTwo ? personalDetails.identificationMarksTwo : "",
-          // height: personalDetails.height ? personalDetails.height : "",
-          // fatherName: personalDetails.fathersName ? personalDetails.fathersName : "",
-          // motherName: personalDetails.mothersName ? personalDetails.mothersName : "",
-          // interReligion: Boolean(personalDetails.interReligion),
-          // maritalStatusID: parseInt(personalDetails.maritalStatus),
-          // spouseName: personalDetails.spousesName ? personalDetails.spousesName : "",
-          // spouseReligion: parseInt(personalDetails.spousesReligion),
-          // statusID: 1,
-          // spouseCaste: personalDetails.spousesCaste ? personalDetails.spousesCaste : "",
-          // panID: personalDetails.pan,
-          // voterID: personalDetails.voterId ? personalDetails.voterId : "",
-          // educations: null,
-          // departmentID: null,
-          // districtID: null,
-          // pfNummber: null,
-          // pran: null,
-          // dateOfJoin: null,
-          // dateOfJoinDepartment: null,
-          // categoryID: null,
-          // schoolTypeID: null,
-          // fromDate: null,
-          // toDate: null,
-          // documentID: null,
-          // eligibilityTestQualified: null,
-          // trainingAttended: null,
-          // designationID: null,
-          // subjectID: null,
-          // employeeTypeID: null,
-          // hireDate: null,
-          // workStartDate: null,
-          // retireDate: null,
-          // promotionEligible: null
+
         };
       }
 
       if (this.educationForm.valid) {
-        // formData.educations = educationDetails.educations.map((edu: any) => ({
-        //   educationTypeID: parseInt(edu.educationType.courseID),
-        //   courseID: parseInt(edu.courseName.courseID),
-        //   schoolName: edu.schoolName,
-        //   fromDate: this.dataService.formatDateToISO(edu.fromDate),
-        //   toDate: this.dataService.formatDateToISO(edu.toDate),
-        //   certificate: edu.certificate || ""
-        // }));
         formData.educations = educationDetails.educations
-
       }
-      console.log("after sec", formData)
+
 
       if (this.professionalForm.valid) {
         formData = {
           ...formData,
           ...professionalDetails
-          // departmentID: parseInt(professionalDetails.department.employeeTypeID),
-          // districtID: parseInt(professionalDetails.district.districtID),
-          // pfNummber: professionalDetails.pfNumber,
-          // pran: professionalDetails.pran,
-          // dateOfJoin: this.dataService.formatDateToISO(professionalDetails.dateOfJoin),
-          // dateOfJoinDepartment: this.dataService.formatDateToISO(professionalDetails.dateOfJoinDepartment),
-          // categoryID: parseInt(professionalDetails.categoryID),
-          // schoolTypeID: parseInt(professionalDetails.schoolTypeID),
-          // fromDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-          // toDate: this.dataService.formatDateToISO(professionalDetails.toDate),
-          // documentID: parseInt(professionalDetails.documentID),
-          // eligibilityTestQualified: Boolean(professionalDetails.eligibilityTestQualified),
-          // trainingAttended: Boolean(professionalDetails.trainingAttended),
-          // designationID: professionalDetails.designation ? parseInt(professionalDetails.designation.designationID) : null,
-          // subjectID: parseInt(professionalDetails.subject.subjectID),
-          // employeeTypeID: professionalDetails.employeeType ? parseInt(professionalDetails.employeeType.employeeTypeID) : null,
-          // hireDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-          // workStartDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-          // retireDate: this.dataService.formatDateToISO(professionalDetails.toDate),
-          // promotionEligible: Boolean(professionalDetails.promotionEligible),
+
         };
-
-        // this.dataService.addTeacher(formData).subscribe(
-        //   (response) => {
-        //     console.log('Employee added successfully:', response);
-        //     if (response.employeeID) {
-        //       console.log(response.employeeID);
-
-        //     }
-
-        //   },
-        //   (error) => {
-        //     console.error(error);
-        //   }
-        // );
-
       }
 
       this.fullFormData = formData
@@ -952,11 +878,11 @@ export class AddTeacherComponent implements OnInit {
   }
 
 
-  uploadPhoto(teacherId: number, photo: File) {
-    this.dataService.uploadPhoto(teacherId, photo).subscribe(response => {
-      console.log(response);
-    })
-  }
+  // uploadPhoto(teacherId: number, photo: File) {
+  //   this.dataService.uploadPhoto(teacherId, photo).subscribe(response => {
+  //     console.log(response);
+  //   })
+  // }
 
   filterEmptyFields(obj: Record<string, any>): Record<string, any> {
     const filteredObj: Record<string, any> = {};
@@ -971,126 +897,7 @@ export class AddTeacherComponent implements OnInit {
     return filteredObj;
   }
 
-  // onSubmit(): void {
-  //   let formData: any = {};
-  //   debugger
-  //   if (this.personalDetailsForm) {
-  //     const personalDetails = this.personalDetailsForm.value;
-  //     const educationDetails = this.educationForm.value;
-  //     const professionalDetails = this.professionalForm.value;
-  //     if (personalDetails) {
-  //       formData = {
-  //         ...formData,
-  //         pen: personalDetails.permanentEmployeeNumber ? personalDetails.permanentEmployeeNumber : "",
-  //         firstName: personalDetails.firstName ? personalDetails.firstName : "",
-  //         lastName: personalDetails.lastName ? personalDetails.lastName : "",
-  //         email: personalDetails.email ? personalDetails.email : "",
-  //         phone: personalDetails.phone ? personalDetails.phone : "",
-  //         presentAddress: personalDetails.currentAddress ? personalDetails.currentAddress : "",
-  //         permanentAddress: personalDetails.permanentAddress ? personalDetails.permanentAddress : "",
-  //         dateOfBirth: this.dataService.formatDateToISO(personalDetails.dob),
-  //         sexID: parseInt(personalDetails.sex),
-  //         religionID: parseInt(personalDetails.religion),
-  //         casteID: parseInt(personalDetails.category),
-  //         caste: personalDetails.caste ? personalDetails.caste : "",
-  //         bloodGroupID: parseInt(personalDetails.bloodGroup),
-  //         rationID: personalDetails.rationCardNumber,
-  //         differentlyAbled: Boolean(personalDetails.whetherDifferentlyAbled),
-  //         exServiceMen: Boolean(personalDetails.exServicemen),
-  //         aadhaarID: personalDetails.aadharId ? personalDetails.aadharId : "",
-  //         identificationMark1: personalDetails.identificationMarksOne ? personalDetails.identificationMarksOne : "",
-  //         identificationMark2: personalDetails.identificationMarksTwo ? personalDetails.identificationMarksTwo : "",
-  //         height: personalDetails.height ? personalDetails.height : "",
-  //         fatherName: personalDetails.fathersName ? personalDetails.fathersName : "",
-  //         motherName: personalDetails.mothersName ? personalDetails.mothersName : "",
-  //         interReligion: Boolean(personalDetails.interReligion),
-  //         maritalStatusID: parseInt(personalDetails.maritalStatus),
-  //         spouseName: personalDetails.spousesName ? personalDetails.spousesName : "",
-  //         spouseReligion: parseInt(personalDetails.spousesReligion),
-  //         statusID: 1,
-  //         spouseCaste: personalDetails.spousesCaste ? personalDetails.spousesCaste : "",
-  //         panID: personalDetails.pan,
-  //         voterID: personalDetails.voterId ? personalDetails.voterId : "",
-  //         educations: null,
-  //         departmentID: null,
-  //         districtID: null,
-  //         pfNummber: null,
-  //         pran: null,
-  //         dateOfJoin: null,
-  //         dateOfJoinDepartment: null,
-  //         categoryID: null,
-  //         schoolTypeID: null,
-  //         fromDate: null,
-  //         toDate: null,
-  //         documentID: null,
-  //         eligibilityTestQualified: null,
-  //         trainingAttended: null,
-  //         designationID: null,
-  //         subjectID: null,
-  //         employeeTypeID: null,
-  //         hireDate: null,
-  //         workStartDate: null,
-  //         retireDate: null,
-  //         promotionEligible: null
-  //       };
-  //     }
 
-  //     if (this.educationForm.valid) {
-  //       formData.educations = educationDetails.educations.map((edu: any) => ({
-  //         educationType: parseInt(edu.educationType),
-  //         courseName: edu.courseName,
-  //         schoolName: edu.schoolName,
-  //         fromDate: this.dataService.formatDateToISO(edu.fromDate),
-  //         toDate: this.dataService.formatDateToISO(edu.toDate),
-  //         certificate: edu.certificate || ""
-  //       }));
-  //     }
-  //     console.log("after sec", formData)
-
-  //     if (this.professionalForm.valid) {
-  //       formData = {
-  //         ...formData,
-  //         departmentID: parseInt(professionalDetails.department),
-  //         districtID: parseInt(professionalDetails.district),
-  //         pfNummber: professionalDetails.pfNumber,
-  //         pran: professionalDetails.pran,
-  //         dateOfJoin: this.dataService.formatDateToISO(professionalDetails.dateOfJoin),
-  //         dateOfJoinDepartment: this.dataService.formatDateToISO(professionalDetails.dateOfJoinDepartment),
-  //         categoryID: parseInt(professionalDetails.categoryID),
-  //         schoolTypeID: parseInt(professionalDetails.schoolTypeID),
-  //         fromDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-  //         toDate: this.dataService.formatDateToISO(professionalDetails.toDate),
-  //         documentID: parseInt(professionalDetails.documentID),
-  //         eligibilityTestQualified: Boolean(professionalDetails.eligibilityTestQualified),
-  //         trainingAttended: Boolean(professionalDetails.trainingAttended),
-  //         designationID: professionalDetails.designation ? parseInt(professionalDetails.designation) : null,
-  //         subjectID: parseInt(professionalDetails.subject),
-  //         employeeTypeID: professionalDetails.employeeType ? parseInt(professionalDetails.employeeType) : null,
-  //         hireDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-  //         workStartDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-  //         retireDate: this.dataService.formatDateToISO(professionalDetails.toDate),
-  //         promotionEligible: Boolean(professionalDetails.promotionEligible),
-  //       };
-
-  //       // this.dataService.addTeacher(formData).subscribe(
-  //       //   (response) => {
-  //       //     console.log('Employee added successfully:', response);
-  //       //     if (response.employeeID) {
-  //       //       console.log(response.employeeID);
-
-  //       //     }
-
-  //       //   },
-  //       //   (error) => {
-  //       //     console.error(error);
-  //       //   }
-  //       // );
-
-  //     }
-  //     console.log('formData:', formData);
-
-  //   }
-  // }
 
   onCancel() {
     this.router.navigate(['teachers/teacher-list']);
@@ -1098,4 +905,5 @@ export class AddTeacherComponent implements OnInit {
   editBtnClickFromPreview() {
     this.currentStep = 1
   }
+
 }
