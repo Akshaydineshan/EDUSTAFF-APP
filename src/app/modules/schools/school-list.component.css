@@ -1,1 +1,74 @@
-/*# sourceMappingURL=school-list.component.css.map */
+.popup-teacher-info {
+  position: fixed;
+  background-color: white;
+  padding: 15px;
+  border: 1px solid #f1eeee;
+  border-radius: 4px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  width: 398px;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-photo {
+  width: 59px;
+  height: 59px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.popup-title .p-s {
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 8px;
+  text-align: left;
+}
+.popup-title .p-a {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 4px;
+  text-align: left;
+}
+.popup-title .p-e,
+.popup-title .p-m {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 4px;
+  text-align: left;
+}
+
+.line {
+  margin: 0 -16px;
+}
+
+.popup-body .p-p {
+  font-family: Inter;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16px;
+  text-align: left;
+}
+.popup-body .val {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: left;
+  color: #246CC1;
+}
+
+.popup-body .p-a {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: left;
+}/*# sourceMappingURL=school-list.component.css.map */

@@ -359,7 +359,7 @@ export class AddTeacherComponent implements OnInit {
       this.statuses = results.statuses;
       this.schools = results.schools;
 
-      this.employeeTypes = results.employeeTypes;
+      this.employeeTypes = results.employeeTypes.filter((item:any)=> item.employeeTypeID === 2 );;
       this.designationsList = results.designations;
       this.employeeCategories = results.employeeCategories;
       this.schoolNameWithCity = results.schoolNameWithCity;
@@ -529,7 +529,7 @@ export class AddTeacherComponent implements OnInit {
       console.log('Genders:', this.genders);
     });
     this.dataService.getAllEmployeeTypes().subscribe(data => {
-      this.employeeTypes = data;
+      this.employeeTypes = data.filter((item:any)=> item.employeeTypeID === 1 );
       console.log('Employee Types:', this.employeeTypes);
     });
     this.dataService.getAllDesignations().subscribe(data => {

@@ -285,6 +285,53 @@ export class TeacherListComponent implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
+ 
+
+  toggleFilterDropdown() {
+    this.showFilterModal = !this.showFilterModal;
+  }
+
+  applyFilters() {
+    const filters = this.filterForm.value;
+
+    this.dataService.filterTeacherList(filters).subscribe((data: any) => {
+      this.teacherList = data.map((teacher: TeacherDocument) => ({
+        ...teacher,
+        documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
+      }));
+      this.teacherTableRows = this.teacherList;
+      this.updatePaginatedData();
+      this.showFilterModal = false;
+    });
+  }
+
+  resetFilter() {
+    this.filterForm.reset({
+      subjectFilter: [''],
+      retiringInMonths: [],
+      schoolNameFilter: [''],
+      documents: [false],
+      minExperienceYear: [0],
+      maxExperienceYear: [100],
+      // ExperienceYear: [],
+      newRecruit: [false]
+    });
+    this.loadTeachersList();
+  }
+
+
+
+  get getTeacherImage() {
+    debugger
+    let result = '';
+    
+    if (this.API_BASE_IMAGE && this.selectedTeacher?.photo && this.selectedTeacher?.photo !== 'null') {
+      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
+
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
     this.selectedTeacher=null
     this.teacherId = teacherId;
@@ -364,51 +411,6 @@ export class TeacherListComponent implements OnInit {
     }
   }
 
-  toggleFilterDropdown() {
-    this.showFilterModal = !this.showFilterModal;
-  }
-
-  applyFilters() {
-    const filters = this.filterForm.value;
-
-    this.dataService.filterTeacherList(filters).subscribe((data: any) => {
-      this.teacherList = data.map((teacher: TeacherDocument) => ({
-        ...teacher,
-        documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
-      }));
-      this.teacherTableRows = this.teacherList;
-      this.updatePaginatedData();
-      this.showFilterModal = false;
-    });
-  }
-
-  resetFilter() {
-    this.filterForm.reset({
-      subjectFilter: [''],
-      retiringInMonths: [],
-      schoolNameFilter: [''],
-      documents: [false],
-      minExperienceYear: [0],
-      maxExperienceYear: [100],
-      // ExperienceYear: [],
-      newRecruit: [false]
-    });
-    this.loadTeachersList();
-  }
-
-
-
-  get getTeacherImage() {
-    debugger
-    let result = '';
-    
-    if (this.API_BASE_IMAGE && this.selectedTeacher?.photo && this.selectedTeacher?.photo !== 'null') {
-      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
-    }
-    // If the result is an empty string, it will fallback to emptyImage in the template
-    return result;
-  }
-
 
   rowMouseHover(event: any) {
     debugger
@@ -433,6 +435,15 @@ export class TeacherListComponent implements OnInit {
     // }
 
   }
+  
+  get getschoolImage() {
+    let result = '';
+    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
   onCellClicked(event:any){
     debugger
   
@@ -446,13 +457,5 @@ export class TeacherListComponent implements OnInit {
   
   }
 
-  get getschoolImage() {
-    let result = '';
-    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
-    }
-    // If the result is an empty string, it will fallback to emptyImage in the template
-    return result;
-  }
 
 }

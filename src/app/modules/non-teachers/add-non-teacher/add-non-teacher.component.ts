@@ -92,7 +92,7 @@ export class AddNonTeacherComponent {
     //   educations: this.fb.array([])
     // });
     this.professionalForm = this.fb.group({
-      department: [ {employeeTypeID: 2, employeeTypeName: 'Non-Teaching Staff'}, [Validators.required, Validators.maxLength(50)]],
+      department: [ '', [Validators.required, Validators.maxLength(50)]],
       district: ['', [Validators.required, Validators.maxLength(50)]],
       serviceCategory: [''],
       // employeeType: ['', Validators.required],
@@ -114,6 +114,7 @@ export class AddNonTeacherComponent {
     },
       //  { validators: dateRangeValidator('startDate', 'endDate') }
     );
+   
 
     this.educationForm = this.fb.group({
       educations: this.fb.array([]) // Initialize as empty array
@@ -602,6 +603,7 @@ export class AddNonTeacherComponent {
         this.maritalStatuses = data.maritalStatuses;
         this.genders = data.genders;
         this.employeeTypes = data.employeeTypes.filter((item:any)=> item.employeeTypeID === 2 );
+      
         this.designationsList = data.designations;
         this.employeeCategories = data.employeeCategories;
         this.schoolNameWithCity = data.schoolNameWithCity;
@@ -617,6 +619,9 @@ export class AddNonTeacherComponent {
       error: (err: any) => {
         console.error('Failed to load dropdown data:', err);
 
+      },
+      complete:()=>{
+        // this.professionalForm.get('department')?.patchValue({employeeTypeID: 2, employeeTypeName: 'Non-Teaching Staff'});
       }
     });
 
