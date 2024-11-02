@@ -95,7 +95,7 @@ export class DataService {
     // return this.schoolDataCache.asObservable();
   }
   private fetchSchoolData(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl + 'School').pipe(
+    return this.http.get<any[]>(this.apiUrl + 'School/GetOpenSchoolsList').pipe(
       tap(data => this.schoolDataCache.next(data)),
       catchError(error => {
         console.error('Error fetching school data:', error);

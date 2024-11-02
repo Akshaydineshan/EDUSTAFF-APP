@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { ColDef } from 'ag-grid-community';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -15,11 +16,12 @@ interface PagonationConfig {
 })
 export class SchoolListComponent implements OnInit {
   isSidebarClosed = false;
-  displayColumns: string[] = [ 'schoolName', 'address', 'cityName', 'state', 'pincode', 'email', 'contactNumber', 'principalName', 'vicePrincipalName'];
+  displayColumns: any[] = [ {headerName:'SchoolName',field:'name'}, {headerName:'Type',field:'type'},{headerName:'Contact No',field:'contact'},{headerName:'Principal (HM)',field:'principal'},{headerName:'No of Teachers',field:'noOfTeachers'},{headerName:'No of Students',field:'noOfStudents'} ];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   schoolList: any[] = [];
   schoolTableRows: any;
-  schoolTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
+  schoolTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];   
+
   apiUrl = environment.imageBaseUrl;
   showSchoolPopup: boolean = false;
   selectedSchool: any;
@@ -69,11 +71,14 @@ export class SchoolListComponent implements OnInit {
         console.log("school list data",this.schoolList);
         this.schoolTableRows = this.schoolList
         this.schoolTableColumns = this.displayColumns.map((column) => ({
-          field: column,
+          headerName:column.headerName,
+          field: column.field,
           filter: true,
           floatingFilter:  column === 'schoolName', // For example, only these columns have floating filters
 
         }));
+
+
 
       },
       (error) => {
@@ -170,23 +175,24 @@ export class SchoolListComponent implements OnInit {
 
 
   rowMouseHover(event: any) {
-
+  console.log("EVENT",event)
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-    if (event.colDef.field === "principalName") {
+    if (event.colDef.field === "principal") {
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
-    } else if (event.colDef.field === "schoolName") {
-      this.onSchoolHover(rowData.schoolID, rowData, event.event)
+    } else if (event.colDef.field === "name") {
+
+      this.onSchoolHover(rowData.schoolId, rowData, event.event)
 
     }
   }
   rowMouseHoverOut(event: any) {
-    if (event.colDef.field === "principalName") {
+    // if (event.colDef.field === "principalName") {
       this.onTeacherMouseOut()
-    } else if (event.colDef.field === "schoolName") {
+    // } else if (event.colDef.field === "name") {
       this.onSchoolMouseOut()
 
-    }
+    // }
 
   }
 

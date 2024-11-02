@@ -17,11 +17,7 @@ export class AddSchoolComponent implements OnInit {
   schoolDetailsForm!: FormGroup;
   submitted: boolean = false; //  form submit flag in your component
 
-  schoolTypes: any[] = [
-    { schoolTypeID: 1, schoolTypeName: "schoolType1" },
-    { schoolTypeID: 2, schoolTypeName: "schoolType2" },
-    { schoolTypeID: 3, schoolTypeName: "schoolType3" }
-  ]
+  schoolTypes: any[] =[]
   cities: any[] = [
     { cityID: 1, cityName: "dhfgdfh" }
   ]
