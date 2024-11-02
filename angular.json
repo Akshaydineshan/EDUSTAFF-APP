@@ -40,7 +40,8 @@
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "ag-grid-community/styles/ag-grid.css",
               "ag-grid-community/styles/ag-theme-quartz.css",
-               "src/styles.scss"
+               "src/styles.scss",
+               "node_modules/ngx-toastr/toastr.css" 
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

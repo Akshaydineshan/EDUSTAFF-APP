@@ -2,6 +2,7 @@ import { NonTeacherService } from './../non-teacher.service';
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
@@ -53,7 +54,7 @@ export class AddNonTeacherComponent {
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute,
-    private nonTeacherService:NonTeacherService
+    private nonTeacherService:NonTeacherService,private toastr:ToastrService
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
@@ -796,20 +797,36 @@ export class AddNonTeacherComponent {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
-            console.log(response.employeeID);
-            window.alert("Teacher Updated Successfully")
+           
+            this.toastr.success('Employee Updated', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.router.navigate(['/non-teachers/non-teacher-list'])
 
 
           } else {
-            window.alert("Teacher Update Failed")
+            this.toastr.error('Employee Update !', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.currentStep = 1
           }
 
         },
         (error: any) => {
           debugger
-          window.alert("Somthing Went Wrong")
+        
+          this.toastr.error('Somthing Went Wrong !', 'Failed', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
           console.error(error);
           this.currentStep = 1
         }
@@ -825,19 +842,34 @@ export class AddNonTeacherComponent {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
-            console.log(response.employeeID);
-            window.alert("Teacher Added Successfully")
+          
+            this.toastr.success('Employee Added', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.router.navigate(['/non-teachers/non-teacher-list'])
 
           } else {
-            window.alert("Teacher Add Failed")
+            this.toastr.error('Employee Add !', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.currentStep = 1
           }
 
         },
         (error: any) => {
           debugger
-          window.alert("Somthing Went Wrong")
+          this.toastr.error('Somthing Went Wrong !', 'Failed', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
           console.error(error);
           this.currentStep = 1
         }

@@ -14,6 +14,7 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
 import { MaterialSpinnerComponent } from './material-spinner/material-spinner.component';
 import { AlertComponent } from './components/alerts/alert/alert.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { AlertComponent } from './components/alerts/alert/alert.component';
     CommonModule,
     SharedRoutingModule,
     AgGridAngular,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    ToastrModule.forRoot(),
   ],
   exports: [
     TopbarComponent,

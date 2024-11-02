@@ -5,6 +5,7 @@ import { Teacher, TeacherDocument, TransferRequest } from 'src/app/core/models/t
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -65,7 +66,7 @@ export class TeacherListComponent implements OnInit {
 
   API_BASE_IMAGE:any=environment.imageBaseUrl
 
-  constructor(private fb: FormBuilder, private dataService: DataService,private router:Router) {
+  constructor(private fb: FormBuilder, private dataService: DataService,private router:Router,private toastr: ToastrService) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -199,6 +200,7 @@ export class TeacherListComponent implements OnInit {
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
         }));
+ 
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
         { field: "name", filter: true, floatingFilter: true,

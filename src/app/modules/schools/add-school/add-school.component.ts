@@ -5,6 +5,7 @@ import { SchoolData } from '../models/add-school';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-school',
@@ -25,7 +26,7 @@ export class AddSchoolComponent implements OnInit {
     { cityID: 1, cityName: "dhfgdfh" }
   ]
 
-  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService,private router:Router) {
+  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService,private router:Router,private toastr:ToastrService) {
 
   }
 
@@ -90,11 +91,23 @@ export class AddSchoolComponent implements OnInit {
             // Reset form and submitted flag if needed
             this.schoolDetailsForm.reset();
             this.submitted = false;
+            this.toastr.success('School Added !', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             
             this.router.navigate(['/schools/school-list'])
           },
           error: (err) => {
             console.error('Error adding school:', err);
+            this.toastr.error('Teacher Add', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
           },
           complete: () => {
             console.log('Request complete');

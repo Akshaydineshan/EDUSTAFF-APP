@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
@@ -54,6 +55,7 @@ export class AddTeacherComponent implements OnInit {
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute,
+    private toastr: ToastrService
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
@@ -141,7 +143,7 @@ export class AddTeacherComponent implements OnInit {
         this.personalDetailsForm.disable()
         this.educationForm.disable()
         this.loadEmployeeData(this.employeeId);
-       
+
       }
     });
     if (coursesArray.length === 0) {
@@ -162,13 +164,13 @@ export class AddTeacherComponent implements OnInit {
       next: (response) => {
         if (response) {
           console.log(response)
-           this.employee = response
+          this.employee = response
           this.setValuesForEdit()
         }
 
       },
       error: (error) => {
-        this.router.navigate(['teachers/view-teacher',this.employeeId])
+        this.router.navigate(['teachers/view-teacher', this.employeeId])
 
       },
       complete: () => {
@@ -182,7 +184,7 @@ export class AddTeacherComponent implements OnInit {
     this.patchPersonalFormData()
     this.patchEducationFormData()
     this.patchExpForm();
- 
+
   }
 
   patchPersonalFormData() {
@@ -235,8 +237,8 @@ export class AddTeacherComponent implements OnInit {
         panID: this.employee.panID,
         voterID: this.employee.voterID,
         pen: this.employee.pen,
-        photoPath:this.employee.photopath,
-        photoId:this.employee.photoID
+        photoPath: this.employee.photopath,
+        photoId: this.employee.photoID
       };
 
 
@@ -274,7 +276,7 @@ export class AddTeacherComponent implements OnInit {
         spousesName: personalData.spouseName,
         spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionID === personalData.spouseReligionID) : '',
         spousesCaste: personalData.spouseCaste,
-        photoId:{photoId:personalData.photoId,photoImageName:personalData.photoPath}
+        photoId: { photoId: personalData.photoId, photoImageName: personalData.photoPath }
 
       });
 
@@ -296,12 +298,12 @@ export class AddTeacherComponent implements OnInit {
       this.educationForm.setControl('educations', this.fb.array(
         educationData.map((education: any) => this.fb.group({
           educationType: [this.allEducationTypes.find((item: any) => item.educationTypeID === education.educationTypeID)],
-          courseName: [{courseID:education.courseID,courseName:education.courseText}],
+          courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
           schoolName: [education.schoolName, Validators.required],
           fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
           toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
-          certificate: [{documentID:education.documentID,documentName:education.documentpath}]
+          certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
         },
           {
             validators: dateRangeValidator('fromDate', 'toDate')
@@ -359,7 +361,7 @@ export class AddTeacherComponent implements OnInit {
       this.statuses = results.statuses;
       this.schools = results.schools;
 
-      this.employeeTypes = results.employeeTypes.filter((item:any)=> item.employeeTypeID === 2 );;
+      this.employeeTypes = results.employeeTypes.filter((item: any) => item.employeeTypeID === 1);;
       this.designationsList = results.designations;
       this.employeeCategories = results.employeeCategories;
       this.schoolNameWithCity = results.schoolNameWithCity;
@@ -529,7 +531,7 @@ export class AddTeacherComponent implements OnInit {
       console.log('Genders:', this.genders);
     });
     this.dataService.getAllEmployeeTypes().subscribe(data => {
-      this.employeeTypes = data.filter((item:any)=> item.employeeTypeID === 1 );
+      this.employeeTypes = data.filter((item: any) => item.employeeTypeID === 1);
       console.log('Employee Types:', this.employeeTypes);
     });
     this.dataService.getAllDesignations().subscribe(data => {
@@ -594,7 +596,7 @@ export class AddTeacherComponent implements OnInit {
     (this.educationForm.get('educations') as FormArray).push(courseGroup);
 
 
-    
+
   }
 
 
@@ -704,7 +706,7 @@ export class AddTeacherComponent implements OnInit {
       DocumentID: parseInt(edu.certificate?.documentID) || null
     }));
 
-    let data:any= {
+    let data: any = {
       pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
       firstName: this.fullFormData.firstName ? this.fullFormData.firstName : "",
       lastName: this.fullFormData.lastName ? this.fullFormData.lastName : "",
@@ -762,36 +764,52 @@ export class AddTeacherComponent implements OnInit {
       PhotoID: parseInt(this.fullFormData.photoId.photoId),
     }
 
-    if(this.isEdited){
+    if (this.isEdited) {
       debugger
-      const employeeId:number=Number(this.employeeId)
-      this.dataService.updateTeacher(data,employeeId).subscribe(
+      const employeeId: number = Number(this.employeeId)
+      this.dataService.updateTeacher(data, employeeId).subscribe(
         (response) => {
           debugger
           console.log('Employee Updated successfully:', response);
-          if (response.status=== 200) {
+          if (response.status === 200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
             console.log(response.employeeID);
-            window.alert("Teacher Updated Successfully")
+
+            this.toastr.success('Teacher Updated !', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.router.navigate(['/teachers/teacher-list'])
-  
+
           } else {
-            window.alert("Teacher Update Failed")
+            this.toastr.error('Teacher Update !', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.currentStep = 1
           }
-  
+
         },
         (error) => {
           debugger
-          window.alert("Somthing Went Wrong")
+         this.toastr.error('Somthing Went Wrong !', 'Failed', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
           console.error(error);
           this.currentStep = 1
         }
       );
 
-    }else{
+    } else {
       debugger
       this.dataService.addTeacher(data).subscribe(
         (response) => {
@@ -802,18 +820,36 @@ export class AddTeacherComponent implements OnInit {
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
             console.log(response.employeeID);
-            window.alert("Teacher Added Successfully")
+
+            this.toastr.success('Teacher Added !', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+
             this.router.navigate(['/teachers/teacher-list'])
-  
+
           } else {
-            window.alert("Teacher Add Failed")
+
+            this.toastr.error('Teacher Add !', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
             this.currentStep = 1
           }
-  
+
         },
         (error) => {
           debugger
-          window.alert("Somthing Went Wrong")
+          this.toastr.error('Somthing Went Wrong !', 'Failed', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
           console.error(error);
           this.currentStep = 1
         }
@@ -822,7 +858,7 @@ export class AddTeacherComponent implements OnInit {
 
 
 
-   
+
   }
 
   onSubmit(): void {
