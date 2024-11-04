@@ -815,7 +815,7 @@ export class AddTeacherComponent implements OnInit {
         (response) => {
           debugger
           console.log('Employee added successfully:', response);
-          if (response.employeeID) {
+          if (response) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
