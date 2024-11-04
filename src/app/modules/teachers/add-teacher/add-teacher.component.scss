@@ -18,16 +18,32 @@
   list-style: none;
   position: relative;
 }
+.step-indicator ul  .item{
+  position: relative;
+}
 
-.step-indicator ul::before {
+
+
+
+// .step-indicator ul::before {
+//   content: '';
+//   position: absolute;
+//   top: 15px;
+//   left: 0;
+//   width: 100%;
+//   height: 2px;
+//   background-color: #e0e0e0;
+// }
+.step-indicator li:not(:last-child)  .item::before {
   content: '';
   position: absolute;
-  top: 15px;
-  left: 0;
   width: 100%;
   height: 2px;
+  bottom:39px;
+   max-width: 400px;
   background-color: #e0e0e0;
 }
+
 
 .step-indicator li {
   position: relative;

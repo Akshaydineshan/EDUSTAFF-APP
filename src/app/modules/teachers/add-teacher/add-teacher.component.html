@@ -3,8 +3,23 @@
 <div class="container" [class.shifted]="isSidebarClosed">
 
   <div class="container-fluid d-flex flex-column align-items-center" [class.shifted]="isSidebarClosed">
-    <div class="step-indicator mb-4">
+    <div class=" row step-indicator mb-4">
       <ul class="d-flex justify-content-between align-items-center p-0">
+        <li *ngFor="let step of steps; let i = index"
+          [ngClass]="{'active': currentStep === i + 1,  'completed': currentStep > i + 1 }">
+          <div class="item">
+            <div class="step-circle ">
+              <ng-container *ngIf="currentStep > i + 1; else stepNumber">
+                <span class="step-checkmark">✔</span>
+              </ng-container>
+              <ng-template #stepNumber>{{ i + 1 }}</ng-template>
+            </div>
+            <div class="step-text">{{ step }}</div>
+          </div>
+         
+        </li>
+      </ul>
+      <!-- <ul class="d-flex justify-content-between align-items-center p-0">
         <li *ngFor="let step of steps; let i = index"
           [ngClass]="{'active': currentStep === i + 1,  'completed': currentStep > i + 1 }">
           <div class="step-circle">
@@ -15,31 +30,37 @@
           </div>
           <div class="step-text">{{ step }}</div>
         </li>
-      </ul>
+      </ul> -->
+    </div>
+
+    <div class="sam">
+
     </div>
 
 
     <div *ngIf="currentStep === 1" class="step-page">
       <app-personal-details [(personalDetailsForm)]="personalDetailsForm!" [religions]="religions"
         [casteCategories]="casteCategories" [bloodGroups]="bloodGroups" [genders]="genders"
-        [maritalStatuses]="maritalStatuses"  [submitted]="submitBtnStatus.personal"></app-personal-details>
+        [maritalStatuses]="maritalStatuses" [submitted]="submitBtnStatus.personal"></app-personal-details>
     </div>
 
     <div *ngIf="currentStep === 2" class="step-page">
       <app-educational-details [(educationForm)]="educationForm!" [coursesByEducation]="coursesByEducation"
-        [allEducationTypes]="allEducationTypes"  [submitted]="submitBtnStatus.education"
+        [allEducationTypes]="allEducationTypes" [submitted]="submitBtnStatus.education"
         (educationFormChange)="onFormChange($event, 'educational')"></app-educational-details>
     </div>
 
     <div *ngIf="currentStep === 3" class="step-page">
       <app-professional-details [(professionalForm)]="professionalForm" [districts]="districts"
-        [employeeTypes]="employeeTypes" [employeeCategories]="employeeCategories"[schoolNameWithCity]="schoolNameWithCity" [subjects]="subjects" [designationList]="designationsList"
-        [approvalTypes]="approvalTypes"  [submitted]="submitBtnStatus.professional">
+        [employeeTypes]="employeeTypes" [employeeCategories]="employeeCategories"
+        [schoolNameWithCity]="schoolNameWithCity" [subjects]="subjects" [designationList]="designationsList"
+        [approvalTypes]="approvalTypes" [submitted]="submitBtnStatus.professional">
       </app-professional-details>
     </div>
 
     <div *ngIf="currentStep === 4 || currentStep === 5" class="step-page-summary">
-      <app-teacher-details  [showTopbarAndSidebar]="false" [fullFormData]="fullFormData" (EditBtnClickPreview)="editBtnClickFromPreview()"></app-teacher-details>
+      <app-teacher-details [showTopbarAndSidebar]="false" [fullFormData]="fullFormData"
+        (EditBtnClickPreview)="editBtnClickFromPreview()"></app-teacher-details>
     </div>
 
 

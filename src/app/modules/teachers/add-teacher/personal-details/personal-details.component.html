@@ -1,6 +1,36 @@
 <form [formGroup]="personalDetailsForm">
 
-    <div class="row mb-3">
+    <div class="row mb-3 d-flex align-items-center">
+        <label for="profileImage" class="col-sm-3 col-form-label  ">Profile Image</label>
+        <div class="col-sm-9 text-center">
+            <div class="row d-flex align-items-center">
+                <div class="col-sm-3"style="margin-right:-17px;" >
+                    <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
+                        class="rounded-circle" style="width: 80px; height: 80px;">
+                </div>
+                <div class="col-sm-2" style="margin-right:-16px;">
+                    <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*"
+                        style="display: none;" id="profileImageUpload">
+                    <button *ngIf="!personalDetailsForm.get('photoImageName')?.value" type="button"
+                        class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upload</button>
+                    <button *ngIf="personalDetailsForm.get('photoImageName')?.value" type="button"
+                        class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upgrade</button>
+                </div>
+
+                <div class="col-sm-3 p-0" >
+                    <button  type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">
+                        <i class="fas fa-trash-alt"></i> Remove</button>
+                </div>
+
+                <!-- <div class="mt-2"> -->
+
+                <!-- </div> -->
+
+            </div>
+
+        </div>
+    </div>
+    <!-- <div class="row mb-3">
         <label for="profileImage" class="col-sm-3 col-form-label ">Profile Image</label>
         <div class="col-sm-9 text-center">
             <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
@@ -15,7 +45,7 @@
                 <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">Remove</button>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="row mb-3">
         <label for="pen" class="col-sm-3 col-form-label">Permanent Employee Number (PEN)</label>
@@ -347,7 +377,8 @@
             </select>
             <div *ngIf="personalDetailsForm.get('whetherDifferentlyAbled')?.invalid && (personalDetailsForm.get('whetherDifferentlyAbled')?.dirty || personalDetailsForm.get('whetherDifferentlyAbled')?.touched)  || submitted"
                 class="text-danger">
-                <div *ngIf="personalDetailsForm.get('whetherDifferentlyAbled')?.errors?.['required']">Whether Differently Abled Status
+                <div *ngIf="personalDetailsForm.get('whetherDifferentlyAbled')?.errors?.['required']">Whether
+                    Differently Abled Status
                     is required.</div>
             </div>
         </div>
@@ -549,7 +580,8 @@
                         *ngIf="personalDetailsForm.get('spousesName')?.errors?.['maxlength']">Spouse's Name must not
                         exceed
                         50 characters.</small>
-                    <small class="text-danger" *ngIf="personalDetailsForm.get('spousesName')?.errors?.['required']">Spouse's Name is
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('spousesName')?.errors?.['required']">Spouse's Name is
                         required.</small>
                 </div>
             </div>
