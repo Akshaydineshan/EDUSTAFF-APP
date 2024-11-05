@@ -1,6 +1,6 @@
 <app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
 <app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
-<div class="container" [class.shifted]="isSidebarClosed">
+<div class="main-container " [class.shifted]="isSidebarClosed" [class.shifted]="isSidebarClosed">
 
   <div class="container-fluid d-flex flex-column align-items-center" [class.shifted]="isSidebarClosed">
     <div class=" row step-indicator mb-4">
