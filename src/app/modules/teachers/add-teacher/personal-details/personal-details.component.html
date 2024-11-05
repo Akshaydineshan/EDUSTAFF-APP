@@ -4,11 +4,11 @@
         <label for="profileImage" class="col-sm-3 col-form-label  ">Profile Image</label>
         <div class="col-sm-9 text-center">
             <div class="row d-flex align-items-center">
-                <div class="col-sm-3"style="margin-right:-17px;" >
+                <div class="col-sm-3"style="margin-right:-18px;" >
                     <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
                         class="rounded-circle" style="width: 80px; height: 80px;">
                 </div>
-                <div class="col-sm-2" style="margin-right:-16px;">
+                <div class="col-sm-2" style="margin-right:-39px;">
                     <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*"
                         style="display: none;" id="profileImageUpload">
                     <button *ngIf="!personalDetailsForm.get('photoImageName')?.value" type="button"

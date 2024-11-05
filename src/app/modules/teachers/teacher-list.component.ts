@@ -209,7 +209,9 @@ export class TeacherListComponent implements OnInit {
             field: "name", filter: true, floatingFilter: true,
             cellRenderer: (params: any) => `<a style="cursor: pointer; color: blue;" target="_blank">${params.value}</a>`
           },
-          { field: "schoolName", filter: true, floatingFilter: false },
+          { field: "schoolName", filter: true, floatingFilter: false,
+             cellRenderer: (params: any) => `<a style="cursor: pointer; color: blue;" target="_blank">${params.value}</a>`
+           },
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
           { field: "employeeType", filter: true, floatingFilter: false },
