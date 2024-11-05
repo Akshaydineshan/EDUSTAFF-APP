@@ -13,8 +13,9 @@
                                         <p class="mb-0 p-n ">{{currentTeacher.firstName + currentTeacher.lastName}}</p>
                                         <p class="text-muted mb-0 p-d mt-1">{{currentTeacher.departmentName}}</p>
                                         <p class="text-muted mb-0 p-a">
-                                                {{currentTeacher.schoolName?currentTeacher.schoolName + ",":""}}
-                                                {{currentTeacher.district?currentTeacher.district:""}}
+                                                {{currentTeacher.schoolDTO?.schoolName?currentTeacher.schoolDTO.schoolName
+                                                + ",":""}}
+                                                {{currentTeacher.districtDTO?.districtName?currentTeacher.districtDTO?.districtName:""}}
                                         </p>
                                 </div>
                         </div>
@@ -401,27 +402,31 @@
                                                 <li><strong class="field">PRAN<span class="ms-3">:</span></strong>
                                                         <span class="field-val">{{currentTeacher.pran}}</span>
                                                 </li> -->
-                                                <li *ngIf="currentTeacher.departmentName">
+                                                <li *ngIf="currentTeacher.department.employeeTypeName">
                                                         <strong class="field">Department:</strong>
-                                                        <span class="field-val">{{ currentTeacher.departmentName
+                                                        <span class="field-val">{{
+                                                                currentTeacher.department.employeeTypeName
                                                                 }}</span>
                                                 </li>
-                                                <li *ngIf="currentTeacher.district">
+                                                <li *ngIf="currentTeacher.districtDTO?.districtName">
                                                         <strong class="field">District:</strong>
-                                                        <span class="field-val">{{ currentTeacher.district }}</span>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.districtDTO?.districtName }}</span>
                                                 </li>
-                                                <li *ngIf="currentTeacher.designationName">
+                                                <li *ngIf="currentTeacher.designationDTO?.designationName">
                                                         <strong class="field">Designation:</strong>
-                                                        <span class="field-val">{{ currentTeacher.designationName
+                                                        <span class="field-val">{{
+                                                                currentTeacher.designationDTO?.designationName
                                                                 }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.employeeType">
                                                         <strong class="field">Employee Type:</strong>
                                                         <span class="field-val">{{ currentTeacher.employeeType }}</span>
                                                 </li>
-                                                <li *ngIf="currentTeacher.subjectName">
+                                                <li *ngIf="currentTeacher.getSubjectDTO?.subjectName ">
                                                         <strong class="field">Subject:</strong>
-                                                        <span class="field-val">{{ currentTeacher.subjectName }}</span>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.getSubjectDTO?.subjectName }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.pfNumber">
                                                         <strong class="field">PF Number:</strong>
@@ -455,14 +460,16 @@
 
                                                 <li><strong class="field">School Name <span
                                                                         class="ms-3">:</span></strong> <span
-                                                                class="field-val">{{currentTeacher.schoolName}}</span>
+                                                                class="field-val">{{currentTeacher.schoolDTO?.schoolName}}</span>
                                                 </li>
 
                                                 <li><strong class="field">Category <span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.categoryName}}</span>
+                                                        <span
+                                                                class="field-val">{{currentTeacher.getEmployeeCategoryDTO?.employeeCategoryName}}</span>
                                                 </li>
 
-                                                <li><strong class="field">Eligible Test Qualified <span
+                                                <li ><strong
+                                                                class="field">Eligible Test Qualified <span
                                                                         class="ms-3">:</span></strong> <span
                                                                 class="field-val">{{currentTeacher.eligibilityTestQualified
                                                                 ? "YES" : "NO"}}</span></li>

@@ -213,13 +213,13 @@ export class AddTeacherComponent implements OnInit {
         presentAddress: this.employee.presentAddress,
         permanentAddress: this.employee.permanentAddress,
         dateOfBirth: this.employee.dateOfBirth,
-        gender: this.employee.gender,
-        sexID: this.employee.sexID,
-        religionID: this.employee.religionID,
-        casteID: this.employee.casteID,
-        caste: this.employee.caste,
-        bloodName: this.employee.bloodName,
-        bloodGroupID: this.employee.bloodGroupID,
+        gender: this.employee.genderDTO,
+        sexID: this.employee.genderDTO.genderID,
+        religionID: this.employee.religionDTO?.religionID,
+        casteID: this.employee.casteCategoryDTO?.casteCategoryID,
+        caste: this.employee.casteName,
+        bloodName: this.employee.bloodGroupDTO?.bloodGroupName,
+        bloodGroupID: this.employee.bloodGroupDTO.bloodGroupID,
         rationID: this.employee.rationID,
         differentlyAbled: this.employee.differentlyAbled,
         exServiceMen: this.employee.exServiceMen,
@@ -230,7 +230,7 @@ export class AddTeacherComponent implements OnInit {
         fatherName: this.employee.fatherName,
         motherName: this.employee.motherName,
         interReligion: this.employee.interReligion,
-        maritalStatusID: this.employee.maritalStatusID,
+        maritalStatusID: this.employee.maritalStatusDTO.maritalStatusID,
         spouseName: this.employee.spouseName,
         spouseReligionID: this.employee.spouseReligionID,
         spouseCaste: this.employee.spouseCaste,
@@ -238,7 +238,7 @@ export class AddTeacherComponent implements OnInit {
         voterID: this.employee.voterID,
         pen: this.employee.pen,
         photoPath: this.employee.photopath,
-        photoId: this.employee.photoID
+        photoDetails: this.employee.photoDTO,
       };
 
 
@@ -276,7 +276,7 @@ export class AddTeacherComponent implements OnInit {
         spousesName: personalData.spouseName,
         spousesReligion: personalData.spouseReligionID ? this.religions.find(religion => religion.religionID === personalData.spouseReligionID) : '',
         spousesCaste: personalData.spouseCaste,
-        photoId: { photoId: personalData.photoId, photoImageName: personalData.photoPath }
+        photoId: { photoId: personalData.photoDetails?.photoID, photoImageName: personalData.photoDetails?.photoName }
 
       });
 
@@ -371,21 +371,21 @@ export class AddTeacherComponent implements OnInit {
 
       const professionalData = {
 
-        departmentID: this.employee.departmentID,
-        districtID: this.employee.districtID,
+        departmentID: this.employee.department.employeeTypeID,
+        districtID: this.employee.districtDTO.districtID,
         pfNummber: this.employee.pfNumber,
         pran: this.employee.pran,
-        SchoolID: this.employee.schoolID,
-        ApprovalTypeID: this.employee.approvalTypeID,
+        SchoolID: this.employee.schoolDTO?.schoolId,
+        ApprovalTypeID: this.employee.getApprovalTypeDTO?.approvalTypeID,
 
-        categoryID: this.employee.categoryID,
+        categoryID: this.employee.getEmployeeCategoryDTO?.employeeCategoryId,
 
         // documentID: parseInt(this.fullFormData.documentID),
         EligibilityTestQualified: this.employee.eligibilityTestQualified,
         ProtectedTeacher: this.employee.protectedTeacher,
 
-        designationID: this.employee.designationID,
-        subjectID: this.employee.subjectID,
+        designationID: this.employee.designationDTO?.designationID,
+        subjectID: this.employee.getSubjectDTO?.subjectID,
         // employeeTypeID: this.employee.departmentID,
         dateOfJoin: this.dataService.formatDateToLocal(this.employee.dateofJoin),
         dateOfJoinDepartment: this.dataService.formatDateToLocal(this.employee.dateofDepartmentJoin),
@@ -434,7 +434,7 @@ export class AddTeacherComponent implements OnInit {
 
     this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
 
-
+     debugger
       const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 4);
 
       if (hasTeacherTraining) {
@@ -751,7 +751,7 @@ export class AddTeacherComponent implements OnInit {
       // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
       // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
       documentID: parseInt(this.fullFormData.documentID),
-      EligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
+      eligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
       ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
       // trainingAttended: Boolean(this.fullFormData.trainingAttended),
       designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
@@ -786,6 +786,7 @@ export class AddTeacherComponent implements OnInit {
             this.router.navigate(['/teachers/teacher-list'])
 
           } else {
+            console.log("else")
             this.toastr.error('Teacher Update !', 'Failed', {
               closeButton: true,
               progressBar: true,
@@ -797,7 +798,19 @@ export class AddTeacherComponent implements OnInit {
 
         },
         (error) => {
-          debugger
+          if(error.status==409){
+            let message:string=error.error?.message
+            this.toastr.error(message + '!', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            this.currentStep = 1
+            return;
+          }
+        
+          console.log("ERR",error)
          this.toastr.error('Somthing Went Wrong !', 'Failed', {
             closeButton: true,
             progressBar: true,
@@ -815,7 +828,7 @@ export class AddTeacherComponent implements OnInit {
         (response) => {
           debugger
           console.log('Employee added successfully:', response);
-          if (response) {
+          if (response.status===200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
@@ -831,6 +844,18 @@ export class AddTeacherComponent implements OnInit {
             this.router.navigate(['/teachers/teacher-list'])
 
           } else {
+            console.log("er-",response)
+           
+            if(response.message){
+              let message:string=response.message
+              this.toastr.error(message + '!', 'Failed', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              return;
+             }
 
             this.toastr.error('Teacher Add !', 'Failed', {
               closeButton: true,
@@ -843,6 +868,17 @@ export class AddTeacherComponent implements OnInit {
 
         },
         (error) => {
+          if(error.status==409){
+            let message:string=error.error?.message
+            this.toastr.error(message + '!', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            this.currentStep = 1
+            return;
+          }
           debugger
           this.toastr.error('Somthing Went Wrong !', 'Failed', {
             closeButton: true,

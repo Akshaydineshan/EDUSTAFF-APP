@@ -192,7 +192,7 @@ export class DataService {
     return this.http.post(this.apiUrl + 'Teacher/AddEmployee', teachersData).pipe(
       catchError((error) => {
         console.error('Error adding teacher:', error);
-        return throwError('Failed to add teacher.');
+        return throwError(error);
       })
     );
   }
@@ -201,7 +201,7 @@ export class DataService {
     return this.http.put(`${this.apiUrl}Teacher/update-employee/${employeId}`, teachersData).pipe(
       catchError((error) => {
         console.error('Error adding teacher:', error);
-        return throwError('Failed to add teacher.');
+        return throwError(error);
       })
     );
   }
@@ -211,7 +211,7 @@ export class DataService {
   }
 
   getTeacherById(teacherId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}Teacher/homepage/${teacherId}`);
+    return this.http.get(`${this.apiUrl}Teacher/get-employee/${teacherId}`);
   }
 
 

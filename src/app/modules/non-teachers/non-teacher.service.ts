@@ -29,7 +29,7 @@ export class NonTeacherService {
     return this.http.post(this.apiUrl + 'NonTeacher/AddEmployee', teachersData).pipe(
       catchError((error) => {
         console.error('Error adding teacher:', error);
-        return throwError('Failed to add teacher.');
+        return throwError(error);
       })
     );
   }
@@ -38,7 +38,7 @@ export class NonTeacherService {
     return this.http.put(`${this.apiUrl}NonTeacher/update-employee/${employeId}`, teachersData).pipe(
       catchError((error) => {
         console.error('Error adding teacher:', error);
-        return throwError('Failed to add teacher.');
+        return throwError(error);
       })
     );
   }

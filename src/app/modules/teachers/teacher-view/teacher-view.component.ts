@@ -22,13 +22,16 @@ export class TeacherViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
+      debugger
       let itemId = params['id'];
       this.itemId = itemId;
       this.loadItemDetails(itemId);
+     
     });
   }
 
   loadItemDetails(teacherId: any) {
+    debugger
     this.dataService.getTeacherById(teacherId).subscribe({
       next: (response) => {
         console.log(response)
@@ -36,7 +39,7 @@ export class TeacherViewComponent implements OnInit {
 
       },
       error: (error) => {
-      
+        this.router.navigate(['/teachers/teacher-list'])
 
       },
       complete: () => {
