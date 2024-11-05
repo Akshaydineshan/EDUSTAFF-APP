@@ -341,6 +341,7 @@ export class AddNonTeacherComponent {
       // this.educationForm = { ...this.educationForm };
       this.educationForm = new FormGroup(this.educationForm.controls);
       this.educationForm.enable()
+      this.checkEducationTypeToSetEligibilityTest()
 
 
       debugger
@@ -848,7 +849,7 @@ export class AddNonTeacherComponent {
       // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
       // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
       // documentID: parseInt(this.fullFormData.documentID),
-      eligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
+      eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified),
       ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
       // trainingAttended: Boolean(this.fullFormData.trainingAttended),
       designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,

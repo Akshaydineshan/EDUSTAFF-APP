@@ -158,8 +158,7 @@ export class AddTeacherComponent implements OnInit {
   }
 
   loadEmployeeData(id: number) {
-
-
+debugger
     this.dataService.getTeacherById(id).subscribe({
       next: (response) => {
         if (response) {
@@ -315,7 +314,7 @@ export class AddTeacherComponent implements OnInit {
       this.educationForm = new FormGroup(this.educationForm.controls);
       this.educationForm.enable()
 
-
+     this.checkEducationTypeToSetEligibilityTest()
       debugger
 
     })
@@ -751,7 +750,8 @@ export class AddTeacherComponent implements OnInit {
       // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
       // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
       documentID: parseInt(this.fullFormData.documentID),
-      eligibilityTestQualified: Boolean(this.fullFormData.eligibilityTestQualified),
+      eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified
+        ),
       ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
       // trainingAttended: Boolean(this.fullFormData.trainingAttended),
       designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
