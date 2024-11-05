@@ -15,6 +15,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MaterialSpinnerComponent } from './material-spinner/material-spinner.component';
 import { AlertComponent } from './components/alerts/alert/alert.component';
 import { ToastrModule } from 'ngx-toastr';
+import { EmployeeHoverPopupComponent } from './components/employee-hover-popup/employee-hover-popup.component';
+import { SchoolHoverPopupComponent } from './components/school-hover-popup/school-hover-popup.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { ToastrModule } from 'ngx-toastr';
     DetailDailogComponent,
     TableComponent,
     MaterialSpinnerComponent,
-    AlertComponent
+    AlertComponent,
+    EmployeeHoverPopupComponent,
+    SchoolHoverPopupComponent
     
   ],
   imports: [
@@ -43,7 +47,9 @@ import { ToastrModule } from 'ngx-toastr';
     TableListComponent,
     DetailDailogComponent,
     TableComponent,
-    MaterialSpinnerComponent
+    MaterialSpinnerComponent,
+    EmployeeHoverPopupComponent,
+    SchoolHoverPopupComponent
   ]
 })
 export class SharedModule { }

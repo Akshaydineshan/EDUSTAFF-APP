@@ -83,14 +83,14 @@
   </div>
 
 
-  <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+  <!-- <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info p-5">
     <div class="popup-header">
       <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
       <div class="popup-title ">
 
         <p class="p-s">{{ selectedTeacher?.name }}</p>
-        <!-- <p class="p-a">{{ selectedTeacher?.subject }}</p> -->
+      
         <p class="p-sc">{{ selectedTeacher?.schoolName }}</p>
         <p class="p-e"><a href="">{{ selectedTeacher?.email }}</a></p>
         <p class="p-m">{{ selectedTeacher?.phoneNumber }}</p>
@@ -144,8 +144,12 @@
 
 
 
-  </div>
+  </div> -->
+  <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="selectedTeacher"
+    [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
+  <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
+    [position]="{'top.px': mouseY, 'left.px': mouseX}" />
   <div class="table-responsive">
 
     <app-table [rowData]="nonTeacherTableRows" [colDefs]="nonTeacherTableColumns" [paginationConfig]="paginationConfig"

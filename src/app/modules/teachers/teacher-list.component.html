@@ -81,7 +81,7 @@
     </div>
   </div>
 
-
+  <!-- 
   <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info p-5">
     <div class="popup-header">
@@ -111,10 +111,13 @@
 
     </div>
 
-  </div>
+  </div> -->
+  <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="selectedTeacher"
+    [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
-
-  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+  <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
+  [position]="{'top.px': mouseY, 'left.px': mouseX}"  />
+  <!-- <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info">
     <div class="popup-header p-3">
       <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
@@ -141,29 +144,7 @@
 
     </div>
 
-
-    <!-- <div class="popup-header">
-      <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
-      <div class="popup-title">
-        <h6 style="font-weight: bold;">{{ selectedSchool?.name }}</h6>
-        <span>{{ selectedSchool?.address }}</span>
-        <div>{{ selectedSchool?.email }}</div>
-        <div>{{ selectedSchool?.phone }}</div>
-        <div class="popup-body">
-          <h6 style="font-weight: bold;">Authorities</h6>
-          <div>
-            <h6 class="val"><strong>{{ selectedSchool?.principal }}</strong></h6>
-            <span>Principal</span>
-          </div>
-          <div class="mt-1">
-            <h6 class="val"><strong>{{ selectedSchool?.vicePrincipal }}</strong></h6>
-            <span>Vice Principal</span>
-          </div>
-        </div>
-      </div>
-    </div> -->
-
-  </div>
+  </div> -->
 
   <div class="table-responsive">
     <!-- <table class="table table-striped table-hover table-bordered">
