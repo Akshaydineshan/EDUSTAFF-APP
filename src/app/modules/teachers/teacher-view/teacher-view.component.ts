@@ -51,8 +51,8 @@ export class TeacherViewComponent implements OnInit {
 
   get getImage() {
     let result = '';
-    if (this.apiUrl && this.currentTeacher?.photopath) {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photopath.replace(/^\/+/, '');
+    if (this.apiUrl && this.currentTeacher?.photoDTO.photoName) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photoDTO.photoName.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
