@@ -1,5 +1,5 @@
 <div *ngIf="showToggle && selectedTeacher" [ngStyle]="position"
-class="popup-teacher-info p-5">
+class="popup-teacher-info ">
 <div class="popup-header">
   <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
   <div class="popup-title ">
@@ -8,20 +8,20 @@ class="popup-teacher-info p-5">
     <p class="p-a">{{ selectedTeacher?.subject }}</p>
     <p class="p-sc">{{ selectedTeacher?.schoolName }}</p>
     <p class="p-e"><a href="">{{ selectedTeacher?.email }}</a></p>
-    <p class="p-m">{{ selectedTeacher?.phoneNumber }}</p>
+    <p class="p-m">+91 {{ selectedTeacher?.phoneNumber }}</p>
   </div>
 
 </div>
 <hr class="line">
-<div class="popup-body-t p-2">
-  <div class="d-flex justify-content-between pe-4">
+<div class="popup-body-t p-0">
+  <div class="d-flex justify-content-between  mt-0">
     <div>
       <p class="p-h">Date Of Join</p>
       <p class="p-v">{{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
     </div>
     <div>
       <p class="p-h">Report To</p>
-      <p class="p-v">{{ selectedTeacher?.reportedTo }}</p>
+      <p class="p-v c">{{ selectedTeacher?.reportedTo }}</p>
     </div>
   </div>
 

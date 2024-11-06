@@ -130,7 +130,7 @@
     <div class="row mb-3">
         <label for="fromDate" class="col-sm-3 col-form-label">Date Of Join</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="fromDate" formControlName="fromDate">
+            <input type="date"  class="form-control" id="fromDate" formControlName="fromDate">
             <div *ngIf="professionalForm.get('fromDate')?.invalid && (professionalForm.get('fromDate')?.touched || professionalForm.get('fromDate')?.dirty ||submitted)"
                 class="text-danger">
                 <small *ngIf="professionalForm.get('fromDate')?.errors?.['required']">Date of Joining is

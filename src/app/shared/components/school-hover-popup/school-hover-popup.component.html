@@ -1,16 +1,16 @@
 <div *ngIf="showToggle && selectedSchool" [ngStyle]="position"
 class="popup-teacher-info">
-<div class="popup-header p-3">
+<div class="popup-header ">
   <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
   <div class="popup-title">
     <p class="p-s">{{ selectedSchool?.name }}</p>
     <p class="p-a">{{ selectedSchool?.address }}</p>
     <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
-    <p class="p-m">{{ selectedSchool?.phone }}</p>
+    <p class="p-m">+91 {{ selectedSchool?.phone }}</p>
   </div>
 </div>
 <hr class="line">
-<div class="popup-body p-2">
+<div class="popup-body ">
   <div class="">
     <p class="p-a">Authorities</p>
     <div>

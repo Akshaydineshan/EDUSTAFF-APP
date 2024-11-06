@@ -206,11 +206,11 @@ export class TeacherListComponent implements OnInit {
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
           {
-            field: "name", filter: true, floatingFilter: true,
-            cellRenderer: (params: any) => `<a style="cursor: pointer; color: blue;" target="_blank">${params.value}</a>`
+            field: "name", filter: true, floatingFilter: true,width: 180,
+            cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
           },
-          { field: "schoolName", filter: true, floatingFilter: false,
-             cellRenderer: (params: any) => `<a style="cursor: pointer; color: blue;" target="_blank">${params.value}</a>`
+          { field: "schoolName", filter: true, floatingFilter: false, width: 300,
+             cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
            },
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
