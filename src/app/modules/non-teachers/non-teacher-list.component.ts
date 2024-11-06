@@ -77,12 +77,15 @@ export class NonTeacherListComponent implements OnInit {
             filter: true,
             floatingFilter: column === 'name',
             ... (column === 'name' || column === 'schoolName' ? {
-              cellRenderer: (params: any) => `<a style="cursor: pointer; color: blue;" target="_blank">${params.value}</a>`
+              cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
 
-            } : {})
+            } : {}),
+
+            ... (column === 'schoolName' ? { width: 300 } : {})
+
           }
 
-         
+
         })
 
       },
@@ -240,10 +243,13 @@ export class NonTeacherListComponent implements OnInit {
   onCellClicked(event: any) {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-    let teacherId: number = rowData.teacherId
-
+   
     if (event.colDef.field === "name") {
+      let teacherId: number = rowData.teacherId
       this.router.navigate(['/non-teachers/view', teacherId])
+    } else if (event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
+      this.router.navigate(['/schools/view', schoolId])
     }
   }
 }

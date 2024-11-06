@@ -206,48 +206,49 @@ export class TeacherListComponent implements OnInit {
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
           {
-            field: "name", filter: true, floatingFilter: true,width: 180,
+            field: "name", filter: true, floatingFilter: true, width: 180,
             cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
           },
-          { field: "schoolName", filter: true, floatingFilter: false, width: 300,
-             cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
-           },
+          {
+            field: "schoolName", filter: true, floatingFilter: false, width: 300,
+            cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
+          },
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
           { field: "employeeType", filter: true, floatingFilter: false },
           { field: "experienceYear", filter: true, floatingFilter: false },
           { field: "age", filter: true, floatingFilter: false },
           { field: "phoneNumber", filter: true, floatingFilter: false },
-      //     {
-      //       field: "documentCount", filter: true, floatingFilter: false,
-      //       cellRenderer: (params: any) => {
-      //         console.log("params",params)
-      //         debugger
-      //         `<span [class]="params.value?.icon ? 'doc-count' : ''">
-      //   <i [class]="params.value?.icon"></i>${params.value?.text}
-      // </span>`
-      //       }
-      //     },
-      {
-        field: "documentStatus", 
-        filter: true, 
-        floatingFilter: false,
-        cellRenderer: (params: any) => {
-          const iconClass = params.value?.icon || '';
-          const text = params.value?.text || '0';
-          const hasIconClass = iconClass ? 'doc-count' : '';
-    
-        
-          return `
+          //     {
+          //       field: "documentCount", filter: true, floatingFilter: false,
+          //       cellRenderer: (params: any) => {
+          //         console.log("params",params)
+          //         debugger
+          //         `<span [class]="params.value?.icon ? 'doc-count' : ''">
+          //   <i [class]="params.value?.icon"></i>${params.value?.text}
+          // </span>`
+          //       }
+          //     },
+          {
+            field: "documentStatus",
+            filter: true,
+            floatingFilter: false,
+            cellRenderer: (params: any) => {
+              const iconClass = params.value?.icon || '';
+              const text = params.value?.text || '0';
+              const hasIconClass = iconClass ? 'doc-count' : '';
+
+
+              return `
             <span class="${hasIconClass}">
               <i class="${iconClass}"></i> ${text}
             </span>`;
-        }
+            }
 
 
-      },
+          },
         ];
-        console.log(this.teacherList,this.teacherTableColumns);
+        console.log(this.teacherList, this.teacherTableColumns);
         this.updatePaginatedData();
 
 
@@ -453,7 +454,7 @@ export class TeacherListComponent implements OnInit {
     console.log("teacher", event)
 
     if (event.colDef.field === "name") {
-     
+
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     } else if (event.colDef.field === "schoolName") {
       this.onSchoolHover(rowData.schoolId, rowData, event.event)
@@ -479,17 +480,16 @@ export class TeacherListComponent implements OnInit {
     return result;
   }
   onCellClicked(event: any) {
-    console.log("event",event)
+    console.log("event", event)
     debugger
 
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-   
 
     if (event.colDef.field === "name") {
       let teacherId: number = rowData.teacherId
       this.router.navigate(['/teachers/view-teacher', teacherId])
-    }else if(event.colDef.field === "schoolName") {
+    } else if (event.colDef.field === "schoolName") {
       let schoolId: number = rowData.schoolId
       this.router.navigate(['/schools/view', schoolId])
     }

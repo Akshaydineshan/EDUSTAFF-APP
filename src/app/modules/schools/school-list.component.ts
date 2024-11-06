@@ -3,6 +3,7 @@ import { ColDef } from 'ag-grid-community';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -16,11 +17,11 @@ interface PagonationConfig {
 })
 export class SchoolListComponent implements OnInit {
   isSidebarClosed = false;
-  displayColumns: any[] = [ {headerName:'SchoolName',field:'name'}, {headerName:'Type',field:'type'},{headerName:'Contact No',field:'contact'},{headerName:'Principal (HM)',field:'principal'},{headerName:'No of Teachers',field:'noOfTeachers'},{headerName:'No of Students',field:'noOfStudents'} ];
+  displayColumns: any[] = [{ headerName: 'SchoolName', field: 'name' }, { headerName: 'Type', field: 'type' }, { headerName: 'Contact No', field: 'contact' }, { headerName: 'Principal (HM)', field: 'principal' }, { headerName: 'No of Teachers', field: 'noOfTeachers' }, { headerName: 'No of Students', field: 'noOfStudents' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   schoolList: any[] = [];
   schoolTableRows: any;
-  schoolTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];   
+  schoolTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
 
   apiUrl = environment.imageBaseUrl;
   showSchoolPopup: boolean = false;
@@ -33,7 +34,7 @@ export class SchoolListComponent implements OnInit {
   API_BASE_IMAGE: any = environment.imageBaseUrl
 
 
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService, private router: Router) { }
 
   ngOnInit(): void {
     this.loadSchoolList();
@@ -68,14 +69,17 @@ export class SchoolListComponent implements OnInit {
       (data) => {
         debugger
         this.schoolList = data;
-        console.log("school list data",this.schoolList);
+        console.log("school list data", this.schoolList);
         this.schoolTableRows = this.schoolList
         this.schoolTableColumns = this.displayColumns.map((column) => ({
-          headerName:column.headerName,
+          headerName: column.headerName,
           field: column.field,
           filter: true,
-          floatingFilter:  column === 'schoolName', // For example, only these columns have floating filters
-
+          floatingFilter: column.field === 'name', // For example, only these columns have floating filters
+          ... (column.field === 'name' ? {
+            cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
+            width:300
+          } : {})
         }));
 
 
@@ -175,26 +179,41 @@ export class SchoolListComponent implements OnInit {
 
 
   rowMouseHover(event: any) {
-  console.log("EVENT",event)
+    console.log("EVENT", event)
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "principal") {
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     } else if (event.colDef.field === "name") {
-
       this.onSchoolHover(rowData.schoolId, rowData, event.event)
-
     }
   }
   rowMouseHoverOut(event: any) {
     // if (event.colDef.field === "principalName") {
-      this.onTeacherMouseOut()
+    this.onTeacherMouseOut()
     // } else if (event.colDef.field === "name") {
-      this.onSchoolMouseOut()
+    this.onSchoolMouseOut()
 
     // }
 
   }
+
+
+
+  onCellClicked(event: any) {
+    console.log("event", event)
+    debugger
+
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+
+    if (event.colDef.field === "name") {
+      let schoolId: number = rowData.schoolId
+      this.router.navigate(['/schools/view', schoolId])
+    }
+
+  }
+
 
   get getschoolImage() {
     let result = '';

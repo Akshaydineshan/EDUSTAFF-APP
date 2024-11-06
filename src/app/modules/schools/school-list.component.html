@@ -109,7 +109,8 @@
 
   <!-- table start -->
   <app-table [rowData]="schoolTableRows" [colDefs]="schoolTableColumns" [paginationConfig]="paginationConfig"
-    (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"></app-table>
+    (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+    (onCellClickedEvent)="onCellClicked($event)"></app-table>
   <!-- table end -->
 
 </div>

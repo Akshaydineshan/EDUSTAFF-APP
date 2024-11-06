@@ -48,7 +48,7 @@
     font-family: Inter;
     font-size: 16px;
     font-weight: 600;
-    line-height: 14px;
+    line-height: 16px;
     text-align: left;
     color: #000000;
 }
@@ -59,14 +59,17 @@
     font-weight: 400;
     line-height: 17px;
     text-align: left;
+    background: #000000;
+
 }
 
 .prof-img-btns-sec .p-a {
     font-family: Inter;
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 14px;
-    text-align: left;
+font-size: 14px;
+font-weight: 400;
+line-height: 22px;
+text-align: left;
+
 
 
 
@@ -91,8 +94,10 @@
 }
 
 .card-header {
-    background-color: #d6d9db;
-    color: #fff;
+    // background-color: #d6d9db;
+    // color: #fff;
+    background-color: #E8E8E8;
+  color: #333; /* Dark text for readability */
     font-weight: bold;
     padding: 10px 15px;
     border-top-left-radius: 7px;
@@ -162,26 +167,7 @@ li {
 
 }
 
-.s-h {
-    color: #555;
-    font-weight: 600;
-    font-size: 15px;
-    position: relative;
-    width: max-content;
 
-}
-
-.s-h::after {
-    content: "";
-    height: 2px;
-    width: 100%;
-    background-color: #bfbaba;
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-
-
-}
 
 .r-btns {
     width: 255px;
@@ -208,10 +194,12 @@ li {
 .inline-det {
     .p-m {
         font-family: Inter;
-        font-size: 14px;
-        font-weight: 400;
-        line-height: 14px;
-        text-align: left;
+       
+font-size: 14px;
+font-weight: 400;
+line-height: 9px;
+text-align: left;
+
        
     }
 
@@ -220,11 +208,21 @@ li {
         font-family: Inter;
         font-size: 14px;
         font-weight: 400;
-        line-height: 14px;
+        line-height: 9px;
         text-align: left;
         color: #246CC1;
 
 
     }
 
+}
+ .s-head{
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 14px;
+    text-align: left;
+    margin-top:20px;
+   
+    
 }
