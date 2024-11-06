@@ -450,10 +450,10 @@ export class TeacherListComponent implements OnInit {
     debugger
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-
+    console.log("teacher", event)
 
     if (event.colDef.field === "name") {
-      console.log("teacher", event)
+     
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     } else if (event.colDef.field === "schoolName") {
       this.onSchoolHover(rowData.schoolId, rowData, event.event)
@@ -479,14 +479,19 @@ export class TeacherListComponent implements OnInit {
     return result;
   }
   onCellClicked(event: any) {
+    console.log("event",event)
     debugger
 
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-    let teacherId: number = rowData.teacherId
+   
 
     if (event.colDef.field === "name") {
+      let teacherId: number = rowData.teacherId
       this.router.navigate(['/teachers/view-teacher', teacherId])
+    }else if(event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
+      this.router.navigate(['/schools/view', schoolId])
     }
 
   }

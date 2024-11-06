@@ -32,4 +32,10 @@ export class SchoolService {
     return this.http.get(url);
   }
 
+
+  
+  getSchoolById(schoolId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}School/SchoolHomePage${schoolId}`);
+  }
+
 }

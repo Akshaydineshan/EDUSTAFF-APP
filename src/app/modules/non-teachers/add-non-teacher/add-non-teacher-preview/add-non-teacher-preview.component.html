@@ -1,288 +1,523 @@
-<!-- <ng-container *ngIf="showTopbarAndSidebar">
-  <app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
-  <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
-</ng-container> -->
 
+<!-- 
+<div class=" ">
+ 
+  <div class="top-header-bar">
+  
+  </div>
+  <div class="content ps-5">
+   
 
+    <div [ngClass]="showTopbarAndSidebar? 'gradient-bg': ''">
+      <div class="d-flex justify-content-between  align-items-center ">
+        <div class="d-flex flex-column   ">
+          <img [src]='getImage || emptyImage' class="prof-img img-fluid rounded-circle me-4 " alt="Profile Image" />
+          <div class=" prof-sec-text  mb-3">
+   
 
-<!-- <div class="container " [class.shifted]="isSidebarClosed && !teacherRegister">
+            <h5 class="mb-0 ">{{this.fullFormData.firstName}} {{this.fullFormData.lastName}}</h5>
+            <p class="text-muted mb-0">{{this.fullFormData.designation.designationName}}</p>
+            <p class="text-muted mb-0">
+              {{this.fullFormData.schoolName.schoolName}}{{this.fullFormData.schoolName.cityName}}
+            </p>
 
-   <form [class.shifted]="isSidebarClosed && !teacherRegister"> -->
-
-    <div class=" ">
-        <!-- style="position:absolute;right: 0;left:29px;"  -->
-        <div class="top-header-bar">
-          <!-- style="position: absolute;left: 35px; right:0;" -->
-      
+          </div>
         </div>
-        <div class="content ps-5">
-          <!-- style="padding-top: 130px;padding-left: 100px;padding-right: 100px;" -->
-      
-          <div [ngClass]="showTopbarAndSidebar? 'gradient-bg': ''">
-            <div class="d-flex justify-content-between  align-items-center ">
-              <div class="d-flex flex-column   ">
-                <img [src]='getImage || emptyImage' class="prof-img img-fluid rounded-circle me-4 " alt="Profile Image" />
-                <div class=" prof-sec-text  mb-3">
-                  <!-- <h5 class="mb-0 ">shfg</h5>
-                  <p class="text-muted mb-0">shdghg</p>
-                  <p class="text-muted mb-0">
-                   dhfgdh
-                  </p> -->
-      
-                  <h5 class="mb-0 ">{{this.fullFormData.firstName}} {{this.fullFormData.lastName}}</h5>
-                  <p class="text-muted mb-0">{{this.fullFormData.designation.designationName}}</p>
-                  <p class="text-muted mb-0">
-                    {{this.fullFormData.schoolName.schoolName}}{{this.fullFormData.schoolName.cityName}}
-                  </p>
-      
-                </div>
-              </div>
-      
-              <div class="d-flex align-items-center">
-                <div class="dropdown me-3">
-                  <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-three-dots"></i>
-                  </button>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" (click)="editClick()">Edit</a>
-                    </li>
-                    <li><a class="dropdown-item" href="#">Option 2</a></li>
-                  </ul>
-                </div>
-      
-                <button class="btn btn-outline-secondary me-2">
-                  <i class="bi bi-printer"></i> Print
-                </button>
-      
-                <button class="btn btn-success">
-                  <i class="bi bi-telephone-fill"></i> Call
-                </button>
-              </div>
-            </div>
+
+        <div class="d-flex align-items-center">
+          <div class="dropdown me-3">
+            <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <li><a class="dropdown-item" (click)="editClick()">Edit</a>
+              </li>
+              <li><a class="dropdown-item" href="#">Option 2</a></li>
+            </ul>
           </div>
-      
-          <hr class="my-0" />
-          <div class="row g-0 ">
-            <div class="col-md-6  mt-3">
-              <ul class="list-unstyled">
-                <li class="key-value-item">
-                  <strong>Permanent Employee Number (PEN):</strong> <span>{{this.fullFormData.permanentEmployeeNumber}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Identification Marks1:</strong> <span>{{this.fullFormData.identificationMarksOne}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Identification Marks2:</strong> <span>{{this.fullFormData.identificationMarksTwo}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Height (in cm):</strong> <span>{{this.fullFormData.height}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Ex-Servicemen:</strong> <span>{{this.fullFormData.exServicemen == 'true' ? 'Yes' : 'No' }}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>First Name:</strong> <span>{{this.fullFormData.firstName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Last Name:</strong> <span>{{this.fullFormData.lastName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Sex:</strong> <span>{{this.fullFormData.sex?.genderName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Date of Birth:</strong> <span>{{this.fullFormData.dob | date: 'MMMM d, y' }}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Contact Number:</strong> <span>91{{this.fullFormData.phone}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Email Address:</strong> <span>{{this.fullFormData.email}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Religion:</strong> <span>{{this.fullFormData.religion.religionName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Category:</strong> <span>{{this.fullFormData.category.casteCategoryName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Caste:</strong> <span>{{this.fullFormData.caste}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Whether Differently Abled:</strong> <span>{{this.fullFormData.whetherDifferentlyAbled == 'true' ?
-                    "Yes"
-                    : "No"}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Aadhar ID:</strong> <span>{{this.fullFormData.aadharId}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>PAN NO:</strong> <span>{{this.fullFormData.pan}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Ration Card Number:</strong> <span>{{this.fullFormData.rationCardNumber}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Voter ID:</strong> <span>{{this.fullFormData.voterId}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Current Address:</strong> <span>{{this.fullFormData.currentAddress}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Permanent Address:</strong> <span>{{this.fullFormData.permanentAddress}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Father's Name:</strong> <span>{{this.fullFormData.fathersName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Mother's Name:</strong> <span>{{this.fullFormData.mothersName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Inter Religion:</strong> <span>{{this.fullFormData.interReligion == 'true' ? "Yes" : "No"}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Marital Status:</strong> <span>{{this.fullFormData.maritalStatus.maritalStatusName}}</span>
-                </li>
-      
-                <ng-container *ngIf="fullFormData.maritalStatus.maritalStatusID == '2' ">
-                  <li class="key-value-item">
-                    <strong>Spouse's Name:</strong> <span>{{this.fullFormData.spousesName}}</span>
-                  </li>
-                  <li class="key-value-item" *ngIf="fullFormData.spousesName !== '' ">
-                    <strong>Spouse's Religion:</strong> <span>{{this.fullFormData.spousesReligion.religionName
-                      }}</span>
-                  </li>
-                  <li class="key-value-item">
-                    <strong>Spouse's Caste:</strong> <span>{{this.fullFormData.spousesCaste}}</span>
-                  </li>
-                </ng-container>
-      
-      
-      
-      
-      
-              </ul>
-            </div>
-          </div>
-      
-          <hr class="my-0" />
-      
-          <div class="row g-0 ">
-            <div class="col-md-6  mt-3">
-      
-              <h5 class="det-header">Education Details</h5>
-              <ul class="list-unstyled" *ngFor="let item of fullFormData.educations;let i=index;">
-                <h4>Education {{i+1}}</h4>
-                <li class="key-value-item">
-                  <strong>Education Type:</strong> <span>{{item.educationType['educationTypeName']}}</span>
-                </li>
-                <li class="key-value-item" *ngIf="item.courseName.courseName !== 'Others' ; else otherCouseName; ">
-                  <strong>Course Name:</strong> <span>{{item.courseName.courseName}}</span>
-      
-                </li>
-                <ng-template #otherCouseName>
-                  <li class="key-value-item">
-                    <strong>Course Name:</strong> <span>{{item.courseNameOther}}</span>
+
+          <button class="btn btn-outline-secondary me-2">
+            <i class="bi bi-printer"></i> Print
+          </button>
+
+          <button class="btn btn-success">
+            <i class="bi bi-telephone-fill"></i> Call
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="my-0" />
+    <div class="row g-0 ">
+      <div class="col-md-6  mt-3">
+        <ul class="list-unstyled">
+          <li class="key-value-item">
+            <strong>Permanent Employee Number (PEN):</strong> <span>{{this.fullFormData.permanentEmployeeNumber}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Identification Marks1:</strong> <span>{{this.fullFormData.identificationMarksOne}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Identification Marks2:</strong> <span>{{this.fullFormData.identificationMarksTwo}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Height (in cm):</strong> <span>{{this.fullFormData.height}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Ex-Servicemen:</strong> <span>{{this.fullFormData.exServicemen == 'true' ? 'Yes' : 'No' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>First Name:</strong> <span>{{this.fullFormData.firstName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Last Name:</strong> <span>{{this.fullFormData.lastName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Sex:</strong> <span>{{this.fullFormData.sex?.genderName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Date of Birth:</strong> <span>{{this.fullFormData.dob | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Contact Number:</strong> <span>91{{this.fullFormData.phone}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Email Address:</strong> <span>{{this.fullFormData.email}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Religion:</strong> <span>{{this.fullFormData.religion.religionName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Category:</strong> <span>{{this.fullFormData.category.casteCategoryName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Caste:</strong> <span>{{this.fullFormData.caste}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Whether Differently Abled:</strong> <span>{{this.fullFormData.whetherDifferentlyAbled == 'true' ?
+              "Yes"
+              : "No"}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Aadhar ID:</strong> <span>{{this.fullFormData.aadharId}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>PAN NO:</strong> <span>{{this.fullFormData.pan}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Ration Card Number:</strong> <span>{{this.fullFormData.rationCardNumber}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Voter ID:</strong> <span>{{this.fullFormData.voterId}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Current Address:</strong> <span>{{this.fullFormData.currentAddress}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Permanent Address:</strong> <span>{{this.fullFormData.permanentAddress}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Father's Name:</strong> <span>{{this.fullFormData.fathersName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Mother's Name:</strong> <span>{{this.fullFormData.mothersName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Inter Religion:</strong> <span>{{this.fullFormData.interReligion == 'true' ? "Yes" : "No"}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Marital Status:</strong> <span>{{this.fullFormData.maritalStatus.maritalStatusName}}</span>
+          </li>
+
+          <ng-container *ngIf="fullFormData.maritalStatus.maritalStatusID == '2' ">
+            <li class="key-value-item">
+              <strong>Spouse's Name:</strong> <span>{{this.fullFormData.spousesName}}</span>
+            </li>
+            <li class="key-value-item" *ngIf="fullFormData.spousesName !== '' ">
+              <strong>Spouse's Religion:</strong> <span>{{this.fullFormData.spousesReligion.religionName
+                }}</span>
+            </li>
+            <li class="key-value-item">
+              <strong>Spouse's Caste:</strong> <span>{{this.fullFormData.spousesCaste}}</span>
+            </li>
+          </ng-container>
+
+
+
+
+
+        </ul>
+      </div>
+    </div>
+
+    <hr class="my-0" />
+
+    <div class="row g-0 ">
+      <div class="col-md-6  mt-3">
+
+        <h5 class="det-header">Education Details</h5>
+        <ul class="list-unstyled" *ngFor="let item of fullFormData.educations;let i=index;">
+          <h4>Education {{i+1}}</h4>
+          <li class="key-value-item">
+            <strong>Education Type:</strong> <span>{{item.educationType['educationTypeName']}}</span>
+          </li>
+          <li class="key-value-item" *ngIf="item.courseName.courseName !== 'Others' ; else otherCouseName; ">
+            <strong>Course Name:</strong> <span>{{item.courseName.courseName}}</span>
+
+          </li>
+          <ng-template #otherCouseName>
+            <li class="key-value-item">
+              <strong>Course Name:</strong> <span>{{item.courseNameOther}}</span>
+
+            </li>
+          </ng-template>
+          <li class="key-value-item">
+            <strong>School/University :</strong> <span>{{item.schoolName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
+            <strong>Certificate:</strong> <span><img [src]="'../../../../assets/icons/pdf.png'" alt=""></span>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="my-0" />
+
+    <div class="row g-0 ">
+      <div class="col-md-6  mt-3 ">
+
+        <h5 class="det-header">Professional Details</h5>
+        <ul class="list-unstyled">
+          <li class="key-value-item">
+            <strong>Department:</strong> <span>{{this.fullFormData.department.employeeTypeName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>District:</strong> <span>{{this.fullFormData.district.districtName}}</span>
+          </li>
         
-                  </li>
-                </ng-template>
-                <li class="key-value-item">
-                  <strong>School/University :</strong> <span>{{item.schoolName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM d, y' }}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM d, y' }}</span>
-                </li>
-                <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
-                  <strong>Certificate:</strong> <span><img [src]="'../../../../assets/icons/pdf.png'" alt=""></span>
-                </li>
-      
-              </ul>
-            </div>
-      
-          </div>
-      
-          <hr class="my-0" />
-      
-          <div class="row g-0 ">
-            <div class="col-md-6  mt-3 ">
-      
-              <h5 class="det-header">Professional Details</h5>
-              <ul class="list-unstyled">
-                <li class="key-value-item">
-                  <strong>Department:</strong> <span>{{this.fullFormData.department.employeeTypeName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>District:</strong> <span>{{this.fullFormData.district.districtName}}</span>
-                </li>
-                <!-- <li class="key-value-item">
+          <li class="key-value-item">
+            <strong>Designation:</strong> <span>{{this.fullFormData.designation.designationName}}</span>
+          </li>
+         
+          <li class="key-value-item">
+            <strong>PF Number:</strong> <span>{{this.fullFormData.pfNumber}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>PRAN:</strong> <span>{{this.fullFormData.pran}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Date Of Join In The Department:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y'
+              }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}
+              ,{{this.fullFormData.schoolName.cityName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Category :</strong> <span>{{this.fullFormData.pCategory.employeeCategoryName}}</span>
+          </li>
+        
+          <li class="key-value-item">
+            <strong>Eligible Test Qualified:</strong> <span>{{this.fullFormData.eligibleTestQualified ? 'yes' :
+              'No'}}</span>
+          </li>
+
+
+        </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+</div> -->
+
+
+
+
+
+
+<div>
+  <div class="container-fluid top-banner"></div>
+
+  <div class="content-main pb-3">
+    <div class="prof-img-btns-sec d-flex justify-content-between   ">
+      <div class="d-flex flex-column   ">
+        <img [src]="getImage || 'assets/icons/user.png' " class="prof-img img-fluid rounded-circle "
+          alt="Profile Image" />
+        <div class=" prof-sec-text ms-2 ">
+          <p class="mb-0 p-n ">{{this.fullFormData.firstName}} {{this.fullFormData.lastName}}</p>
+          <p class="text-muted mb-0 p-d mt-1">{{this.fullFormData.designation.designationName}}</p>
+          <p class="text-muted mb-0 p-a">
+            {{this.fullFormData.schoolName.schoolName}}{{this.fullFormData.schoolName.cityName}}
+          </p>
+        </div>
+      </div>
+
+      <div class="  d-flex align-items-center ">
+
+        <div class="dropdown me-2 ">
+          <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" (click)="editClick()">Edit</a>
+            </li>
+
+
+          </ul>
+        </div>
+
+
+        <button class="btn btn-outline-secondary me-2">
+          <i class="bi bi-printer"></i> Message
+        </button>
+
+        <button class="btn btn-success">
+          <i class="bi bi-telephone-fill"></i> Call
+        </button>
+      </div>
+    </div>
+
+    <hr class="styled-hr">
+
+    <div class="row g-0 ">
+      <div class="col-md-6  mt-3">
+        <ul class="list-unstyled">
+          <li class="key-value-item">
+            <strong>Permanent Employee Number (PEN):</strong> <span>{{this.fullFormData.permanentEmployeeNumber}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Identification Marks1:</strong> <span>{{this.fullFormData.identificationMarksOne}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Identification Marks2:</strong> <span>{{this.fullFormData.identificationMarksTwo}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Height (in cm):</strong> <span>{{this.fullFormData.height}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Ex-Servicemen:</strong> <span>{{this.fullFormData.exServicemen == 'true' ? 'Yes' : 'No' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>First Name:</strong> <span>{{this.fullFormData.firstName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Last Name:</strong> <span>{{this.fullFormData.lastName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Sex:</strong> <span>{{this.fullFormData.sex?.genderName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Date of Birth:</strong> <span>{{this.fullFormData.dob | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Contact Number:</strong> <span>91{{this.fullFormData.phone}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Email Address:</strong> <span>{{this.fullFormData.email}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Religion:</strong> <span>{{this.fullFormData.religion.religionName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Category:</strong> <span>{{this.fullFormData.category.casteCategoryName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Caste:</strong> <span>{{this.fullFormData.caste}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Whether Differently Abled:</strong> <span>{{this.fullFormData.whetherDifferentlyAbled == 'true' ?
+              "Yes"
+              : "No"}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Aadhar ID:</strong> <span>{{this.fullFormData.aadharId}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>PAN NO:</strong> <span>{{this.fullFormData.pan}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Ration Card Number:</strong> <span>{{this.fullFormData.rationCardNumber}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Voter ID:</strong> <span>{{this.fullFormData.voterId}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Current Address:</strong> <span>{{this.fullFormData.currentAddress}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Permanent Address:</strong> <span>{{this.fullFormData.permanentAddress}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Father's Name:</strong> <span>{{this.fullFormData.fathersName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Mother's Name:</strong> <span>{{this.fullFormData.mothersName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Inter Religion:</strong> <span>{{this.fullFormData.interReligion == 'true' ? "Yes" : "No"}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Marital Status:</strong> <span>{{this.fullFormData.maritalStatus.maritalStatusName}}</span>
+          </li>
+
+          <ng-container *ngIf="fullFormData.maritalStatus.maritalStatusID == '2' ">
+            <li class="key-value-item">
+              <strong>Spouse's Name:</strong> <span>{{this.fullFormData.spousesName}}</span>
+            </li>
+            <li class="key-value-item" *ngIf="fullFormData.spousesName !== '' ">
+              <strong>Spouse's Religion:</strong> <span>{{this.fullFormData.spousesReligion.religionName
+                }}</span>
+            </li>
+            <li class="key-value-item">
+              <strong>Spouse's Caste:</strong> <span>{{this.fullFormData.spousesCaste}}</span>
+            </li>
+          </ng-container>
+
+
+
+
+
+        </ul>
+      </div>
+    </div>
+
+    <hr class="my-0" />
+
+    <div class="row g-0 ">
+      <div class="col-md-6  mt-3">
+
+        <h5 class="det-header">Education Details</h5>
+        <ul class="list-unstyled" *ngFor="let item of fullFormData.educations;let i=index;">
+          <h4>Education {{i+1}}</h4>
+          <li class="key-value-item">
+            <strong>Education Type:</strong> <span>{{item.educationType['educationTypeName']}}</span>
+          </li>
+          <li class="key-value-item" *ngIf="item.courseName.courseName !== 'Others' ; else otherCouseName; ">
+            <strong>Course Name:</strong> <span>{{item.courseName.courseName}}</span>
+
+          </li>
+          <ng-template #otherCouseName>
+            <li class="key-value-item">
+              <strong>Course Name:</strong> <span>{{item.courseNameOther}}</span>
+
+            </li>
+          </ng-template>
+          <li class="key-value-item">
+            <strong>School/University :</strong> <span>{{item.schoolName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
+            <strong>Certificate:</strong> <span><img [src]="'../../../../assets/icons/pdf.png'" alt=""></span>
+          </li>
+
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="my-0" />
+
+    <div class="row g-0 ">
+      <div class="col-md-6  mt-3 ">
+
+        <h5 class="det-header">Professional Details</h5>
+        <ul class="list-unstyled">
+          <li class="key-value-item">
+            <strong>Department:</strong> <span>{{this.fullFormData.department.employeeTypeName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>District:</strong> <span>{{this.fullFormData.district.districtName}}</span>
+          </li>
+          <!-- <li class="key-value-item">
                   <strong>Employee Type:</strong> <span>{{this.fullFormData.employeeType.employeeTypeName}}</span>
                 </li> -->
-                <li class="key-value-item">
-                  <strong>Designation:</strong> <span>{{this.fullFormData.designation.designationName}}</span>
-                </li>
-                <!-- <li class="key-value-item">
+          <li class="key-value-item">
+            <strong>Designation:</strong> <span>{{this.fullFormData.designation.designationName}}</span>
+          </li>
+          <!-- <li class="key-value-item">
                   <strong>Subject:</strong> <span>{{this.fullFormData.subject.subjectName}}</span>
                 </li> -->
-                <li class="key-value-item">
-                  <strong>PF Number:</strong> <span>{{this.fullFormData.pfNumber}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>PRAN:</strong> <span>{{this.fullFormData.pran}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Date Of Join In The Department:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y'
-                    }}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}
-                    ,{{this.fullFormData.schoolName.cityName}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Category :</strong> <span>{{this.fullFormData.pCategory.employeeCategoryName}}</span>
-                </li>
-                <!-- <li class="key-value-item">
+          <li class="key-value-item">
+            <strong>PF Number:</strong> <span>{{this.fullFormData.pfNumber}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>PRAN:</strong> <span>{{this.fullFormData.pran}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Date Of Join In The Department:</strong> <span>{{this.fullFormData.toDate | date: 'MMMM d, y'
+              }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}
+              ,{{this.fullFormData.schoolName.cityName}}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Category :</strong> <span>{{this.fullFormData.pCategory.employeeCategoryName}}</span>
+          </li>
+          <!-- <li class="key-value-item">
                   <strong>School Type:</strong> <span>{{this.fullFormData.schoolType}}</span>
                 </li> -->
-                <!-- <li class="key-value-item">
+          <!-- <li class="key-value-item">
                   <strong>Trained:</strong> <span>{{this.fullFormData.trained === 'true' ? 'yes' : 'No'}}</span>
                 </li>
                 <li class="key-value-item">
                   <strong>Training Attended:</strong> <span>{{this.fullFormData.trainingAttended  === 'true' ? 'yes' : 'No'}}</span>
                 </li> -->
-                <li class="key-value-item">
-                  <strong>Eligible Test Qualified:</strong> <span>{{this.fullFormData.eligibleTestQualified ? 'yes' :
-                    'No'}}</span>
-                </li>
-      
-      
-              </ul>
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-      
-            </div>
-          </div>
-        </div>
-      
+          <li class="key-value-item">
+            <strong>Eligible Test Qualified:</strong> <span>{{this.fullFormData.eligibleTestQualified ? 'yes' :
+              'No'}}</span>
+          </li>
+
+
+        </ul>
+
+
       </div>
-      
-      
-      <!-- </form>
-      </div> -->
+    </div>
+
+
+
+
+
+
+
+  </div>

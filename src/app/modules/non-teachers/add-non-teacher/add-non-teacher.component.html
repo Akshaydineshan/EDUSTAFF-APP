@@ -1,9 +1,9 @@
 <app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
 <app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
-<div class="container" [class.shifted]="isSidebarClosed">
+<div class="main-container" [class.shifted]="isSidebarClosed">
 
     <div class="container-fluid d-flex flex-column align-items-center" [class.shifted]="isSidebarClosed">
-        <div class="step-indicator mb-4">
+        <!-- <div class="step-indicator mb-4">
             <ul class="d-flex justify-content-between align-items-center p-0">
                 <li *ngFor="let step of steps; let i = index"
                     [ngClass]="{'active': currentStep === i + 1,  'completed': currentStep > i + 1 }">
@@ -16,7 +16,36 @@
                     <div class="step-text">{{ step }}</div>
                 </li>
             </ul>
-        </div>
+        </div> -->
+        <div class=" row step-indicator mb-4">
+            <ul class="d-flex justify-content-between align-items-center p-0">
+              <li *ngFor="let step of steps; let i = index"
+                [ngClass]="{'active': currentStep === i + 1,  'completed': currentStep > i + 1 }">
+                <div class="item">
+                  <div class="step-circle ">
+                    <ng-container *ngIf="currentStep > i + 1; else stepNumber">
+                      <span class="step-checkmark">✔</span>
+                    </ng-container>
+                    <ng-template #stepNumber>{{ i + 1 }}</ng-template>
+                  </div>
+                  <div class="step-text">{{ step }}</div>
+                </div>
+               
+              </li>
+            </ul>
+            <!-- <ul class="d-flex justify-content-between align-items-center p-0">
+              <li *ngFor="let step of steps; let i = index"
+                [ngClass]="{'active': currentStep === i + 1,  'completed': currentStep > i + 1 }">
+                <div class="step-circle">
+                  <ng-container *ngIf="currentStep > i + 1; else stepNumber">
+                    <span class="step-checkmark">✔</span>
+                  </ng-container>
+                  <ng-template #stepNumber>{{ i + 1 }}</ng-template>
+                </div>
+                <div class="step-text">{{ step }}</div>
+              </li>
+            </ul> -->
+          </div>
 
 
         <div *ngIf="currentStep === 1" class="step-page">

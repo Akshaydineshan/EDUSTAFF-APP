@@ -1,0 +1,113 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+
+<div class="main-container " [class.shifted]="isSidebarClosed">
+    <div class="container-fluid top-banner"></div>
+
+    <div class="content-main pb-3">
+        <div class="prof-img-btns-sec d-flex justify-content-between   ">
+            <div class="d-flex flex-column   ">
+                <img [src]="getImage || 'https://s3-alpha-sig.figma.com/img/b820/634a/410270bdcc97729df86eb1284308b558?Expires=1731888000&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=Jg4B-HXoV9PhbipZN5ibZQCITWifnKo6bnJPhWVGPAZTwCxAyuBmV0K~p4Q1oqTyVJ4NK2d4Mltk~li9Capm0a2wyrgbb8ljvxTohObbQLLAFquJB8Z3rHoaJk0isQDwYQ8LTh1R2EcCNSrN6aAu75G3yq3-x-Yvw80oi-sOi4GSLoqRIitG2crSxu5gKLYlEMhHs5pvEayl-hGOoTLUCFgXnlWs7bBxPWB0Qhs~1cq4rw8y9WZ3yS8C2vYdXPnaREAxpevyvy~cm8v2KhTeDQDTRrjCDotSL2QB9nc2AWNdjsotvl3ivAI1AcCBgD1jONx24FRJ8YuWgBiV7Qpiyw__' "
+                    class="prof-img img-fluid rounded-circle " alt="Profile Image" />
+                <div class=" prof-sec-text ms-2 ">
+                    <p class="mb-0 p-n ">{{currentSchool.schoolName}}</p>
+                    <p class="text-muted mb-0 p-d mt-1"></p>
+                    <p class="text-muted mb-0 p-a">
+                        {{currentSchool.address}}
+                    </p>
+                    <div class="inline-det">
+
+                        <span><i class="fa-solid fa-phone"></i>
+                            <p class="p-m ps-2"> {{currentSchool.phone}}</p>
+                        </span>
+
+
+                        <!-- <span>
+                           <p class="p-w">www.orthodoxchruchschool_kochi.com</p>
+                        </span> -->
+                        <span>
+                            <i class="fa-regular fa-envelope"></i>
+                            <p class="p-e ps-2">{{currentSchool.email}}</p>
+                        </span>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="  d-flex align-items-center ">
+                                <span class="mt-2 me-2">
+                                        <p class="uq-f">Unique ID:</p>
+                                </span>
+                                <span class="me-5 mt-2">
+                                        <p class="uq-id">{{currentTeacher.uniqueID}}</p>
+                                </span>
+                                <div class="dropdown me-2 ">
+                                        <button class="btn btn-light dropdown-toggle" type="button"
+                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                <li><a class="dropdown-item"
+                                                                [routerLink]="['/teachers/add-teacher',itemId]">Edit</a>
+                                                </li>
+
+
+                                        </ul>
+                                </div>
+
+
+                                <button class="btn btn-outline-secondary me-2">
+                                        <i class="bi bi-printer"></i> Message
+                                </button>
+
+                                <button class="btn btn-success">
+                                        <i class="bi bi-telephone-fill"></i> Call
+                                </button>
+                        </div> -->
+        </div>
+
+        <hr class="styled-hr">
+
+
+        <div class="data-container">
+
+            <div class="card mt-3">
+                <div class="card-header"></div>
+                <div class="card-body">
+
+                    <!-- <ul class="info-list mt-2"
+                                                *ngFor="let item of currentTeacher.getEducations; let i = index;">
+                                                <p class="s-h">Education {{i+1}}</p>
+                                                <li *ngIf="item.courseText !='Others'; else otherName">
+                                                        <strong class="field">Course Name:</strong>
+                                                        <span class="field-val">{{ item.courseText }}</span>
+                                                </li>
+                                                <ng-template #otherName>
+                                                        <li *ngIf="item.courseName">
+                                                                <strong class="field">Course Name:</strong>
+                                                                <span class="field-val">{{ item.courseName }}</span>
+                                                        </li>
+                                                </ng-template>
+
+                                                <li *ngIf="item.schoolName">
+                                                        <strong class="field">School/University:</strong>
+                                                        <span class="field-val">{{ item.schoolName }}</span>
+                                                </li>
+                                                <li *ngIf="item.fromDate">
+                                                        <strong class="field">From Date:</strong>
+                                                        <span class="field-val">{{ item.fromDate | date: 'MMMM d, y'
+                                                                }}</span>
+                                                </li>
+                                                <li *ngIf="item.toDate">
+                                                        <strong class="field">To Date:</strong>
+                                                        <span class="field-val">{{ item.toDate | date: 'MMMM d, y'
+                                                                }}</span>
+                                                </li>
+                                        </ul> -->
+                </div>
+            </div>
+
+
+        </div>
+    </div>

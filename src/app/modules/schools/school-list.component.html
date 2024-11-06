@@ -1,7 +1,7 @@
 <app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
 <!-- container start -->
-<div class="container mt-4" [class.shifted]="isSidebarClosed">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>School List
       <span class="badge badge-secondary">{{ this.schoolList.length }}</span>
@@ -14,7 +14,7 @@
 
 
   <!-- teacherHoverPopup start -->
-  <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+  <!-- <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info">
     <div class="popup-header">
       <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
@@ -32,13 +32,17 @@
       <p><strong>Reports To:</strong> {{ selectedTeacher?.reportedTo }}</p>
     </div>
 
-  </div>
+  </div> -->
   <!-- teacher hover popup end -->
+  <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="selectedTeacher"
+  [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
+<app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
+[position]="{'top.px': mouseY, 'left.px': mouseX}"  />
 
 
   <!-- schoolHover Popup start -->
-  <div class="popup-teacher-info" *ngIf="showSchoolPopup && selectedSchool "
+  <!-- <div class="popup-teacher-info" *ngIf="showSchoolPopup && selectedSchool "
     [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
     <div class="popup-header">
       <img [src]="'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
@@ -60,9 +64,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+  <!-- <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
     class="popup-teacher-info">
     <div class="popup-header p-3">
       <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
@@ -92,7 +96,7 @@
 
 
 
-  </div>
+  </div> -->
 
 
 
