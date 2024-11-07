@@ -82,7 +82,7 @@ h6 {
     flex: 1;
     // min-width: 100px;
     max-width: 140px;
-    max-height: 120px;
+    max-height: 125px;
     text-align: center;
     padding: 1rem;
     border: 1px solid #ddd;
@@ -140,4 +140,10 @@ h6 {
     // padding-top: 50px;
     transition: margin-left 0.3s;
     // overflow-y: hidden;
+    
+}
+
+.sub-card img{
+    width: 57px;
+    height: 36.5px;
 }

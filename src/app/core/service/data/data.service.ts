@@ -144,6 +144,7 @@ export class DataService {
     if (filters.subjectFilter) params = params.append('subjectFilter', filters.subjectFilter);
     if (filters.retiringInMonths) params = params.append('retiringInMonths', filters.retiringInMonths);
     if (filters.schoolNameFilter) params = params.append('schoolNameFilter', filters.schoolNameFilter);
+    if (filters.uniqueIdFilter) params = params.append('uniqueId', filters.uniqueIdFilter);
     if (filters.documents) params = params.append('documents', filters.documents);
     if (filters.minExperienceYear) params = params.append('minExperienceYear', filters.minExperienceYear);
     if (filters.maxExperienceYear) params = params.append('maxExperienceYear', filters.maxExperienceYear);
