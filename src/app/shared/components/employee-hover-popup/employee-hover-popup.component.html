@@ -14,13 +14,13 @@ class="popup-teacher-info ">
 </div>
 <hr class="line">
 <div class="popup-body-t p-0">
-  <div class="d-flex justify-content-between  mt-0">
-    <div>
-      <p class="p-h">Date Of Join</p>
+  <div class="d-flex flex-column justify-content-between  mt-0">
+    <div class="d-flex flex-row">
+      <p class="p-h">Date Of Join:</p>
       <p class="p-v">{{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
     </div>
-    <div>
-      <p class="p-h">Report To</p>
+    <div class="d-flex flex-row" >
+      <p class="p-h">Report To:</p>
       <p class="p-v c">{{ selectedTeacher?.reportedTo }}</p>
     </div>
   </div>

@@ -140,8 +140,8 @@ export class AddTeacherComponent implements OnInit {
       if (id) {
         this.isEdited = true;
         this.employeeId = id;
-        this.professionalForm.get("fromDate")?.disable()
-        this.professionalForm.get("toDate")?.disable()
+        // this.professionalForm.get("fromDate")?.disable()
+        // this.professionalForm.get("toDate")?.disable()
         this.personalDetailsForm.disable()
         this.educationForm.disable()
         this.loadEmployeeData(this.employeeId);

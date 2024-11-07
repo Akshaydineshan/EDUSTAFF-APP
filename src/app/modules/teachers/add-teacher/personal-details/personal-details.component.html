@@ -1,14 +1,14 @@
 <form [formGroup]="personalDetailsForm">
 
-    <div class="row mb-3 d-flex align-items-center">
-        <label for="profileImage" class="col-sm-3 col-form-label  ">Profile Image</label>
+    <div class="row mb-3 d-flex align-items-center g-0">
+        <label for="profileImage" class="col-md-3 col-form-label  ">Profile Image</label>
         <div class="col-sm-9 text-center">
-            <div class="row d-flex align-items-center">
-                <div class="col-sm-3"style="margin-right:-18px;" >
+            <div class="row d-flex align-items-center g-0">
+                <div class="col-md-3"style="margin-right:-18px;" >
                     <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
                         class="rounded-circle" style="width: 80px; height: 80px;">
                 </div>
-                <div class="col-sm-2" style="margin-right:-39px;">
+                <div class="col-md-2 " >
                     <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*"
                         style="display: none;" id="profileImageUpload">
                     <button *ngIf="!personalDetailsForm.get('photoImageName')?.value" type="button"
@@ -17,7 +17,7 @@
                         class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upgrade</button>
                 </div>
 
-                <div class="col-sm-3 p-0" >
+                <div class="col-md-3 p-0" >
                     <button  type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">
                         <i class="fas fa-trash-alt"></i> Remove</button>
                 </div>

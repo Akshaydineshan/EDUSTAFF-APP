@@ -54,7 +54,7 @@
       <app-professional-details [(professionalForm)]="professionalForm" [districts]="districts"
         [employeeTypes]="employeeTypes" [employeeCategories]="employeeCategories"
         [schoolNameWithCity]="schoolNameWithCity" [subjects]="subjects" [designationList]="designationsList"
-        [approvalTypes]="approvalTypes" [submitted]="submitBtnStatus.professional">
+        [approvalTypes]="approvalTypes" [submitted]="submitBtnStatus.professional" [isEdited]="isEdited">
       </app-professional-details>
     </div>
 
@@ -72,7 +72,7 @@
         <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">Cancel</button>
 
         <button type="submit" class="btn btn-success" (click)="saveAndContinue()">
-          {{ currentStep === steps.length ? 'Submit' : 'Continue' }}
+          {{ currentStep >= steps.length ? 'Submit' : 'Continue' }}
         </button>
       </div>
     </div>

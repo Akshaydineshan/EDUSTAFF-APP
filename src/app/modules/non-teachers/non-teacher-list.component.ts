@@ -68,7 +68,7 @@ export class NonTeacherListComponent implements OnInit {
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
         }));
-        this.nonTeacherTableRows = data
+        this.nonTeacherTableRows = this.nonTeacherList
         console.log("Non teacher data list", this.nonTeacherList)
 
         this.nonTeacherTableColumns = this.displayColumns.map((column: any) => {

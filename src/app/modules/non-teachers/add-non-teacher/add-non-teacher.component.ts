@@ -54,7 +54,7 @@ export class AddNonTeacherComponent {
     private router: Router,
     private dataService: DataService,
     private route: ActivatedRoute,
-    private nonTeacherService:NonTeacherService,private toastr:ToastrService
+    private nonTeacherService: NonTeacherService, private toastr: ToastrService
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
@@ -93,7 +93,7 @@ export class AddNonTeacherComponent {
     //   educations: this.fb.array([])
     // });
     this.professionalForm = this.fb.group({
-      department: [ '', [Validators.required, Validators.maxLength(50)]],
+      department: ['', [Validators.required, Validators.maxLength(50)]],
       district: ['', [Validators.required, Validators.maxLength(50)]],
       serviceCategory: [''],
       // employeeType: ['', Validators.required],
@@ -115,7 +115,7 @@ export class AddNonTeacherComponent {
     },
       //  { validators: dateRangeValidator('startDate', 'endDate') }
     );
-   
+
 
     this.educationForm = this.fb.group({
       educations: this.fb.array([]) // Initialize as empty array
@@ -148,6 +148,9 @@ export class AddNonTeacherComponent {
 
       }
     });
+
+   
+
     if (coursesArray.length === 0) {
       debugger
       this.addCourse();
@@ -391,7 +394,7 @@ export class AddNonTeacherComponent {
       this.statuses = results.statuses;
       this.schools = results.schools;
 
-      this.employeeTypes = results.employeeTypes.filter((item:any)=>item.employeeTypeID === 2);
+      this.employeeTypes = results.employeeTypes.filter((item: any) => item.employeeTypeID === 2);
       this.designationsList = results.designations;
       this.employeeCategories = results.employeeCategories;
       this.schoolNameWithCity = results.schoolNameWithCity;
@@ -510,7 +513,7 @@ export class AddNonTeacherComponent {
 
     this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
 
-       debugger;
+      debugger;
       const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 4);
 
       if (hasTeacherTraining) {
@@ -681,8 +684,8 @@ export class AddNonTeacherComponent {
         this.religions = data.religions;
         this.maritalStatuses = data.maritalStatuses;
         this.genders = data.genders;
-        this.employeeTypes = data.employeeTypes.filter((item:any)=> item.employeeTypeID === 2 );
-      
+        this.employeeTypes = data.employeeTypes.filter((item: any) => item.employeeTypeID === 2);
+
         this.designationsList = data.designations;
         this.employeeCategories = data.employeeCategories;
         this.schoolNameWithCity = data.schoolNameWithCity;
@@ -693,13 +696,13 @@ export class AddNonTeacherComponent {
         this.bloodGroups = data.bloodGroups;
         this.approvalTypes = data.approvalTypes;
 
-        console.log('Data loaded successfully:', data,this.employeeTypes);
+        console.log('Data loaded successfully:', data, this.employeeTypes);
       },
       error: (err: any) => {
         console.error('Failed to load dropdown data:', err);
 
       },
-      complete:()=>{
+      complete: () => {
         // this.professionalForm.get('department')?.patchValue({employeeTypeID: 2, employeeTypeName: 'Non-Teaching Staff'});
       }
     });
@@ -871,11 +874,11 @@ export class AddNonTeacherComponent {
         (response: any) => {
           debugger
           console.log('Employee Updated successfully:', response);
-          if (response.status===200) {
+          if (response.status === 200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
-           
+
             this.toastr.success('Employee Updated', 'Success', {
               closeButton: true,
               progressBar: true,
@@ -897,8 +900,8 @@ export class AddNonTeacherComponent {
 
         },
         (error: any) => {
-          if(error.status==409){
-            let message:string=error.error?.message
+          if (error.status == 409) {
+            let message: string = error.error?.message
             this.toastr.error(message + '!', 'Failed', {
               closeButton: true,
               progressBar: true,
@@ -908,7 +911,7 @@ export class AddNonTeacherComponent {
             this.currentStep = 1
             return;
           }
-        
+
           this.toastr.error('Somthing Went Wrong !', 'Failed', {
             closeButton: true,
             progressBar: true,
@@ -926,11 +929,11 @@ export class AddNonTeacherComponent {
         (response: any) => {
           debugger
           console.log('Employee added successfully:', response);
-          if (response.status===200) {
+          if (response.status === 200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
-          
+
             this.toastr.success('Employee Added', 'Success', {
               closeButton: true,
               progressBar: true,
@@ -951,8 +954,8 @@ export class AddNonTeacherComponent {
 
         },
         (error: any) => {
-          if(error.status==409){
-            let message:string=error.error?.message
+          if (error.status == 409) {
+            let message: string = error.error?.message
             this.toastr.error(message + '!', 'Failed', {
               closeButton: true,
               progressBar: true,
@@ -962,7 +965,7 @@ export class AddNonTeacherComponent {
             this.currentStep = 1
             return;
           }
-   
+
           this.toastr.error('Somthing Went Wrong !', 'Failed', {
             closeButton: true,
             progressBar: true,

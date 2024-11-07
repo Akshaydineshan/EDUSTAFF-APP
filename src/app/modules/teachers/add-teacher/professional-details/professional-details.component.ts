@@ -17,6 +17,7 @@ export class ProfessionalDetailsComponent implements OnInit, OnChanges {
   @Input() approvalTypes!: any[];
   @Input() submitted:boolean=false;
   @Input() schoolNameWithCity!:any[];
+  @Input() isEdited:boolean=false
   @Output() professionalFormChange = new EventEmitter<any>();
 
   yesNoOptions = [

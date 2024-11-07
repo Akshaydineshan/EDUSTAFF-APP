@@ -2,3 +2,21 @@
   padding-left: 0 !important;
   padding-top: 70x;
 }
+
+.main-container {
+
+  padding: 2rem;
+  margin-left: 60px;
+  padding-top: 50px  !important;
+  padding-bottom: 2rem;
+  transition: margin-left 0.3s;
+}
+
+.main-container.shifted {
+  margin-left: 0 !important;
+}
+
+
+.table-responsive {
+  margin-top: 1rem;
+}
