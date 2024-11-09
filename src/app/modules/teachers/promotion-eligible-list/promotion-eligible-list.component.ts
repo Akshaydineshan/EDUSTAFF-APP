@@ -12,7 +12,7 @@ interface PagonationConfig {
 })
 export class PromotionEligibleListComponent {
   isSidebarClosed = false;
-  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromPromotion', 'fromSchool', 'phoneNumber', 'subject'];
+  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromPromotion', 'toPromotion', 'school', 'phoneNumber', 'subject'];
 
   promotionEligibleList: any[] = [];
 

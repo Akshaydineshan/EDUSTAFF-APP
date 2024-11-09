@@ -23,4 +23,22 @@ export class SchoolHoverPopupComponent {
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }
+
+  get getPrincipalImage() {
+    let result = '';
+    if (this.API_BASE_IMAGE && this.selectedSchool?.principalPhotoPath && this.selectedSchool?.principalPhotoPath !== 'null') {
+      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedSchool?.principalPhotoPath.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
+
+  get getVicePrincipalImage() {
+    let result = '';
+    if (this.API_BASE_IMAGE && this.selectedSchool?.vicePrincipalPhotoPath && this.selectedSchool?.vicePrincipalPhotoPath !== 'null') {
+      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedSchool?.vicePrincipalPhotoPath.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
 }

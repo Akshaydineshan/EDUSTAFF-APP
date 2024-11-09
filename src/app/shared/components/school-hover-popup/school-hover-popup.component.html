@@ -1,28 +1,47 @@
-<div *ngIf="showToggle && selectedSchool" [ngStyle]="position"
-class="popup-teacher-info">
-<div class="popup-header ">
-  <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
-  <div class="popup-title">
-    <p class="p-s">{{ selectedSchool?.name }}</p>
-    <p class="p-a">{{ selectedSchool?.address }}</p>
-    <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
-    <p class="p-m">+91 {{ selectedSchool?.phone }}</p>
-  </div>
-</div>
-<hr class="line">
-<div class="popup-body ">
-  <div class="">
-    <p class="p-a">Authorities</p>
-    <div>
-      <p class="val">{{ selectedSchool?.principal }}</p>
-      <p class="p-p">Principal</p>
+<div *ngIf="showToggle && selectedSchool" [ngStyle]="position" class="popup-teacher-info">
+  <div class="popup-header ">
+    <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+    <div class="popup-title">
+      <p class="p-s">{{ selectedSchool?.name }}</p>
+      <p class="p-a">{{ selectedSchool?.address }}</p>
+      <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
+      <p class="p-m">+91 {{ selectedSchool?.phone }}</p>
     </div>
+  </div>
+  <hr class="line">
+  <div class="popup-body ">
     <div class="">
-      <p class="val">{{ selectedSchool?.vicePrincipal }}</p>
-      <p class="p-p">Vice Principal</p>
-    </div>
-  </div>
+      <p class="p-a">Authorities</p>
 
-</div>
+      <div class="d-flex">
+
+        <div class="pImage">
+          <img [src]="getPrincipalImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+        </div>
+
+        <div>
+          <p class="val">{{ selectedSchool?.principal }}</p>
+          <p class="p-p">Principal</p>
+        </div>
+
+      </div>
+
+
+
+      <div class="d-flex mt-2">
+
+        <div class="pImage">
+          <img [src]="getVicePrincipalImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+        </div>
+
+        <div>
+          <p class="val">{{ selectedSchool?.vicePrincipal }}</p>
+          <p class="p-p">Vice Principal</p>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
 
 </div>
