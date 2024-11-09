@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: '', component: SchoolListComponent },
   { path: 'school-list', component: SchoolListComponent },
   { path: 'add-school', component: AddSchoolComponent },
+  { path: 'add-school/:id', component: AddSchoolComponent },
   { path: 'view/:id', component: ViewSchoolComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
   {

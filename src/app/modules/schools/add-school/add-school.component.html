@@ -32,7 +32,8 @@
             <div class="row mb-3">
                 <label for="schoolType" class="col-sm-3 col-form-label">School Type</label>
                 <div class="col-sm-9">
-                    <select class="form-control" id="schoolType" formControlName="schoolTypeID" required>
+                    <select class="form-control" id="schoolType" formControlName="schoolTypeID" required
+                        (ngModelChange)="changeSchoolType($event)">
                         <option value="" disabled>Select School Type</option>
                         <option *ngFor="let type of schoolTypes" [ngValue]="type">{{ type.schoolTypeName }}</option>
                     </select>
@@ -131,7 +132,7 @@
             <div class="row mb-3">
                 <label for="phone" class="col-sm-3 col-form-label">Phone</label>
                 <div class="col-sm-9">
-                   
+
                     <div class="input-group">
                         <span class="input-group-text">+91</span>
                         <input type="text" class="form-control" id="phone" formControlName="phone" required>
@@ -178,6 +179,25 @@
                 </div>
             </div>
 
+            <div *ngIf="divisionsFormArray.controls.length !==0">
+                <div class="row">
+                    <label for="photoID" class="col-sm-3 col-form-label">Divisions</label>
+                </div>
+    
+    
+                <div class="row mb-3 mt-3" *ngFor="let division of divisionsFormArray.controls; let i = index"
+                    formArrayName="divisions">
+                    <label for="state" class="col-sm-3 col-form-label">Division {{i+1}}</label>
+                    <div class="col-sm-4 mt-2" [formGroupName]="i">
+                        <div class="input-group">
+                            <input type="number" placeholder="Enter Student Count" class="form-control" id="phone" formControlName="studentCount" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+         
+
 
         </form>
         <!-- add-school form end -->
@@ -197,6 +217,9 @@
             </div>
         </div>
         <!-- buttons ends -->
+
+
+
 
 
 

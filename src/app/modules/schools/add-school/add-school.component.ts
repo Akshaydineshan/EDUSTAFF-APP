@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SchoolService } from '../school.service';
 import { SchoolData } from '../models/add-school';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -17,12 +17,16 @@ export class AddSchoolComponent implements OnInit {
   schoolDetailsForm!: FormGroup;
   submitted: boolean = false; //  form submit flag in your component
 
-  schoolTypes: any[] =[]
+  schoolTypes: any[] = []
   cities: any[] = [
     { cityID: 1, cityName: "dhfgdfh" }
   ]
+  divisions: any[] = []
+  isEdited!: boolean;
+  schoolId: any;
+  school: any;
 
-  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService,private router:Router,private toastr:ToastrService) {
+  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
 
   }
 
@@ -30,8 +34,89 @@ export class AddSchoolComponent implements OnInit {
     this.initSchoolDetailsForm()
     this.loadDropdownData()
 
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (id) {
+        this.isEdited = true;
+        this.schoolId = id;
+        // this.professionalForm.get("fromDate")?.disable()
+        // this.professionalForm.get("toDate")?.disable()
+
+        this.loadSchoolData(this.schoolId);
+
+      }
+    });
+
+    this.divisions.forEach((item: any) => this.addDivision())
+
   }
 
+  loadSchoolData(id: number) {
+    debugger
+    this.schoolService.getSchoolById(id).subscribe({
+      next: (response) => {
+        if (response) {
+          console.log(response)
+          this.school = response
+          this.setValuesForEdit()
+        }
+
+      },
+      error: (error) => {
+        // this.router.navigate(['teachers/view-teacher', this.employeeId])
+
+      },
+      complete: () => {
+
+      }
+    })
+  }
+
+  setValuesForEdit() {
+    debugger
+    forkJoin({
+      schoolTypes: this.schoolService.getSchoolTypes(),
+      cities: this.schoolService.getCities(),
+
+    }).subscribe((results: any) => {
+    debugger
+    this.schoolTypes=this.schoolTypes
+    this.cities=this.cities
+
+
+
+    const schoolData = {
+
+      schoolName: this.school.schoolName,
+      schoolTypeID: this.schoolTypes.find((item:any)=>item.schoolTypeID === this.school.schoolTypeID),
+      address: this.school.address,
+      email: this.school.email,
+      phone: this.school.phone,
+      cityID: this.cities.find((item:any)=>item.cityID === this.school.cityID),
+      state: this.school.state,
+      pincode: this.school.pincode,
+
+    };
+
+
+    this.schoolDetailsForm.patchValue({
+      schoolName: schoolData.schoolName,
+      schoolTypeID: schoolData.schoolTypeID,
+      address: schoolData.address,
+      cityID: schoolData.cityID,
+      state: schoolData.state,
+      pincode: schoolData.pincode,
+      email: schoolData.email,
+      phone: schoolData.phone,
+
+
+    });
+
+
+
+    });
+
+  }
 
 
   // Method to initialize School Details Form
@@ -46,6 +131,8 @@ export class AddSchoolComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       photoID: [null],
+
+      divisions: this.fb.array([])
       // statusID: ['', Validators.required],
       // principalID: ['', Validators.required],
       // vicePrincipalID: ['', Validators.required]
@@ -62,6 +149,7 @@ export class AddSchoolComponent implements OnInit {
     this.submitted = true;  // Set submitted to true when the form is submitted
 
     if (this.schoolDetailsForm.valid) {
+      debugger
       let formDataValue: any = this.schoolDetailsForm.value;
 
       const data: SchoolData = {
@@ -73,9 +161,12 @@ export class AddSchoolComponent implements OnInit {
         pincode: formDataValue.pincode,
         email: formDataValue.email,
         phone: formDataValue.phone,
-        photoID:formDataValue?.photoID?.photoID,
+        photoID: formDataValue?.photoID?.photoID,
         principalID: null,
         vicePrincipalID: null,
+        addDivisions: formDataValue.divisions.map((item: any, index: number) => {
+          return { division: index + 1, studentCount: parseInt(item.studentCount) }
+        }),
 
       }
 
@@ -93,7 +184,7 @@ export class AddSchoolComponent implements OnInit {
               positionClass: 'toast-top-left',
               timeOut: 4500,
             });
-            
+
             this.router.navigate(['/schools/school-list'])
           },
           error: (err) => {
@@ -161,6 +252,47 @@ export class AddSchoolComponent implements OnInit {
 
       },
     });
+  }
+
+
+  changeSchoolType(event: any) {
+    debugger
+    let schoolTypeId: number = event.schoolTypeID
+    this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
+      next: (response: any) => {
+        console.log("response", response)
+
+        let divisions: any[] = response[0].divisions
+        console.log("divisions", divisions)
+        this.divisions = divisions
+
+        this.divisions.forEach((item: any) => this.addDivision())
+
+      },
+      error: (error: any) => {
+
+      },
+      complete: () => {
+
+      }
+
+    })
+
+
+  }
+
+  get divisionsFormArray() {
+    return this.schoolDetailsForm.get("divisions") as FormArray;
+  }
+
+
+  addDivision() {
+    this.divisionsFormArray.push(
+      this.fb.group({
+        // division: [''],
+        studentCount: ['']
+      })
+    );
   }
 
   toggleSidebar() {

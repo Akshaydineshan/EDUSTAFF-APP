@@ -27,11 +27,16 @@ export class SchoolService {
     return this.http.get(url);
   }
 
+  getDivisionDetailsBySchoolType(schoolType:number): Observable<any> {
+    const url = `${this.baseUrl}SchoolType/GetDivisionsBySchoolType/${schoolType}`;
+    return this.http.get(url);
+  }
+
   getCities(): Observable<any> {
     const url = `${this.baseUrl}ProfileDetails/GetAllCities`;
     return this.http.get(url);
   }
-
+ 
 
   
   getSchoolById(schoolId: number): Observable<any> {

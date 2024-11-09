@@ -11,7 +11,7 @@
                                         class="prof-img img-fluid rounded-circle " alt="Profile Image" />
                                 <div class=" prof-sec-text ms-2 ">
                                         <p class="mb-0 p-n ">{{currentSchool.schoolName}}</p>
-                                      
+
                                         <p class="text-muted mb-0 p-a">
                                                 {{currentSchool.address}}
                                         </p>
@@ -35,21 +35,16 @@
                                 </div>
                         </div>
 
-                        <!-- <div class="  d-flex align-items-center ">
-                                <span class="mt-2 me-2">
-                                        <p class="uq-f">Unique ID:</p>
-                                </span>
-                                <span class="me-5 mt-2">
-                                        <p class="uq-id">{{currentTeacher.uniqueID}}</p>
-                                </span>
+                        <div class="  d-flex align-items-center ">
+                              
                                 <div class="dropdown me-2 ">
-                                        <button class="btn btn-light dropdown-toggle" type="button"
+                                        <button class="btn btn-light " type="button"
                                                 id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                <i class="bi bi-three-dots"></i>
+                                                <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                 <li><a class="dropdown-item"
-                                                                [routerLink]="['/teachers/add-teacher',itemId]">Edit</a>
+                                                                [routerLink]="['/schools/add-school',itemId]">Edit</a>
                                                 </li>
 
 
@@ -57,14 +52,14 @@
                                 </div>
 
 
-                                <button class="btn btn-outline-secondary me-2">
+                                <!-- <button class="btn btn-outline-secondary me-2">
                                         <i class="bi bi-printer"></i> Message
                                 </button>
 
                                 <button class="btn btn-success">
                                         <i class="bi bi-telephone-fill"></i> Call
-                                </button>
-                        </div> -->
+                                </button> -->
+                        </div>
                 </div>
 
                 <hr class="styled-hr">
@@ -89,7 +84,7 @@
                                                         <strong class="field">School Type</strong>
                                                         <span class="field-val">{{currentSchool.schoolTypeName}}</span>
                                                 </li>
-                                               
+
 
                                                 <li>
                                                         <strong class="field">State</strong>
@@ -100,11 +95,11 @@
                                                         <span class="field-val">{{currentSchool.cityName}}</span>
                                                 </li>
 
-                                                <li  class="s-head-container">
+                                                <li class="s-head-container">
                                                         <p class="s-head">Autorities</p>
                                                 </li>
 
-                                              
+
 
                                                 <li>
                                                         <strong class="field">Principal</strong>
@@ -113,7 +108,8 @@
 
                                                 <li>
                                                         <strong class="field">Vice Principal</strong>
-                                                        <span class="field-val">{{currentSchool.vicePrincipalName}}</span>
+                                                        <span
+                                                                class="field-val">{{currentSchool.vicePrincipalName}}</span>
                                                 </li>
 
                                         </ul>

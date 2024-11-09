@@ -11,4 +11,5 @@ export interface SchoolData {
     statusID?: number
     principalID?: number |null
     vicePrincipalID?: number |null
+    addDivisions?:any
 }
