@@ -54,11 +54,10 @@ export class TableComponent implements OnInit {
    
     this.BtnClickedEvent.emit(data)
   }
-  onGridReady(params:any) {
-    params.api.sizeColumnsToFit(); // Fit all columns within the grid's width
-
-    // Automatically adjust only the "name" column based on content length
-    params.columnApi.autoSizeColumn('name');
+ 
+  onGridReady(params: any) {
+    // Auto-size the "name" column based on the content
+    params.columnApi.autoSizeColumns(['name']);
   }
 
 

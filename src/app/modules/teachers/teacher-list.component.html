@@ -3,7 +3,7 @@
 
 
 
-<div class="main-container mt-4" [class.shifted]="isSidebarClosed"  [class.blur-content]="isTransferPopup">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup" (click)="overlayClick()">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>Teachers List
       <span class="badge badge-secondary">{{ teacherList.length }}</span>
@@ -123,12 +123,12 @@
   <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
     [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
-  <app-employee-menu-click-list-menu [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY"
-    [mouseX]="mouseMenuX" (clickListEvent)="listClickFromMenuList($event)"></app-employee-menu-click-list-menu>
+  <app-employee-menu-click-list-menu [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY" [mouseX]="mouseMenuX"
+    (clickListEvent)="listClickFromMenuList($event)"></app-employee-menu-click-list-menu>
 
 
 
-   
+
 
 
 
@@ -200,8 +200,8 @@
 
 
     </table> -->
-    <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns"
-      [paginationConfig]="paginationConfig" (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"></app-table>
+    <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns" [paginationConfig]="paginationConfig"
+      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"></app-table>
     <!--  -->
 
 
@@ -231,8 +231,8 @@
   <div class="header d-flex justify-content-between">
     <p>Transfer Request- {{selectMenuRowData.name}}</p>
     <div>
-      <a (click)="closeTransferPopup()">  <img   src="assets/icons/close.jpg" alt=""></a>
-     
+      <a (click)="closeTransferPopup()"> <img src="assets/icons/close.jpg" alt=""></a>
+
     </div>
 
   </div>
@@ -245,10 +245,17 @@
       <div class="row mb-1">
         <label class="col-sm-12 col-form-label">Transfer From</label>
         <div class="col-sm-12">
-          <select class="form-control" placeholder="select" formControlName="fromSchool" >
+          <select class="form-control" placeholder="select" formControlName="fromSchool">
             <option disabled>Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;"  [ngValue]="school" disabled>{{school.schoolName}}</option>
+            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school" disabled>
+              {{school.schoolName}}</option>
           </select>
+          <div
+            *ngIf="transferRequestForm.get('fromSchool')?.invalid && (transferRequestForm.get('fromSchool')?.['dirty'] || transferRequestForm.get('fromSchool')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['required']"></small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
         </div>
       </div>
 
@@ -257,14 +264,29 @@
         <div class="col-sm-12">
           <select class="form-control" placeholder="select" formControlName="toSchool">
             <option disabled>Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}</option>
+            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
+            </option>
           </select>
+          <div
+            *ngIf="transferRequestForm.get('toSchool')?.invalid && (transferRequestForm.get('toSchool')?.['dirty'] || transferRequestForm.get('toSchool')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
         </div>
       </div>
       <div class="row mb-1 ">
         <label class="col-sm-12 col-form-label">Document</label>
         <div class="col-sm-12">
           <input type="text" class="form-control" formControlName="documentUrl">
+          <div
+            *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
         </div>
       </div>
 
@@ -272,20 +294,36 @@
         <label class="col-sm-12 col-form-label">Date</label>
         <div class="col-sm-12">
           <input type="date" class="form-control" formControlName="date">
+          <div
+            *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
         </div>
       </div>
 
       <div class="row mb-1 ">
         <label class="col-sm-12 col-form-label">Comment (if any)</label>
         <div class="col-sm-12">
-          <input type="text" placeholder="Comment ..."  class="form-control" style="height: 70px;" formControlName="comment">
+          <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
+            formControlName="comment">
+            <div
+            *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
 
         </div>
       </div>
 
       <div class="btn-sec d-flex justify-content-center">
-       
-        <button class="sub-btn" (click)="transferRequestFormSubmit()">  <img class="me-2" src="assets/icons/tr-sub-icon.png" alt="">Submit</button>
+
+        <button class="sub-btn" (click)="transferRequestFormSubmit()"> <img class="me-2"
+            src="assets/icons/tr-sub-icon.png" alt="">Submit</button>
       </div>
     </form>
 
