@@ -6,10 +6,12 @@ import { PromotionEligibleListComponent } from './promotion-eligible-list/promot
 import { AddTeacherComponent } from './add-teacher/add-teacher.component';
 import { TeacherDetailsComponent } from './teacher-details/teacher-details.component';
 import { TeacherViewComponent } from './teacher-view/teacher-view.component';
+import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
   { path: 'teacher-list', component: TeacherListComponent },
+  { path: 'transfer-request-list', component: TransferRequestListComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
   { path: 'add-teacher', component: AddTeacherComponent },
   { path: 'add-teacher/:id', component: AddTeacherComponent },

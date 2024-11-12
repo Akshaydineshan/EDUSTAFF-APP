@@ -8,7 +8,10 @@ style="height: 600px;"
 [paginationPageSize]="paginationConfig.paginationPageSize"
 [paginationPageSizeSelector]="paginationConfig.paginationPageSizeSelector"
 [domLayout]="'autoHeight'"
+(menuBtnClickE)="BtnClick($event)" 
 (cellMouseOver)="onRowMouseEnter($event)" 
 (cellMouseOut)="onCellMouseOut($event)"  
 (cellClicked)="onCellClicked($event)"
+(onGridReady)="onGridReady($event)"
+
 />

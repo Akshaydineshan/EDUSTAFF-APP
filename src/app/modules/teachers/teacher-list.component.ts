@@ -6,6 +6,8 @@ import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { TeacherTableNameSectionComponent } from 'src/app/shared/components/teacher-table-name-section/teacher-table-name-section.component';
+import { forkJoin } from 'rxjs';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -27,12 +29,14 @@ export class TeacherListComponent implements OnInit {
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
   displayColumns: string[] = ['name', 'schoolName', 'designation', 'employeeType', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
-
+  isTransferPopup: boolean = false;
   selectedTeacher: any = null;
   hoveredTeacherId: number | null = null;
   hoverTimeout: any;
   mouseX: number = 0;
   mouseY: number = 0;
+  mouseMenuX: number = 0;
+  mouseMenuY: number = 0;
   showPopup: boolean = false;
   showSchoolPopup: boolean = false;
   selectedSchool: any = null;
@@ -55,6 +59,8 @@ export class TeacherListComponent implements OnInit {
     comment: ''
   };
 
+  transferRequestForm!: FormGroup
+
   schools = [
     { id: '1', name: 'School A' },
     { id: '2', name: 'School B' },
@@ -65,13 +71,16 @@ export class TeacherListComponent implements OnInit {
   schoolId!: any;
 
   API_BASE_IMAGE: any = environment.imageBaseUrl
+  isMenuVisible: boolean = false;
+  selectMenuRowData: any;
+  schoolDropDownList: any;
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
       schoolNameFilter: [''],
-      uniqueIdFilter:[''],
+      uniqueIdFilter: [''],
       documents: [false],
       minExperienceYear: [0],
       maxExperienceYear: [100],
@@ -82,10 +91,19 @@ export class TeacherListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTeachersList();
+    this.loadDropdownData()
     this.updateSliderTrack();
     this.filterForm.valueChanges.subscribe(() => {
       this.updateSliderTrack();
     });
+
+    this.transferRequestForm = this.fb.group({
+      fromSchool: [''],
+      toSchool: [''],
+      documentUrl: [''],
+      date: [''],
+      comment: ['']
+    })
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -101,6 +119,7 @@ export class TeacherListComponent implements OnInit {
 
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
+    console.log("event", event.clientX, event.clientY)
     const offset = 15; // Offset for positioning
     this.mouseX = event.clientX + offset;
     this.mouseY = event.clientY + offset;
@@ -147,356 +166,559 @@ export class TeacherListComponent implements OnInit {
     }
   }
 
-  resetForm(form: any) {
-    this.transferRequest = {
-      school: '',
-      position: '',
-      date: '',
-      comment: ''
-    };
-  }
-
-  getDocumentStatus(documentCount: number, error: any): any {
-    if (documentCount !== 0 && error && error.length !== 0) {
-      return { icon: 'fas fa-exclamation-triangle text-warning', text: documentCount };
-    } else if (documentCount !== 0 && (!error || error.length === 0)) {
-      return { icon: 'fas fa-file-alt text-primary', text: documentCount };
-    } else if (documentCount === 0) {
-      return { icon: '', text: '0' };
+  transferRequestFormSubmit() {
+    console.log("transfer form", this.transferRequestForm.value)
+    let formValue: any = this.transferRequestForm.value;
+    let employee: any = this.selectMenuRowData
+    let payload: any = {
+      "employeeID": employee.teacherId,
+      "toSchoolID": formValue.toSchool.schoolID,
+      "requestDate": this.dataService.formatDateToISO(formValue.date),
+      "approvalDate": this.dataService.formatDateToISO(formValue.date),
+      "requestedByID": null,
+      "approvedByID": null,
+      "comment": formValue.comment,
+      "filePath": formValue.documentUrl
     }
-    return { icon: '', text: '0' };
-  }
-
-  onSliderChange(): void {
-    const minVal = this.filterForm.get('minExperienceYear')?.value;
-    const maxVal = this.filterForm.get('maxExperienceYear')?.value;
-    if (minVal > maxVal) {
-      this.filterForm.get('minExperienceYear')?.setValue(maxVal);
-    }
-    if (maxVal < minVal) {
-      this.filterForm.get('maxExperienceYear')?.setValue(minVal);
-    }
-    this.updateSliderTrack();
-  }
-
-  onInputChange(): void {
-    this.onSliderChange();
-  }
-
-  updateSliderTrack(): void {
-    const minVal = this.filterForm.get('minExperienceYear')?.value;
-    const maxVal = this.filterForm.get('maxExperienceYear')?.value;
-    const track = document.querySelector('.slider-track') as HTMLElement;
-    const minPercent = (minVal / 100) * 100;
-    const maxPercent = (maxVal / 100) * 100;
-    track.style.background = `linear-gradient(to right, #ddd ${minPercent}%, #4CAF50 ${minPercent}%, #4CAF50 ${maxPercent}%, #ddd ${maxPercent}%)`;
-  }
-
-  loadTeachersList(): void {
+    console.log(payload)
     debugger
 
-    this.dataService.getTeachersData().subscribe(
-      (data) => {
-        debugger
-        this.teacherList = data.map((teacher: Teacher) => ({
-          ...teacher,
-          documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
-        }));
-        console.log("document sytatus check", this.teacherList)
+    this.dataService.createTransferRequest(payload).subscribe({
+      next:(response:any)=>{
+        if(response.status==200){
+          this.isTransferPopup=false;
+          this.toastr.success('Transfer Requested !', 'Success', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
 
-        this.teacherTableRows = this.teacherList
-        this.teacherTableColumns = [
-          {
-            field: "name", filter: true, floatingFilter: true, width: 180,
-            cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
-          },
-          {
-            field: "schoolName", filter: true, floatingFilter: false, width: 300,
-            cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
-          },
-          { field: "designation", filter: true, floatingFilter: false },
-          { field: "subject", filter: true, floatingFilter: false },
-          { field: "employeeType", filter: true, floatingFilter: false },
-          { field: "experienceYear", filter: true, floatingFilter: false },
-          { field: "age", filter: true, floatingFilter: false },
-          { field: "phoneNumber", filter: true, floatingFilter: false },
-          //     {
-          //       field: "documentCount", filter: true, floatingFilter: false,
-          //       cellRenderer: (params: any) => {
-          //         console.log("params",params)
-          //         debugger
-          //         `<span [class]="params.value?.icon ? 'doc-count' : ''">
-          //   <i [class]="params.value?.icon"></i>${params.value?.text}
-          // </span>`
-          //       }
-          //     },
-          {
-            field: "documentStatus",
-            filter: true,
-            floatingFilter: false,
-            cellRenderer: (params: any) => {
-              const iconClass = params.value?.icon || '';
-              const text = params.value?.text || '0';
-              const hasIconClass = iconClass ? 'doc-count' : '';
-
-
-              return `
-            <span class="${hasIconClass}">
-              <i class="${iconClass}"></i> ${text}
-            </span>`;
-            }
-
-
-          },
-        ];
-        console.log(this.teacherList, this.teacherTableColumns);
-        this.updatePaginatedData();
-
-
-
+        }
 
       },
-      (error) => {
-        console.error('Error fetching teachers data:', error);
+      error:(error:any)=>{
+
+      },
+      complete:()=>{
+       
+
       }
+    })
 
-    );
 
+  
+}
 
+resetForm(form: any) {
+  this.transferRequest = {
+    school: '',
+    position: '',
+    date: '',
+    comment: ''
+  };
+}
+
+getDocumentStatus(documentCount: number, error: any): any {
+  if (documentCount !== 0 && error && error.length !== 0) {
+    return { icon: 'fas fa-exclamation-triangle text-warning', text: documentCount };
+  } else if (documentCount !== 0 && (!error || error.length === 0)) {
+    return { icon: 'fas fa-file-alt text-primary', text: documentCount };
+  } else if (documentCount === 0) {
+    return { icon: '', text: '0' };
+  }
+  return { icon: '', text: '0' };
+}
+
+onSliderChange(): void {
+  const minVal = this.filterForm.get('minExperienceYear')?.value;
+  const maxVal = this.filterForm.get('maxExperienceYear')?.value;
+  if(minVal > maxVal) {
+  this.filterForm.get('minExperienceYear')?.setValue(maxVal);
+}
+if (maxVal < minVal) {
+  this.filterForm.get('maxExperienceYear')?.setValue(minVal);
+}
+this.updateSliderTrack();
   }
 
-  sortColumn(column: string) {
-    if (this.sortedColumn === column) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortedColumn = column;
-      this.sortDirection = 'asc';
-    }
+onInputChange(): void {
+  this.onSliderChange();
+}
 
-    this.teacherList = this.teacherList.sort((a, b) => {
-      const valueA = a[column];
-      const valueB = b[column];
-      if (this.sortDirection === 'asc') {
-        return valueA > valueB ? 1 : -1;
-      } else {
-        return valueA < valueB ? 1 : -1;
-      }
-    });
+updateSliderTrack(): void {
+  const minVal = this.filterForm.get('minExperienceYear')?.value;
+  const maxVal = this.filterForm.get('maxExperienceYear')?.value;
+  const track = document.querySelector('.slider-track') as HTMLElement;
+  const minPercent = (minVal / 100) * 100;
+  const maxPercent = (maxVal / 100) * 100;
+  track.style.background = `linear-gradient(to right, #ddd ${minPercent}%, #4CAF50 ${minPercent}%, #4CAF50 ${maxPercent}%, #ddd ${maxPercent}%)`;
+}
 
-    this.updatePaginatedData();
-  }
+loadTeachersList(): void {
+  debugger
 
-  updatePaginatedData() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    const end = start + this.itemsPerPage;
-    this.paginatedData = this.teacherList.slice(start, end);
-  }
-
-  nextPage() {
-    if (this.currentPage * this.itemsPerPage < this.teacherList.length) {
-      this.currentPage++;
-      this.updatePaginatedData();
-    }
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-      this.updatePaginatedData();
-    }
-  }
-
-  goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-      this.updatePaginatedData();
-    }
-  }
-
-  get totalPages() {
-    return Math.ceil(this.teacherList.length / this.itemsPerPage);
-  }
-
-  get totalPagesArray() {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
-
-
-
-  toggleFilterDropdown() {
-    this.showFilterModal = !this.showFilterModal;
-  }
-
-  applyFilters() {
-    const filters = this.filterForm.value;
-
-    this.dataService.filterTeacherList(filters).subscribe((data: any) => {
-      this.teacherList = data.map((teacher: TeacherDocument) => ({
+    this.dataService.getTeachersData().subscribe(
+    (data) => {
+      debugger
+      this.teacherList = data.map((teacher: Teacher) => ({
         ...teacher,
         documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
       }));
-      this.teacherTableRows = this.teacherList;
+      console.log("document sytatus check", this.teacherList)
+
+      this.teacherTableRows = this.teacherList
+      this.teacherTableColumns = [
+        {
+          field: "name", filter: true, floatingFilter: true, width: 200,
+          cellRenderer: (params: any) => {
+            console.log("params-", params)
+            const div = document.createElement('div');
+            div.style.display = "flex"
+            div.style.justifyContent = "space-between"
+
+            // Create anchor element for the name
+            const divSub = document.createElement('div');
+            divSub.style.height = "100%"
+
+
+            const nameLink = document.createElement('a');
+            nameLink.style.cursor = 'pointer';
+            nameLink.style.color = '#246CC1';
+
+            nameLink.textContent = params.value;
+            nameLink.addEventListener('click', (event) => {
+              debugger
+              if (params.onNameClick) {
+                params.onNameClick(event, params);
+
+              }
+            });
+            divSub.addEventListener('mouseover', (event) => {
+              debugger
+
+              if (params.onNameHover) {
+                params.onNameHover(event, params);
+
+              }
+            });
+            divSub.addEventListener('mouseout', (event) => {
+              debugger
+
+              if (params.onNameHover) {
+                params.onNameHoverOut(event, params);
+
+              }
+            });
+
+            // Create another anchor element for the plus button
+            const plusButton = document.createElement('a');
+            plusButton.style.marginLeft = '10px';
+            // plusButton.style.float = 'right';
+            plusButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>';
+            plusButton.addEventListener('click', (event) => {
+              if (params.onPlusButtonClick) {
+                params.onPlusButtonClick(event, params);
+              }
+            });
+
+            plusButton.addEventListener('mouseleave', (event) => {
+              if (params.onPlusButtonHoverout) {
+                params.onPlusButtonHoverout(event, params);
+              }
+            });
+
+            // Append the elements to the div
+            divSub.appendChild(nameLink)
+            div.appendChild(divSub);
+            div.appendChild(plusButton);
+
+            return div;
+          },
+          cellRendererParams: {
+            onNameClick: (event: MouseEvent, params: any) => {
+              this.onCellClicked(params)
+            },
+            onNameHover: (event: MouseEvent, params: any) => {
+              this.nameColumnHover(params)
+            },
+            onNameHoverOut: (event: MouseEvent, params: any) => {
+              this.rowMouseHoverOut(params)
+            },
+
+            onPlusButtonClick: (event: MouseEvent, params: any) => {
+              this.menuBtnEventFunction(event, params)
+
+            },
+            onPlusButtonHoverout: (event: MouseEvent, params: any) => {
+              this.menuBtnhoverOut(event, params)
+            },
+          }
+
+
+        },
+        {
+          field: "schoolName", filter: true, floatingFilter: false, width: 300,
+          cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
+        },
+        { field: "designation", filter: true, floatingFilter: false },
+        { field: "subject", filter: true, floatingFilter: false },
+        { field: "employeeType", filter: true, floatingFilter: false },
+        { field: "experienceYear", filter: true, floatingFilter: false },
+        { field: "age", filter: true, floatingFilter: false },
+        { field: "phoneNumber", filter: true, floatingFilter: false },
+        //     {
+        //       field: "documentCount", filter: true, floatingFilter: false,
+        //       cellRenderer: (params: any) => {
+        //         console.log("params",params)
+        //         debugger
+        //         `<span [class]="params.value?.icon ? 'doc-count' : ''">
+        //   <i [class]="params.value?.icon"></i>${params.value?.text}
+        // </span>`
+        //       }
+        //     },
+        {
+          field: "documentStatus",
+          filter: true,
+          floatingFilter: false,
+          cellRenderer: (params: any) => {
+            const iconClass = params.value?.icon || '';
+            const text = params.value?.text || '0';
+            const hasIconClass = iconClass ? 'doc-count' : '';
+
+
+            return `
+            <span class="${hasIconClass}">
+              <i class="${iconClass}"></i> ${text}
+            </span>`;
+          }
+
+
+        },
+      ];
+      console.log(this.teacherList, this.teacherTableColumns);
       this.updatePaginatedData();
-      this.showFilterModal = false;
-    });
+
+
+
+
+    },
+    (error) => {
+      console.error('Error fetching teachers data:', error);
+    }
+
+  );
+
+
+}
+
+loadDropdownData() {
+
+  forkJoin({
+    schools: this.dataService.getSchoolWithCity()
+
+  }).subscribe({
+    next: (results) => {
+      this.schoolDropDownList = results.schools;
+
+
+    },
+    error: (error) => {
+      console.error('Error loading dropdown data', error);
+
+    },
+  });
+}
+
+
+sortColumn(column: string) {
+  if (this.sortedColumn === column) {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+  } else {
+    this.sortedColumn = column;
+    this.sortDirection = 'asc';
   }
 
-  resetFilter() {
-    this.filterForm.reset({
-      subjectFilter: [''],
-      retiringInMonths: [],
-      schoolNameFilter: [''],
-      uniqueIdFilter: [''],
-      documents: [false],
-      minExperienceYear: [0],
-      maxExperienceYear: [100],
-      // ExperienceYear: [],
-      newRecruit: [false]
-    });
-    this.loadTeachersList();
+  this.teacherList = this.teacherList.sort((a, b) => {
+    const valueA = a[column];
+    const valueB = b[column];
+    if (this.sortDirection === 'asc') {
+      return valueA > valueB ? 1 : -1;
+    } else {
+      return valueA < valueB ? 1 : -1;
+    }
+  });
+
+  this.updatePaginatedData();
+}
+
+updatePaginatedData() {
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  const end = start + this.itemsPerPage;
+  this.paginatedData = this.teacherList.slice(start, end);
+}
+
+nextPage() {
+  if (this.currentPage * this.itemsPerPage < this.teacherList.length) {
+    this.currentPage++;
+    this.updatePaginatedData();
   }
+}
+
+previousPage() {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.updatePaginatedData();
+  }
+}
+
+goToPage(page: number) {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+    this.updatePaginatedData();
+  }
+}
+
+  get totalPages() {
+  return Math.ceil(this.teacherList.length / this.itemsPerPage);
+}
+
+  get totalPagesArray() {
+  return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+}
+
+
+
+toggleFilterDropdown() {
+  this.showFilterModal = !this.showFilterModal;
+}
+
+applyFilters() {
+  const filters = this.filterForm.value;
+
+  this.dataService.filterTeacherList(filters).subscribe((data: any) => {
+    this.teacherList = data.map((teacher: TeacherDocument) => ({
+      ...teacher,
+      documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
+    }));
+    this.teacherTableRows = this.teacherList;
+    this.updatePaginatedData();
+    this.showFilterModal = false;
+  });
+}
+
+resetFilter() {
+  this.filterForm.reset({
+    subjectFilter: [''],
+    retiringInMonths: [],
+    schoolNameFilter: [''],
+    uniqueIdFilter: [''],
+    documents: [false],
+    minExperienceYear: [0],
+    maxExperienceYear: [100],
+    // ExperienceYear: [],
+    newRecruit: [false]
+  });
+  this.loadTeachersList();
+}
 
 
 
   get getTeacherImage() {
-    debugger
-    let result = '';
+  debugger
+  let result = '';
 
-    if (this.API_BASE_IMAGE && this.selectedTeacher?.photo && this.selectedTeacher?.photo !== 'null') {
-      result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
-    }
-    // If the result is an empty string, it will fallback to emptyImage in the template
-    return result;
+  if (this.API_BASE_IMAGE && this.selectedTeacher?.photo && this.selectedTeacher?.photo !== 'null') {
+    result = this.API_BASE_IMAGE.replace(/\/+$/, '') + '/' + this.selectedTeacher.photo?.replace(/^\/+/, '');
   }
+  // If the result is an empty string, it will fallback to emptyImage in the template
+  return result;
+}
 
-  onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    this.selectedTeacher = null
+onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
+  this.selectedTeacher = null
     this.teacherId = teacherId;
-    if (this.hoverTimeout) {
-      clearTimeout(this.hoverTimeout);
-    }
-    this.hoveredTeacherId = teacherId;
-    if (teacherId && teacherData) {
-      this.hoverTimeout = setTimeout(() => {
-        this.selectedTeacher = teacherData; // Store the detailed info
+  if(this.hoverTimeout) {
+  clearTimeout(this.hoverTimeout);
+}
+this.hoveredTeacherId = teacherId;
+if (teacherId && teacherData) {
+  this.hoverTimeout = setTimeout(() => {
+    this.selectedTeacher = teacherData; // Store the detailed info
 
-        // this.showPopup = true;
-        // this.updateMousePosition(event);
+    // this.showPopup = true;
+    // this.updateMousePosition(event);
 
-        this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
-          (data) => {
-            this.selectedTeacher = data; // Store the detailed info
-            console.log("teachres", data)
-            if (this.selectedTeacher && teacherId) {
-              this.showPopup = true;
-              this.updateMousePosition(event);
-            }
-          },
-          (error) => {
-            console.error('Error fetching teacher details:', error);
-          }
-        );
-      }, 300);
-    }
+    this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
+      (data) => {
+        this.selectedTeacher = data; // Store the detailed info
+        console.log("teachres", data)
+        if (this.selectedTeacher && teacherId) {
+          this.showPopup = true;
+          this.updateMousePosition(event);
+        }
+      },
+      (error) => {
+        console.error('Error fetching teacher details:', error);
+      }
+    );
+  }, 1);
+}
   }
 
-  onSchoolHover(schoolId: number, schoolData: any, event: MouseEvent): void {
-    this.schoolId = schoolId
-    if (this.hoverTimeout) {
-      clearTimeout(this.hoverTimeout);
-    }
-    this.hoveredTeacherId = schoolId;
-    if (schoolId && schoolData) {
-      this.hoverTimeout = setTimeout(() => {
-        // this.selectedSchool = schoolData;
-        // this.showSchoolPopup = true;
-        // this.updateMousePosition(event);
-        this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
-          (data) => {
-            this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
-            this.showSchoolPopup = true;
-            this.updateMousePosition(event);
-          },
-          (error) => {
-            console.error('Error fetching school details:', error);
-          }
-        );
-      }, 300);
-    }
+onSchoolHover(schoolId: number, schoolData: any, event: MouseEvent): void {
+  this.schoolId = schoolId
+    if(this.hoverTimeout) {
+  clearTimeout(this.hoverTimeout);
+}
+this.hoveredTeacherId = schoolId;
+if (schoolId && schoolData) {
+  this.hoverTimeout = setTimeout(() => {
+    // this.selectedSchool = schoolData;
+    // this.showSchoolPopup = true;
+    // this.updateMousePosition(event);
+    this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
+      (data) => {
+        this.selectedSchool = data;
+        console.log("school", this.selectedSchool)
+        this.showSchoolPopup = true;
+        this.updateMousePosition(event);
+      },
+      (error) => {
+        console.error('Error fetching school details:', error);
+      }
+    );
+  }, 300);
+}
   }
 
-  onSchoolMouseOut(): void {
-    this.schoolId = null;
-    this.showSchoolPopup = false;
-    this.selectedSchool = null;
-    if (this.hoverTimeout) {
-      clearTimeout(this.hoverTimeout);
-      this.hoverTimeout = null;
-    }
+onSchoolMouseOut(): void {
+  this.schoolId = null;
+  this.showSchoolPopup = false;
+  this.selectedSchool = null;
+  if(this.hoverTimeout) {
+  clearTimeout(this.hoverTimeout);
+  this.hoverTimeout = null;
+}
   }
 
-  onTeacherMouseOut(): void {
-    this.teacherId = null;
-    this.showPopup = false;
-    this.selectedTeacher = null;
-    this.hoveredTeacherId = null;
+onTeacherMouseOut(): void {
+  this.teacherId = null;
+  this.showPopup = false;
+  this.selectedTeacher = null;
+  this.hoveredTeacherId = null;
 
-    if (this.hoverTimeout) {
-      clearTimeout(this.hoverTimeout);
-      this.hoverTimeout = null;
-    }
+  if(this.hoverTimeout) {
+  clearTimeout(this.hoverTimeout);
+  this.hoverTimeout = null;
+}
   }
 
 
-  rowMouseHover(event: any) {
-    debugger
-    const rowNode: any = event.node;
-    const rowData = rowNode.data;
-    console.log("teacher", event)
+nameColumnHover(event: any) {
+  console.log("name hover", event)
+  const rowNode: any = event.node;
+  const rowData = rowNode.data;
+  if (event.colDef.field === "name") {
 
-    if (event.colDef.field === "name") {
-
-      this.onTeacherHover(rowData.teacherId, rowData, event.event)
-    } else if (event.colDef.field === "schoolName") {
-      this.onSchoolHover(rowData.schoolId, rowData, event.event)
-
-    }
+    this.onTeacherHover(rowData.teacherId, rowData, event.event)
   }
-  rowMouseHoverOut(event: any) {
-    // if (event.colDef.field === "name") {
-    this.onTeacherMouseOut()
-    // } else if (event.colDef.field === "schoolName") {
-    this.onSchoolMouseOut()
+}
 
-    // }
+rowMouseHover(event: any) {
+  debugger
+  const rowNode: any = event.node;
+  const rowData = rowNode.data;
+  if (event.colDef.field === "schoolName") {
+    this.onSchoolHover(rowData.schoolId, rowData, event.event)
 
   }
+}
+rowMouseHoverOut(event: any) {
+  // this.isMenuVisible = false
+  debugger;
+  // if (event.colDef.field === "name") {
+  this.onTeacherMouseOut()
+  // } else if (event.colDef.field === "schoolName") {
+  this.onSchoolMouseOut()
+
+  // }
+
+}
 
   get getschoolImage() {
-    let result = '';
-    if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
-    }
-    // If the result is an empty string, it will fallback to emptyImage in the template
-    return result;
+  let result = '';
+  if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
+    result = this.apiUrl.replace(/\/+$/, '') + '/' + this.selectedSchool?.photo.replace(/^\/+/, '');
   }
-  onCellClicked(event: any) {
-    console.log("event", event)
-    debugger
+  // If the result is an empty string, it will fallback to emptyImage in the template
+  return result;
+}
+onCellClicked(event: any) {
 
-    const rowNode: any = event.node;
-    const rowData = rowNode.data;
+  debugger
 
-    if (event.colDef.field === "name") {
-      let teacherId: number = rowData.teacherId
-      this.router.navigate(['/teachers/view-teacher', teacherId])
-    } else if (event.colDef.field === "schoolName") {
-      let schoolId: number = rowData.schoolId
-      this.router.navigate(['/schools/view', schoolId])
-    }
+  const rowNode: any = event.node;
+  const rowData = rowNode.data;
+
+  if (event.colDef.field === "name") {
+    let teacherId: number = rowData.teacherId
+    this.router.navigate(['/teachers/view-teacher', teacherId])
+  } else if (event.colDef.field === "schoolName") {
+    let schoolId: number = rowData.schoolId
+    this.router.navigate(['/schools/view', schoolId])
+  }
+
+}
+
+
+updateMenuMousePosition(event: MouseEvent): void {
+  debugger;
+  console.log("eventRR", event.clientX, event.clientY)
+    const offset = 13; // Offset for positioning
+  this.mouseMenuX = event.clientX + offset;
+  this.mouseMenuY = event.clientY;
+  const popupWidth = 200; // Assume a fixed width for the popup
+  const popupHeight = 100; // Assume a fixed height for the popup
+
+  // Check right edge
+  if(this.mouseMenuX + popupWidth > window.innerWidth) {
+
+  this.mouseMenuX = window.innerWidth - popupWidth - offset; // Position left
+}
+
+// Check bottom edge
+if (this.mouseMenuY + popupHeight > window.innerHeight) {
+  this.mouseMenuY = event.clientY - popupHeight; // Position above the mouse
+}
+
 
   }
+
+menuBtnEventFunction(event: any, params: any) {
+
+  this.isMenuVisible = true
+  console.log("params", params.node.data)
+  this.selectMenuRowData = params.node.data
+  this.transferRequestForm.get("fromSchool")?.patchValue(
+    this.schoolDropDownList.find((item: any) => item.schoolID == this.selectMenuRowData.schoolId)
+  )
+  this.updateMenuMousePosition(event)
+}
+
+menuBtnhoverOut(event: any, params: any) {
+
+}
+
+listClickFromMenuList(event: any) {
+  this.isTransferPopup = event
+  this.isMenuVisible = false
+}
+
+closeTransferPopup() {
+  this.isTransferPopup = false
+  this.isMenuVisible = false
+}
 
 
 }

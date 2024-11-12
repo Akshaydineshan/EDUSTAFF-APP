@@ -12,6 +12,7 @@ import { PersonalDetailsComponent } from './add-teacher/personal-details/persona
 import { EducationalDetailsComponent } from './add-teacher/educational-details/educational-details.component';
 import { ProfessionalDetailsComponent } from './add-teacher/professional-details/professional-details.component';
 import { TeacherViewComponent } from './teacher-view/teacher-view.component';
+import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { TeacherViewComponent } from './teacher-view/teacher-view.component';
     PersonalDetailsComponent,
     EducationalDetailsComponent,
     ProfessionalDetailsComponent,
-    TeacherViewComponent
+    TeacherViewComponent,
+    TransferRequestListComponent
   ],
   imports: [
     CommonModule,

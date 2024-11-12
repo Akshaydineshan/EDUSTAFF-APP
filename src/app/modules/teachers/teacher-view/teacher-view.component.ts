@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
@@ -16,7 +16,7 @@ export class TeacherViewComponent implements OnInit {
   itemId: any
 
 
-  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router) {
+  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router, private ngZone: NgZone) {
 
   }
 
@@ -51,7 +51,11 @@ export class TeacherViewComponent implements OnInit {
 
   get getImage() {
     let result = '';
-    if (this.apiUrl && this.currentTeacher?.photoDTO.photoName) {
+
+     let image=this.currentTeacher?.photoDTO.photoName;
+    if(this.currentTeacher?.photoDTO.photoName=='No Photo assigned' || null || '') image=""
+
+    if (this.apiUrl && image ) {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photoDTO.photoName.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
@@ -61,7 +65,13 @@ export class TeacherViewComponent implements OnInit {
 
 
 
+editClick(){
+  this.ngZone.run(() => {
+    this.router.navigate(['/teachers/add-teacher',this.itemId])
+  })
 
+ 
+}
 
 
   toggleSidebar() {

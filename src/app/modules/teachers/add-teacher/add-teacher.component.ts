@@ -160,7 +160,7 @@ export class AddTeacherComponent implements OnInit {
   }
 
   loadEmployeeData(id: number) {
-debugger
+    debugger
     this.dataService.getTeacherById(id).subscribe({
       next: (response) => {
         if (response) {
@@ -198,6 +198,7 @@ debugger
       bloodGroups: this.dataService.getAllBloodGroups(),
     }).subscribe((results: any) => {
       debugger
+      debugger;
 
       this.religions = results.religions;
       this.maritalStatuses = results.maritalStatuses;
@@ -233,7 +234,7 @@ debugger
         interReligion: this.employee.interReligion,
         maritalStatusID: this.employee.maritalStatusDTO.maritalStatusID,
         spouseName: this.employee.spouseName,
-        spouseReligionID: this.employee.spouseReligionID,
+        spouseReligionID: this.employee.spouseReligionDTO.religionID,
         spouseCaste: this.employee.spouseCaste,
         panID: this.employee.panID,
         voterID: this.employee.voterID,
@@ -282,6 +283,7 @@ debugger
       });
 
       this.personalDetailsForm.enable()
+      debugger
 
     });
 
@@ -316,7 +318,7 @@ debugger
       this.educationForm = new FormGroup(this.educationForm.controls);
       this.educationForm.enable()
 
-     this.checkEducationTypeToSetEligibilityTest()
+      this.checkEducationTypeToSetEligibilityTest()
       debugger
 
     })
@@ -435,7 +437,7 @@ debugger
 
     this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
 
-     debugger
+      debugger
       const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 4);
 
       if (hasTeacherTraining) {
@@ -692,6 +694,8 @@ debugger
     } else {
       console.log('Form is invalid. Please check your inputs.');
     }
+    console.log(this.currentStep)
+    debugger
 
   }
 
@@ -753,7 +757,7 @@ debugger
       // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
       documentID: parseInt(this.fullFormData.documentID),
       eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified
-        ),
+      ),
       ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
       // trainingAttended: Boolean(this.fullFormData.trainingAttended),
       designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
@@ -800,8 +804,8 @@ debugger
 
         },
         (error) => {
-          if(error.status==409){
-            let message:string=error.error?.message
+          if (error.status == 409) {
+            let message: string = error.error?.message
             this.toastr.error(message + '!', 'Failed', {
               closeButton: true,
               progressBar: true,
@@ -811,9 +815,9 @@ debugger
             this.currentStep = 1
             return;
           }
-        
-          console.log("ERR",error)
-         this.toastr.error('Somthing Went Wrong !', 'Failed', {
+
+          console.log("ERR", error)
+          this.toastr.error('Somthing Went Wrong !', 'Failed', {
             closeButton: true,
             progressBar: true,
             positionClass: 'toast-top-left',
@@ -830,7 +834,7 @@ debugger
         (response) => {
           debugger
           console.log('Employee added successfully:', response);
-          if (response.status===200) {
+          if (response.status === 200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
@@ -846,10 +850,10 @@ debugger
             this.router.navigate(['/teachers/teacher-list'])
 
           } else {
-            console.log("er-",response)
-           
-            if(response.message){
-              let message:string=response.message
+            console.log("er-", response)
+
+            if (response.message) {
+              let message: string = response.message
               this.toastr.error(message + '!', 'Failed', {
                 closeButton: true,
                 progressBar: true,
@@ -857,7 +861,7 @@ debugger
                 timeOut: 4500,
               });
               return;
-             }
+            }
 
             this.toastr.error('Teacher Add !', 'Failed', {
               closeButton: true,
@@ -870,8 +874,8 @@ debugger
 
         },
         (error) => {
-          if(error.status==409){
-            let message:string=error.error?.message
+          if (error.status == 409) {
+            let message: string = error.error?.message
             this.toastr.error(message + '!', 'Failed', {
               closeButton: true,
               progressBar: true,

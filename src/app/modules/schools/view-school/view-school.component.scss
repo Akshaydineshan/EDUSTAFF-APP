@@ -226,3 +226,18 @@ text-align: left;
    
     
 }
+
+table {
+    border-collapse: collapse;
+    border: 1px solid;
+    width:30%;
+    th,
+    td {
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid;
+      padding: 8px;
+      text-align: left;
+    }
+  }
+  

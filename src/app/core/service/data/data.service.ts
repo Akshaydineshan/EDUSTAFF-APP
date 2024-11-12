@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, forkJoin, Observable, of, tap, throwError } from 'rxjs';
@@ -15,7 +16,7 @@ export class DataService {
   private SchoolPromotionEligibleCache = new BehaviorSubject<any[]>([]);
   private teachersPromotionEligibilityCache = new BehaviorSubject<any[]>([]);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,) { }
 
   formatDateToISO(date: any): string | null {
     if (date) {
@@ -66,6 +67,25 @@ export class DataService {
 
   getSchoolDetailPopUp(schoolId: number): Observable<any> {
     return this.http.get<any>(this.apiUrl + '/School/GetSchoolPopUp/' + schoolId);
+  }
+
+  getTransferRequestData(): Observable<any[]> {
+    debugger
+    // if (this.teachersDataCache.value.length === 0) {
+      return this.fetchTransferRequestData();
+    // }
+    // return this.teachersDataCache.asObservable();
+  }
+
+  private fetchTransferRequestData(): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.apiUrl + 'TransferRequest/GetAllTransferRequests', { headers: { accept: '*/*' } }).pipe(
+      tap(data => this.teachersDataCache.next(data)),
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
   }
 
 
@@ -174,6 +194,10 @@ export class DataService {
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
     return this.http.post(this.apiUrl + 'Teacher/UploadPhoto' + '/' + teacherId, formData);
+  }
+  createTransferRequest(data:any): Observable<any> {
+   
+    return this.http.post(this.apiUrl + 'TransferRequest/CreateTransferRequest',data);
   }
   uploadProfilePhoto(photoFile: File): Observable<any> {
     debugger

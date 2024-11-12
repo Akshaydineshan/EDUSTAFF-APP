@@ -1,3 +1,4 @@
+import { NumberFormatStyle } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -16,6 +17,11 @@ export class SchoolService {
   addSchool(schoolData: any): Observable<any> {
     const url = `${this.baseUrl}/School/AddSchool`;
     return this.http.post(url, schoolData);
+  }
+
+  updateSchool(schoolData: any,id:NumberFormatStyle): Observable<any> {
+    const url = `${this.baseUrl}/School/UpdateSchool/${id}`;
+    return this.http.put(url, schoolData);
   }
 
 
@@ -40,7 +46,7 @@ export class SchoolService {
 
   
   getSchoolById(schoolId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}School/SchoolHomePage${schoolId}`);
+    return this.http.get(`${this.baseUrl}School/GetSchoolHomePage/${schoolId}`);
   }
 
 }

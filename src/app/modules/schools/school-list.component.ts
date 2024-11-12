@@ -17,7 +17,7 @@ interface PagonationConfig {
 })
 export class SchoolListComponent implements OnInit {
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'SchoolName', field: 'name' }, { headerName: 'Type', field: 'type' }, { headerName: 'Contact No', field: 'contact' }, { headerName: 'Principal (HM)', field: 'principal' }, { headerName: 'No of Teachers', field: 'noOfTeachers' }, { headerName: 'No of Students', field: 'noOfStudents' }];
+  displayColumns: any[] = [{ headerName: 'SchoolName', field: 'name' }, { headerName: 'SchoolType', field: 'schoolType' }, { headerName: 'Contact No', field: 'contact' }, { headerName: 'Principal (HM)', field: 'principal' }, { headerName: 'No of Teachers', field: 'noOfTeachers' }, { headerName: 'No of Students', field: 'noOfStudents' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   schoolList: any[] = [];
   schoolTableRows: any;

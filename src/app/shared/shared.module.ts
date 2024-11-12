@@ -8,7 +8,7 @@ import { TableListComponent } from './components/table-list/table-list.component
 import { FilterDialogComponent } from './components/filter-dialog/filter-dialog.component';
 import { DetailDailogComponent } from './components/detail-dailog/detail-dailog.component';
 import { TableComponent } from './components/table/table.component';
-import { AgGridAngular } from 'ag-grid-angular';
+import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 
 
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'; 
@@ -17,6 +17,8 @@ import { AlertComponent } from './components/alerts/alert/alert.component';
 import { ToastrModule } from 'ngx-toastr';
 import { EmployeeHoverPopupComponent } from './components/employee-hover-popup/employee-hover-popup.component';
 import { SchoolHoverPopupComponent } from './components/school-hover-popup/school-hover-popup.component';
+import { TeacherTableNameSectionComponent } from './components/teacher-table-name-section/teacher-table-name-section.component';
+import { EmployeeMenuClickListMenuComponent } from './components/employee-menu-click-list-menu/employee-menu-click-list-menu.component';
 
 
 @NgModule({
@@ -31,13 +33,17 @@ import { SchoolHoverPopupComponent } from './components/school-hover-popup/schoo
     MaterialSpinnerComponent,
     AlertComponent,
     EmployeeHoverPopupComponent,
-    SchoolHoverPopupComponent
+    SchoolHoverPopupComponent,
+    TeacherTableNameSectionComponent,
+    EmployeeMenuClickListMenuComponent
     
   ],
   imports: [
     CommonModule,
     SharedRoutingModule,
-    AgGridAngular,
+    AgGridModule,
+    
+   
     MatProgressSpinnerModule,
     ToastrModule.forRoot(),
   ],
@@ -49,7 +55,10 @@ import { SchoolHoverPopupComponent } from './components/school-hover-popup/schoo
     TableComponent,
     MaterialSpinnerComponent,
     EmployeeHoverPopupComponent,
-    SchoolHoverPopupComponent
+    SchoolHoverPopupComponent,
+    TeacherTableNameSectionComponent,
+    EmployeeMenuClickListMenuComponent,
+    AgGridModule,
   ]
 })
 export class SharedModule { }
