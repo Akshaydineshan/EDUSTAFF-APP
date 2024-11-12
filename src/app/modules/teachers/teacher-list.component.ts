@@ -270,7 +270,7 @@ loadTeachersList(): void {
       this.teacherTableRows = this.teacherList
       this.teacherTableColumns = [
         {
-          field: "name", filter: true, floatingFilter: true, width: 200,
+          field: "name", filter: true, floatingFilter: true, width: 280,
           cellRenderer: (params: any) => {
             console.log("params-", params)
             const div = document.createElement('div');
