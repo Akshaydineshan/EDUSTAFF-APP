@@ -123,8 +123,8 @@
   <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
     [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
-  <app-employee-menu-click-list-menu [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY" [mouseX]="mouseMenuX"
-    (clickListEvent)="listClickFromMenuList($event)"></app-employee-menu-click-list-menu>
+  <app-employee-menu-click-list-menu class="menuPop" [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY" [mouseX]="mouseMenuX"
+    (clickListEvent)="listClickFromMenuList($event)" [menuListItems]="menuListItems"></app-employee-menu-click-list-menu>
 
 
 
@@ -161,7 +161,7 @@
 
   </div> -->
 
-  <div class="table-responsive">
+  <div class="table-responsive">{{isMenuVisible}}
     <!-- <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
@@ -201,7 +201,8 @@
 
     </table> -->
     <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns" [paginationConfig]="paginationConfig"
-      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"></app-table>
+      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+      (onCellClickedEvent)="onCellClick($event)"></app-table>
     <!--  -->
 
 
@@ -245,11 +246,8 @@
       <div class="row mb-1">
         <label class="col-sm-12 col-form-label">Transfer From</label>
         <div class="col-sm-12">
-          <select class="form-control" placeholder="select" formControlName="fromSchool">
-            <option disabled>Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school" disabled>
-              {{school.schoolName}}</option>
-          </select>
+       
+          <input type="text" class="form-control" formControlName="fromSchool"  [readonly]="true">
           <div
             *ngIf="transferRequestForm.get('fromSchool')?.invalid && (transferRequestForm.get('fromSchool')?.['dirty'] || transferRequestForm.get('fromSchool')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['required']"></small>

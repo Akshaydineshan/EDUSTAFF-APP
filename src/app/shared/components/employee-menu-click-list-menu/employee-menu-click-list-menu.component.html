@@ -1,6 +1,5 @@
-<div *ngIf="isMenuVisible" class="popup-menu" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
+<div *ngIf="isMenuVisible" class="popup-menu" id="menuPop" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
     <ul>
-      <li (click)="listClick()" ><span><span><img src="assets/icons/transfer-request.jpg" alt=""></span><p class="text">Transfer Request</p></span></li>
-      <li  (click)="listClick()"><span><span><img src="assets/icons/leave.png" alt=""></span><p class="text">Leave Request</p></span></li>
+      <li   *ngFor="let item of menuListItems;" (click)="listClick(item.value)"><span><span><img [src]="item.icon" alt=""></span><p class="text">{{item.value}}</p></span></li>
     </ul>
   </div>

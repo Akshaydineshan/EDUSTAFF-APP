@@ -1,5 +1,5 @@
 import { ColDef } from 'ag-grid-community';
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Teacher, TeacherDocument, TransferRequest } from 'src/app/core/models/teacher/teacher';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -20,8 +20,12 @@ interface PagonationConfig {
   templateUrl: './teacher-list.component.html',
   styleUrls: ['./teacher-list.component.scss']
 })
-export class TeacherListComponent implements OnInit {
+export class TeacherListComponent implements OnInit, AfterViewInit {
   @ViewChild('transferModal') transferModal!: ElementRef;
+  // ngAfterViewInit(){
+
+  // }
+
   isSidebarClosed = false;
   teacherList: any[] = [];
   teacherTableRows: any[] = []
@@ -74,7 +78,11 @@ export class TeacherListComponent implements OnInit {
   isMenuVisible: boolean = false;
   selectMenuRowData: any;
   schoolDropDownList: any;
-  submitted: boolean=false;
+  submitted: boolean = false;
+  menuListItems: any[] = [
+    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest' },
+    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
+  ]
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService) {
     this.filterForm = this.fb.group({
@@ -89,6 +97,9 @@ export class TeacherListComponent implements OnInit {
       newRecruit: [false]
     });
   }
+  ngAfterViewInit(): void {
+
+  }
 
   ngOnInit(): void {
     this.loadTeachersList();
@@ -99,16 +110,59 @@ export class TeacherListComponent implements OnInit {
     });
 
     this.transferRequestForm = this.fb.group({
-      fromSchool: ['',],
-      toSchool: ['',Validators.required],
-      documentUrl: ['',Validators.required],
-      date: ['',Validators.required],
+      fromSchool: [{ value: '', }],
+      toSchool: ['', Validators.required],
+      documentUrl: ['', Validators.required],
+      date: ['', Validators.required],
       comment: ['']
     })
+
   }
+
+
+
+
 
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: HTMLElement) {
+    debugger
+
+    const menuButtons = document.getElementsByClassName('menuButton');
+    //  const menuButtonIs = document.getElementsByClassName('menuI');
+    const menuPops = document.getElementsByClassName('menuPop');
+
+    let clickedInsidePopup = false;
+    let clickedOnButton = false;
+    //  let clickedOnButtonI = false;
+
+    for (let i = 0; i < menuPops.length; i++) {
+      if (menuPops[i].contains(target)) {
+        clickedInsidePopup = true;
+        break;
+      }
+    }
+
+    for (let i = 0; i < menuButtons.length; i++) {
+      if (menuButtons[i].contains(target)) {
+        clickedOnButton = true;
+        break;
+      }
+    }
+
+    // for (let i = 0; i < menuButtonIs.length; i++) {
+    //   if (menuButtonIs[i].contains(target)) {
+    //     clickedOnButtonI = true;
+    //     break;
+    //   }
+    // }
+    // console.log(clickedOnButtonI)
+
+    if (!clickedOnButton && !clickedInsidePopup ) {
+      this.isMenuVisible = false; // Hide the popup if clicked outside
+    }
+
+
+
     if (!target.closest('.dropdown') && this.showFilterModal) {
       this.showFilterModal = false; // Close dropdown when clicking outside
     }
@@ -141,22 +195,18 @@ export class TeacherListComponent implements OnInit {
 
   }
 
-  // updateMousePosition(event: MouseEvent): void {
-  //   this.mouseX = event.clientX + 15;
-  //   this.mouseY = event.clientY + 15;
+
+  // @HostListener('document:click', ['$event'])
+  // onDocumentClick(event: MouseEvent) {
+  //   const filterButton = document.getElementById('filterButton');
+  //   const filterDropdown = document.getElementById('filterDropdown');
+
+  //   if (filterButton && filterDropdown) {
+  //     if (!filterButton.contains(event.target as Node) && !filterDropdown.contains(event.target as Node)) {
+  //       this.showFilterModal = false;
+  //     }
+  //   }
   // }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent) {
-    const filterButton = document.getElementById('filterButton');
-    const filterDropdown = document.getElementById('filterDropdown');
-
-    if (filterButton && filterDropdown) {
-      if (!filterButton.contains(event.target as Node) && !filterDropdown.contains(event.target as Node)) {
-        this.showFilterModal = false;
-      }
-    }
-  }
 
   submitTransfer(): void {
     if (this.transferRequest.school && this.transferRequest.position && this.transferRequest.date) {
@@ -177,10 +227,10 @@ export class TeacherListComponent implements OnInit {
       let payload: any = {
         "employeeID": employee.teacherId,
         "toSchoolID": formValue.toSchool.schoolID,
-        "requestDate": this.dataService.formatDateToISO(formValue.date),
-        "approvalDate": this.dataService.formatDateToISO(formValue.date),
-        "requestedByID": null,
-        "approvedByID": null,
+        "transferDate": this.dataService.formatDateToISO(formValue.date),
+        // "approvalDate": this.dataService.formatDateToISO(formValue.date),
+        // "requestedByID": null,
+        // "approvedByID": null,
         "comment": formValue.comment,
         "filePath": formValue.documentUrl
       }
@@ -189,6 +239,7 @@ export class TeacherListComponent implements OnInit {
 
       this.dataService.createTransferRequest(payload).subscribe({
         next: (response: any) => {
+          console.log(response, response)
           if (response.status == 200) {
             this.submitted = false
             this.isTransferPopup = false;
@@ -203,6 +254,14 @@ export class TeacherListComponent implements OnInit {
 
         },
         error: (error: any) => {
+          console.log("erroer", error)
+          this.toastr.warning('Transfer Request !', 'Warning', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
+          this.isTransferPopup = false;
 
         },
         complete: () => {
@@ -210,8 +269,8 @@ export class TeacherListComponent implements OnInit {
 
         }
       })
-    }else{
-     
+    } else {
+
       console.log("invalid form")
     }
 
@@ -275,21 +334,23 @@ export class TeacherListComponent implements OnInit {
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
         }));
-        console.log("document sytatus check", this.teacherList)
+
 
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
           {
-            field: "name", filter: true, floatingFilter: true ,width:230,
+            field: "name", filter: true, floatingFilter: true,
             cellRenderer: (params: any) => {
               console.log("params-", params)
               const div = document.createElement('div');
               div.style.display = "flex"
               div.style.justifyContent = "space-between"
 
+
               // Create anchor element for the name
               const divSub = document.createElement('div');
               divSub.style.height = "100%"
+
 
 
               const nameLink = document.createElement('a');
@@ -323,9 +384,11 @@ export class TeacherListComponent implements OnInit {
 
               // Create another anchor element for the plus button
               const plusButton = document.createElement('a');
-              plusButton.style.marginLeft = '10px';
+              plusButton.classList.add("menuButton")
+
+
               // plusButton.style.float = 'right';
-              plusButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>';
+              plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
               plusButton.addEventListener('click', (event) => {
                 if (params.onPlusButtonClick) {
                   params.onPlusButtonClick(event, params);
@@ -681,6 +744,16 @@ export class TeacherListComponent implements OnInit {
 
   }
 
+  onCellClick(event: any) {
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+    if (event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
+      this.router.navigate(['/schools/view', schoolId])
+    }
+
+  }
+
 
   updateMenuMousePosition(event: MouseEvent): void {
     debugger;
@@ -706,15 +779,13 @@ export class TeacherListComponent implements OnInit {
   }
 
   menuBtnEventFunction(event: any, params: any) {
-    // event.stopPropagation();
-    this.showPopup=false;
-    this.showSchoolPopup=false
+    console.log("inside")
+    this.showPopup = false;
+    this.showSchoolPopup = false
     this.isTransferPopup
     this.isMenuVisible = true
-     this.selectMenuRowData = params.node.data
-    this.transferRequestForm.get("fromSchool")?.patchValue(
-      this.schoolDropDownList.find((item: any) => item.schoolID == this.selectMenuRowData.schoolId)
-    )
+    this.selectMenuRowData = params.node.data
+    this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
     this.updateMenuMousePosition(event)
   }
 
@@ -722,19 +793,27 @@ export class TeacherListComponent implements OnInit {
 
   }
 
-  overlayClick(){
-    this.showPopup=false;
-    this.showSchoolPopup=false;
-    // this.isMenuVisible=false;
-   }
+  overlayClick() {
+    this.showPopup = false;
+    this.showSchoolPopup = false;
+
+  }
 
   listClickFromMenuList(event: any) {
-    this.isTransferPopup = event
-    this.isMenuVisible = false
+    this.showPopup = false;
+    this.showSchoolPopup = false;
+
+
+    if (event.value === 'transferRequest') {
+      this.isTransferPopup = event.clicked
+      this.isMenuVisible = false
+    }
+
   }
 
   closeTransferPopup() {
-    this.submitted=false
+    this.transferRequestForm.reset()
+    this.submitted = false
     this.isTransferPopup = false
     this.isMenuVisible = false
   }

@@ -199,6 +199,11 @@ export class DataService {
    
     return this.http.post(this.apiUrl + 'TransferRequest/CreateTransferRequest',data);
   }
+
+  approveTransferRequest(data:any,id:number): Observable<any> {
+   
+    return this.http.patch(this.apiUrl + `TransferRequest/${id}/approve`,data);
+  }
   uploadProfilePhoto(photoFile: File): Observable<any> {
     debugger
     const formData = new FormData();

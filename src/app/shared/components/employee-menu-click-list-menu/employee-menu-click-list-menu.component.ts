@@ -11,7 +11,8 @@ export class EmployeeMenuClickListMenuComponent implements OnInit {
   @Input() mouseY:any
   @Input() isMenuVisible:boolean=false;
   @Input() selectedTeacher:any;
-  @Output() clickListEvent :EventEmitter<boolean> =new EventEmitter()
+  @Input() menuListItems!:any[];
+  @Output() clickListEvent :EventEmitter<any> =new EventEmitter()
 
   ngOnInit(): void {
      console.log('positions')
@@ -21,7 +22,8 @@ export class EmployeeMenuClickListMenuComponent implements OnInit {
 
   }
 
-  listClick(){
-   this.clickListEvent.emit(true)
+  listClick(value:string){
+    let data = { value: value, clicked: true };
+    this.clickListEvent.emit(data);
   }
 }

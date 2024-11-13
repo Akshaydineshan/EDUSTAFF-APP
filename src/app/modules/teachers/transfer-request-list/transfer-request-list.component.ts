@@ -1,5 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 interface PagonationConfig {
   pagination: boolean,
@@ -15,7 +18,7 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Approval Date', field: 'approvalDate' }, { headerName: 'Comment', field: 'comment' },{ headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'comment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -26,18 +29,60 @@ export class TransferRequestListComponent implements OnInit {
   hoveredEmployee: any;
   showPopup!: boolean;
   hoverTimeout!: any;
-  showSchoolPopup: boolean=false;
+  showSchoolPopup: boolean = false;
   selectedSchool: any;
 
- constructor(private dataService:DataService,private datePipe:DatePipe){
+  isMenuVisible: boolean = false;
+  selectMenuRowData: any;
+  mouseMenuX: number = 0;
+  mouseMenuY: number = 0;
+  menuListItems: any[] = [
+    { name: 'Approve', icon: "assets/icons/approve.png", value: 'approve' },
+    { name: 'Reject', icon: "assets/icons/reject.png", value: 'reject' }
+  ]
+  isTransferPopup: boolean = false;
+
+  transferRequestForm!: FormGroup
+  submitted!: boolean;
+  schoolDropDownList: any;
+
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService) {
 
 
- }
+  }
 
   ngOnInit(): void {
     this.loadtransferRequestList()
-   
+    this.loadDropdownData()
+
+    this.transferRequestForm = this.fb.group({
+      fromSchool: [''],
+      toSchool: ['', Validators.required],
+      documentUrl: ['', Validators.required],
+      date: ['', Validators.required],
+      comment: ['']
+    })
+
   }
+
+  loadDropdownData() {
+
+    forkJoin({
+      schools: this.dataService.getSchoolWithCity()
+
+    }).subscribe({
+      next: (results: any) => {
+        this.schoolDropDownList = results.schools;
+
+
+      },
+      error: (error) => {
+        console.error('Error loading dropdown data', error);
+
+      },
+    });
+  }
+
 
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
@@ -61,36 +106,139 @@ export class TransferRequestListComponent implements OnInit {
 
   }
 
-  loadtransferRequestList(){
+  loadtransferRequestList() {
 
     this.dataService.getTransferRequestData().subscribe(
-      (data:any) => {
+      (data: any) => {
         debugger
         this.transferList = data;
         console.log("school list data", this.transferList);
         this.transferTableRows = this.transferList
         this.transferTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
-              valueFormatter: column.field === 'requestDate'  || column.field === 'approvalDate'
-          ? (params: any) => this.datePipe.transform(params.value, 'MM/dd/yyyy')
-          : undefined, 
+          valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate'
+            ? (params: any) => this.datePipe.transform(params.value, 'MM/dd/yyyy')
+            : undefined,
           field: column.field,
           filter: true,
           floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' ||column.field ==="toSchoolName"  || column.field ==="fromSchoolName" ? {
+          ... (column.field === 'employeeName' || column.field === "toSchoolName" || column.field === "fromSchoolName" ? {
             cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
-            width:220
-          } : {})
+            width: 220
+          } : {}),
+
+          ...(column.field === 'status' ?
+            {
+              cellRenderer: (params: any) => {
+                if (true) {
+                  const div = document.createElement('div');
+                  div.style.display = "flex"
+                  div.style.justifyContent = "space-between"
+
+                  // Create anchor element for the name
+                  const divSub = document.createElement('div');
+                  divSub.style.height = "100%"
+
+
+                  const nameLink = document.createElement('a');
+                  nameLink.style.cursor = 'pointer';
+                  // nameLink.style.color = '#246CC1';
+
+                  nameLink.textContent = params.value;
+
+                  // Create another anchor element for the plus button
+                  const plusButton = document.createElement('a');
+                  plusButton.style.marginLeft = '10px';
+                  // plusButton.style.float = 'right';
+                  plusButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>';
+                  plusButton.addEventListener('click', (event: any) => {
+                    if (params.onStatusClick) {
+                      params.onStatusClick(event, params);
+                    }
+                  });
+
+
+
+                  // Append the elements to the div
+                  divSub.appendChild(nameLink)
+                  div.appendChild(divSub);
+                  div.appendChild(plusButton);
+
+                  return div;
+
+                } else {
+                 return  `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
+               }
+              }
+
+
+
+              ,
+              cellRendererParams: {
+                onStatusClick: (event: MouseEvent, params: any) => {
+                  this.statusMenuClick(event, params)
+                },
+              }
+            } : {}
+          )
+
         }));
 
 
 
       },
-      (error:any) => {
+      (error: any) => {
         console.error('Error fetching school data:', error);
       }
     );
 
+  }
+
+
+  updateMenuMousePosition(event: MouseEvent): void {
+    debugger;
+    console.log("eventRR", event.clientX, event.clientY)
+    const offset = 13; // Offset for positioning
+    this.mouseMenuX = event.clientX + offset-226;
+    this.mouseMenuY = event.clientY;
+    const popupWidth = 200; // Assume a fixed width for the popup
+    const popupHeight = 100; // Assume a fixed height for the popup
+
+    // Check right edge
+    if (this.mouseMenuX + popupWidth > window.innerWidth) {
+
+      this.mouseMenuX = window.innerWidth - popupWidth - offset ; // Position left
+    }
+
+    // Check bottom edge
+    if (this.mouseMenuY + popupHeight > window.innerHeight) {
+      this.mouseMenuY = event.clientY - popupHeight; // Position above the mouse
+    }
+
+
+  }
+
+
+  statusMenuClick(event: any, params: any) {
+    this.isMenuVisible = true
+    this.selectMenuRowData = params.node.data
+    console.log("selectMenuRowData", this.selectMenuRowData)
+
+    this.updateMenuMousePosition(event)
+
+  }
+
+  listClickFromMenuList(event: any) {
+    console.log("e", event)
+    if (event.value === 'approve') {
+      this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
+      this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName
+        // this.schoolDropDownList.find((item: any) => item.schoolID === this.selectMenuRowData.toSchoolID)
+      )
+      this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+      this.isTransferPopup = event.clicked
+      this.isMenuVisible = false
+    }
   }
 
 
@@ -133,7 +281,7 @@ export class TransferRequestListComponent implements OnInit {
 
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    console.log("teacherId",teacherId,teacherData)
+    console.log("teacherId", teacherId, teacherData)
 
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
@@ -173,7 +321,7 @@ export class TransferRequestListComponent implements OnInit {
     const rowData = rowNode.data;
     if (event.colDef.field === "employeeName") {
       this.onTeacherHover(rowData.employeeID, rowData, event.event)
-    }else if (event.colDef.field === "fromSchoolName") {
+    } else if (event.colDef.field === "fromSchoolName") {
       this.onSchoolHover(rowData.fromSchoolID, rowData, event.event)
     }
     else if (event.colDef.field === "toSchoolName") {
@@ -188,5 +336,60 @@ export class TransferRequestListComponent implements OnInit {
 
     // }
 
+  }
+
+  transferRequestFormSubmit() {
+    this.submitted = true
+
+    if (this.transferRequestForm.valid) {
+      console.log("transfer form", this.transferRequestForm.value)
+      let formValue: any = this.transferRequestForm.value;
+      let employee: any = this.selectMenuRowData
+      let payload: any = 
+      
+        {
+        
+          "transferDate":formValue.date,
+          "comment": formValue.comment,
+          "filePath": formValue.documentUrl
+        }
+      
+      console.log(payload)
+      debugger
+
+      this.dataService.approveTransferRequest(payload,this.selectMenuRowData.transferRequestID).subscribe({
+        next: (response: any) => {
+          if (response.status == 200) {
+            this.submitted = false
+            this.isTransferPopup = false;
+            this.toastr.success('Transfer Approved !', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            this.loadtransferRequestList()
+
+          }
+
+        },
+        error: (error: any) => {
+
+        },
+        complete: () => {
+
+
+        }
+      })
+    } else {
+
+      console.log("invalid form")
+    }
+  }
+  closeTransferPopup() {
+    this.transferRequestForm.reset()
+    this.submitted = false
+    this.isTransferPopup = false
+    this.isMenuVisible = false
   }
 }
