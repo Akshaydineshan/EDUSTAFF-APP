@@ -50,6 +50,7 @@ export class AddTeacherComponent implements OnInit {
   employee: any;
   employeeId: any
   submitBtnStatus: SubmitBtnStatus = { personal: false, education: false, professional: false }
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -130,6 +131,7 @@ export class AddTeacherComponent implements OnInit {
   }
 
   ngOnInit() {
+  
 
     this.loadAllData();
     const coursesArray = this.educationForm.get('educations') as FormArray;

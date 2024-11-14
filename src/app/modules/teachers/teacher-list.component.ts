@@ -157,7 +157,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     // }
     // console.log(clickedOnButtonI)
 
-    if (!clickedOnButton && !clickedInsidePopup ) {
+    if (!clickedOnButton && !clickedInsidePopup) {
       this.isMenuVisible = false; // Hide the popup if clicked outside
     }
 
@@ -188,8 +188,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
 
     // Check bottom edge
-    if (this.mouseY + popupHeight > window.innerHeight) {
-      this.mouseY = event.clientY - popupHeight + 20; // Position above the mouse
+    if (this.mouseY + popupHeight > window.innerHeight - 20) {
+      this.mouseY = event.clientY - popupHeight - 30; // Position above the mouse
     }
 
 
@@ -249,23 +249,26 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
               positionClass: 'toast-top-left',
               timeOut: 4500,
             });
+            this.transferRequestForm.reset()
 
           }
 
         },
         error: (error: any) => {
-          console.log("erroer", error)
-          this.toastr.warning('Transfer Request !', 'Warning', {
+         if(error.status===409){
+          this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
             closeButton: true,
             progressBar: true,
             positionClass: 'toast-top-left',
             timeOut: 4500,
           });
-          this.isTransferPopup = false;
+          // this.isTransferPopup = false;
+         }
+       
 
         },
         complete: () => {
-
+          this.transferRequestForm.reset()
 
         }
       })
@@ -339,7 +342,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
           {
-            field: "name", filter: true, floatingFilter: true,
+            field: "name", filter: true, floatingFilter: true, width: 180,
             cellRenderer: (params: any) => {
               console.log("params-", params)
               const div = document.createElement('div');
@@ -350,6 +353,10 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
               // Create anchor element for the name
               const divSub = document.createElement('div');
               divSub.style.height = "100%"
+              divSub.style.width = "75%";
+              divSub.style.overflow = "hidden";
+              divSub.style.textOverflow = "ellipsis";
+
 
 
 
@@ -693,7 +700,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
-
+      this.showSchoolPopup=false
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     }
   }
@@ -703,11 +710,13 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "schoolName") {
+      this.showPopup = false
       this.onSchoolHover(rowData.schoolId, rowData, event.event)
 
     }
   }
   rowMouseHoverOut(event: any) {
+   
     // this.isMenuVisible = false
     debugger;
     // if (event.colDef.field === "name") {
@@ -779,7 +788,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   menuBtnEventFunction(event: any, params: any) {
-    console.log("inside")
+
     this.showPopup = false;
     this.showSchoolPopup = false
     this.isTransferPopup

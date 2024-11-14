@@ -23,10 +23,14 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   profileImage: string | ArrayBuffer | null = null;
   file!: File | null;
   apiImageBaseURL:any=environment.imageBaseUrl;
+  maxDate!: string;
 
   constructor(private fb: FormBuilder,private dataService:DataService,private teacherService:TeacherDataService) { }
 
   ngOnInit(): void {
+      // date for dob validation
+      const today = new Date();
+      this.maxDate = today.toISOString().split('T')[0];
   
   
     // this.teacherService.$profileImage.subscribe((data:any)=>{

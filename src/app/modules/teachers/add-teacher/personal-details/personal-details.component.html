@@ -205,7 +205,7 @@
     <div class="row mb-3">
         <label for="dob" class="col-sm-3 col-form-label">Date of Birth</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="dob" formControlName="dob" required>
+            <input type="date" class="form-control" id="dob" formControlName="dob" required [max]="maxDate">
             <div
                 *ngIf="personalDetailsForm.get('dob')?.invalid && personalDetailsForm.get('dob')?.touched  || submitted">
                 <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.errors?.['required']">

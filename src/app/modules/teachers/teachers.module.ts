@@ -31,7 +31,8 @@ import { TransferRequestListComponent } from './transfer-request-list/transfer-r
     TeachersRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+   
   ]
 })
 export class TeachersModule { }

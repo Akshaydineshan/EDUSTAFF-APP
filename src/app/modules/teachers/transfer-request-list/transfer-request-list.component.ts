@@ -208,6 +208,19 @@ export class TransferRequestListComponent implements OnInit {
                     });
                     div.appendChild(plusButton);
 
+                  }else{
+                    const plusButton = document.createElement('a');
+                    plusButton.style.marginLeft = '10px';
+                    plusButton.classList.add('menuButton')
+                    // plusButton.style.float = 'right';
+                    plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
+                    plusButton.addEventListener('click', (event: any) => {
+                      // if (params.onStatusClick) {
+                      //   params.onStatusClick(event, params);
+                      // }
+                    });
+                    div.appendChild(plusButton);
+
                   }
 
 
