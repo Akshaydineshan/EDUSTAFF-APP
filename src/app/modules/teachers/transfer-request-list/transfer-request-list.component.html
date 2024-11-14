@@ -1,7 +1,7 @@
 <app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
 <!-- container start -->
-<div class="main-container mt-4" [class.shifted]="isSidebarClosed">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>TransferRequest List
       <span class="badge badge-secondary">{{ this.transferList.length }}</span>
@@ -12,38 +12,38 @@
   </div>
 
   <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="hoveredEmployee"
-  [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+    [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
   <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
-  [position]="{'top.px': mouseY, 'left.px': mouseX}" />
-<div class="table-responsive">
+    [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+  <div class="table-responsive">
 
-  <app-employee-menu-click-list-menu [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY" [mouseX]="mouseMenuX"
-  (clickListEvent)="listClickFromMenuList($event)"  [menuListItems]="menuListItems"></app-employee-menu-click-list-menu>
+    <app-employee-menu-click-list-menu class="menuPop" [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY"
+      [mouseX]="mouseMenuX" (clickListEvent)="listClickFromMenuList($event)"
+      [menuListItems]="menuListItems"></app-employee-menu-click-list-menu>
 
 
 
-  <!-- <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="selectedTeacher"
+    <!-- <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="selectedTeacher"
   [position]="{'top.px': mouseY, 'left.px': mouseX}" />
 
 <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
 [position]="{'top.px': mouseY, 'left.px': mouseX}"  /> -->
 
 
- <!-- table start -->
-  <app-table [rowData]="transferTableRows" [colDefs]="transferTableColumns" [paginationConfig]="paginationConfig"
-  (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-   
-   ></app-table>
-  <!-- table end -->
+    <!-- table start -->
+    <app-table [rowData]="transferTableRows" [colDefs]="transferTableColumns" [paginationConfig]="paginationConfig"
+      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"></app-table>
+    <!-- table end -->
 
+  </div>
 </div>
 <!-- container end -->
 
 <div class="t-request-popup-main" *ngIf="isTransferPopup">
 
   <div class="header d-flex justify-content-between">
-    <p>Transfer Approval- {{selectMenuRowData.employeeName}}</p>
+    <p>Transfer Request - {{selectMenuRowData.employeeName}}</p>
     <div>
       <a (click)="closeTransferPopup()"> <img src="assets/icons/close.jpg" alt=""></a>
 
@@ -59,8 +59,8 @@
       <div class="row mb-1">
         <label class="col-sm-12 col-form-label">Transfer From</label>
         <div class="col-sm-12">
-       
-          <input type="text" class="form-control" formControlName="fromSchool"  [readonly]="true">
+
+          <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
           <div
             *ngIf="transferRequestForm.get('fromSchool')?.invalid && (transferRequestForm.get('fromSchool')?.['dirty'] || transferRequestForm.get('fromSchool')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['required']"></small>
@@ -74,11 +74,11 @@
         <label class="col-sm-12 col-form-label">Transfer To</label>
         <div class="col-sm-12">
           <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
-            <option disabled>Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
-            </option>
-          </select> -->
-          <input type="text" class="form-control" formControlName="toSchool"  [readonly]="true">
+              <option disabled>Select School</option>
+              <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
+              </option>
+            </select> -->
+          <input type="text" class="form-control" formControlName="toSchool" [readonly]="true">
           <div
             *ngIf="transferRequestForm.get('toSchool')?.invalid && (transferRequestForm.get('toSchool')?.['dirty'] || transferRequestForm.get('toSchool')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['required']">Field is
@@ -91,7 +91,7 @@
       <div class="row mb-1 ">
         <label class="col-sm-12 col-form-label">Document</label>
         <div class="col-sm-12">
-          <input type="text" class="form-control" formControlName="documentUrl"  [readonly]="true">
+          <input type="text" class="form-control" formControlName="documentUrl" [readonly]="true">
           <div
             *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
@@ -121,7 +121,7 @@
         <div class="col-sm-12">
           <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
             formControlName="comment">
-            <div
+          <div
             *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
               required</small>
@@ -134,8 +134,10 @@
 
       <div class="btn-sec d-flex justify-content-center">
 
-        <button class="sub-btn" (click)="transferRequestFormSubmit()"> <img class="me-2"
-            src="assets/icons/tr-sub-icon.png" alt="">Approve</button>
+        <button class="sub-btn" (click)="transferRequestFormSubmit()">
+          <img class="me-2" src="assets/icons/tr-sub-icon.png" alt="">{{isRejectedClick ? "Reject" :
+          "Approve"}}</button>
+
       </div>
     </form>
 

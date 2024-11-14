@@ -93,8 +93,11 @@ export class NonTeacherPersonalDetailsComponent {
 
   get getprofileImage(){
     let result = '';
+
+     let image=this.personalDetailsForm.get('photoId')?.value.photoImageName;
+    if(this.personalDetailsForm.get('photoId')?.value.photoImageName=='No Photo assigned' || null || '') image=""
     
-    if (this.apiImageBaseURL && this.personalDetailsForm.get('photoId')?.value.photoImageName) {
+    if (this.apiImageBaseURL && image) {
       result = this.apiImageBaseURL.replace(/\/+$/, '') + '/' + this.personalDetailsForm.get('photoId')?.value?.photoImageName?.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template

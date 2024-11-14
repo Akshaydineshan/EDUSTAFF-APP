@@ -49,7 +49,11 @@ export class ViewNonTeacherDetailsComponent {
  
   get getImage() {
     let result = '';
-    if (this.apiUrl && this.currentTeacher?.photoDTO.photoName) {
+
+    let image=this.currentTeacher?.photoDTO.photoName;
+    if(this.currentTeacher?.photoDTO.photoName=='No Photo assigned' || null || '') image=""
+
+    if (this.apiUrl && image) {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photoDTO.photoName.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template

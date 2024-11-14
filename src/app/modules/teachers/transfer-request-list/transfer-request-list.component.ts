@@ -45,6 +45,7 @@ export class TransferRequestListComponent implements OnInit {
   transferRequestForm!: FormGroup
   submitted!: boolean;
   schoolDropDownList: any;
+  isRejectedClick: boolean = false;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService) {
 
@@ -62,6 +63,50 @@ export class TransferRequestListComponent implements OnInit {
       date: ['', Validators.required],
       comment: ['']
     })
+
+  }
+
+
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(target: HTMLElement) {
+    debugger
+
+    const menuButtons = document.getElementsByClassName('menuButton');
+    //  const menuButtonIs = document.getElementsByClassName('menuI');
+    const menuPops = document.getElementsByClassName('menuPop');
+
+    let clickedInsidePopup = false;
+    let clickedOnButton = menuButtons[0].contains(target);
+    //  let clickedOnButtonI = false;
+
+    for (let i = 0; i < menuPops.length; i++) {
+      if (menuPops[i].contains(target)) {
+        clickedInsidePopup = true;
+        break;
+      }
+    }
+
+    for (let i = 0; i < menuButtons.length; i++) {
+      if (menuButtons[i].contains(target)) {
+        clickedOnButton = true;
+        break;
+      }
+    }
+
+    // for (let i = 0; i < menuButtonIs.length; i++) {
+    //   if (menuButtonIs[i].contains(target)) {
+    //     clickedOnButtonI = true;
+    //     break;
+    //   }
+    // }
+    // console.log(clickedOnButtonI)
+
+    if (!clickedOnButton && !clickedInsidePopup) {
+      this.isMenuVisible = false; // Hide the popup if clicked outside
+    }
+
+
+
 
   }
 
@@ -145,30 +190,39 @@ export class TransferRequestListComponent implements OnInit {
                   // nameLink.style.color = '#246CC1';
 
                   nameLink.textContent = params.value;
+                  divSub.appendChild(nameLink)
+                  div.appendChild(divSub);
 
                   // Create another anchor element for the plus button
-                  const plusButton = document.createElement('a');
-                  plusButton.style.marginLeft = '10px';
-                  // plusButton.style.float = 'right';
-                  plusButton.innerHTML = '<i class="bi bi-three-dots-vertical"></i>';
-                  plusButton.addEventListener('click', (event: any) => {
-                    if (params.onStatusClick) {
-                      params.onStatusClick(event, params);
-                    }
-                  });
+
+                  if (params.value == 'Pending') {
+                    const plusButton = document.createElement('a');
+                    plusButton.style.marginLeft = '10px';
+                    plusButton.classList.add('menuButton')
+                    // plusButton.style.float = 'right';
+                    plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+                    plusButton.addEventListener('click', (event: any) => {
+                      if (params.onStatusClick) {
+                        params.onStatusClick(event, params);
+                      }
+                    });
+                    div.appendChild(plusButton);
+
+                  }
+
 
 
 
                   // Append the elements to the div
-                  divSub.appendChild(nameLink)
-                  div.appendChild(divSub);
-                  div.appendChild(plusButton);
+
+
+
 
                   return div;
 
                 } else {
-                 return  `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
-               }
+                  return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
+                }
               }
 
 
@@ -199,7 +253,7 @@ export class TransferRequestListComponent implements OnInit {
     debugger;
     console.log("eventRR", event.clientX, event.clientY)
     const offset = 13; // Offset for positioning
-    this.mouseMenuX = event.clientX + offset-226;
+    this.mouseMenuX = event.clientX + offset - 226;
     this.mouseMenuY = event.clientY;
     const popupWidth = 200; // Assume a fixed width for the popup
     const popupHeight = 100; // Assume a fixed height for the popup
@@ -207,7 +261,7 @@ export class TransferRequestListComponent implements OnInit {
     // Check right edge
     if (this.mouseMenuX + popupWidth > window.innerWidth) {
 
-      this.mouseMenuX = window.innerWidth - popupWidth - offset ; // Position left
+      this.mouseMenuX = window.innerWidth - popupWidth - offset; // Position left
     }
 
     // Check bottom edge
@@ -229,12 +283,17 @@ export class TransferRequestListComponent implements OnInit {
   }
 
   listClickFromMenuList(event: any) {
-    console.log("e", event)
+
     if (event.value === 'approve') {
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
-      this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName
-        // this.schoolDropDownList.find((item: any) => item.schoolID === this.selectMenuRowData.toSchoolID)
-      )
+      this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+      this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+      this.isTransferPopup = event.clicked
+      this.isMenuVisible = false
+    } else if (event.value === 'reject') {
+      this.isRejectedClick = true;
+      this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
+      this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
       this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
       this.isTransferPopup = event.clicked
       this.isMenuVisible = false
@@ -345,42 +404,70 @@ export class TransferRequestListComponent implements OnInit {
       console.log("transfer form", this.transferRequestForm.value)
       let formValue: any = this.transferRequestForm.value;
       let employee: any = this.selectMenuRowData
-      let payload: any = 
-      
-        {
-        
-          "transferDate":formValue.date,
+      if(!this.isRejectedClick){
+        let payload: any = {
+
+          "transferDate": formValue.date,
           "comment": formValue.comment,
           "filePath": formValue.documentUrl
         }
-      
-      console.log(payload)
-      debugger
-
-      this.dataService.approveTransferRequest(payload,this.selectMenuRowData.transferRequestID).subscribe({
-        next: (response: any) => {
-          if (response.status == 200) {
-            this.submitted = false
-            this.isTransferPopup = false;
-            this.toastr.success('Transfer Approved !', 'Success', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
-            this.loadtransferRequestList()
-
+          this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+          next: (response: any) => {
+            if (response.status == 200) {
+              this.submitted = false
+              this.isTransferPopup = false;
+              this.toastr.success('Transfer Approved !', 'Success', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              this.loadtransferRequestList()
+  
+            }
+  
+          },
+          error: (error: any) => {
+  
+          },
+          complete: () => {
+  
+  
           }
+        })
 
-        },
-        error: (error: any) => {
-
-        },
-        complete: () => {
-
-
+      }else{
+        let payload: any = {
+           "comment": formValue.comment,
         }
-      })
+
+        this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+          next: (response: any) => {
+            if (response.status == 200) {
+              this.submitted = false
+              this.isTransferPopup = false;
+              this.toastr.success('Transfer Rejected !', 'Success', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              this.loadtransferRequestList()
+  
+            }
+  
+          },
+          error: (error: any) => {
+  
+          },
+          complete: () => {
+  
+  
+          }
+        })
+
+      }
+    
     } else {
 
       console.log("invalid form")
