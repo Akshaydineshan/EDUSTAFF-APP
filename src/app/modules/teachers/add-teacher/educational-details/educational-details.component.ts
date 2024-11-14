@@ -214,8 +214,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
    }
    
    pdfClick(url:any){
-  
-     window.location.href= this.getCertificate(url)
+    window.open(this.getCertificate(url),"_blank")
+    //  window.location.href= this.getCertificate(url)
    }
 
 

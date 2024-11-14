@@ -79,7 +79,8 @@ editClick(){
 }
 
 pdfClick(url:any){
-  window.location.href= this.getCertificate(url)
+  // window.location.href= this.getCertificate(url)
+  window.open(this.getCertificate(url),"_blank")
 }
 
 
