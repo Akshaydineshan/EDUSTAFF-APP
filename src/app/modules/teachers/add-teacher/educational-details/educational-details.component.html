@@ -186,10 +186,14 @@
         <label class="col-sm-3 col-form-label">Upload Certificate</label>
         <div class="col-sm-7 position-relative">
           <input type="file" accept=".pdf" (change)="onCertificateUpload($event, i)" class="form-control pr-5">
+
+       
           
           <!-- Image positioned on the right side -->
-          <span *ngIf="course.get('certificate')?.value?.documentName || course.get('certificate')?.value?.documentID " class="pdf-icon">
-            <img [src]="'../../../../assets/icons/pdf.png'" alt="PDF Icon">
+          <span  *ngIf="course.get('certificate')?.value?.documentName || course.get('certificate')?.value?.documentID "   class="pdf-icon">
+           
+            <img (click)="pdfClick(course.get('certificate')?.value?.documentName)"  [src]="'../../../../assets/icons/pdf-file.png'"  alt="PDF Icon">
+          
           </span>
         </div>
       </div>

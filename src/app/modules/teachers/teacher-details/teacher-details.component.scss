@@ -151,6 +151,15 @@
 .key-value-item span img{
   width: 49px;
   height: 39px;
+  width: 45px;
+  transition: transform 0.3s ease; 
+  cursor: pointer;
+  height: 36px;
+}
+
+.key-value-item span img:hover {
+  transform: scale(1.1); 
+  opacity: 0.8;           
 }
 
 

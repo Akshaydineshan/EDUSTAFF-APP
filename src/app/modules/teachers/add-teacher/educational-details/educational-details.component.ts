@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-educational-details',
@@ -23,6 +24,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   file: any;
   profileImage: string | ArrayBuffer | null = null;
   educationValueChangesSubscription: any;
+  apiBaseUrl: any=environment.imageBaseUrl
 
   constructor(
     private fb: FormBuilder,
@@ -206,7 +208,15 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     debugger
     return course1 && course2 ? course1.courseID === course2.courseID : course1 === course2;
   }
-
+  getCertificate(certificate:any){
+    let  result = this.apiBaseUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, ''); 
+    return result;
+   }
+   
+   pdfClick(url:any){
+  
+     window.location.href= this.getCertificate(url)
+   }
 
 
 
@@ -225,6 +235,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   //     });
   //   }
   // }
+
+
 }
 // import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 // import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';

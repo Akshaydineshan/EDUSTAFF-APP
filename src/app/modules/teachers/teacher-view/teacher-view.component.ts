@@ -73,6 +73,15 @@ editClick(){
  
 }
 
+ getCertificate(certificate:any){
+ let  result = this.apiUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, ''); 
+ return result;
+}
+
+pdfClick(url:any){
+  window.location.href= this.getCertificate(url)
+}
+
 
   toggleSidebar() {
     this.isSidebarClosed = !this.isSidebarClosed;

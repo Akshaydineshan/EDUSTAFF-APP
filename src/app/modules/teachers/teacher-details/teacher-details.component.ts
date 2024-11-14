@@ -35,6 +35,14 @@ export class TeacherDetailsComponent {
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }
+  getCertificate(certificate:any){
+    let  result = this.apiUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, ''); 
+    return result;
+   }
+   
+   pdfClick(url:any){
+     window.location.href= this.getCertificate(url)
+   }
 
 
   onFormChange() {

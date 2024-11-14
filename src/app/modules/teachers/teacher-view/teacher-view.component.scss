@@ -192,3 +192,13 @@ li {
 //        overflow-x: scroll;
 //     }
 //    }
+img.pdf-icon{
+    width: 45px;
+    transition: transform 0.3s ease; 
+    cursor: pointer;
+    height: 36px;
+}
+img.pdf-icon:hover {
+    transform: scale(1.1); /* Slightly enlarge the image when hovered */
+    opacity: 0.8;           /* Slightly reduce opacity for a visual effect */
+  }
