@@ -243,7 +243,7 @@
                   <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" class="form-control"
                     id="password" name="password" placeholder="Enter your password" required maxlength="50" minlength="6"
                     pattern="^[a-zA-Z0-9]+$" #passwordInput="ngModel">
-                  <i class="fas" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()"
+                  <i class="fas" [ngClass]="!showPassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()"
                     style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
                 </div>
                 <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger">
