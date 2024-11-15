@@ -223,11 +223,17 @@
     <div class="row mb-3">
         <label for="dob" class="col-sm-3 col-form-label">Date of Birth</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="dob" formControlName="dob" required>
+            <input type="date" class="form-control" id="dob" formControlName="dob" required (change)="dobChange()">
             <div
                 *ngIf="personalDetailsForm.get('dob')?.invalid && personalDetailsForm.get('dob')?.touched  || submitted">
                 <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.errors?.['required']">
                     Date of birth is required.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.hasError('minDate')">
+                    Date must not be before January 1, 1900.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.hasError('maxDate')">
+                    Date must not be in the future.
                 </small>
             </div>
         </div>
@@ -439,6 +445,8 @@
                 <small class="text-danger"
                     *ngIf="personalDetailsForm.get('rationCardNumber')?.errors?.['maxlength']">Ration Card Number must
                     not exceed 20 characters.</small>
+                    <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('rationCardNumber')?.errors?.['pattern']">Ration Card Number can only contain letters and numbers.</small>
             </div>
         </div>
     </div>

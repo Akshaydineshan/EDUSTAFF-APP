@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { distinctUntilChanged, forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
-import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
+import { dateRangeValidator, minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
 interface SubmitBtnStatus {
   personal: boolean, education: boolean, professional: boolean
@@ -61,7 +61,7 @@ export class AddNonTeacherComponent {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       sex: ['', Validators.required],
-      dob: ['', Validators.required],
+      dob: ['',minAndMaxDateValidator('1900-01-01'),Validators.required],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       email: ['', [Validators.required, Validators.email]],
       religion: ['', Validators.required],
@@ -75,7 +75,7 @@ export class AddNonTeacherComponent {
       height: ['', [Validators.required, Validators.min(30), Validators.max(300)]],
       aadharId: ['', [Validators.required, Validators.pattern('[0-9]{12}')]],
       pan: ['', [Validators.required, Validators.pattern('[A-Z]{5}[0-9]{4}[A-Z]{1}')]],
-      rationCardNumber: ['', [Validators.required, Validators.maxLength(20)]],
+      rationCardNumber: ['', [Validators.required, Validators.maxLength(20), Validators.pattern(/^[a-zA-Z0-9]*$/)]],
       voterId: ['', [Validators.required, Validators.pattern('[A-Z]{3}[0-9]{7}')]],
       currentAddress: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
       permanentAddress: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],

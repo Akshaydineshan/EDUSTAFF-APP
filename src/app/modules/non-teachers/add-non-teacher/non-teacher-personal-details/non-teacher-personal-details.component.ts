@@ -40,6 +40,10 @@ export class NonTeacherPersonalDetailsComponent {
       this.personalDetailsFormChange.emit(this.personalDetailsForm);
     }
   }
+  dobChange(){
+   const dobControl = this.personalDetailsForm.get('dob');
+    dobControl?.updateValueAndValidity();  // Manually trigger validation
+  }
 
   onFormValueChange() {
     if (this.personalDetailsForm) {

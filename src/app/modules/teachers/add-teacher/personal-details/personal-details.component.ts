@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { TeacherDataService } from '../../teacher-data.service';
 import { environment } from 'src/environments/environment';
+import {  minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
 @Component({
   selector: 'app-personal-details',
@@ -24,6 +25,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   file!: File | null;
   apiImageBaseURL:any=environment.imageBaseUrl;
   maxDate!: string;
+  minDate: any=new Date('1900-01-01');
 
   constructor(private fb: FormBuilder,private dataService:DataService,private teacherService:TeacherDataService) { }
 
@@ -31,7 +33,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
       // date for dob validation
       const today = new Date();
       this.maxDate = today.toISOString().split('T')[0];
-  
+     
   
     // this.teacherService.$profileImage.subscribe((data:any)=>{
     //  this.profileImage=data;
@@ -93,6 +95,12 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
     this.profileImage = null;
     this.personalDetailsForm.get("photoId")?.setValue({})
     // this,this.teacherService.setProfileImage("")
+  }
+
+  dobChange(){
+   
+    const dobControl = this.personalDetailsForm.get('dob');
+    dobControl?.updateValueAndValidity();  // Manually trigger validation
   }
 
   get getprofileImage(){

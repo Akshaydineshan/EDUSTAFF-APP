@@ -4,11 +4,11 @@
         <label for="profileImage" class="col-md-3 col-form-label  ">Profile Image</label>
         <div class="col-sm-9 text-center">
             <div class="row d-flex align-items-center g-0">
-                <div class="col-md-3"style="margin-right:-18px;" >
+                <div class="col-md-3" style="margin-right:-18px;">
                     <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
                         class="rounded-circle" style="width: 80px; height: 80px;">
                 </div>
-                <div class="col-md-2 " >
+                <div class="col-md-2 ">
                     <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*"
                         style="display: none;" id="profileImageUpload">
                     <button *ngIf="!personalDetailsForm.get('photoImageName')?.value" type="button"
@@ -17,8 +17,8 @@
                         class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upgrade</button>
                 </div>
 
-                <div class="col-md-3 p-0" >
-                    <button  type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">
+                <div class="col-md-3 p-0">
+                    <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">
                         <i class="fas fa-trash-alt"></i> Remove</button>
                 </div>
 
@@ -205,11 +205,19 @@
     <div class="row mb-3">
         <label for="dob" class="col-sm-3 col-form-label">Date of Birth</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="dob" formControlName="dob" required [max]="maxDate">
+            <input type="date" class="form-control" id="dob" formControlName="dob" required [max]="maxDate"
+                [min]="minDate" (change)="dobChange()">
             <div
-                *ngIf="personalDetailsForm.get('dob')?.invalid && personalDetailsForm.get('dob')?.touched  || submitted">
+                *ngIf="personalDetailsForm.get('dob')?.errors && personalDetailsForm.get('dob')?.touched  || submitted">
                 <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.errors?.['required']">
                     Date of birth is required.
+                </small>
+
+                <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.hasError('minDate')">
+                    Date must not be before January 1, 1900.
+                </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.hasError('maxDate')">
+                    Date must not be in the future.
                 </small>
             </div>
         </div>
@@ -422,8 +430,12 @@
                 <small class="text-danger"
                     *ngIf="personalDetailsForm.get('rationCardNumber')?.errors?.['maxlength']">Ration Card Number must
                     not exceed 20 characters.</small>
+                <small class="text-danger"
+                    *ngIf="personalDetailsForm.get('rationCardNumber')?.errors?.['pattern']">Ration Card Number can only
+                    contain letters and numbers.</small>
             </div>
         </div>
+
     </div>
 
     <div class="row mb-3">
