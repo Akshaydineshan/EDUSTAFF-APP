@@ -63,7 +63,7 @@ export class AddTeacherComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
       sex: ['', Validators.required],
-      dob: ['',minAndMaxDateValidator('1900-01-01'),Validators.required],
+      dob: ['',[minAndMaxDateValidator('1900-01-01'),Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       email: ['', [Validators.required, Validators.email,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       religion: ['', Validators.required],
