@@ -3,7 +3,7 @@
         <label for="department" class="col-sm-3 col-form-label">Department</label>
         <div class="col-sm-9">
             <select class="form-control" id="department" formControlName="department">
-                <option value="">Select Department</option>
+                <option value="" [disabled]="true">Select Department</option>
                 <option *ngFor="let department of employeeTypes" [ngValue]="department">{{ department.employeeTypeName }}</option>
             </select>
             <div *ngIf="professionalForm.get('department')?.invalid && (professionalForm.get('department')?.touched || professionalForm.get('department')?.dirty ||submitted)"
@@ -19,7 +19,7 @@
         <label for="district" class="col-sm-3 col-form-label">District</label>
         <div class="col-sm-9">
             <select class="form-control" id="district" formControlName="district">
-                <option value="">Select District</option>
+                <option value="" [disabled]="true">Select District</option>
                 <option *ngFor="let district of districts" [ngValue]="district">{{ district.districtName }}</option>
             </select>
             <div *ngIf="professionalForm.get('district')?.invalid && (professionalForm.get('district')?.touched || professionalForm.get('district')?.dirty ||submitted)"
@@ -76,7 +76,7 @@
                 <option value="Senior Teacher">Senior Teacher</option>
             </select> -->
             <select class="form-control" id="designation" formControlName="designation">
-                <option value="" disabled>Select Designation</option>
+                <option value="" [disabled]="true">Select Designation</option>
                 <option *ngFor="let des of designationList" [ngValue]="des">{{des.designationName}}</option>
               </select>
             <div *ngIf="professionalForm.get('designation')?.invalid && (professionalForm.get('designation')?.touched || professionalForm.get('designation')?.dirty ||submitted)"
@@ -167,7 +167,7 @@
         <label for="category" class="col-sm-3 col-form-label">Approval Types</label>
         <div class="col-sm-9">
             <select class="form-control" id="category" formControlName="approvalType">
-                <option value="">Select Approval Type</option>
+                <option value="" [disabled]="true">Select Approval Type</option>
                 <option *ngFor="let approvalType of approvalTypes" [ngValue]="approvalType">{{approvalType.approvalTypeName }}</option>
             </select>
             <div *ngIf="professionalForm.get('approvalType')?.invalid && (professionalForm.get('approvalType')?.touched || professionalForm.get('approvalType')?.dirty ||submitted)"
@@ -181,7 +181,7 @@
         <label for="trainingAttended" class="col-sm-3 col-form-label">Protected Teacher</label>
         <div class="col-sm-9">
             <select class="form-control" id="protectedTeacher" formControlName="protectedTeacher">
-                <option value="" disabled>Select</option>
+                <option value="" [disabled]="true">Select</option>
                 <option *ngFor="let option of yesNoOptions" [value]="option.value">{{ option.label }}</option>
             </select>
             <div *ngIf="professionalForm.get('protectedTeacher')?.invalid && (professionalForm.get('protectedTeacher')?.touched || professionalForm.get('protectedTeacher')?.dirty ||submitted)"
@@ -198,7 +198,7 @@
             <!-- <input type="text" class="form-control" id="schoolName" formControlName="schoolName"
                 placeholder="E.g., XYZ Public School"> -->
                 <select class="form-control" id="schoolNameId" formControlName="schoolName">
-                    <option value="">Select School Type</option>
+                    <option value="" [disabled]="true">Select School Type</option>
                     <option *ngFor="let school of schoolNameWithCity;" [ngValue]="school">{{school.schoolName}},{{ school.cityName}}</option>
                 </select>
             <div *ngIf="professionalForm.get('schoolName')?.invalid && (professionalForm.get('schoolName')?.touched || professionalForm.get('schoolName')?.dirty ||submitted)"
@@ -212,7 +212,7 @@
         <label for="category" class="col-sm-3 col-form-label">Category</label>
         <div class="col-sm-9">
             <select class="form-control" id="category" formControlName="pCategory">
-                <option value="">Select Category</option>
+                <option value="" [disabled]="true">Select Category</option>
                 <option *ngFor="let category of employeeCategories" [ngValue]="category">{{ category.employeeCategoryName }}</option>
             </select>
             <div *ngIf="professionalForm.get('category')?.invalid && (professionalForm.get('category')?.touched || professionalForm.get('category')?.dirty ||submitted)"

@@ -18,7 +18,7 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'comment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -425,7 +425,7 @@ export class TransferRequestListComponent implements OnInit {
         let payload: any = {
 
           "transferDate": formValue.date,
-          "comment": formValue.comment,
+          "ApproverComment": formValue.comment,
           "filePath": formValue.documentUrl
         }
           this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
@@ -455,7 +455,7 @@ export class TransferRequestListComponent implements OnInit {
 
       }else{
         let payload: any = {
-           "comment": formValue.comment,
+           "ApproverComment": formValue.comment,
         }
 
         this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({

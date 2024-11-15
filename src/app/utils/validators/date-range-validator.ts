@@ -17,6 +17,7 @@ export function minAndMaxDateValidator(minDate: string): ValidatorFn {
 
   return (control: AbstractControl): ValidationErrors | null => {
     debugger
+   console.log("gggggggggggggggggg")
     const inputDate = new Date(control.value);
     const minDateObj = new Date(minDate);  // Convert minDate string to a Date object
 

@@ -21,7 +21,7 @@ export class NonTeacherProfessionalDetailsComponent {
   @Output() professionalFormChange = new EventEmitter<any>();
 
   yesNoOptions = [
-    { value: '', label: 'Select' },
+   
     { value: 'true', label: 'Yes' },
     { value: 'false', label: 'No' }
   ];

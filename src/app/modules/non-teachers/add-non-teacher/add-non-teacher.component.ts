@@ -268,7 +268,7 @@ export class AddNonTeacherComponent {
         interReligion: this.employee.interReligion,
         maritalStatusID: this.employee.maritalStatusDTO.maritalStatusID,
         spouseName: this.employee.spouseName,
-        spouseReligionID: this.employee.spouseReligionID,
+        spouseReligionID: this.employee.spouseReligionDTO.religionID,
         spouseCaste: this.employee.spouseCaste,
         panID: this.employee.panID,
         voterID: this.employee.voterID,
@@ -540,6 +540,10 @@ export class AddNonTeacherComponent {
         this.personalDetailsForm.get('spousesName')?.clearValidators();
         this.personalDetailsForm.get('spousesReligion')?.clearValidators();
         this.personalDetailsForm.get('spousesCaste')?.clearValidators();
+        
+        this.personalDetailsForm.get('spousesName')?.setValue("")
+        this.personalDetailsForm.get('spousesReligion')?.setValue("")
+        this.personalDetailsForm.get('spousesCaste')?.setValue("")
       }
 
       // Update validation status after modifying validators

@@ -104,7 +104,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   }
 
   get getprofileImage(){
-    debugger;
+ 
     let result = '';
     let image=this.personalDetailsForm.get('photoId')?.value.photoImageName;
     if(this.personalDetailsForm.get('photoId')?.value.photoImageName=='No Photo assigned' || null || '') image=""

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { distinctUntilChanged } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
-import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
+import { dateRangeValidator, minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -62,8 +62,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
+      fromDate: ['',minAndMaxDateValidator('1900-01-01'), Validators.required],
+      toDate: ['',minAndMaxDateValidator('1900-01-01'), Validators.required],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
@@ -217,6 +217,18 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     window.open(this.getCertificate(url),"_blank")
     //  window.location.href= this.getCertificate(url)
    }
+   dateChange(index:number){
+    const toDateArray = this.educationForm.get('educations') as FormArray;
+    const dobControl = toDateArray.at(index).get("fromDate");
+    console.log("controolll",dobControl)
+    dobControl?.updateValueAndValidity();  // Manually trigger validation
+  }
+  dateChangeTo(index:number){
+   
+    const toDateArray = this.educationForm.get('educations') as FormArray;
+    const dobControl = toDateArray.at(index).get("toDate")
+    dobControl?.updateValueAndValidity();  // Manually trigger validation
+  }
 
 
 

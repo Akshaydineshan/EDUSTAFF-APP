@@ -21,7 +21,7 @@ export class ProfessionalDetailsComponent implements OnInit, OnChanges {
   @Output() professionalFormChange = new EventEmitter<any>();
 
   yesNoOptions = [
-    { value: '', label: 'Select' },
+    // { value: '', label: 'Select' },
     { value: 'true', label: 'Yes' },
     { value: 'false', label: 'No' }
   ];

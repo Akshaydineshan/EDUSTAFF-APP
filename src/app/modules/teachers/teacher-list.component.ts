@@ -231,7 +231,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         // "approvalDate": this.dataService.formatDateToISO(formValue.date),
         // "requestedByID": null,
         // "approvedByID": null,
-        "comment": formValue.comment,
+        "RequestorComment": formValue.comment,
         "filePath": formValue.documentUrl
       }
       console.log(payload)

@@ -457,7 +457,7 @@ export class AddTeacherComponent implements OnInit {
   onMaritalStatusChange(): void {
 
     this.personalDetailsForm.get('maritalStatus')?.valueChanges.subscribe((status) => {
-
+    
       if (status.maritalStatusID == '2') {
         // Add Validators.required to spouse-related fields
         this.personalDetailsForm.get('spousesName')?.setValidators([Validators.required]);
@@ -468,6 +468,9 @@ export class AddTeacherComponent implements OnInit {
         this.personalDetailsForm.get('spousesName')?.clearValidators();
         this.personalDetailsForm.get('spousesReligion')?.clearValidators();
         this.personalDetailsForm.get('spousesCaste')?.clearValidators();
+        this.personalDetailsForm.get('spousesName')?.setValue("")
+        this.personalDetailsForm.get('spousesReligion')?.setValue("")
+        this.personalDetailsForm.get('spousesCaste')?.setValue("")
       }
 
       // Update validation status after modifying validators
@@ -592,8 +595,8 @@ export class AddTeacherComponent implements OnInit {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
+      fromDate: ['', minAndMaxDateValidator('1900-01-01'),Validators.required],
+      toDate: ['',minAndMaxDateValidator('1900-01-01'), Validators.required],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
