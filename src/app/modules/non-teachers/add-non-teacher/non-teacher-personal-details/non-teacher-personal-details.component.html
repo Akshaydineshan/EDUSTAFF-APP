@@ -265,7 +265,7 @@
             <div *ngIf="personalDetailsForm.get('email')?.invalid && (personalDetailsForm.get('email')?.['dirty'] || personalDetailsForm.get('email')?.['touched']  || submitted)"
                 class="text-danger">
                 <div *ngIf="personalDetailsForm.get('email')?.errors?.['required']">Email is required.</div>
-                <div *ngIf="personalDetailsForm.get('email')?.errors?.['email']">Invalid email address.</div>
+               <div *ngIf="personalDetailsForm.get('email')?.errors?.['pattern']">Invalid email address.</div>
             </div>
         </div>
     </div>

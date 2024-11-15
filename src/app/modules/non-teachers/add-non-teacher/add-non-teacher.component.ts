@@ -63,7 +63,7 @@ export class AddNonTeacherComponent {
       sex: ['', Validators.required],
       dob: ['',minAndMaxDateValidator('1900-01-01'),Validators.required],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       religion: ['', Validators.required],
       category: ['', Validators.required],
       caste: ['', Validators.required],
