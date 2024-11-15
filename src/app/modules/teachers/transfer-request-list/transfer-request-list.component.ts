@@ -60,7 +60,7 @@ export class TransferRequestListComponent implements OnInit {
       fromSchool: [''],
       toSchool: ['', Validators.required],
       documentUrl: ['', Validators.required],
-      date: ['', Validators.required],
+      date: [''],
       comment: ['']
     })
 
@@ -296,14 +296,18 @@ export class TransferRequestListComponent implements OnInit {
   }
 
   listClickFromMenuList(event: any) {
-
+    const dateControl = this.transferRequestForm.get('date');
     if (event.value === 'approve') {
+      this.isRejectedClick = false;
+     dateControl?.setValidators([Validators.required]);
+
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
       this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
       this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
       this.isTransferPopup = event.clicked
       this.isMenuVisible = false
     } else if (event.value === 'reject') {
+      dateControl?.clearValidators();
       this.isRejectedClick = true;
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
       this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
