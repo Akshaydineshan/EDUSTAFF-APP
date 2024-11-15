@@ -201,10 +201,10 @@ export class DataService {
   }
 
   approveTransferRequest(data:any,id:number): Observable<any> {
-     return this.http.patch(this.apiUrl + `TransferRequest/${id}/approve`,data);
+     return this.http.patch(this.apiUrl + `TransferRequest/ApproveTransferRequest/${id}`,data);
   }
   rejectTransferRequest(data:any,id:number): Observable<any> {
-    return this.http.put(this.apiUrl + `TransferRequest/UpdateSchool/${id}`,data);
+    return this.http.put(this.apiUrl + `TransferRequest/RejectTransferRequest/${id}`,data);
  }
   uploadProfilePhoto(photoFile: File): Observable<any> {
     debugger
