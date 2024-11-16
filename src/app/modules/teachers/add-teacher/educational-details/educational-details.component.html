@@ -184,10 +184,10 @@
             <small class="text-danger" *ngIf="course.get('toDate')?.errors?.['required']">
               To Date is required.
             </small>
-            <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('minDate')">
+            <small class="text-danger" *ngIf="course.get('toDate')?.hasError('minDate')">
               Date must not be before January 1, 1900.
             </small>
-            <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('maxDate')">
+            <small class="text-danger" *ngIf="course.get('toDate')?.hasError('maxDate')">
               Date must not be in the future.
             </small>
           </div>

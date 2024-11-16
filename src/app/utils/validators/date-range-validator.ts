@@ -28,7 +28,7 @@ export function minAndMaxDateValidator(minDate: string): ValidatorFn {
 
     // If the entered date is before the minDate
     if (inputDate < minDateObj) {
-    
+       console.log("minnnnn")
       return { minDate: true };
     }
 
