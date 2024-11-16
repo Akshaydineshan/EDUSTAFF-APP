@@ -60,15 +60,15 @@ export class AddTeacherComponent implements OnInit {
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
       sex: ['', Validators.required],
       dob: ['',[minAndMaxDateValidator('1900-01-01'),Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       email: ['', [Validators.required, Validators.email,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]],
       religion: ['', Validators.required],
       category: ['', Validators.required],
-      caste: ['', Validators.required],
+      caste: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
       bloodGroup: ['', Validators.required],
       whetherDifferentlyAbled: ['', Validators.required],
       exServicemen: ['', Validators.required],
@@ -81,13 +81,13 @@ export class AddTeacherComponent implements OnInit {
       voterId: ['', [Validators.required, Validators.pattern('[A-Z]{3}[0-9]{7}')]],
       currentAddress: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
       permanentAddress: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
-      fathersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-      mothersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+      fathersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
+      mothersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
       interReligion: ['', Validators.required],
       maritalStatus: ['', Validators.required],
       spousesName: ['',],
       spousesReligion: ['',],
-      spousesCaste: ['',],
+      spousesCaste: ['',[ Validators.pattern('^[a-zA-Z ]*$')]],
       photoId: ['']
     },
     );
@@ -460,9 +460,9 @@ export class AddTeacherComponent implements OnInit {
     
       if (status.maritalStatusID == '2') {
         // Add Validators.required to spouse-related fields
-        this.personalDetailsForm.get('spousesName')?.setValidators([Validators.required]);
+        this.personalDetailsForm.get('spousesName')?.setValidators([Validators.required,Validators.pattern('^[a-zA-Z ]+$')]);
         this.personalDetailsForm.get('spousesReligion')?.setValidators([Validators.required]);
-        this.personalDetailsForm.get('spousesCaste')?.setValidators([Validators.required]);
+        this.personalDetailsForm.get('spousesCaste')?.setValidators([Validators.required, Validators.pattern('^[a-zA-Z ]*$')]);
       } else {
         // Clear Validators for spouse-related fields if not married
         this.personalDetailsForm.get('spousesName')?.clearValidators();

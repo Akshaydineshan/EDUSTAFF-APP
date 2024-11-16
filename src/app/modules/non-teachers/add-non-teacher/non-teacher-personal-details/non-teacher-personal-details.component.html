@@ -168,6 +168,7 @@
                 <small class="text-danger" *ngIf="personalDetailsForm.get('firstName')?.errors?.['maxlength']">
                     Fist name cannot be more than 50 characters long.
                 </small>
+                <small class="text-danger"  *ngIf="personalDetailsForm.get('firstName')?.errors?.['pattern']">Invalid field.</small>
             </div>
         </div>
     </div>
@@ -186,6 +187,7 @@
                 <small class="text-danger" *ngIf="personalDetailsForm.get('lastName')?.errors?.['maxlength']">
                     Last name cannot be more than 50 characters long.
                 </small>
+                <small class="text-danger"  *ngIf="personalDetailsForm.get('lastName')?.errors?.['pattern']">Invalid field.</small>
             </div>
         </div>
     </div>
@@ -350,6 +352,7 @@
             <div *ngIf="personalDetailsForm.get('caste')?.invalid && (personalDetailsForm.get('caste')?.['dirty'] || personalDetailsForm.get('caste')?.['touched']  || submitted)"
                 class="text-danger">
                 <div *ngIf="personalDetailsForm.get('caste')?.errors?.['required']">Caste is required.</div>
+                <div *ngIf="personalDetailsForm.get('caste')?.errors?.['pattern']">Invalid Field.</div>
             </div>
         </div>
     </div>
@@ -520,6 +523,7 @@
                 <small class="text-danger"
                     *ngIf="personalDetailsForm.get('fathersName')?.errors?.['maxlength']">Father's Name must not exceed
                     50 characters.</small>
+                    <small class="text-danger"  *ngIf="personalDetailsForm.get('fathersName')?.errors?.['pattern']">Invalid field.</small>
             </div>
         </div>
     </div>
@@ -538,6 +542,7 @@
                 <small class="text-danger"
                     *ngIf="personalDetailsForm.get('mothersName')?.errors?.['maxlength']">Mother's Name must not exceed
                     50 characters.</small>
+                    <small class="text-danger"  *ngIf="personalDetailsForm.get('mothersName')?.errors?.['pattern']">Invalid field.</small>
             </div>
         </div>
     </div>
@@ -607,6 +612,7 @@
                         50 characters.</small>
                     <small class="text-danger" *ngIf="personalDetailsForm.get('spousesName')?.errors?.['required']">Spouse's Name is
                         required.</small>
+                        <small class="text-danger"  *ngIf="personalDetailsForm.get('spousesName')?.errors?.['pattern']">Invalid field.</small>
                 </div>
             </div>
         </div>
@@ -670,6 +676,7 @@
                     </small>
                     <small *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['required']">Spouse's Cast is
                         required.</small>
+                        <small *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['pattern']">Invalid Field.</small>
                 </div>
             </div>
         </div>
