@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
@@ -16,7 +16,7 @@ export class ViewNonTeacherDetailsComponent {
   itemId: any
 
 
-  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router) {
+  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router,private ngZone: NgZone) {
 
   }
 
@@ -55,6 +55,11 @@ export class ViewNonTeacherDetailsComponent {
      // window.location.href= this.getCertificate(url)
      window.open(this.getCertificate(url),"_blank")
    }
+   editClick(){
+    this.ngZone.run(() => {
+      this.router.navigate(['/non-teachers/add',this.itemId])
+    })
+  }
    
 
  

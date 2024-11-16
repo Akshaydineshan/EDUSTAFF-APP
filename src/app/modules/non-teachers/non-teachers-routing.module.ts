@@ -4,6 +4,8 @@ import { NonTeacherListComponent } from './non-teacher-list.component';
 import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/page-not-found.component';
 import { AddNonTeacherComponent } from './add-non-teacher/add-non-teacher.component';
 import { ViewNonTeacherDetailsComponent } from './view-non-teacher-details/view-non-teacher-details.component';
+import { TransferRequestListComponent } from '../teachers/transfer-request-list/transfer-request-list.component';
+import { NonTeacherTransferlistComponent } from './non-teacher-transferlist/non-teacher-transferlist.component';
 
 const routes: Routes = [
   { path: '', component: NonTeacherListComponent },
@@ -12,6 +14,7 @@ const routes: Routes = [
   { path: 'add/:id', component: AddNonTeacherComponent },
   { path: 'add', component: AddNonTeacherComponent },
   { path: 'view/:id', component: ViewNonTeacherDetailsComponent},
+  { path: 'transfer-request', component:NonTeacherTransferlistComponent },
   { 
     path: '**',
     component: PageNotFoundComponent

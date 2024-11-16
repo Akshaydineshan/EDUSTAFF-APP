@@ -11,6 +11,7 @@ import { NonTeacherProfessionalDetailsComponent } from './add-non-teacher/non-te
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddNonTeacherPreviewComponent } from './add-non-teacher/add-non-teacher-preview/add-non-teacher-preview.component';
 import { ViewNonTeacherDetailsComponent } from './view-non-teacher-details/view-non-teacher-details.component';
+import { NonTeacherTransferlistComponent } from './non-teacher-transferlist/non-teacher-transferlist.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ViewNonTeacherDetailsComponent } from './view-non-teacher-details/view-
     NonTeacherEducationDetailsComponent,
     NonTeacherProfessionalDetailsComponent,
     AddNonTeacherPreviewComponent,
-    ViewNonTeacherDetailsComponent
+    ViewNonTeacherDetailsComponent,
+    NonTeacherTransferlistComponent
   ],
   imports: [
     CommonModule,
