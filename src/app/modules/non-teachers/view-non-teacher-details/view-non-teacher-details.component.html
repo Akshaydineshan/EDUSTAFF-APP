@@ -363,6 +363,11 @@
                                                         <span class="field-val">{{ item.toDate | date: 'MMMM d, y'
                                                                 }}</span>
                                                 </li>
+
+                                                <li *ngIf="item.documentpath">
+                                                        <strong class="field">Certificate:</strong>
+                                                        <span class="field-val"><img (click)="pdfClick(item.documentpath)" class="pdf-icon" [src]="'../../../../assets/icons/pdf-file.png'" alt=""></span>
+                                                </li>
                                         </ul>
                                 </div>
                         </div>

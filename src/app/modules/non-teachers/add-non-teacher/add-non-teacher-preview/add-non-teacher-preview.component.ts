@@ -46,4 +46,14 @@ export class AddNonTeacherPreviewComponent {
   editClick() {
     this.EditBtnClickPreview.emit()
   }
+
+  getCertificate(certificate:any){
+    let  result = this.apiUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, ''); 
+    return result;
+   }
+   
+   pdfClick(url:any){
+    //  window.location.href= this.getCertificate(url)
+     window.open(this.getCertificate(url),"_blank")
+   }
 }

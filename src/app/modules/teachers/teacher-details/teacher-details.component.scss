@@ -348,3 +348,40 @@ li {
   height:40px;
 
 }
+
+
+//certificate style
+.key-value-item {
+  list-style: none;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.certificate-preview {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #007bff; /* Blue color for interactivity */
+}
+
+.pdf-icon {
+  width: 20px; /* Set the size of the icon */
+  height: 20px;
+  margin-right: 8px; /* Space between icon and file name */
+  transition: transform 0.3s ease; /* Smooth scale on hover */
+}
+
+.pdf-icon:hover {
+  transform: scale(1.1); /* Slightly increase size on hover for better interaction */
+}
+
+.pdf-file-name {
+  font-weight: bold;
+  color: #007bff; /* Use blue for the text for interactivity */
+  text-decoration: underline; /* Underline to show it's clickable */
+  transition: color 0.2s ease; /* Smooth color change */
+}
+
+.pdf-file-name:hover {
+  color: #0056b3; /* Darker blue on hover */
+}

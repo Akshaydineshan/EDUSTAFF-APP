@@ -439,8 +439,24 @@
           <li class="key-value-item">
             <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM d, y' }}</span>
           </li>
-          <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
+          <!-- <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
             <strong>Certificate:</strong> <span><img [src]="'../../../../assets/icons/pdf.png'" alt=""></span>
+          </li> -->
+          <li class="key-value-item" *ngIf="item.certificate?.documentName || item.certificate?.documentID">
+            <strong>Certificate:</strong> 
+            <span class="certificate-preview">
+              <!-- PDF Icon -->
+              <img 
+                (click)="pdfClick(item.certificate.documentName)" 
+                [src]="'../../../../assets/icons/pdf-file.png'" 
+                alt="PDF file" 
+                class="pdf-icon"
+              />
+              <!-- PDF File Name -->
+              <!-- <span class="pdf-file-name" (click)="pdfClick(item.certificate.documentName)">
+                {{ item.certificate?.documentName?.substring(item.certificate.documentName.lastIndexOf('/') + 1) }}
+              </span> -->
+            </span>
           </li>
 
         </ul>
