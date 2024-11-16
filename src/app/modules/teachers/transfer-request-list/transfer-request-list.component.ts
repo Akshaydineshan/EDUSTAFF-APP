@@ -439,6 +439,7 @@ export class TransferRequestListComponent implements OnInit {
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
+              this.transferRequestForm.reset()
               this.loadtransferRequestList()
   
             }
@@ -469,6 +470,7 @@ export class TransferRequestListComponent implements OnInit {
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
+              this.transferRequestForm.reset()
               this.loadtransferRequestList()
   
             }
@@ -495,5 +497,10 @@ export class TransferRequestListComponent implements OnInit {
     this.submitted = false
     this.isTransferPopup = false
     this.isMenuVisible = false
+  }
+  overlayClick() {
+    this.showPopup = false;
+    this.showSchoolPopup = false;
+
   }
 }

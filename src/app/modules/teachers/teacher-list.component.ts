@@ -103,7 +103,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadTeachersList();
-    this.loadDropdownData()
+    // this.loadDropdownData()
     this.updateSliderTrack();
     this.filterForm.valueChanges.subscribe(() => {
       this.updateSliderTrack();
@@ -255,16 +255,16 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
         },
         error: (error: any) => {
-         if(error.status===409){
-          this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-top-left',
-            timeOut: 4500,
-          });
-          // this.isTransferPopup = false;
-         }
-       
+          if (error.status === 409) {
+            this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            // this.isTransferPopup = false;
+          }
+
 
         },
         complete: () => {
@@ -498,10 +498,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       schools: this.dataService.getSchoolWithCity()
 
     }).subscribe({
-      next: (results) => {
-        this.schoolDropDownList = results.schools;
+      next: (results: any) => {
 
-
+        this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolID);
       },
       error: (error) => {
         console.error('Error loading dropdown data', error);
@@ -700,7 +699,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
-      this.showSchoolPopup=false
+      this.showSchoolPopup = false
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     }
   }
@@ -716,7 +715,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
   }
   rowMouseHoverOut(event: any) {
-   
+
     // this.isMenuVisible = false
     debugger;
     // if (event.colDef.field === "name") {
@@ -794,6 +793,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.isTransferPopup
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
+    this.loadDropdownData()
     this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
     this.updateMenuMousePosition(event)
   }

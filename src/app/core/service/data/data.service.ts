@@ -76,10 +76,29 @@ export class DataService {
     // }
     // return this.teachersDataCache.asObservable();
   }
+  getNonTeacherTransferRequestData(): Observable<any[]> {
+    debugger
+    // if (this.teachersDataCache.value.length === 0) {
+      return this.fetchNonteacherTransferRequestData();
+    // }
+    // return this.teachersDataCache.asObservable();
+  }
+  private fetchNonteacherTransferRequestData(): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.apiUrl + 'TransferRequest/GetAllNonTeacherTransferRequests', { headers: { accept: '*/*' } }).pipe(
+      tap(data => this.teachersDataCache.next(data)),
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+
 
   private fetchTransferRequestData(): Observable<any[]> {
     debugger
-    return this.http.get<any[]>(this.apiUrl + 'TransferRequest/GetAllTransferRequests', { headers: { accept: '*/*' } }).pipe(
+    return this.http.get<any[]>(this.apiUrl + 'TransferRequest/GetAllTeacherTransferRequests', { headers: { accept: '*/*' } }).pipe(
       tap(data => this.teachersDataCache.next(data)),
       catchError((error) => {
         console.error('Error fetching teachers data:', error);
