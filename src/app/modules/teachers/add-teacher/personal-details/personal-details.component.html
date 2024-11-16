@@ -3,8 +3,24 @@
     <div class="row mb-3 d-flex align-items-center g-0">
         <label for="profileImage" class="col-md-3 col-form-label  ">Profile Image</label>
         <div class="col-sm-9 text-center">
-            <div class="row d-flex align-items-center g-0">
-                <div class="col-md-3" style="margin-right:-18px;">
+            <!-- <div class="row d-flex align-items-center g-0">
+                <div class="col-sm-9"> -->
+            <div class="d-flex flex-wrap align-items-center">
+                <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
+                    class="rounded-circle" style="width: 80px; height: 80px;">
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;"
+                    id="profileImageUpload">
+                <button *ngIf="!personalDetailsForm.get('photoImageName')?.value" type="button"
+                    class="btn btn-sm btn-outline-primary ms-2" (click)="fileInput.click()">Upload</button>
+                <button *ngIf="personalDetailsForm.get('photoImageName')?.value" type="button"
+                    class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upgrade</button>
+                    <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="removeImage()">
+                        <i class="fas fa-trash-alt"></i> Remove</button>
+            </div>
+
+           
+            <!-- </div> -->
+            <!-- <div class="col-md-3" style="margin-right:-18px;">
                     <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
                         class="rounded-circle" style="width: 80px; height: 80px;">
                 </div>
@@ -20,13 +36,13 @@
                 <div class="col-md-3 p-0">
                     <button type="button" class="btn btn-sm btn-outline-danger" (click)="removeImage()">
                         <i class="fas fa-trash-alt"></i> Remove</button>
-                </div>
+                </div> -->
 
-                <!-- <div class="mt-2"> -->
+            <!-- <div class="mt-2"> -->
 
-                <!-- </div> -->
+            <!-- </div> -->
 
-            </div>
+            <!-- </div> -->
 
         </div>
     </div>
@@ -48,7 +64,8 @@
     </div> -->
 
     <div class="row mb-3">
-        <label for="pen" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Permanent Employee Number (PEN)</label>
+        <label for="pen" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Permanent Employee Number
+            (PEN)</label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="pen" formControlName="permanentEmployeeNumber" required>
             <div
@@ -64,7 +81,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="identification-marks-one" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Identification Marks</label>
+        <label for="identification-marks-one" class="col-sm-3 col-form-label"><span
+                class="mad-sym">*</span>Identification Marks</label>
         <div class="col-sm-4">
             <input type="text" class="form-control" id="identification-marks-one"
                 formControlName="identificationMarksOne" maxlength="100" required placeholder="Mark 1" />
@@ -150,7 +168,8 @@
                 <small class="text-danger" *ngIf="personalDetailsForm.get('firstName')?.errors?.['maxlength']">
                     Fist name cannot be more than 50 characters long.
                 </small>
-                <small class="text-danger"  *ngIf="personalDetailsForm.get('firstName')?.errors?.['pattern']">Invalid field.</small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('firstName')?.errors?.['pattern']">Invalid
+                    field.</small>
             </div>
         </div>
     </div>
@@ -169,7 +188,8 @@
                 <small class="text-danger" *ngIf="personalDetailsForm.get('lastName')?.errors?.['maxlength']">
                     Last name cannot be more than 50 characters long.
                 </small>
-                <small class="text-danger"  *ngIf="personalDetailsForm.get('lastName')?.errors?.['pattern']">Invalid field.</small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('lastName')?.errors?.['pattern']">Invalid
+                    field.</small>
             </div>
         </div>
     </div>
@@ -251,7 +271,7 @@
             <div *ngIf="personalDetailsForm.get('email')?.invalid && (personalDetailsForm.get('email')?.['dirty'] || personalDetailsForm.get('email')?.['touched']  || submitted)"
                 class="text-danger">
                 <div *ngIf="personalDetailsForm.get('email')?.errors?.['required']">Email is required.</div>
-               <div *ngIf="personalDetailsForm.get('email')?.errors?.['pattern']">Invalid email address.</div>
+                <div *ngIf="personalDetailsForm.get('email')?.errors?.['pattern']">Invalid email address.</div>
             </div>
         </div>
     </div>
@@ -377,7 +397,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="whether-differently-abled" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Whether Differently Abled</label>
+        <label for="whether-differently-abled" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Whether
+            Differently Abled</label>
         <div class="col-sm-9">
             <select class="form-control" id="whether-differently-abled" formControlName="whetherDifferentlyAbled"
                 required>
@@ -422,7 +443,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="ration-card" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Ration Card Number</label>
+        <label for="ration-card" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Ration Card
+            Number</label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="ration-card" formControlName="rationCardNumber" required>
             <div
@@ -456,7 +478,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="current-address" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Current Address</label>
+        <label for="current-address" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Current
+            Address</label>
         <div class="col-sm-9">
             <textarea class="form-control" id="current-address" rows="3" formControlName="currentAddress"
                 required></textarea>
@@ -476,7 +499,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="permanent-address" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Permanent Address</label>
+        <label for="permanent-address" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Permanent
+            Address</label>
         <div class="col-sm-9">
             <textarea class="form-control" id="permanent-address" rows="3" formControlName="permanentAddress"
                 required></textarea>
@@ -510,7 +534,8 @@
                 <small class="text-danger"
                     *ngIf="personalDetailsForm.get('fathersName')?.errors?.['maxlength']">Father's Name must not exceed
                     50 characters.</small>
-                    <small class="text-danger"  *ngIf="personalDetailsForm.get('fathersName')?.errors?.['pattern']">Invalid field.</small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('fathersName')?.errors?.['pattern']">Invalid
+                    field.</small>
             </div>
         </div>
     </div>
@@ -529,7 +554,8 @@
                 <small class="text-danger"
                     *ngIf="personalDetailsForm.get('mothersName')?.errors?.['maxlength']">Mother's Name must not exceed
                     50 characters.</small>
-                    <small class="text-danger"  *ngIf="personalDetailsForm.get('mothersName')?.errors?.['pattern']">Invalid field.</small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('mothersName')?.errors?.['pattern']">Invalid
+                    field.</small>
             </div>
         </div>
     </div>
@@ -600,7 +626,8 @@
                     <small class="text-danger"
                         *ngIf="personalDetailsForm.get('spousesName')?.errors?.['required']">Spouse's Name is
                         required.</small>
-                        <small class="text-danger"  *ngIf="personalDetailsForm.get('spousesName')?.errors?.['pattern']">Invalid field.</small>
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('spousesName')?.errors?.['pattern']">Invalid field.</small>
                 </div>
             </div>
         </div>
@@ -619,7 +646,8 @@
             </div>
         </div> -->
         <div class="row mb-3">
-            <label for="spouse-religion" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's Religion</label>
+            <label for="spouse-religion" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's
+                Religion</label>
             <div class="col-sm-9">
                 <select class="form-control" id="spouse-religion" formControlName="spousesReligion">
                     <option value="" disabled>Select...</option>
@@ -650,7 +678,8 @@
             </div>
         </div> -->
         <div class="row mb-3">
-            <label for="spouse-caste" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's Caste</label>
+            <label for="spouse-caste" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's
+                Caste</label>
             <div class="col-sm-9">
                 <!-- <select class="form-control" id="spouse-caste" formControlName="spousesCaste"> -->
                 <!-- <option value="">Select...</option> -->
@@ -664,7 +693,8 @@
                     </small>
                     <small *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['required']">Spouse's Cast is
                         required.</small>
-                        <small class="text-danger"  *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['pattern']">Invalid field.</small>
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('spousesCaste')?.errors?.['pattern']">Invalid field.</small>
                 </div>
             </div>
         </div>
