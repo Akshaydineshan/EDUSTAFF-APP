@@ -442,7 +442,7 @@
           <!-- <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
             <strong>Certificate:</strong> <span><img [src]="'../../../../assets/icons/pdf.png'" alt=""></span>
           </li> -->
-          <li class="key-value-item" *ngIf="item.certificate?.documentName || item.certificate?.documentID">
+          <li class="key-value-item" *ngIf="item.certificate?.documentName && item.certificate?.documentID && item.certificate?.documentName != 'No Document' && item.certificate?.documentName != '' ">
             <strong>Certificate:</strong> 
             <span class="certificate-preview">
               <!-- PDF Icon -->
@@ -453,9 +453,9 @@
                 class="pdf-icon"
               />
               <!-- PDF File Name -->
-              <!-- <span class="pdf-file-name" (click)="pdfClick(item.certificate.documentName)">
+              <span class="pdf-file-name" (click)="pdfClick(item.certificate.documentName)">
                 {{ item.certificate?.documentName?.substring(item.certificate.documentName.lastIndexOf('/') + 1) }}
-              </span> -->
+              </span>
             </span>
           </li>
 

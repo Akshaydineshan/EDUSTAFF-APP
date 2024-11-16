@@ -119,13 +119,13 @@
 
 
           <button type="button" class="btn btn-md btn-teal-default-border me-3" (click)="fileInput.click()">
-            <i class="bi bi-upload"></i> {{ course.get('certificate')?.value?.documentName ? "Update" : "Upload" }}
+            <i class="bi bi-upload"></i> {{ course.get('certificate')?.value.documentName && course.get('certificate')?.value?.documentID && course.get('certificate')?.value?.documentName != 'No Document' && course.get('certificate')?.value?.documentName != ''  ? "Update" : "Upload" }}
           </button>
 
 
           <div class="uploaded-file d-flex align-items-center">
-            <span
-              *ngIf="course.get('certificate')?.value?.documentName || course.get('certificate')?.value?.documentID">
+            <span *ngIf="course.get('certificate')?.value.documentName && course.get('certificate')?.value?.documentID && course.get('certificate')?.value?.documentName != 'No Document' && course.get('certificate')?.value?.documentName != '' "
+             >
               <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>
               <strong>{{
                 course.get('certificate')?.value?.documentName.substring(course.get('certificate')?.value?.documentName.lastIndexOf('/')

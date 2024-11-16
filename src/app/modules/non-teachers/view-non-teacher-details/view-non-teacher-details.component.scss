@@ -139,7 +139,7 @@ li {
 
 /* Flexible width for values to adjust for variable content length */
 .info-list li span {
-    flex-grow: 1;
+   
     color: #555;
     font-weight: 400;
     font-size: 14px;
@@ -192,3 +192,19 @@ img.pdf-icon:hover {
     transform: scale(1.1); /* Slightly enlarge the image when hovered */
     opacity: 0.8;           /* Slightly reduce opacity for a visual effect */
   }
+
+  span.pdf-name {
+    font-weight: bold;
+    color: #007bff !important;
+    /* Use blue for the text for interactivity */
+    text-decoration: underline;
+    /* Underline to show it's clickable */
+    transition: color 0.2s ease;
+    /* Smooth color change */
+    cursor: pointer;
+}
+
+.pdf-name:hover {
+    color: #0056b3;
+    /* Darker blue on hover */
+}
