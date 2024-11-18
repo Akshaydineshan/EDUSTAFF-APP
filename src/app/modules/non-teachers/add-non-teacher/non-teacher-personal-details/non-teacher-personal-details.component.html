@@ -28,7 +28,7 @@
                 <button *ngIf="!personalDetailsForm.get('photoId')?.value.photoImageName" type="button"
                     class="btn btn-sm btn-outline-primary ms-2" (click)="fileInput.click()">Upload</button>
                 <button *ngIf="personalDetailsForm.get('photoId')?.value.photoImageName" type="button"
-                    class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upgrade</button>
+                    class="btn btn-sm btn-outline-primary ms-2" (click)="fileInput.click()">Upgrade</button>
                 <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="removeImage()">
                     <i class="fas fa-trash-alt"></i> Remove</button>
             </div>

@@ -135,6 +135,15 @@
                 class="text-danger">
                 <small *ngIf="professionalForm.get('fromDate')?.errors?.['required']">Date of Joining is
                     required.</small>
+                    <small class="text-danger" *ngIf="professionalForm.get('fromDate')?.hasError('minDate')">
+                        Date must not be before January 1, 1900.
+                    </small>
+                    <small class="text-danger" *ngIf="professionalForm.get('fromDate')?.hasError('maxDate')">
+                        Date must not be in the future.
+                    </small>
+                    <small class="text-danger" *ngIf="professionalForm.get('fromDate')?.hasError('invalidDate')">
+                        Invalid Date.
+                    </small>
             </div>
         </div>
     </div>
@@ -147,6 +156,15 @@
                 class="text-danger">
                 <small *ngIf="professionalForm.get('toDate')?.errors?.['required']">Date of Leaving is required.</small>
                 <!-- <small *ngIf="professionalForm..errors?.invalidDateRange">End date must be greater than start date.</small> -->
+                <small class="text-danger" *ngIf="professionalForm.get('toDate')?.hasError('minDate')">
+                    Date must not be before January 1, 1900.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('toDate')?.hasError('maxDate')">
+                    Date must not be in the future.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('toDate')?.hasError('invalidDate')">
+                    Invalid Date.
+                </small>
             </div>
         </div>
     </div>
@@ -159,6 +177,15 @@
             <div *ngIf="professionalForm.get('retirement')?.invalid && (professionalForm.get('retirement')?.touched || professionalForm.get('retirement')?.dirty ||submitted)"
                 class="text-danger">
                 <small *ngIf="professionalForm.get('retirement')?.errors?.['required']">Date of Retirement is required.</small>
+                <small class="text-danger" *ngIf="professionalForm.get('retirement')?.hasError('minDate')">
+                    Date must not be before January 1, 1900.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('retirement')?.hasError('maxDate')">
+                    Date must not be in the future.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('retirement')?.hasError('invalidDate')">
+                    Invalid Date.
+                </small>
             </div>
         </div>
     </div>

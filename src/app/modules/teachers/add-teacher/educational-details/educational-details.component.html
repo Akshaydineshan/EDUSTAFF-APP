@@ -169,6 +169,9 @@
             <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('maxDate')">
               Date must not be in the future.
             </small>
+            <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('invalidDate')">
+              Invalid Date.
+          </small>
 
           </div>
 
@@ -190,6 +193,9 @@
             <small class="text-danger" *ngIf="course.get('toDate')?.hasError('maxDate')">
               Date must not be in the future.
             </small>
+            <small class="text-danger" *ngIf="course.get('toDate')?.hasError('invalidDate')">
+              Invalid Date.
+          </small>
           </div>
           <div
             *ngIf="course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || course.get('toDate')?.touched || submitted)">

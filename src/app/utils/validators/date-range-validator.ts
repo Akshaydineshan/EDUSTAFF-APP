@@ -13,26 +13,27 @@ export function dateRangeValidator(startDateControlName: string, endDateControlN
   };
 }
 
-export function minAndMaxDateValidator(minDate: string): ValidatorFn {
+export function minAndMaxDateValidator(minDate: string,min:boolean,max:boolean): ValidatorFn {
   console.log("gggggggggggggggggg1")
   return (control: AbstractControl): ValidationErrors | null => {
     debugger
-   console.log("gggggggggggggggggg2")
+   
     const inputDate = new Date(control.value);
+    console.log("gggggggggggggggggg2",)
     const minDateObj = new Date(minDate);  // Convert minDate string to a Date object
 
     // If the date is not valid or if the input is before the minDate
-    if (isNaN(inputDate.getTime())) {
-      return { 'invalidDate': 'Invalid date format' };
+    if (isNaN(inputDate.getTime()) || inputDate.getFullYear().toString().length !== 4) {
+      return { 'invalidDate': true };
     }
 
     // If the entered date is before the minDate
-    if (inputDate < minDateObj) {
+    if (min && inputDate < minDateObj) {
        console.log("minnnnn")
       return { minDate: true };
     }
 
-    if (inputDate > new Date()) {
+    if (max && inputDate > new Date()) {
       return { 'maxDate': true };
     }
 

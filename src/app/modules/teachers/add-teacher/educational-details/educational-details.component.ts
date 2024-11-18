@@ -62,8 +62,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['',[minAndMaxDateValidator('1900-01-01'), Validators.required]],
-      toDate: ['',[minAndMaxDateValidator('1900-01-01'), Validators.required]],
+      fromDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
+      toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }

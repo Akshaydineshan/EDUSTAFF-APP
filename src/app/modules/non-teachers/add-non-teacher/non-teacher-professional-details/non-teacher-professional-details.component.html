@@ -130,11 +130,20 @@
     <div class="row mb-3">
         <label for="fromDate" class="col-sm-3 col-form-label">Date Of Join</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="fromDate" formControlName="fromDate" [ngClass]="{ 'disabled': isEdited }">
+            <input type="date"  class="form-control" id="fromDate" formControlName="fromDate" [ngClass]="{ 'disabled': isEdited }" >
             <div *ngIf="professionalForm.get('fromDate')?.invalid && (professionalForm.get('fromDate')?.touched || professionalForm.get('fromDate')?.dirty ||submitted)"
                 class="text-danger">
                 <small *ngIf="professionalForm.get('fromDate')?.errors?.['required']">Date of Joining is
                     required.</small>
+                    <small class="text-danger" *ngIf="professionalForm.get('fromDate')?.hasError('minDate')">
+                        Date must not be before January 1, 1900.
+                    </small>
+                    <small class="text-danger" *ngIf="professionalForm.get('fromDate')?.hasError('maxDate')">
+                        Date must not be in the future.
+                    </small>
+                    <small class="text-danger" *ngIf="professionalForm.get('fromDate')?.hasError('invalidDate')">
+                        Invalid Date.
+                    </small>
             </div>
         </div>
     </div>
@@ -142,11 +151,20 @@
     <div class="row mb-3">
         <label for="toDate" class="col-sm-3 col-form-label">Date Of Join In The Department</label>
         <div class="col-sm-9">
-            <input type="date" class="form-control" id="toDate" formControlName="toDate" [ngClass]="{ 'disabled': isEdited }">
+            <input type="date" class="form-control" id="toDate" formControlName="toDate"  [ngClass]="{ 'disabled': isEdited }">
             <div *ngIf="professionalForm.get('toDate')?.invalid && (professionalForm.get('toDate')?.touched || professionalForm.get('toDate')?.dirty)"
                 class="text-danger">
                 <small *ngIf="professionalForm.get('toDate')?.errors?.['required']">Date of Leaving is required.</small>
                 <!-- <small *ngIf="professionalForm..errors?.invalidDateRange">End date must be greater than start date.</small> -->
+                <small class="text-danger" *ngIf="professionalForm.get('toDate')?.hasError('minDate')">
+                    Date must not be before January 1, 1900.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('toDate')?.hasError('maxDate')">
+                    Date must not be in the future.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('toDate')?.hasError('invalidDate')">
+                    Invalid Date.
+                </small>
             </div>
         </div>
     </div>
@@ -159,6 +177,15 @@
             <div *ngIf="professionalForm.get('retirement')?.invalid && (professionalForm.get('retirement')?.touched || professionalForm.get('retirement')?.dirty ||submitted)"
                 class="text-danger">
                 <small *ngIf="professionalForm.get('retirement')?.errors?.['required']">Date of Retirement is required.</small>
+                <small class="text-danger" *ngIf="professionalForm.get('retirement')?.hasError('minDate')">
+                    Date must not be before January 1, 1900.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('retirement')?.hasError('maxDate')">
+                    Date must not be in the future.
+                </small>
+                <small class="text-danger" *ngIf="professionalForm.get('retirement')?.hasError('invalidDate')">
+                    Invalid Date.
+                </small>
             </div>
         </div>
     </div>

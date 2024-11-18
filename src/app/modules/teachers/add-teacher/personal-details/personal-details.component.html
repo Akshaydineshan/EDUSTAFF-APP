@@ -10,10 +10,10 @@
                     class="rounded-circle" style="width: 80px; height: 80px;">
                 <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;"
                     id="profileImageUpload">
-                <button *ngIf="!personalDetailsForm.get('photoImageName')?.value" type="button"
+                <button *ngIf="!personalDetailsForm.get('photoId')?.value.photoImageName" type="button"
                     class="btn btn-sm btn-outline-primary ms-2" (click)="fileInput.click()">Upload</button>
-                <button *ngIf="personalDetailsForm.get('photoImageName')?.value" type="button"
-                    class="btn btn-sm btn-outline-primary me-2" (click)="fileInput.click()">Upgrade</button>
+                <button *ngIf="personalDetailsForm.get('photoId')?.value.photoImageName" type="button"
+                    class="btn btn-sm btn-outline-primary ms-2" (click)="fileInput.click()">Upgrade</button>
                     <button type="button" class="btn btn-sm btn-outline-danger ms-2" (click)="removeImage()">
                         <i class="fas fa-trash-alt"></i> Remove</button>
             </div>
