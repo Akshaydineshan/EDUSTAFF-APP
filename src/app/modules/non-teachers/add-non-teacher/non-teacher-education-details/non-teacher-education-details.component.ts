@@ -18,6 +18,9 @@ export class NonTeacherEducationDetailsComponent {
 
   selectedEducationType!: string;
 
+  maxDate!: string;
+  minDate: any=new Date('1900-01-01');
+
   filteredCoursesByEducation: any[] = []; // this is for courseName select list value storing index wice by education type
   file: any;
   profileImage: string | ArrayBuffer | null = null;
@@ -32,6 +35,8 @@ export class NonTeacherEducationDetailsComponent {
   ngOnInit(): void {
 
     this.educations = this.educationForm.get('educations') as FormArray;
+    const today = new Date();
+    this.maxDate = today.toISOString().split('T')[0];
     console.log(this.allEducationTypes);
     console.log(this.coursesByEducation);
     this.educationForm.disable();

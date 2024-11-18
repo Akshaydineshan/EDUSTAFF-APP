@@ -18,6 +18,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   @Input() submitted: boolean = false;
   @Output() educationFormChange = new EventEmitter<any>();
 
+  maxDate!: string;
+  minDate: any=new Date('1900-01-01');
   selectedEducationType!: string;
 
   filteredCoursesByEducation: any[] = []; // this is for courseName select list value storing index wice by education type
@@ -34,6 +36,9 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.educationForm.disable()
+    const today = new Date();
+    this.maxDate = today.toISOString().split('T')[0];
+    
     this.educations = this.educationForm.get('educations') as FormArray;
     console.log(this.allEducationTypes);
     console.log(this.coursesByEducation);
