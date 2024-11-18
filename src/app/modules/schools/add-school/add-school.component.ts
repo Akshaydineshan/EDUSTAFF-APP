@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-school',
@@ -16,6 +17,8 @@ export class AddSchoolComponent implements OnInit {
   isSidebarClosed: boolean = false;
   schoolDetailsForm!: FormGroup;
   submitted: boolean = false; //  form submit flag in your component
+  apiImageBaseURL:any=environment.imageBaseUrl;
+  
 
   schoolTypes: any[] = []
   cities: any[] = [
@@ -95,6 +98,7 @@ export class AddSchoolComponent implements OnInit {
         cityID: this.cities.find((item: any) => item.cityID === this.school.cityID),
         state: this.school.state,
         pincode: this.school.pincode,
+        photoID:{photoID:this.school.photoID, photoImageName:this.school.photo}
 
       };
 
@@ -108,6 +112,7 @@ export class AddSchoolComponent implements OnInit {
         pincode: schoolData.pincode,
         email: schoolData.email,
         phone: schoolData.phone,
+        photoID:schoolData.photoID
 
 
       });
@@ -174,7 +179,7 @@ export class AddSchoolComponent implements OnInit {
         pincode: formDataValue.pincode,
         email: formDataValue.email,
         phone: formDataValue.phone,
-        photoID: formDataValue?.photoID?.photoID,
+        photoID: formDataValue.photoID.photoID,
         principalID: this.isEdited ? this.school.principalID :null,
         vicePrincipalID:  this.isEdited ? this.school.vicePrincipalID:null,
         [this.isEdited ? "updateDivisions" : "addDivisions"]: formDataValue.divisions.map((item: any, index: number) => {
@@ -182,8 +187,10 @@ export class AddSchoolComponent implements OnInit {
         }),
 
       }
+      debugger;
 
       if (this.isEdited) {
+        data.photoID=formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
 
         this.schoolService.updateSchool(data, this.school.schoolID)
           .subscribe({
@@ -192,7 +199,7 @@ export class AddSchoolComponent implements OnInit {
               // Reset form and submitted flag if needed
               this.schoolDetailsForm.reset();
               this.submitted = false;
-              this.toastr.success('School Added !', 'Success', {
+              this.toastr.success('School Updated !', 'Success', {
                 closeButton: true,
                 progressBar: true,
                 positionClass: 'toast-top-left',
@@ -203,7 +210,7 @@ export class AddSchoolComponent implements OnInit {
             },
             error: (err) => {
               console.error('Error adding school:', err);
-              this.toastr.error('Teacher Add', 'Failed', {
+              this.toastr.error('Teacher Update', 'Failed', {
                 closeButton: true,
                 progressBar: true,
                 positionClass: 'toast-top-left',
@@ -211,6 +218,7 @@ export class AddSchoolComponent implements OnInit {
               });
             },
             complete: () => {
+              this.submitted=false
               console.log('Request complete');
             }
           });
@@ -249,6 +257,7 @@ export class AddSchoolComponent implements OnInit {
       }
 
     } else {
+      this.submitted=false
       console.log('Form is invalid');
     }
   }
@@ -265,6 +274,7 @@ export class AddSchoolComponent implements OnInit {
       this.dataService.uploadProfilePhoto(file).subscribe({
         next: (response: any) => {
           this.schoolDetailsForm.patchValue({ photoID: response });
+          console.log("form->",this.schoolDetailsForm)
 
         },
         error: (error: any) => {
@@ -282,6 +292,17 @@ export class AddSchoolComponent implements OnInit {
 
 
 
+  get getSchoolImage(){
+    let result = '';
+    let image=this.schoolDetailsForm.get('photoID')?.value?.photoImageName;
+    if(this.schoolDetailsForm.get('photoID')?.value?.photoImageName=='No Photo assigned' || null || '') image=""
+    
+    if (this.apiImageBaseURL && image) {
+      result = this.apiImageBaseURL.replace(/\/+$/, '') + '/' + this.schoolDetailsForm.get('photoID')?.value?.photoImageName?.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
 
 
   loadDropdownData() {
@@ -291,6 +312,7 @@ export class AddSchoolComponent implements OnInit {
       cities: this.schoolService.getCities(),
     }).subscribe({
       next: (results) => {
+        console.log("result",results)
         this.schoolTypes = results.schoolTypes;
         this.cities = results.cities;
 
