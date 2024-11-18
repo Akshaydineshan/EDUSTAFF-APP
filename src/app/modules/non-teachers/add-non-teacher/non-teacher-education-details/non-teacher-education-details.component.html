@@ -68,35 +68,60 @@
         </div>
       </div>
 
+     
       <div class="row mb-3">
         <label for="dob" class="col-sm-3 col-form-label">From Date</label>
-        <div class="col-sm-9">
+        <div class="col-sm-7">
           <input type="date" class="form-control" id="fromDate" formControlName="fromDate" required
+            (change)="dateChange(i)"
             [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || submitted) }">
-          <div *ngIf="educationForm.get('fromDate')?.invalid &&  educationForm.get('fromDate')?.touched  || submitted">
+         
+          <div *ngIf="course.get('fromDate')?.invalid && (course.get('fromDate')?.touched || course.get('fromDate')?.dirty   || submitted)">
             <small class="text-danger" *ngIf="course.get('fromDate')?.errors?.['required']">
               From Date is required.
             </small>
+            <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('minDate')">
+              Date must not be before January 1, 1900.
+            </small>
+            <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('maxDate')">
+              Date must not be in the future.
+            </small>
+            <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('invalidDate')">
+              Invalid Date.
+          </small>
+
           </div>
 
         </div>
       </div>
       <div class="row mb-3">
         <label for="dob" class="col-sm-3 col-form-label">To Date</label>
-        <div class="col-sm-9">
+        <div class="col-sm-7">
           <input type="date" class="form-control" id="toDate" formControlName="toDate" required
+            (change)="dateChangeTo(i)"
             [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('toDate')?.touched ||submitted)}">
-          <div *ngIf="educationForm.get('toDate')?.invalid && educationForm.get('toDate')?.touched ||submitted">
+          <div *ngIf="course.get('toDate')?.invalid &&( course.get('toDate')?.touched || course.get('toDate')?.dirty ||submitted)">
             <small class="text-danger" *ngIf="course.get('toDate')?.errors?.['required']">
               To Date is required.
             </small>
+            <small class="text-danger" *ngIf="course.get('toDate')?.hasError('minDate')">
+              Date must not be before January 1, 1900.
+            </small>
+            <small class="text-danger" *ngIf="course.get('toDate')?.hasError('maxDate')">
+              Date must not be in the future.
+            </small>
+            <small class="text-danger" *ngIf="course.get('toDate')?.hasError('invalidDate')">
+              Invalid Date.
+          </small>
           </div>
           <div
             *ngIf="course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || course.get('toDate')?.touched || submitted)">
             <small class="text-danger">End Date must be greater than Start Date.</small>
+
           </div>
         </div>
       </div>
+
 
       <!-- <div class="row mb-3">
           <label class="col-sm-3 col-form-label">Upload Certificate</label>

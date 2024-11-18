@@ -220,7 +220,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
    dateChange(index:number){
     const toDateArray = this.educationForm.get('educations') as FormArray;
     const dobControl = toDateArray.at(index).get("fromDate");
-    console.log("controolll",dobControl)
+    console.log("controolll",index,dobControl)
     dobControl?.updateValueAndValidity();  // Manually trigger validation
   }
   dateChangeTo(index:number){

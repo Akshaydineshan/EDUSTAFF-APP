@@ -306,8 +306,8 @@ export class AddTeacherComponent implements OnInit {
           courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
           schoolName: [education.schoolName, Validators.required],
-          fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
-          toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
+          fromDate: [this.dataService.formatDateToLocal(education.fromDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+          toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
           certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
         },
           {

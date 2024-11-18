@@ -331,8 +331,8 @@ export class AddNonTeacherComponent {
           courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
           schoolName: [education.schoolName, Validators.required],
-          fromDate: [this.dataService.formatDateToLocal(education.fromDate), Validators.required],
-          toDate: [this.dataService.formatDateToLocal(education.toDate), Validators.required],
+          fromDate: [this.dataService.formatDateToLocal(education.fromDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+          toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
           certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
         },
           {
@@ -688,7 +688,7 @@ export class AddNonTeacherComponent {
         this.genders = data.genders;
         this.employeeTypes = data.employeeTypes.filter((item: any) => item.employeeTypeID === 2);
 
-        this.designationsList = data.designations;
+        this.designationsList = data.designations.filter((item:any)=> item.designationID  ==23);
         this.employeeCategories = data.employeeCategories;
         this.schoolNameWithCity = data.schoolNameWithCity;
         this.districts = data.districts;
