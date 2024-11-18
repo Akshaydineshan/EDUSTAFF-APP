@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/service/data/data.service';
-import { dateRangeValidator } from 'src/app/utils/validators/date-range-validator';
+import { dateRangeValidator, minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
 @Component({
   selector: 'app-non-teacher-education-details',
@@ -65,8 +65,8 @@ export class NonTeacherEducationDetailsComponent {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
+      fromDate: ['', [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+      toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }

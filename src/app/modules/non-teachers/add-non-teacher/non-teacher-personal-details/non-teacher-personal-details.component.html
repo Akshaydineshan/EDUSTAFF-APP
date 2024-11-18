@@ -231,6 +231,9 @@
                 <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.hasError('maxDate')">
                     Date must not be in the future.
                 </small>
+                <small class="text-danger" *ngIf="personalDetailsForm.get('dob')?.hasError('invalidDate')">
+                    Invalid Date .
+                </small>
             </div>
         </div>
     </div>

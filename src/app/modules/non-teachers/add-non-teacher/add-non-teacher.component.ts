@@ -719,8 +719,8 @@ export class AddNonTeacherComponent {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
+      fromDate: ['', [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+      toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
