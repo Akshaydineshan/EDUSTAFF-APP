@@ -14,10 +14,10 @@ export function dateRangeValidator(startDateControlName: string, endDateControlN
 }
 
 export function minAndMaxDateValidator(minDate: string): ValidatorFn {
-
+  console.log("gggggggggggggggggg1")
   return (control: AbstractControl): ValidationErrors | null => {
     debugger
-   console.log("gggggggggggggggggg")
+   console.log("gggggggggggggggggg2")
     const inputDate = new Date(control.value);
     const minDateObj = new Date(minDate);  // Convert minDate string to a Date object
 

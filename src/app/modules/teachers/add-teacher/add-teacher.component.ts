@@ -229,7 +229,7 @@ export class AddTeacherComponent implements OnInit {
         exServiceMen: this.employee.exServiceMen,
         aadhaarID: this.employee.aadhaarID,
         identificationMark1: this.employee.identificationMark1,
-        identificationMark2: this.employee.identificationMark1,
+        identificationMark2: this.employee.identificationMark2,
         height: this.employee.height,
         fatherName: this.employee.fatherName,
         motherName: this.employee.motherName,
