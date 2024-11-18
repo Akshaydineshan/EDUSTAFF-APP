@@ -32,7 +32,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   teacherTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
-  displayColumns: string[] = ['name', 'schoolName', 'designation', 'employeeType', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
+  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
   isTransferPopup: boolean = false;
   selectedTeacher: any = null;
   hoveredTeacherId: number | null = null;
@@ -443,7 +443,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           },
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
-          { field: "employeeType", filter: true, floatingFilter: false },
+        
           { field: "experienceYear", filter: true, floatingFilter: false },
           { field: "age", filter: true, floatingFilter: false },
           { field: "phoneNumber", filter: true, floatingFilter: false },

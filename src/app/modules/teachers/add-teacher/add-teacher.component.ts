@@ -146,6 +146,7 @@ export class AddTeacherComponent implements OnInit {
         // this.professionalForm.get("toDate")?.disable()
         this.personalDetailsForm.disable()
         this.educationForm.disable()
+        this.professionalForm.disable()
         this.loadEmployeeData(this.employeeId);
 
       }
@@ -425,6 +426,8 @@ export class AddTeacherComponent implements OnInit {
         approvalType: this.approvalTypes.find((apr: any) => apr.approvalTypeID === professionalData.ApprovalTypeID),
         protectedTeacher: professionalData.ProtectedTeacher
       })
+
+      this.professionalForm.enable()
 
 
 

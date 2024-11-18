@@ -23,7 +23,7 @@ export class NonTeacherListComponent implements OnInit {
   API_BASE_IMAGE = environment.imageBaseUrl;
 
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
-  displayColumns: string[] = ['name', 'schoolName', 'designation', 'employeeType', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
+  displayColumns: string[] = ['name', 'schoolName', 'designation',  'experienceYear', 'age', 'phoneNumber', 'documentCount'];
   nonTeacherTableRows: any[] = []
   nonTeacherTableColumns: any[] = []
   nonTeacherList: any[] = [];
