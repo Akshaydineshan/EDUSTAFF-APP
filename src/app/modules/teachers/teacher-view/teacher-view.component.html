@@ -365,10 +365,11 @@
                                                 </li>
                                                 <li *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
                                                         <strong class="field">Certificate:</strong>
-                                                        <span class="field-val"><img (click)="pdfClick(item.documentpath)" class="pdf-icon" [src]="'../../../../assets/icons/pdf-file.png'" alt=""></span>
-                                                        <span class="pdf-name ms-2" (click)="pdfClick(item.item.documentpath)">
-                                                                {{ item.documentpath?.substring(item.documentpath.lastIndexOf('/') + 1) }}
-                                                              </span>
+                                                        <span class="field-val"><img (click)="pdfClick(item.documentpath)" class="pdf-icon" [src]="'../../../../assets/icons/pdf-file.png'" alt="">
+                                                                <span class="pdf-name ms-2" (click)="pdfClick(item.documentpath)">
+                                                                        {{ item.documentpath?.substring(item.documentpath.lastIndexOf('/') + 1) }}
+                                                                      </span></span>
+                                                       
                                                 </li>
                                         </ul>
                                 </div>
