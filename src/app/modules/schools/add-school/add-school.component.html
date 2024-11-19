@@ -15,7 +15,8 @@
             <div class="row mb-3">
                 <label for="schoolName" class="col-sm-3 col-form-label">School Name</label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="schoolName" formControlName="schoolName" required>
+                    <input type="text" class="form-control" id="schoolName" formControlName="schoolName"
+                        required>
                     <div
                         *ngIf="schoolDetailsForm.get('schoolName')?.invalid && (schoolDetailsForm.get('schoolName')?.touched || submitted)">
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolName')?.errors?.['required']">
@@ -23,6 +24,9 @@
                         </small>
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolName')?.errors?.['maxlength']">
                             School Name must not exceed 100 characters.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolName')?.errors?.['pattern']">
+                            School Name must contain only letters.
                         </small>
                     </div>
                 </div>
@@ -89,6 +93,9 @@
                         *ngIf="schoolDetailsForm.get('state')?.invalid && (schoolDetailsForm.get('state')?.touched || submitted)">
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('state')?.errors?.['required']">
                             State is required.
+                        </small>
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('state')?.errors?.['pattern']">
+                            State must contain only letters.
                         </small>
                     </div>
                 </div>
@@ -166,7 +173,7 @@
         </div> -->
 
             <!-- Photo ID -->
-            <div class="row mb-3">
+            <!-- <div class="row mb-3">
                 <label for="photoID" class="col-sm-3 col-form-label">Photo</label>
                 <div class="col-sm-9">
                     <input type="file" class="form-control" id="photoID" (change)="onFileSelected($event)" required>
@@ -177,59 +184,70 @@
                         </small>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row mb-3 align-items-center">
                 <label class="col-sm-3 col-form-label">Photo</label>
                 <div class="col-sm-7 d-flex align-items-center">
-        
-                    <input type="file" #fileInput  style="display: none;" class="form-control" id="photoID" (change)="onFileSelected($event)" required>
-        
-        
-                  <button type="button" class="btn btn-md btn-teal-default-border me-3" (click)="fileInput.click()">
-                    <i class="bi bi-upload"></i> 
-                    {{ schoolDetailsForm.get('photoID')?.value?.photoImageName && schoolDetailsForm.get('photoID')?.value?.photoImageName != 'No Document' && schoolDetailsForm.get('photoID')?.value?.photoImageName != ''  ? "Update" : "Upload" }}
-                  </button>
-        
-        
-                  <div class="uploaded-file d-flex align-items-center">
-                    <span 
-                     >
-                      <!-- <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> -->
-                       <img class="schoolImg" [src]="getSchoolImage || 'assets/icons/no-image.png'" alt="">
-                      <strong class="ms-2">{{
-                        schoolDetailsForm.get('photoID')?.value?.photoImageName?.substring(schoolDetailsForm.get('photoID')?.value?.photoImageName?.lastIndexOf('/')
-                        + 1)}}</strong>
-                    </span>
-                  </div>
-        
-                 
+
+                    <input type="file" #fileInput style="display: none;" class="form-control" id="photoID"
+                        (change)="onFileSelected($event)" required>
+
+
+                    <button type="button" class="btn btn-md btn-teal-default-border me-3" (click)="fileInput.click()">
+                        <i class="bi bi-upload"></i>
+                        {{ schoolDetailsForm.get('photoID')?.value?.photoImageName &&
+                        schoolDetailsForm.get('photoID')?.value?.photoImageName != 'No Document' &&
+                        schoolDetailsForm.get('photoID')?.value?.photoImageName != '' ? "Update" : "Upload" }}
+                    </button>
+
+
+                    <div class="uploaded-file d-flex align-items-center">
+                        <span>
+                            <!-- <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> -->
+                            <img class="schoolImg" [src]="getSchoolImage || 'assets/icons/no-image.png'" alt="">
+                            <strong class="ms-2">{{
+                                schoolDetailsForm.get('photoID')?.value?.photoImageName?.substring(schoolDetailsForm.get('photoID')?.value?.photoImageName?.lastIndexOf('/')
+                                + 1)}}</strong>
+                        </span>
+                    </div>
+
+
                 </div>
                 <!-- <div class="col-sm-7 offset-sm-3 mt-2">
                   <small class="text-muted">
                     <i class="bi bi-info-circle "></i> Only PDF files are allowed for upload.
                   </small>
                 </div> -->
-              </div>
+            </div>
 
             <div *ngIf="divisionsFormArray.controls.length !==0">
                 <div class="row">
                     <label for="photoID" class="col-sm-3 col-form-label">Divisions</label>
                 </div>
-    
-    
+
+
                 <div class="row mb-3 mt-3" *ngFor="let division of divisionsFormArray.controls; let i = index"
                     formArrayName="divisions">
                     <label for="state" class="col-sm-3 col-form-label">Division {{i+1}}</label>
                     <div class="col-sm-4 mt-2" [formGroupName]="i">
                         <div class="input-group">
-                            <input type="number" placeholder="Enter Student Count" class="form-control" id="phone" formControlName="studentCount" required>
+                            <input type="number" placeholder="Enter Student Count" class="form-control" id="phone"
+                                formControlName="studentCount" required>
+                        
                         </div>
+                        <div
+                        *ngIf="division.get('studentCount')?.invalid && (division.get('studentCount')?.touched || submitted)">
+                        <small class="text-danger" *ngIf="division.get('studentCount')?.errors?.['required']">
+                            Student Count is required.
+                        </small>
+
+                    </div>
                     </div>
                 </div>
             </div>
 
-         
+
 
 
         </form>
@@ -242,10 +260,11 @@
                 <!-- <span >
                 <button type="button" class="btn btn-secondary me-2">Previous</button>
               </span> -->
-                <button type="button" class="btn btn-secondary me-2" [routerLink]="['/schools/school-list']">Cancel</button>
+                <button type="button" class="btn btn-secondary me-2"
+                    [routerLink]="['/dashboard']">Cancel</button>
 
-                <button type="submit" [disabled]="submitted" class="btn btn-success" (click)="onSubmit()">
-                 {{submitted ? 'Submitting...' : 'Submit'}}
+                <button type="submit" [disabled]="submitting" class="btn btn-success" (click)="onSubmit()">
+                    {{submitting ? 'Submitting...' : 'Submit'}}
                 </button>
             </div>
         </div>

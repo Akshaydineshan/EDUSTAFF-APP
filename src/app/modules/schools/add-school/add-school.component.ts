@@ -18,6 +18,7 @@ export class AddSchoolComponent implements OnInit {
   schoolDetailsForm!: FormGroup;
   submitted: boolean = false; //  form submit flag in your component
   apiImageBaseURL:any=environment.imageBaseUrl;
+  submitting: boolean = false; 
   
 
   schoolTypes: any[] = []
@@ -140,11 +141,11 @@ export class AddSchoolComponent implements OnInit {
   // Method to initialize School Details Form
   private initSchoolDetailsForm(): void {
     this.schoolDetailsForm = this.fb.group({
-      schoolName: ['', [Validators.required, Validators.maxLength(100)]],  // School name is required and limited to 100 characters
+      schoolName: ['', [Validators.required, Validators.maxLength(100),Validators.pattern('^[a-zA-Z ]+$')]],  // School name is required and limited to 100 characters
       schoolTypeID: ['', Validators.required], // School type is required
       address: ['', [Validators.required, Validators.maxLength(255)]],
       cityID: ['', Validators.required],  // City ID is required
-      state: ['', Validators.required],  // State is required
+      state: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]+$')]],  // State is required
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -165,6 +166,7 @@ export class AddSchoolComponent implements OnInit {
   onSubmit(): void {
     debugger
     this.submitted = true;  // Set submitted to true when the form is submitted
+    this.submitting=true
 
     if (this.schoolDetailsForm.valid) {
       debugger
@@ -199,6 +201,7 @@ export class AddSchoolComponent implements OnInit {
               // Reset form and submitted flag if needed
               this.schoolDetailsForm.reset();
               this.submitted = false;
+              this.submitting=false;
               this.toastr.success('School Updated !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -209,6 +212,8 @@ export class AddSchoolComponent implements OnInit {
               this.router.navigate(['/schools/school-list'])
             },
             error: (err) => {
+              this.submitted=false
+              this.submitting=false
               console.error('Error adding school:', err);
               this.toastr.error('Teacher Update', 'Failed', {
                 closeButton: true,
@@ -219,6 +224,7 @@ export class AddSchoolComponent implements OnInit {
             },
             complete: () => {
               this.submitted=false
+              this.submitting=false
               console.log('Request complete');
             }
           });
@@ -230,7 +236,8 @@ export class AddSchoolComponent implements OnInit {
               console.log('School added successfully', response);
               // Reset form and submitted flag if needed
               this.schoolDetailsForm.reset();
-              this.submitted = false;
+              this.submitted=false
+              this.submitting=false
               this.toastr.success('School Added !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -241,6 +248,8 @@ export class AddSchoolComponent implements OnInit {
               this.router.navigate(['/schools/school-list'])
             },
             error: (err) => {
+              this.submitted=false
+              this.submitting=false
               console.error('Error adding school:', err);
               this.toastr.error('Teacher Add', 'Failed', {
                 closeButton: true,
@@ -251,13 +260,15 @@ export class AddSchoolComponent implements OnInit {
             },
             complete: () => {
               console.log('Request complete');
+              this.submitted=false
+              this.submitting=false
             }
           });
 
       }
 
     } else {
-      this.submitted=false
+      this.submitting=false
       console.log('Form is invalid');
     }
   }
@@ -375,7 +386,7 @@ export class AddSchoolComponent implements OnInit {
     this.divisionsFormArray.push(
       this.fb.group({
         // division: [''],
-        studentCount: ['']
+        studentCount: ['',[Validators.required]]
       })
     );
   }
