@@ -64,8 +64,8 @@
     </div> -->
 
     <div class="row mb-3">
-        <label for="pen" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Permanent Employee Number
-            (PEN)</label>
+        <label for="pen" class="col-sm-3 col-form-label"><span>Permanent Employee Number(PEN)</span><span class="text-danger ms-1 mad-f">*</span>
+         </label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="pen" formControlName="permanentEmployeeNumber" required>
             <div
@@ -81,8 +81,9 @@
     </div>
 
     <div class="row mb-3">
-        <label for="identification-marks-one" class="col-sm-3 col-form-label"><span
-                class="mad-sym">*</span>Identification Marks</label>
+      
+                <label for="pen" class="col-sm-3 col-form-label"><span>Identification Marks</span><span class="text-danger ms-1 mad-f">*</span></label>
+
         <div class="col-sm-4">
             <input type="text" class="form-control" id="identification-marks-one"
                 formControlName="identificationMarksOne" maxlength="100" required placeholder="Mark 1" />
@@ -117,7 +118,8 @@
 
 
     <div class="row mb-3">
-        <label for="height" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Height (in cm)</label>
+        <!-- <label for="height" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Height (in cm)<span class="text-danger ms-1 mad-f">*</span></label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Height (in cm)</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="number" class="form-control" id="height" formControlName="height" required>
             <div
@@ -136,7 +138,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="ex-servicemen" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Ex-Servicemen</label>
+        <!-- <label for="ex-servicemen" class="col-sm-3 col-form-label"><span class="mad-sym">*</span></label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Ex-Servicemen</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="ex-servicemen" formControlName="exServicemen" required>
                 <option [value]="null" disabled>Select...</option>
@@ -154,7 +157,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="firstName" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>First Name</label>
+        <!-- <label for="firstName" class="col-sm-3 col-form-label"><span class="mad-sym">*</span></label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>First Name</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="firstName" formControlName="firstName" required>
             <div
@@ -174,7 +178,8 @@
         </div>
     </div>
     <div class="row mb-3">
-        <label for="lastName" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Last Name</label>
+        <!-- <label for="lastName" class="col-sm-3 col-form-label"><span class="mad-sym">*</span></label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Last Name</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="lastName" formControlName="lastName" required>
             <div
@@ -211,7 +216,9 @@
         </div>
     </div> -->
     <div class="row mb-3">
-        <label for="sex" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Sex</label>
+        <!-- <label for="sex" class="col-sm-3 col-form-label"><span class="mad-sym">*</span></label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Sex</span><span class="text-danger ms-1 mad-f">*</span></label>
+
         <div class="col-sm-9">
             <select class="form-control" id="sex" formControlName="sex" required>
                 <option value="" disabled>Select...</option>
@@ -225,7 +232,9 @@
     </div>
 
     <div class="row mb-3">
-        <label for="dob" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Date of Birth</label>
+        <!-- <label for="dob" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Date of Birth</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Date of Birth</span><span class="text-danger ms-1 mad-f">*</span></label>
+
         <div class="col-sm-9">
             <input type="date" class="form-control" id="dob" formControlName="dob" required [max]="maxDate"
                 [min]="minDate" (change)="dobChange()">
@@ -249,7 +258,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="phone" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Contact Number</label>
+        <!-- <label for="phone" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Contact Number</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Contact Number</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <div class="input-group">
                 <span class="input-group-text">+91</span>
@@ -268,7 +278,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="email" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Email Address</label>
+        <!-- <label for="email" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Email Address</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Email Address</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="email" class="form-control" id="email" formControlName="email" required>
             <div *ngIf="personalDetailsForm.get('email')?.invalid && (personalDetailsForm.get('email')?.['dirty'] || personalDetailsForm.get('email')?.['touched']  || submitted)"
@@ -299,7 +310,8 @@
         </div>
     </div> -->
     <div class="row mb-3">
-        <label for="religion" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Religion</label>
+        <!-- <label for="religion" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Religion</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Religion</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="religion" formControlName="religion" required>
                 <option value="" disabled>Select...</option>
@@ -330,7 +342,8 @@
         </div>
     </div> -->
     <div class="row mb-3">
-        <label for="category" class="col-sm-3 col-form-label"> <span class="mad-sym">*</span>Category</label>
+        <!-- <label for="category" class="col-sm-3 col-form-label"> <span class="mad-sym">*</span>Category</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Category</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="category" formControlName="category" required>
                 <option value="" disabled>Select...</option>
@@ -345,7 +358,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="caste" class="col-sm-3 col-form-label"> <span class="mad-sym">*</span>Caste</label>
+        <!-- <label for="caste" class="col-sm-3 col-form-label"> <span class="mad-sym">*</span>Caste</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Caste</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <!-- <select class="form-control" id="caste" formControlName="caste" required>
                 <option value="">Select...</option>
@@ -385,7 +399,8 @@
         </div>
     </div> -->
     <div class="row mb-3">
-        <label for="blood-group" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Blood Group</label>
+       
+        <label for="pen" class="col-sm-3 col-form-label"><span>Blood Group</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="blood-group" formControlName="bloodGroup" required>
                 <option value="" disabled>Select...</option>
@@ -400,8 +415,10 @@
     </div>
 
     <div class="row mb-3">
-        <label for="whether-differently-abled" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Whether
-            Differently Abled</label>
+        <!-- <label for="whether-differently-abled" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Whether
+            Differently Abled</label> -->
+            <label for="pen" class="col-sm-3 col-form-label"><span>Whether
+                Differently Abled</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="whether-differently-abled" formControlName="whetherDifferentlyAbled"
                 required>
@@ -420,7 +437,9 @@
     </div>
 
     <div class="row mb-3">
-        <label for="aadhar" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Aadhar ID</label>
+        <!-- <label for="aadhar" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Aadhar ID</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Aadhar ID</span><span class="text-danger ms-1 mad-f">*</span></label>
+
         <div class="col-sm-9">
             <input type="text" class="form-control" id="aadhar" formControlName="aadharId" required pattern="[0-9]{12}">
             <div *ngIf="personalDetailsForm.get('aadharId')?.invalid && (personalDetailsForm.get('aadharId')?.['dirty'] || personalDetailsForm.get('aadharId')?.['touched']  || submitted)"
@@ -432,7 +451,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="pan" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>PAN</label>
+        <!-- <label for="pan" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>PAN</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>PAN</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="pan" formControlName="pan" required
                 pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}">
@@ -446,8 +466,10 @@
     </div>
 
     <div class="row mb-3">
-        <label for="ration-card" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Ration Card
-            Number</label>
+        <!-- <label for="ration-card" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Ration Card
+            Number</label> -->
+            <label for="pen" class="col-sm-3 col-form-label"><span>Ration Card
+                Number</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="ration-card" formControlName="rationCardNumber" required>
             <div
@@ -467,7 +489,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="voter-id" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Voter ID</label>
+        <!-- <label for="voter-id" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Voter ID</label> -->
+        <label for="pen" class="col-sm-3 col-form-label"><span>Voter ID</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="voter-id" formControlName="voterId" required>
             <div
@@ -481,8 +504,9 @@
     </div>
 
     <div class="row mb-3">
-        <label for="current-address" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Current
-            Address</label>
+     
+            <label for="pen" class="col-sm-3 col-form-label"><span>Current
+                Address</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <textarea class="form-control" id="current-address" rows="3" formControlName="currentAddress"
                 required></textarea>
@@ -502,8 +526,10 @@
     </div>
 
     <div class="row mb-3">
-        <label for="permanent-address" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Permanent
-            Address</label>
+      
+
+            <label for="pen" class="col-sm-3 col-form-label"><span>Permanent
+                Address</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <textarea class="form-control" id="permanent-address" rows="3" formControlName="permanentAddress"
                 required></textarea>
@@ -524,7 +550,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="father-name" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Father's Name</label>
+        
+        <label for="pen" class="col-sm-3 col-form-label"><span>Father's Name</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="father-name" formControlName="fathersName" required>
             <div
@@ -544,7 +571,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="mother-name" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Mother's Name</label>
+        
+        <label for="pen" class="col-sm-3 col-form-label"><span>Mother's Name</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <input type="text" class="form-control" id="mother-name" formControlName="mothersName" required>
             <div
@@ -564,7 +592,8 @@
     </div>
 
     <div class="row mb-3">
-        <label for="inter-religion" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Inter Religion</label>
+       
+        <label for="pen" class="col-sm-3 col-form-label"><span>Inter Religion</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="inter-religion" formControlName="interReligion" required>
                 <option [value]="null" disabled>Select...</option>
@@ -598,7 +627,9 @@
         </div>
     </div> -->
     <div class="row mb-3">
-        <label for="marital-status" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Marital Status</label>
+      
+
+        <label for="pen" class="col-sm-3 col-form-label"><span>Marital Status</span><span class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-9">
             <select class="form-control" id="marital-status" formControlName="maritalStatus" required>
                 <option value="" disabled>Select...</option>
@@ -617,7 +648,8 @@
 
     <div *ngIf="this.personalDetailsForm.value.maritalStatus.maritalStatusID  == '2'">
         <div class="row mb-3">
-            <label for="spouse-name" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's Name</label>
+          
+            <label for="pen" class="col-sm-3 col-form-label"><span>Spouse's Name</span><span class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-9">
                 <input type="text" class="form-control" id="spouse-name" formControlName="spousesName">
                 <div
@@ -649,8 +681,9 @@
             </div>
         </div> -->
         <div class="row mb-3">
-            <label for="spouse-religion" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's
-                Religion</label>
+          
+                <label for="pen" class="col-sm-3 col-form-label"><span>Spouse's
+                    Religion</span><span class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-9">
                 <select class="form-control" id="spouse-religion" formControlName="spousesReligion">
                     <option value="" disabled>Select...</option>
@@ -681,8 +714,9 @@
             </div>
         </div> -->
         <div class="row mb-3">
-            <label for="spouse-caste" class="col-sm-3 col-form-label"><span class="mad-sym">*</span>Spouse's
-                Caste</label>
+           
+                <label for="pen" class="col-sm-3 col-form-label"><span>Spouse's
+                    Caste</span><span class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-9">
                 <!-- <select class="form-control" id="spouse-caste" formControlName="spousesCaste"> -->
                 <!-- <option value="">Select...</option> -->

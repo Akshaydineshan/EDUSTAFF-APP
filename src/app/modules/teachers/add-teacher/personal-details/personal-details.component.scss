@@ -6,3 +6,17 @@ input[readonly] {
     pointer-events: none;
     cursor: default;
 }
+
+.row label{
+    // display: flex;
+
+}
+.row label span:first-child{
+    // flex:1;
+   
+}
+.row label span:last-child{
+    // flex:1;
+    display: none;
+   
+}

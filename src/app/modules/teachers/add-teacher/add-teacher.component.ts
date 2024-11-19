@@ -1179,7 +1179,7 @@ export class AddTeacherComponent implements OnInit {
   // }
 
   onCancel() {
-    this.router.navigate(['teachers/teacher-list']);
+    this.router.navigate(['/dashboard']);
   }
   editBtnClickFromPreview() {
     this.currentStep = 1
