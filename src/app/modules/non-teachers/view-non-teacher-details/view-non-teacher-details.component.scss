@@ -118,8 +118,7 @@
 
 li {
     display: flex;
-  
-    align-items: center;
+    align-items: start;
     margin-bottom: 8px;
     line-height: 30px;
 
@@ -127,24 +126,25 @@ li {
 
 /* Fixed width for labels to ensure consistent alignment */
 .info-list li strong {
-    min-width: 150px;
     /* Adjust this for larger label area if needed */
     margin-right: 7px;
     /* Spacing between label and value */
     color: #333;
-    font-weight:500;
+    font-weight: 500;
     font-size: 14px;
     width: 300px;
 }
 
 /* Flexible width for values to adjust for variable content length */
 .info-list li span {
-   
+    // flex-grow: 1;
     color: #555;
     font-weight: 400;
     font-size: 14px;
-  
+    width:450px;
+
 }
+
 .uq-f{
     color: #333;
     font-weight:500;
