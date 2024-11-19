@@ -245,7 +245,8 @@ export class NonTeacherListComponent implements OnInit {
 
             } : {}),
 
-            ... (column === 'schoolName' ? { width: 300 } : {})
+            ... (column === 'schoolName' ? { width: 300 } : {}),
+            ...(column ==="phoneNumber" ? { valueFormatter: (params :any)=> `+91 ${params.value}`,} : {})
 
           }
 
