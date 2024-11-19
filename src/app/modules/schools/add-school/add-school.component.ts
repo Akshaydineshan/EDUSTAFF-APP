@@ -181,7 +181,7 @@ export class AddSchoolComponent implements OnInit {
         pincode: formDataValue.pincode,
         email: formDataValue.email,
         phone: formDataValue.phone,
-        photoID: formDataValue.photoID.photoID,
+        photoID: formDataValue.photoID?.photoID,
         principalID: this.isEdited ? this.school.principalID :null,
         vicePrincipalID:  this.isEdited ? this.school.vicePrincipalID:null,
         [this.isEdited ? "updateDivisions" : "addDivisions"]: formDataValue.divisions.map((item: any, index: number) => {
