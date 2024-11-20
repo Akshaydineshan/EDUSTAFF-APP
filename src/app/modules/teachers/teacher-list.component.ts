@@ -370,56 +370,56 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
               nameLink.style.color = '#246CC1';
 
               nameLink.textContent = params.value;
-            
 
-              this.ngZone.run(()=>{
+
+              this.ngZone.run(() => {
                 divSub.addEventListener('mouseover', (event) => {
                   debugger
-  
+
                   if (params.onNameHover) {
                     params.onNameHover(event, params);
-  
+
                   }
                 });
               })
 
-              this.ngZone.run(()=>{
+              this.ngZone.run(() => {
                 divSub.addEventListener('mouseout', (event) => {
                   debugger
-  
+
                   if (params.onNameHover) {
                     params.onNameHoverOut(event, params);
-  
+
                   }
                 });
-                
+
               })
 
-              this.ngZone.run(()=>{
+              this.ngZone.run(() => {
                 divSub.addEventListener('mouseleave', (event) => {
                   debugger
-  
+
                   if (params.onNameHover) {
                     params.onNameHoverOut(event, params);
-  
+
                   }
                 });
-                
+
               })
 
-              this.ngZone.run(()=>{
+              this.ngZone.run(() => {
                 nameLink.addEventListener('click', (event) => {
                   debugger
                   if (params.onNameClick) {
                     params.onNameClick(event, params);
-  
+
                   }
                 });
-                
+
               })
-             
-             
-             
+
+
+
 
               // Create another anchor element for the plus button
               const plusButton = document.createElement('a');
@@ -749,7 +749,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   nameColumnHover(event: any, ev: any) {
-  
+
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
@@ -769,8 +769,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
   }
   rowMouseHoverOut(event: any) {
-  
-   this.showPopup=false
+
+    this.showPopup = false
     // this.isMenuVisible = false
     debugger;
     // if (event.colDef.field === "name") {
@@ -799,7 +799,10 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     if (event.colDef.field === "name") {
       let teacherId: number = rowData.teacherId
-      this.router.navigate(['/teachers/view-teacher', teacherId])
+      this.ngZone.run(() => {
+        this.router.navigate(['/teachers/view-teacher', teacherId])
+      })
+
     } else if (event.colDef.field === "schoolName") {
       let schoolId: number = rowData.schoolId
       this.router.navigate(['/schools/view', schoolId])
@@ -812,7 +815,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     const rowData = rowNode.data;
     if (event.colDef.field === "schoolName") {
       let schoolId: number = rowData.schoolId
-      this.router.navigate(['/schools/view', schoolId])
+      this.ngZone.run(() => {
+        this.router.navigate(['/schools/view', schoolId])
+      })
     }
 
   }

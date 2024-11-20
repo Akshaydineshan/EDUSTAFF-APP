@@ -170,29 +170,52 @@ export class NonTeacherListComponent implements OnInit {
                 nameLink.style.color = '#246CC1';
 
                 nameLink.textContent = params.value;
-                nameLink.addEventListener('click', (event) => {
-                  debugger
-                  if (params.onNameClick) {
-                    params.onNameClick(event, params);
 
-                  }
-                });
-                divSub.addEventListener('mouseover', (event) => {
-                  debugger
+                this.ngZone.run(()=>{
+                  nameLink.addEventListener('click', (event) => {
+                    debugger
+                    if (params.onNameClick) {
+                      params.onNameClick(event, params);
+  
+                    }
+                  });
+                })
+                
+                this.ngZone.run(()=>{
+                  divSub.addEventListener('mouseover', (event) => {
+                    debugger
+  
+                    if (params.onNameHover) {
+                      params.onNameHover(event, params);
+  
+                    }
+                  });
+                })
+                
+                this.ngZone.run(()=>{
+                  divSub.addEventListener('mouseout', (event) => {
+                    debugger
+  
+                    if (params.onNameHover) {
+                      params.onNameHoverOut(event, params);
+  
+                    }
+                  });
+                })
+                
+                this.ngZone.run(()=>{
+                  divSub.addEventListener('mouseleave', (event) => {
+                    debugger
+  
+                    if (params.onNameHover) {
+                      params.onNameHoverOut(event, params);
+  
+                    }
+                  });
+                })
+               
 
-                  if (params.onNameHover) {
-                    params.onNameHover(event, params);
-
-                  }
-                });
-                divSub.addEventListener('mouseout', (event) => {
-                  debugger
-
-                  if (params.onNameHover) {
-                    params.onNameHoverOut(event, params);
-
-                  }
-                });
+              
 
                 // Create another anchor element for the plus button
                 const plusButton = document.createElement('a');
@@ -427,7 +450,10 @@ export class NonTeacherListComponent implements OnInit {
 
     if (event.colDef.field === "name") {
       let teacherId: number = rowData.teacherId
-      this.router.navigate(['/non-teachers/view', teacherId])
+      this.ngZone.run(()=>{
+        this.router.navigate(['/non-teachers/view', teacherId])
+      })
+    
     } else if (event.colDef.field === "schoolName") {
       let schoolId: number = rowData.schoolId
       this.router.navigate(['/schools/view', schoolId])
@@ -440,7 +466,10 @@ export class NonTeacherListComponent implements OnInit {
     const rowData = rowNode.data;
     if (event.colDef.field === "schoolName") {
       let schoolId: number = rowData.schoolId
-      this.router.navigate(['/schools/view', schoolId])
+      this.ngZone.run(()=>{
+        this.router.navigate(['/schools/view', schoolId])
+      })
+     
     }
 
   }
