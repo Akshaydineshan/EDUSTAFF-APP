@@ -141,7 +141,7 @@ export class AddSchoolComponent implements OnInit {
   // Method to initialize School Details Form
   private initSchoolDetailsForm(): void {
     this.schoolDetailsForm = this.fb.group({
-      schoolName: ['', [Validators.required, Validators.maxLength(100),Validators.pattern('^[a-zA-Z ]+$')]],  // School name is required and limited to 100 characters
+      schoolName: ['', [Validators.required, Validators.maxLength(100),Validators.pattern(/^[a-zA-Z\s]+(?:[.,'-]?[a-zA-Z\s]+)*$/)]],  // School name is required and limited to 100 characters
       schoolTypeID: ['', Validators.required], // School type is required
       address: ['', [Validators.required, Validators.maxLength(255)]],
       cityID: ['', Validators.required],  // City ID is required
