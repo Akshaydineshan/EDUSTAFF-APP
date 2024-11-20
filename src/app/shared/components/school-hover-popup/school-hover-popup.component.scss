@@ -25,6 +25,7 @@
 }
 
 .popup-title {
+  width:75%;
   .p-s {
     font-family: Inter;
     font-size: 18px;
@@ -41,7 +42,7 @@
     line-height: 13px;
     text-align: left;
 
-    // white-space: nowrap;
+    white-space: nowrap;
     overflow: hidden;
     max-width: 100%;
     text-overflow: ellipsis;
