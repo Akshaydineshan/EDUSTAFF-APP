@@ -84,7 +84,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
   ]
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService,private ngZone:NgZone) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -166,7 +166,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
 
-   
+
   }
 
   onMenuAction(action: string, teacher: any) {
@@ -175,23 +175,27 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
-    
-    const offset = 15; // Offset for positioning
-    this.mouseX = event.clientX + offset;
-    this.mouseY = event.clientY + offset;
-    const popupWidth = 420; // Assume a fixed width for the popup
-    const popupHeight = 220; // Assume a fixed height for the popup
 
-    // Check right edge
-    if (this.mouseX + popupWidth > window.innerWidth) {
+    this.ngZone.run(() => {
+      const offset = 15; // Offset for positioning
+      this.mouseX = event.clientX + offset;
+      this.mouseY = event.clientY + offset;
+      const popupWidth = 420; // Assume a fixed width for the popup
+      const popupHeight = 220; // Assume a fixed height for the popup
 
-      this.mouseX = window.innerWidth - popupWidth - offset; // Position left
-    }
+      // Check right edge
+      if (this.mouseX + popupWidth > window.innerWidth) {
 
-    // Check bottom edge
-    if (this.mouseY + popupHeight > window.innerHeight - 20) {
-      this.mouseY = event.clientY - popupHeight - 30; // Position above the mouse
-    }
+        this.mouseX = window.innerWidth - popupWidth - offset; // Position left
+      }
+
+      // Check bottom edge
+      if (this.mouseY + popupHeight > window.innerHeight - 20) {
+        this.mouseY = event.clientY - popupHeight - 30; // Position above the mouse
+      }
+    })
+
+
 
 
   }
@@ -366,29 +370,56 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
               nameLink.style.color = '#246CC1';
 
               nameLink.textContent = params.value;
-              nameLink.addEventListener('click', (event) => {
-                debugger
-                if (params.onNameClick) {
-                  params.onNameClick(event, params);
+            
 
-                }
-              });
-              divSub.addEventListener('mouseover', (event) => {
-                debugger
+              this.ngZone.run(()=>{
+                divSub.addEventListener('mouseover', (event) => {
+                  debugger
+  
+                  if (params.onNameHover) {
+                    params.onNameHover(event, params);
+  
+                  }
+                });
+              })
 
-                if (params.onNameHover) {
-                  params.onNameHover(event, params);
+              this.ngZone.run(()=>{
+                divSub.addEventListener('mouseout', (event) => {
+                  debugger
+  
+                  if (params.onNameHover) {
+                    params.onNameHoverOut(event, params);
+  
+                  }
+                });
+                
+              })
 
-                }
-              });
-              divSub.addEventListener('mouseout', (event) => {
-                debugger
+              this.ngZone.run(()=>{
+                divSub.addEventListener('mouseleave', (event) => {
+                  debugger
+  
+                  if (params.onNameHover) {
+                    params.onNameHoverOut(event, params);
+  
+                  }
+                });
+                
+              })
 
-                if (params.onNameHover) {
-                  params.onNameHoverOut(event, params);
-
-                }
-              });
+              this.ngZone.run(()=>{
+                nameLink.addEventListener('click', (event) => {
+                  debugger
+                  if (params.onNameClick) {
+                    params.onNameClick(event, params);
+  
+                  }
+                });
+                
+              })
+             
+             
+             
 
               // Create another anchor element for the plus button
               const plusButton = document.createElement('a');
@@ -421,7 +452,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
                 this.onCellClicked(params)
               },
               onNameHover: (event: MouseEvent, params: any) => {
-                this.nameColumnHover(params)
+                this.nameColumnHover(params, event)
               },
               onNameHoverOut: (event: MouseEvent, params: any) => {
                 this.rowMouseHoverOut(params)
@@ -444,12 +475,13 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           },
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
-        
+
           { field: "experienceYear", filter: true, floatingFilter: false },
           { field: "age", filter: true, floatingFilter: false },
-          { field: "phoneNumber", filter: true, floatingFilter: false,
-            valueFormatter: (params :any)=> `+91 ${params.value}`,
-           },
+          {
+            field: "phoneNumber", filter: true, floatingFilter: false,
+            valueFormatter: (params: any) => `+91 ${params.value}`,
+          },
           //     {
           //       field: "documentCount", filter: true, floatingFilter: false,
           //       cellRenderer: (params: any) => {
@@ -573,21 +605,27 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   toggleFilterDropdown() {
     console.log("filter click")
-    this.showFilterModal = !this.showFilterModal;
+    this.ngZone.run(() => {
+      this.showFilterModal = !this.showFilterModal;
+    })
+
   }
 
   applyFilters() {
-    const filters = this.filterForm.value;
+    this.ngZone.run(() => {
+      const filters = this.filterForm.value;
 
-    this.dataService.filterTeacherList(filters).subscribe((data: any) => {
-      this.teacherList = data.map((teacher: TeacherDocument) => ({
-        ...teacher,
-        documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
-      }));
-      this.teacherTableRows = this.teacherList;
-      this.updatePaginatedData();
-      this.showFilterModal = false;
-    });
+      this.dataService.filterTeacherList(filters).subscribe((data: any) => {
+        this.teacherList = data.map((teacher: TeacherDocument) => ({
+          ...teacher,
+          documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
+        }));
+        this.teacherTableRows = this.teacherList;
+        this.updatePaginatedData();
+        this.showFilterModal = false;
+      });
+    })
+
   }
   navigateToAddPage() {
     this.ngZone.run(() => {
@@ -596,18 +634,20 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   resetFilter() {
-    this.filterForm.reset({
-      subjectFilter: [''],
-      retiringInMonths: [],
-      schoolNameFilter: [''],
-      uniqueIdFilter: [''],
-      documents: [false],
-      minExperienceYear: [0],
-      maxExperienceYear: [100],
-      // ExperienceYear: [],
-      newRecruit: [false]
-    });
-    this.loadTeachersList();
+    this.ngZone.run(() => {
+      this.filterForm.reset({
+        subjectFilter: [''],
+        retiringInMonths: [],
+        schoolNameFilter: [''],
+        uniqueIdFilter: [''],
+        documents: [false],
+        minExperienceYear: [0],
+        maxExperienceYear: [100],
+        // ExperienceYear: [],
+        newRecruit: [false]
+      });
+      this.loadTeachersList();
+    })
   }
 
 
@@ -624,6 +664,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
+    debugger
+    console.log("event00", event)
     this.selectedTeacher = null
     this.teacherId = teacherId;
     if (this.hoverTimeout) {
@@ -631,7 +673,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
     this.hoveredTeacherId = teacherId;
     if (teacherId && teacherData) {
+      console.log("ee")
       this.hoverTimeout = setTimeout(() => {
+
         this.selectedTeacher = teacherData; // Store the detailed info
 
         // this.showPopup = true;
@@ -644,6 +688,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
             if (this.selectedTeacher && teacherId) {
               this.showPopup = true;
               this.updateMousePosition(event);
+
             }
           },
           (error) => {
@@ -703,13 +748,13 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
 
-  nameColumnHover(event: any) {
-    console.log("name hover", event)
+  nameColumnHover(event: any, ev: any) {
+  
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
       this.showSchoolPopup = false
-      this.onTeacherHover(rowData.teacherId, rowData, event.event)
+      this.onTeacherHover(rowData.teacherId, rowData, ev)
     }
   }
 
@@ -724,7 +769,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
   }
   rowMouseHoverOut(event: any) {
-
+  
+   this.showPopup=false
     // this.isMenuVisible = false
     debugger;
     // if (event.colDef.field === "name") {

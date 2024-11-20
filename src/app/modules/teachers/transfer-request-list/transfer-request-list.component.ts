@@ -18,7 +18,7 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' },{ headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -161,7 +161,7 @@ export class TransferRequestListComponent implements OnInit {
         this.transferTableRows = this.transferList
         this.transferTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
-          valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate'
+          valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
             ? (params: any) => this.datePipe.transform(params.value, 'MM/dd/yyyy')
             : undefined,
           field: column.field,
