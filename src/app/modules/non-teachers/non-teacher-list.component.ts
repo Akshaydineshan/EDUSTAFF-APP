@@ -1,5 +1,5 @@
 import { DataService } from './../../core/service/data/data.service';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { NonTeacherService } from './non-teacher.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
@@ -23,7 +23,7 @@ export class NonTeacherListComponent implements OnInit {
   API_BASE_IMAGE = environment.imageBaseUrl;
 
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
-  displayColumns: string[] = ['name', 'schoolName', 'designation',  'experienceYear', 'age', 'phoneNumber', 'documentCount'];
+  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
   nonTeacherTableRows: any[] = []
   nonTeacherTableColumns: any[] = []
   nonTeacherList: any[] = [];
@@ -50,7 +50,7 @@ export class NonTeacherListComponent implements OnInit {
   isTransferPopup: boolean = false;
 
 
-  constructor(private NonTeacherService: NonTeacherService, private router: Router, private dataService: DataService, private fb: FormBuilder,private toastr: ToastrService) { }
+  constructor(private NonTeacherService: NonTeacherService, private router: Router, private dataService: DataService, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.getNonTeacherListData()
@@ -246,7 +246,7 @@ export class NonTeacherListComponent implements OnInit {
             } : {}),
 
             ... (column === 'schoolName' ? { width: 300 } : {}),
-            ...(column ==="phoneNumber" ? { valueFormatter: (params :any)=> `+91 ${params.value}`,} : {})
+            ...(column === "phoneNumber" ? { valueFormatter: (params: any) => `+91 ${params.value}`, } : {})
 
           }
 
@@ -282,12 +282,12 @@ export class NonTeacherListComponent implements OnInit {
       schools: this.dataService.getSchoolWithCity()
 
     }).subscribe({
-      next: (results:any) => {
+      next: (results: any) => {
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolID);
 
 
       },
-      error: (error:any) => {
+      error: (error: any) => {
         console.error('Error loading dropdown data', error);
 
       },
@@ -445,7 +445,7 @@ export class NonTeacherListComponent implements OnInit {
 
   }
   nameColumnHover(event: any) {
-   
+
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
@@ -454,7 +454,7 @@ export class NonTeacherListComponent implements OnInit {
     }
   }
   updateMenuMousePosition(event: MouseEvent): void {
-   
+
     const offset = 13; // Offset for positioning
     this.mouseMenuX = event.clientX + offset;
     this.mouseMenuY = event.clientY;
@@ -478,7 +478,7 @@ export class NonTeacherListComponent implements OnInit {
 
     this.showPopup = false;
     this.showSchoolPopup = false
-    this.isTransferPopup=false;
+    this.isTransferPopup = false;
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
     this.loadDropdownData()
@@ -487,7 +487,7 @@ export class NonTeacherListComponent implements OnInit {
   }
   menuBtnhoverOut(event: any, params: any) {
 
-    
+
   }
   listClickFromMenuList(event: any) {
     this.showPopup = false;
@@ -538,16 +538,16 @@ export class NonTeacherListComponent implements OnInit {
 
         },
         error: (error: any) => {
-         if(error.status===409){
-          this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-top-left',
-            timeOut: 4500,
-          });
-          // this.isTransferPopup = false;
-         }
-       
+          if (error.status === 409) {
+            this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            // this.isTransferPopup = false;
+          }
+
 
         },
         complete: () => {
@@ -574,5 +574,11 @@ export class NonTeacherListComponent implements OnInit {
     this.showPopup = false;
     this.showSchoolPopup = false;
 
+  }
+
+  navigateToAddPage() {
+    this.ngZone.run(() => {
+      this.router.navigate(['/non-teachers/add']);
+    })
   }
 }

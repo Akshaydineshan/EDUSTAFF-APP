@@ -147,7 +147,7 @@ export class AddSchoolComponent implements OnInit {
       cityID: ['', Validators.required],  // City ID is required
       state: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]+$')]],  // State is required
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       photoID: [null],
 

@@ -1,5 +1,5 @@
 import { ColDef } from 'ag-grid-community';
-import { AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Teacher, TeacherDocument, TransferRequest } from 'src/app/core/models/teacher/teacher';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -84,7 +84,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
   ]
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService,private ngZone:NgZone) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -126,6 +126,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: HTMLElement) {
     debugger
+    if (!target.closest('.dropdown') && this.showFilterModal) {
+      this.showFilterModal = false; // Close dropdown when clicking outside
+    }
 
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
@@ -163,9 +166,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
 
-    if (!target.closest('.dropdown') && this.showFilterModal) {
-      this.showFilterModal = false; // Close dropdown when clicking outside
-    }
+   
   }
 
   onMenuAction(action: string, teacher: any) {
@@ -571,6 +572,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   toggleFilterDropdown() {
+    console.log("filter click")
     this.showFilterModal = !this.showFilterModal;
   }
 
@@ -586,6 +588,11 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       this.updatePaginatedData();
       this.showFilterModal = false;
     });
+  }
+  navigateToAddPage() {
+    this.ngZone.run(() => {
+      this.router.navigate(['/teachers/add-teacher']);
+    })
   }
 
   resetFilter() {

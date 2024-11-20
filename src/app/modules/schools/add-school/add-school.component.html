@@ -128,9 +128,8 @@
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['required']">
                             Email is required.
                         </small>
-                        <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['email']">
-                            Invalid email format.
-                        </small>
+                       
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['pattern']">Invalid email format.</small>
                     </div>
                 </div>
             </div>

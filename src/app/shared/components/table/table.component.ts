@@ -57,7 +57,7 @@ export class TableComponent implements OnInit {
  
   onGridReady(params: any) {
     // Auto-size the "name" column based on the content
-    params.columnApi.autoSizeColumns(['name']);
+  
   }
 
 
