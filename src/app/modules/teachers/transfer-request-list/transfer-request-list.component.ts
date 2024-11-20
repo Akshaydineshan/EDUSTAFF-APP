@@ -162,7 +162,7 @@ export class TransferRequestListComponent implements OnInit {
         this.transferTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
           valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
-            ? (params: any) => this.datePipe.transform(params.value, 'MM/dd/yyyy')
+            ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
             : undefined,
           field: column.field,
           filter: true,
