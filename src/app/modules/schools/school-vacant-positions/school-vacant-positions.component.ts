@@ -115,7 +115,7 @@ export class SchoolVacantPositionsComponent implements OnInit {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "schoolName") {
-      let schoolId: number = rowData.schoolId
+      let schoolId: number = rowData.schoolID
       this.ngZone.run(() => {
         this.router.navigate(['/schools/view', schoolId])
       })

@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -49,7 +50,7 @@ export class TransferRequestListComponent implements OnInit {
   isRejectedClick: boolean = false;
   minDate: any;
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService,private ngZone:NgZone) {
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService,private ngZone:NgZone,private router:Router) {
 
 
   }
@@ -505,6 +506,28 @@ console.log("control",dateControl)
 
       console.log("invalid form")
     }
+  }
+
+  onCellClicked(event: any) {
+
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+
+    if (event.colDef.field === "employeeName") {
+      let teacherId: number = rowData.employeeID
+   
+      this.ngZone.run(() => {
+        this.router.navigate(['/teachers/view-teacher', teacherId])
+      })
+
+    } else if (event.colDef.field === "fromSchoolName") {
+      let schoolId: number = rowData.fromSchoolID
+      this.router.navigate(['/schools/view', schoolId])
+    }else if (event.colDef.field === "toSchoolName") {
+      let schoolId: number = rowData.toSchoolID
+      this.router.navigate(['/schools/view', schoolId])
+    }
+
   }
   closeTransferPopup() {
     this.transferRequestForm.reset()

@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -48,7 +49,7 @@ export class NonTeacherTransferlistComponent {
   isRejectedClick: boolean = false;
   minDate: any;
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService,private router:Router,private ngZone:NgZone) {
 
 
   }
@@ -296,6 +297,28 @@ export class NonTeacherTransferlistComponent {
     console.log("selectMenuRowData", this.selectMenuRowData)
 
     this.updateMenuMousePosition(event)
+
+  }
+
+  onCellClicked(event: any) {
+
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+
+    if (event.colDef.field === "employeeName") {
+      let teacherId: number = rowData.employeeID
+   
+      this.ngZone.run(() => {
+        this.router.navigate(['/teachers/view-teacher', teacherId])
+      })
+
+    } else if (event.colDef.field === "fromSchoolName") {
+      let schoolId: number = rowData.fromSchoolID
+      this.router.navigate(['/schools/view', schoolId])
+    }else if (event.colDef.field === "toSchoolName") {
+      let schoolId: number = rowData.toSchoolID
+      this.router.navigate(['/schools/view', schoolId])
+    }
 
   }
 
