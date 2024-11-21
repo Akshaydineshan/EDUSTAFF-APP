@@ -178,7 +178,8 @@
 
     <form action="" [formGroup]="transferRequestForm">
       <div class="row mb-1">
-        <label class="col-sm-12 col-form-label">Transfer From</label>
+        <label for="" class="col-sm-12 col-form-label"><span>Transfer From</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
        
           <input type="text" class="form-control" formControlName="fromSchool"  [readonly]="true">
@@ -192,7 +193,8 @@
       </div>
 
       <div class="row mb-1">
-        <label class="col-sm-12 col-form-label">Transfer To</label>
+        <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <select class="form-control" placeholder="select" formControlName="toSchool">
             <option disabled>Select School</option>
@@ -209,7 +211,8 @@
         </div>
       </div>
       <div class="row mb-1 ">
-        <label class="col-sm-12 col-form-label">Document</label>
+        <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <input type="text" class="form-control" formControlName="documentUrl">
           <div
@@ -223,7 +226,8 @@
       </div>
 
       <div class="row mb-1">
-        <label class="col-sm-12 col-form-label">Date</label>
+        <label for="" class="col-sm-12 col-form-label"><span>Date</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <input type="date"  [min]="minDate" class="form-control" formControlName="date">
           <div
