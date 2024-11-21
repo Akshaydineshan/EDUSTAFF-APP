@@ -5,10 +5,12 @@ import { PageNotFoundComponent } from 'src/app/shared/components/page-not-found/
 import { PromotionEligibleListComponent } from './promotion-eligible-list/promotion-eligible-list.component';
 import { AddSchoolComponent } from './add-school/add-school.component';
 import { ViewSchoolComponent } from './view-school/view-school.component';
+import { SchoolVacantPositionsComponent } from './school-vacant-positions/school-vacant-positions.component';
 
 const routes: Routes = [
   { path: '', component: SchoolListComponent },
   { path: 'school-list', component: SchoolListComponent },
+  { path: 'vacant-positions', component: SchoolVacantPositionsComponent },
   { path: 'add-school', component: AddSchoolComponent },
   { path: 'add-school/:id', component: AddSchoolComponent },
   { path: 'view/:id', component: ViewSchoolComponent },

@@ -8,13 +8,15 @@ import { PromotionEligibleListComponent } from './promotion-eligible-list/promot
 import { AddSchoolComponent } from './add-school/add-school.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewSchoolComponent } from './view-school/view-school.component';
+import { SchoolVacantPositionsComponent } from './school-vacant-positions/school-vacant-positions.component';
 
 @NgModule({
   declarations: [
     SchoolListComponent,
     PromotionEligibleListComponent,
     AddSchoolComponent,
-    ViewSchoolComponent
+    ViewSchoolComponent,
+    SchoolVacantPositionsComponent
   ],
   imports: [
     CommonModule,

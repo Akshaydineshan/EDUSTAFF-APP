@@ -1,7 +1,7 @@
 import { NumberFormatStyle } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -47,6 +47,21 @@ export class SchoolService {
   
   getSchoolById(schoolId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}School/GetSchoolHomePage/${schoolId}`);
+  }
+
+
+  getVacantPositionList(): Observable<any[]> {
+    debugger
+    // if (this.teachersDataCache.value.length === 0) {
+      return this.fetchVacantPositionData();
+    // }
+    // return this.teachersDataCache.asObservable();
+  }
+
+  private fetchVacantPositionData(): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.baseUrl + 'Position/GetAllNewAndVacantSchoolPositions', { headers: { accept: '*/*' } })
+
   }
 
 }
