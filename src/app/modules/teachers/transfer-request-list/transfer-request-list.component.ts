@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -46,8 +47,9 @@ export class TransferRequestListComponent implements OnInit {
   submitted!: boolean;
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
+  minDate: any;
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService,private ngZone:NgZone) {
 
 
   }
@@ -56,14 +58,23 @@ export class TransferRequestListComponent implements OnInit {
     this.loadtransferRequestList()
     this.loadDropdownData()
 
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+
     this.transferRequestForm = this.fb.group({
       fromSchool: [''],
       toSchool: ['', Validators.required],
       documentUrl: ['', Validators.required],
-      date: [''],
+      date: ['', [minAndMaxDateValidator(this.minDate, true, false)]],
       comment: ['']
     })
 
+  }
+  dateChange(){
+    const dateControl = this.transferRequestForm.get('date');
+console.log("control",dateControl)
+    
+    dateControl?.updateValueAndValidity();  // Manually trigger validation
   }
 
 
@@ -201,11 +212,14 @@ export class TransferRequestListComponent implements OnInit {
                     plusButton.classList.add('menuButton')
                     // plusButton.style.float = 'right';
                     plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
-                    plusButton.addEventListener('click', (event: any) => {
-                      if (params.onStatusClick) {
-                        params.onStatusClick(event, params);
-                      }
-                    });
+                    this.ngZone.run(()=>{
+                      plusButton.addEventListener('click', (event: any) => {
+                        if (params.onStatusClick) {
+                          params.onStatusClick(event, params);
+                        }
+                      });
+                    })
+                   
                     div.appendChild(plusButton);
 
                   }else{
@@ -299,7 +313,7 @@ export class TransferRequestListComponent implements OnInit {
     const dateControl = this.transferRequestForm.get('date');
     if (event.value === 'approve') {
       this.isRejectedClick = false;
-     dateControl?.setValidators([Validators.required]);
+     dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false),Validators.required]);
 
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
       this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)

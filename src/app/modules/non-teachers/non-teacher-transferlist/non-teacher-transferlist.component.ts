@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -45,6 +46,7 @@ export class NonTeacherTransferlistComponent {
   submitted!: boolean;
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
+  minDate: any;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService) {
 
@@ -54,12 +56,15 @@ export class NonTeacherTransferlistComponent {
   ngOnInit(): void {
     this.loadtransferRequestList()
     this.loadDropdownData()
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+
 
     this.transferRequestForm = this.fb.group({
       fromSchool: [''],
       toSchool: ['', Validators.required],
       documentUrl: ['', Validators.required],
-      date: [''],
+      date: ['', [minAndMaxDateValidator(this.minDate, true, false)]],
       comment: ['']
     })
 
@@ -298,7 +303,7 @@ export class NonTeacherTransferlistComponent {
     const dateControl = this.transferRequestForm.get('date');
     if (event.value === 'approve') {
       this.isRejectedClick = false;
-     dateControl?.setValidators([Validators.required]);
+      dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false),Validators.required]);
 
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
       this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)

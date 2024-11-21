@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
+import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -48,12 +49,15 @@ export class NonTeacherListComponent implements OnInit {
     { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
   ]
   isTransferPopup: boolean = false;
+  minDate: any;
 
 
   constructor(private NonTeacherService: NonTeacherService, private router: Router, private dataService: DataService, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone) { }
 
   ngOnInit(): void {
     this.getNonTeacherListData()
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
     // this.loadDropdownData()
 
 
@@ -61,9 +65,10 @@ export class NonTeacherListComponent implements OnInit {
       fromSchool: [{ value: '', }],
       toSchool: ['', Validators.required],
       documentUrl: ['', Validators.required],
-      date: ['', Validators.required],
+      date: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: ['']
     })
+
 
   }
   @HostListener('document:click', ['$event.target'])

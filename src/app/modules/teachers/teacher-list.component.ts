@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TeacherTableNameSectionComponent } from 'src/app/shared/components/teacher-table-name-section/teacher-table-name-section.component';
 import { forkJoin } from 'rxjs';
+import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -83,6 +84,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest' },
     { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
   ]
+  minDate: any;
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
     this.filterForm = this.fb.group({
@@ -103,6 +105,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadTeachersList();
+    const today = new Date();
+    this.minDate = today.toISOString().split('T')[0];
+
     // this.loadDropdownData()
     this.updateSliderTrack();
     this.filterForm.valueChanges.subscribe(() => {
@@ -113,7 +118,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       fromSchool: [{ value: '', }],
       toSchool: ['', Validators.required],
       documentUrl: ['', Validators.required],
-      date: ['', Validators.required],
+      date: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: ['']
     })
 
@@ -428,17 +433,20 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
               // plusButton.style.float = 'right';
               plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
-              plusButton.addEventListener('click', (event) => {
-                if (params.onPlusButtonClick) {
-                  params.onPlusButtonClick(event, params);
-                }
-              });
-
-              plusButton.addEventListener('mouseleave', (event) => {
-                if (params.onPlusButtonHoverout) {
-                  params.onPlusButtonHoverout(event, params);
-                }
-              });
+              this.ngZone.run(() => {
+                plusButton.addEventListener('click', (event) => {
+                  if (params.onPlusButtonClick) {
+                    params.onPlusButtonClick(event, params);
+                  }
+                });
+              })
+              this.ngZone.run(() => {
+                plusButton.addEventListener('mouseleave', (event) => {
+                  if (params.onPlusButtonHoverout) {
+                    params.onPlusButtonHoverout(event, params);
+                  }
+                });
+              })
 
               // Append the elements to the div
               divSub.appendChild(nameLink)

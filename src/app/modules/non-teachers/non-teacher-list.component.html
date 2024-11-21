@@ -225,14 +225,14 @@
       <div class="row mb-1">
         <label class="col-sm-12 col-form-label">Date</label>
         <div class="col-sm-12">
-          <input type="date" class="form-control" formControlName="date">
+          <input type="date"  [min]="minDate" class="form-control" formControlName="date">
           <div
-            *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['pattern']">Invalid
-              Pattern</small>
-          </div>
+          *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
+          <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
+            required</small>
+          <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date .</small>
+          <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are not allowed .</small>
+        </div>
         </div>
       </div>
 

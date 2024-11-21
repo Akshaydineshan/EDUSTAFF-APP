@@ -14,12 +14,12 @@ export function dateRangeValidator(startDateControlName: string, endDateControlN
 }
 
 export function minAndMaxDateValidator(minDate: string,min:boolean,max:boolean): ValidatorFn {
-  console.log("gggggggggggggggggg1")
+console.log("inside")
   return (control: AbstractControl): ValidationErrors | null => {
     debugger
    
     const inputDate = new Date(control.value);
-    console.log("gggggggggggggggggg2",)
+  
     const minDateObj = new Date(minDate);  // Convert minDate string to a Date object
 
     // If the date is not valid or if the input is before the minDate
