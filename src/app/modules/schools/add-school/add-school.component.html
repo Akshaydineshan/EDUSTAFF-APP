@@ -13,7 +13,8 @@
 
             <!-- School Name -->
             <div class="row mb-3">
-                <label for="schoolName" class="col-sm-3 col-form-label">School Name</label>
+               
+                <label for="schoolName" class="col-sm-3 col-form-label"><span>School Name</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="schoolName" formControlName="schoolName"
                         required>
@@ -34,7 +35,8 @@
 
             <!-- School Type -->
             <div class="row mb-3">
-                <label for="schoolType" class="col-sm-3 col-form-label">School Type</label>
+                
+                <label for="schoolType" class="col-sm-3 col-form-label"><span>School Type</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <select class="form-control" id="schoolType" formControlName="schoolTypeID" required
                         (ngModelChange)="changeSchoolType($event)">
@@ -52,7 +54,7 @@
 
             <!-- Address -->
             <div class="row mb-3">
-                <label for="address" class="col-sm-3 col-form-label">Address</label>
+                <label for="address" class="col-sm-3 col-form-label"><span>Address</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <textarea class="form-control" id="address" rows="3" formControlName="address" required></textarea>
                     <div
@@ -69,7 +71,7 @@
 
             <!-- City ID -->
             <div class="row mb-3">
-                <label for="cityID" class="col-sm-3 col-form-label">City </label>
+                <label for="cityId" class="col-sm-3 col-form-label"><span>City</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <select class="form-control" id="schoolType" formControlName="cityID" required>
                         <option value="" disabled>Select City</option>
@@ -86,7 +88,7 @@
 
             <!-- State -->
             <div class="row mb-3">
-                <label for="state" class="col-sm-3 col-form-label">State</label>
+                <label for="state" class="col-sm-3 col-form-label"><span>State</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="state" formControlName="state" required>
                     <div
@@ -103,7 +105,7 @@
 
             <!-- Pincode -->
             <div class="row mb-3">
-                <label for="pincode" class="col-sm-3 col-form-label">Pincode</label>
+                <label for="pincode" class="col-sm-3 col-form-label"><span>Pincode</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="pincode" formControlName="pincode" required>
                     <div
@@ -120,7 +122,7 @@
 
             <!-- Email -->
             <div class="row mb-3">
-                <label for="email" class="col-sm-3 col-form-label">Email</label>
+                <label for="email" class="col-sm-3 col-form-label"><span>Email</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="email" class="form-control" id="email" formControlName="email" required>
                     <div
@@ -136,7 +138,7 @@
 
             <!-- Phone -->
             <div class="row mb-3">
-                <label for="phone" class="col-sm-3 col-form-label">Phone</label>
+                <label for="phone" class="col-sm-3 col-form-label"><span>Phone</span><span class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
 
                     <div class="input-group">
