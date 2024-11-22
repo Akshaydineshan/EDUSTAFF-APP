@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, forkJoin, Observable, of, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -62,24 +62,36 @@ export class DataService {
     );
   }
   getTeacherDetailPopUp(teacherId: number): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/Teacher/GetTeacherPopUp/' + teacherId);
+    return this.http.get<any>(this.apiUrl + '/Teacher/GetTeacherPopUp/' + teacherId,
+      {
+        headers: new HttpHeaders({
+          'Skip-Spinner': 'true',
+        })
+      }
+    );
   }
 
   getSchoolDetailPopUp(schoolId: number): Observable<any> {
-    return this.http.get<any>(this.apiUrl + '/School/GetSchoolPopUp/' + schoolId);
+    return this.http.get<any>(this.apiUrl + '/School/GetSchoolPopUp/' + schoolId,
+      {
+        headers: new HttpHeaders({
+          'Skip-Spinner': 'true',
+        })
+      }
+    );
   }
 
   getTransferRequestData(): Observable<any[]> {
     debugger
     // if (this.teachersDataCache.value.length === 0) {
-      return this.fetchTransferRequestData();
+    return this.fetchTransferRequestData();
     // }
     // return this.teachersDataCache.asObservable();
   }
   getNonTeacherTransferRequestData(): Observable<any[]> {
     debugger
     // if (this.teachersDataCache.value.length === 0) {
-      return this.fetchNonteacherTransferRequestData();
+    return this.fetchNonteacherTransferRequestData();
     // }
     // return this.teachersDataCache.asObservable();
   }
@@ -111,7 +123,7 @@ export class DataService {
   getTeachersData(): Observable<any[]> {
     debugger
     // if (this.teachersDataCache.value.length === 0) {
-      return this.fetchTeachersData();
+    return this.fetchTeachersData();
     // }
     // return this.teachersDataCache.asObservable();
   }
@@ -129,7 +141,7 @@ export class DataService {
 
   getSchoolData(): Observable<any[]> {
     // if (this.schoolDataCache.value.length === 0) {
-      return this.fetchSchoolData();
+    return this.fetchSchoolData();
     // }
     // return this.schoolDataCache.asObservable();
   }
@@ -214,17 +226,17 @@ export class DataService {
     formData.append('PhotoFile', photoFile);
     return this.http.post(this.apiUrl + 'Teacher/UploadPhoto' + '/' + teacherId, formData);
   }
-  createTransferRequest(data:any): Observable<any> {
-   
-    return this.http.post(this.apiUrl + 'TransferRequest/CreateTransferRequest',data);
+  createTransferRequest(data: any): Observable<any> {
+
+    return this.http.post(this.apiUrl + 'TransferRequest/CreateTransferRequest', data);
   }
 
-  approveTransferRequest(data:any,id:number): Observable<any> {
-     return this.http.patch(this.apiUrl + `TransferRequest/ApproveTransferRequest/${id}`,data);
+  approveTransferRequest(data: any, id: number): Observable<any> {
+    return this.http.patch(this.apiUrl + `TransferRequest/ApproveTransferRequest/${id}`, data);
   }
-  rejectTransferRequest(data:any,id:number): Observable<any> {
-    return this.http.put(this.apiUrl + `TransferRequest/RejectTransferRequest/${id}`,data);
- }
+  rejectTransferRequest(data: any, id: number): Observable<any> {
+    return this.http.put(this.apiUrl + `TransferRequest/RejectTransferRequest/${id}`, data);
+  }
   uploadProfilePhoto(photoFile: File): Observable<any> {
     debugger
     const formData = new FormData();
@@ -247,7 +259,7 @@ export class DataService {
       })
     );
   }
-  updateTeacher(teachersData: any,employeId:number): Observable<any> {
+  updateTeacher(teachersData: any, employeId: number): Observable<any> {
     debugger
     return this.http.put(`${this.apiUrl}Teacher/update-employee/${employeId}`, teachersData).pipe(
       catchError((error) => {
