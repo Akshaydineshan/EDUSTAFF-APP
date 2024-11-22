@@ -42,7 +42,9 @@
               "ag-grid-community/styles/ag-theme-quartz.css",
                "src/styles.scss",
                "node_modules/ngx-toastr/toastr.css" ,
-                 "node_modules/bootstrap-icons/font/bootstrap-icons.css"
+                 "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+                "./node_modules/ng-multiselect-dropdown/themes/ng-multiselect-dropdown.theme.scss"
+         
             ],
             "scripts": [
               "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"

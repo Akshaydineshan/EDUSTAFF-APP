@@ -4,7 +4,7 @@
 <div class="main-container " [class.shifted]="isSidebarClosed">
         <div class="container-fluid top-banner"></div>
 
-        <div class="content-main pb-3">
+        <div class="content-main pb-3" *ngIf="currentTeacher">
                 <div class="prof-img-btns-sec d-flex justify-content-between   ">
                         <div class="d-flex flex-column   ">
                                 <img [src]="getImage || 'assets/icons/user.png' "
@@ -69,7 +69,7 @@
 
         </div> -->
 
-                <div class="data-container">
+                <div class="data-container" *ngIf="currentTeacher">
                         <!-- Personal Details Card -->
                         <div class="card">
                                 <div class="card-header">Personal Details</div>

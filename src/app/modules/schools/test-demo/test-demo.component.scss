@@ -1,0 +1,19 @@
+.custom-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .custom-dropdown-item i {
+    color: #007ad9;
+  }
+  
+  .custom-selected-item {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+  
+  .custom-selected-item i {
+    color: green;
+  }

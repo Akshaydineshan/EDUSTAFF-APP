@@ -9,6 +9,8 @@ import { AddSchoolComponent } from './add-school/add-school.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ViewSchoolComponent } from './view-school/view-school.component';
 import { SchoolVacantPositionsComponent } from './school-vacant-positions/school-vacant-positions.component';
+import { TestDemoComponent } from './test-demo/test-demo.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 @NgModule({
   declarations: [
@@ -16,14 +18,16 @@ import { SchoolVacantPositionsComponent } from './school-vacant-positions/school
     PromotionEligibleListComponent,
     AddSchoolComponent,
     ViewSchoolComponent,
-    SchoolVacantPositionsComponent
+    SchoolVacantPositionsComponent,
+    TestDemoComponent
   ],
   imports: [
     CommonModule,
     SchoolsRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule.forRoot()
   ]
 })
 export class SchoolsModule { }

@@ -6,10 +6,12 @@ import { PromotionEligibleListComponent } from './promotion-eligible-list/promot
 import { AddSchoolComponent } from './add-school/add-school.component';
 import { ViewSchoolComponent } from './view-school/view-school.component';
 import { SchoolVacantPositionsComponent } from './school-vacant-positions/school-vacant-positions.component';
+import { TestDemoComponent } from './test-demo/test-demo.component';
 
 const routes: Routes = [
   { path: '', component: SchoolListComponent },
   { path: 'school-list', component: SchoolListComponent },
+  { path: 'demo', component: TestDemoComponent },
   { path: 'vacant-positions', component: SchoolVacantPositionsComponent },
   { path: 'add-school', component: AddSchoolComponent },
   { path: 'add-school/:id', component: AddSchoolComponent },
