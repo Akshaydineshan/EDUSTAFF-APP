@@ -11,7 +11,7 @@
     </h4>
     <div class="d-flex justify-content-between align-items-end gap-3">
       <div class="dropdown">
-        <button id="filterButton" class="btn btn-outline-secondary" (click)="toggleFilterDropdown()">
+        <button id="filterButton" class="btn btn-outline-secondary me-2" (click)="toggleFilterDropdown()">
           <i class="fas fa-filter"></i> Filter
         </button>
         <div id="filterDropdown" class="dropdown-menu p-3" [class.show]="showFilterModal">
@@ -51,19 +51,47 @@
             <div class="form-group">
               <div class="experience-range-container">
                 <label for="experienceYearRange">Experience Year Range</label>
-                <div class="slider-container">
+                <!-- <div class="slider-container">
                   <input type="range" id="experienceYearRange" formControlName="minExperienceYear" [min]="0" [max]="100"
                     class="range-slider min-slider" (input)="onSliderChange()">
                   <input type="range" id="experienceYearRange" formControlName="maxExperienceYear" [min]="0" [max]="100"
                     class="range-slider max-slider" (input)="onSliderChange()">
                   <div class="slider-track"></div>
+                </div> -->
+                
+                
+                <div class="range-slider">
+                  <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="minSelected"
+                  [ngModelOptions]="{standalone: true}" 
+                    class="slider min-range" (change)="validateRange($event,'min')" />
+
+                  <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="maxSelected"
+                  [ngModelOptions]="{standalone: true}" 
+                    class="slider max-range" (change)="validateRange($event,'max')" />
+
+                  <div class="slider-tracker" 
+                  ></div>
+                  <div class="slider-range" [style.left.%]="((minSelected ) - minValue) / (maxValue - minValue) * 100"
+                    [style.right.%]="100 - ((maxSelected) - minValue) / (maxValue - minValue) * 100">
+                  </div>
+                  <div  class="range-inputs" style="position: relative; top:30px;">
+                    <input type="number" min="0" max="100" class="range-input" [(ngModel)]="minSelected" (change)="validateRange($event,'min')" 
+                    [ngModelOptions]="{standalone: true}">
+                    <input type="number" min="0" max="100" class="range-input" [(ngModel)]="maxSelected" (change)="validateRange($event,'max')" 
+                    [ngModelOptions]="{standalone: true}" >
+                  </div>
+
+              
                 </div>
-                <div class="range-inputs">
+
+              
+
+                <!-- <div class="range-inputs">
                   <input type="number" formControlName="minExperienceYear" class="range-input" min="0" max="100"
                     (input)="onInputChange()">
                   <input type="number" formControlName="maxExperienceYear" class="range-input" min="0" max="100"
                     (input)="onInputChange()">
-                </div>
+                </div> -->
               </div>
             </div>
 

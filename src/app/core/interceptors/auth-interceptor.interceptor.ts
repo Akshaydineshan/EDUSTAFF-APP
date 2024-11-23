@@ -65,13 +65,15 @@ import { Router } from '@angular/router';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
 
 import { SpinnerServiceService } from 'src/app/shared/material-spinner/spinner-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
     private authService: TokenStoreService,
     private router: Router,
-    private spinnerService: SpinnerServiceService // Inject the spinner service
+    private spinnerService: SpinnerServiceService, // Inject the spinner service
+    private toaster: ToastrService
   ) { }
 
   // intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -94,7 +96,7 @@ export class AuthInterceptor implements HttpInterceptor {
   //       next: () => {
 
 
-         
+
   //         // setTimeout(()=>{
   //           this.spinnerService.hide();
   //         // },200)
@@ -105,7 +107,7 @@ export class AuthInterceptor implements HttpInterceptor {
   //         // setTimeout(()=>{
   //           this.spinnerService.hide(); // Hide spinner on error
   //         // },200)
-        
+
   //         if (error.status === 401) {
   //           this.authService.logout();
   //           this.router.navigate(['/login']);
@@ -123,10 +125,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
     const authReq = authToken
       ? req.clone({
-          setHeaders: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
+        setHeaders: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      })
       : req;
 
     // Check for the custom header
@@ -138,17 +140,28 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
+        console.log("error---->", error)
         if (!skipSpinner) {
           this.spinnerService.hide(); // Hide spinner if it was shown
         }
-        if (error.status === 401) {
-          this.authService.logout();
-          this.router.navigate(['/login']);
-        } else {
-          console.error('HTTP Error:', error); // Log other errors
+        if (error.status === 0) {
+           alert("Please check your internet connection and try again.!")
+           
+          // this.toaster.warning('', 'Warning', {
+          //   closeButton: true,
+          //   progressBar: true,
+          //   positionClass: 'toast-top-left',
+          //   timeOut: 4500,
+          // })
         }
-        return throwError(() => error); // Rethrow error for further handling
-      }),
+        if (error.status === 401) {
+            this.authService.logout();
+            this.router.navigate(['/login']);
+          } else {
+            console.error('HTTP Error:', error); // Log other errors
+          }
+          return throwError(() => error); // Rethrow error for further handling
+        }),
       finalize(() => {
         if (!skipSpinner) {
           this.spinnerService.hide(); // Hide spinner if it was shown

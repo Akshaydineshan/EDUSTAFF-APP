@@ -1,32 +1,48 @@
 <div style="padding:20px 90px;">
-    <div class="row">
-      <div class="col-sm-7">
-        <ng-multiselect-dropdown
-          [placeholder]="'custom placeholder'"
-          [settings]="dropdownSettings"
-          [data]="dropdownList"
-          [(ngModel)]="selectedItems"
-          (onSelect)="onItemSelect($event)"
-          (onSelectAll)="onSelectAll($event)"
-        >
-          
-          <ng-template ngFor let-item [ngForOf]="selectedItems">
-            <div class="custom-selected-item">
-              <i class="pi pi-map-marker"></i>
-              <span>{{ item.item_text }}</span>
-            </div>
-          </ng-template>
-  
-          <!-- Custom template for dropdown options -->
-          <ng-template ngFor let-item [ngForOf]="dropdownList">
-            <div class="custom-dropdown-item">
-              <i class="pi pi-globe"></i>
-              <span>{{ item.item_text }}</span>
-            </div>
-          </ng-template>
-          
-        </ng-multiselect-dropdown>
-      </div>
+  <div class="row">
+    <div class="col-sm-7">
+      <ng-multiselect-dropdown [placeholder]="'custom placeholder'" [settings]="dropdownSettings" [data]="dropdownList"
+        [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+
+        <ng-template ngFor let-item [ngForOf]="selectedItems">
+          <div class="custom-selected-item">
+            <i class="pi pi-map-marker"></i>
+            <span>{{ item.item_text }}</span>
+          </div>
+        </ng-template>
+
+        <!-- Custom template for dropdown options -->
+        <ng-template ngFor let-item [ngForOf]="dropdownList">
+          <div class="custom-dropdown-item">
+            <i class="pi pi-globe"></i>
+            <span>{{ item.item_text }}</span>
+          </div>
+        </ng-template>
+
+      </ng-multiselect-dropdown>
     </div>
   </div>
-  
+</div>
+
+
+<div class="range-slider">
+  <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="minSelected" class="slider min-range" (change)="validateRange($event,'min')" />
+
+  <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="maxSelected" class="slider max-range" (change)="validateRange($event,'max')" />
+
+  <div class="slider-track" ></div>
+  <div class="slider-range" [style.left.%]="((minSelected ) - minValue) / (maxValue - minValue) * 100"
+    [style.right.%]="100 - ((maxSelected) - minValue) / (maxValue - minValue) * 100">
+  </div>
+
+  <div style="position: relative; top:60px;">
+    <input type="number" min="0" max="100" [(ngModel)]="minSelected">
+    <input type="number" min="0" max="100"  [(ngModel)]="maxSelected">
+  </div>
+</div>
+
+
+
+
+
+

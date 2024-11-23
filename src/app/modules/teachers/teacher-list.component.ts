@@ -86,6 +86,12 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   ]
   minDate: any;
 
+
+  minValue:any = 0; 
+  maxValue:any = 100; 
+  minSelected:any = 0; 
+  maxSelected:any = 100; 
+
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
@@ -175,6 +181,16 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   onMenuAction(action: string, teacher: any) {
+  }
+
+  validateRange(event:any,changed: 'min' | 'max'): void {
+    if (changed === 'min' && this.minSelected >= this.maxSelected) {
+      event.preventDefault()
+      this.minSelected = this.maxSelected - 1;
+    } else if (changed === 'max' && this.maxSelected <= this.minSelected) {
+      event.preventDefault()
+      this.maxSelected = this.minSelected + 1; 
+    }
   }
 
 
@@ -614,14 +630,22 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   toggleFilterDropdown() {
     console.log("filter click")
     this.ngZone.run(() => {
+      // this.minSelected=0;
+      // this.maxSelected=100;
+      // this.filterForm.reset()
       this.showFilterModal = !this.showFilterModal;
     })
 
   }
 
   applyFilters() {
+    debugger
+   
     this.ngZone.run(() => {
+      debugger
       const filters = this.filterForm.value;
+      filters.minExperienceYear=this.minSelected;
+      filters.maxExperienceYear=this.maxSelected
 
       this.dataService.filterTeacherList(filters).subscribe((data: any) => {
         this.teacherList = data.map((teacher: TeacherDocument) => ({
@@ -642,19 +666,22 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   resetFilter() {
+    this.minSelected=0;
+    this.maxSelected=100
     this.ngZone.run(() => {
       this.filterForm.reset({
-        subjectFilter: [''],
-        retiringInMonths: [],
-        schoolNameFilter: [''],
-        uniqueIdFilter: [''],
-        documents: [false],
-        minExperienceYear: [0],
-        maxExperienceYear: [100],
+        subjectFilter: "",
+        retiringInMonths: "",
+        schoolNameFilter: "",
+        uniqueIdFilter: "",
+        documents: false,
+        minExperienceYear: 0,
+        maxExperienceYear: 100,
         // ExperienceYear: [],
-        newRecruit: [false]
+        newRecruit: false
       });
       this.loadTeachersList();
+      this.showFilterModal=false
     })
   }
 

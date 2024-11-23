@@ -17,3 +17,65 @@
   .custom-selected-item i {
     color: green;
   }
+
+
+
+
+  .range-slider {
+    position: relative;
+    width: 40%;
+    height: 50px;
+   margin: 100px;
+  }
+  
+  .slider {
+    position: absolute;
+    pointer-events: none;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    z-index: 99999;
+  }
+  
+  .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    appearance: none;
+    pointer-events: all;
+    width: 22px;
+    height: 22px;
+    background: #4CAF50;
+    border-radius: 50%;
+    cursor: pointer;
+ 
+  }
+  // .slider::-webkit-slider-thumb {
+  //   -webkit-appearance: none;
+  //   appearance: none;
+  //   width: 20px;
+  //   height: 20px;
+  //   border-radius: 50%;
+  //   background: #4CAF50;
+  //   cursor: pointer;
+  //   pointer-events: auto;
+  // }
+  
+  .slider-track {
+    position: absolute;
+    height: 6px;
+    background: #ddd;
+    width: 100%;
+    top: 22%;
+   
+    transform: translateY(-50%);
+  }
+  
+  .slider-range {
+    position: absolute;
+    height: 6px;
+    background: #4CAF50;
+    top: 22%;
+  
+    transform: translateY(-50%);
+    z-index: 1;
+  }

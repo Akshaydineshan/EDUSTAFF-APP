@@ -10,6 +10,12 @@ export class TestDemoComponent {
   dropdownList:any[] = [];
   selectedItems :any[]= [];
   dropdownSettings:IDropdownSettings = {};
+
+  minValue:any = 0;  // Minimum value of the slider
+  maxValue:any = 100; // Maximum value of the slider
+  minSelected:any = 0; // Default minimum selected value
+  maxSelected:any = 100; // Default maximum selected value
+
   ngOnInit() {
     this.dropdownList = [
       { item_id: 1, item_text: 'Mumbai' },
@@ -33,6 +39,15 @@ export class TestDemoComponent {
       allowSearchFilter: true,
     
     };
+  }
+  validateRange(event:any,changed: 'min' | 'max'): void {
+    if (changed === 'min' && this.minSelected >= this.maxSelected) {
+      event.preventDefault()
+      this.minSelected = this.maxSelected - 1; // Prevent overlap
+    } else if (changed === 'max' && this.maxSelected <= this.minSelected) {
+      event.preventDefault()
+      this.maxSelected = this.minSelected + 1; // Prevent overlap
+    }
   }
 
   
