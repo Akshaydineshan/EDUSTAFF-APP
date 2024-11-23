@@ -463,8 +463,8 @@ table {
     -webkit-appearance: none;
   appearance: none;
   pointer-events: all;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   background: #4CAF50;
   border-radius: 50%;
   cursor: pointer;
@@ -474,7 +474,7 @@ table {
 
 .slider-tracker {
   position: absolute;
-  height: 6px;
+  height: 5px;
   background-color:#ddd !important;
   width: 100%;
   top: 22%;
@@ -484,7 +484,7 @@ table {
 
 .slider-range {
   position: absolute;
-  height: 6px;
+  height: 5px;
   background: #4CAF50;
   top: 22%;
 
