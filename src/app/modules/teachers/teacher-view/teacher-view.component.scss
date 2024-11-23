@@ -191,8 +191,14 @@ li {
 
     }
     .card-body{
-       width:400px;
-       overflow-x: scroll;
+      
+    min-width: 200x; /* Minimum width to trigger horizontal scrolling */
+   text-overflow: no;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: noWrap;
+    }
+    .main-container{
+        overflow: hidden;
     }
    }
 img.pdf-icon {

@@ -114,12 +114,6 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
-    // this.loadDropdownData()
-    this.updateSliderTrack();
-    this.filterForm.valueChanges.subscribe(() => {
-      this.updateSliderTrack();
-    });
-
     this.transferRequestForm = this.fb.group({
       fromSchool: [{ value: '', }],
       toSchool: ['', Validators.required],
@@ -127,6 +121,14 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       date: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: ['']
     })
+
+    // this.loadDropdownData()
+    // this.updateSliderTrack();
+    // this.filterForm.valueChanges.subscribe(() => {
+    //   this.updateSliderTrack();
+    // });
+
+ 
 
   }
 
@@ -882,14 +884,14 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   menuBtnEventFunction(event: any, params: any) {
-
+  debugger
     this.showPopup = false;
     this.showSchoolPopup = false
     this.isTransferPopup
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
-    this.loadDropdownData()
-    this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
+   
+   
     this.updateMenuMousePosition(event)
   }
 
@@ -904,12 +906,17 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   listClickFromMenuList(event: any) {
+    debugger
+    console.log("EVENT->",event)
     this.showPopup = false;
     this.showSchoolPopup = false;
 
 
     if (event.value === 'transferRequest') {
+      debugger
+      this.loadDropdownData()
       this.isTransferPopup = event.clicked
+      this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
       this.isMenuVisible = false
     }
 

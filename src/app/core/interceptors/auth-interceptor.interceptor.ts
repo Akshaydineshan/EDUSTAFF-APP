@@ -122,7 +122,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const authToken = this.authService.getToken();
-
+    console.log("req---->", req.url)
     const authReq = authToken
       ? req.clone({
         setHeaders: {
@@ -140,7 +140,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-        console.log("error---->", error)
+       
         if (!skipSpinner) {
           this.spinnerService.hide(); // Hide spinner if it was shown
         }

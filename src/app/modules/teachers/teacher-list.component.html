@@ -293,7 +293,7 @@
             class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <select class="form-control" placeholder="select" formControlName="toSchool">
-            <option disabled>Select School</option>
+            <option [disabled]="true" [value]="null">Select School</option>
             <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
             </option>
           </select>

@@ -515,8 +515,6 @@ export class NonTeacherListComponent implements OnInit {
     this.isTransferPopup = false;
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
-    this.loadDropdownData()
-    this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
     this.updateMenuMousePosition(event)
   }
   menuBtnhoverOut(event: any, params: any) {
@@ -529,6 +527,8 @@ export class NonTeacherListComponent implements OnInit {
 
 
     if (event.value === 'transferRequest') {
+      this.loadDropdownData()
+      this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
       this.isTransferPopup = event.clicked
       this.isMenuVisible = false
     }
