@@ -185,16 +185,16 @@ li {
 
 }
 
-// @media screen and (max-width:576px){
-//     .card{
-//       overflow: hidden;
+@media screen and (max-width:576px){
+    .card{
+      overflow: hidden;
 
-//     }
-//     .card-body{
-//        width:400px;
-//        overflow-x: scroll;
-//     }
-//    }
+    }
+    .card-body{
+       width:400px;
+       overflow-x: scroll;
+    }
+   }
 img.pdf-icon {
     width: 45px;
     transition: transform 0.3s ease;
