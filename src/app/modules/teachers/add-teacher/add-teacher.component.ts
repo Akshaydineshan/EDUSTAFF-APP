@@ -60,12 +60,12 @@ export class AddTeacherComponent implements OnInit {
   ) {
     this.personalDetailsForm = this.fb.group({
       permanentEmployeeNumber: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]*')]],
-      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
-      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
+      firstName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern('^[a-zA-Z ]+$')]],
+      lastName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern('^[a-zA-Z ]+$')]],
       sex: ['', Validators.required],
-      dob: ['',[minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+      dob: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
       phone: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
-      email: ['', [Validators.required, Validators.email,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
+      email: ['', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
       religion: ['', Validators.required],
       category: ['', Validators.required],
       caste: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]*$')]],
@@ -77,17 +77,17 @@ export class AddTeacherComponent implements OnInit {
       height: ['', [Validators.required, Validators.min(30), Validators.max(300)]],
       aadharId: ['', [Validators.required, Validators.pattern('[0-9]{12}')]],
       pan: ['', [Validators.required, Validators.pattern('[A-Z]{5}[0-9]{4}[A-Z]{1}')]],
-      rationCardNumber: ['', [Validators.required, Validators.maxLength(20), Validators.pattern(/^[a-zA-Z0-9]*$/)]],
+      // rationCardNumber: ['', [Validators.required, Validators.maxLength(20), Validators.pattern(/^[a-zA-Z0-9]*$/)]],
       voterId: ['', [Validators.required, Validators.pattern('[A-Z]{3}[0-9]{7}')]],
       currentAddress: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
       permanentAddress: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
-      fathersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
-      mothersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50),Validators.pattern('^[a-zA-Z ]+$')]],
+      fathersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern('^[a-zA-Z ]+$')]],
+      mothersName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50), Validators.pattern('^[a-zA-Z ]+$')]],
       interReligion: ['', Validators.required],
       maritalStatus: ['', Validators.required],
       spousesName: ['',],
       spousesReligion: ['',],
-      spousesCaste: ['',[ Validators.pattern('^[a-zA-Z ]*$')]],
+      spousesCaste: ['', [Validators.pattern('^[a-zA-Z ]*$')]],
       photoId: ['']
     },
     );
@@ -103,9 +103,9 @@ export class AddTeacherComponent implements OnInit {
       subject: ['', Validators.required],
       pfNumber: ['', [Validators.required, Validators.pattern('[A-Z]{2}[0-9]{7}')]],
       pran: ['', [Validators.required, Validators.pattern('[A-Z]{4}[0-9]{6}')]],
-      fromDate: ['', [minAndMaxDateValidator('1900-01-01',true,false),Validators.required]],
-      toDate: ['', [minAndMaxDateValidator('1900-01-01',true,false),Validators.required]],
-      retirement: ['', [minAndMaxDateValidator('1900-01-01',true,false),Validators.required]],
+      fromDate: ['', [minAndMaxDateValidator('1900-01-01', true, false), Validators.required]],
+      toDate: ['', [minAndMaxDateValidator('1900-01-01', true, false), Validators.required]],
+      retirement: ['', [minAndMaxDateValidator('1900-01-01', true, false), Validators.required]],
       schoolName: ['', Validators.required],
       pCategory: ['', Validators.required],
       // schoolType: ['', Validators.required],
@@ -131,7 +131,7 @@ export class AddTeacherComponent implements OnInit {
   }
 
   ngOnInit() {
-  
+
 
     this.loadAllData();
     const coursesArray = this.educationForm.get('educations') as FormArray;
@@ -307,8 +307,8 @@ export class AddTeacherComponent implements OnInit {
           courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
           schoolName: [education.schoolName, Validators.required],
-          fromDate: [this.dataService.formatDateToLocal(education.fromDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
-          toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+          fromDate: [this.dataService.formatDateToLocal(education.fromDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
+          toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
           certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
         },
           {
@@ -460,10 +460,10 @@ export class AddTeacherComponent implements OnInit {
   onMaritalStatusChange(): void {
 
     this.personalDetailsForm.get('maritalStatus')?.valueChanges.subscribe((status) => {
-    
+
       if (status.maritalStatusID == '2') {
         // Add Validators.required to spouse-related fields
-        this.personalDetailsForm.get('spousesName')?.setValidators([Validators.required,Validators.pattern('^[a-zA-Z ]+$')]);
+        this.personalDetailsForm.get('spousesName')?.setValidators([Validators.required, Validators.pattern('^[a-zA-Z ]+$')]);
         this.personalDetailsForm.get('spousesReligion')?.setValidators([Validators.required]);
         this.personalDetailsForm.get('spousesCaste')?.setValidators([Validators.required, Validators.pattern('^[a-zA-Z ]*$')]);
       } else {
@@ -598,8 +598,8 @@ export class AddTeacherComponent implements OnInit {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
-      toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
+      fromDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
+      toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
@@ -733,7 +733,7 @@ export class AddTeacherComponent implements OnInit {
       casteID: parseInt(this.fullFormData.category.casteCategoryID),
       caste: this.fullFormData.caste ? this.fullFormData.caste : "",
       bloodGroupID: parseInt(this.fullFormData.bloodGroup.bloodGroupID),
-      rationID: this.fullFormData.rationCardNumber,
+      // rationID: this.fullFormData.rationCardNumber,
       differentlyAbled: Boolean(this.fullFormData.whetherDifferentlyAbled),
       exServiceMen: Boolean(this.fullFormData.exServicemen),
       aadhaarID: this.fullFormData.aadharId ? this.fullFormData.aadharId : "",
@@ -922,114 +922,19 @@ export class AddTeacherComponent implements OnInit {
         formData = {
           ...formData,
           ...personalDetails
-          // pen: personalDetails.permanentEmployeeNumber ? personalDetails.permanentEmployeeNumber : "",
-          // firstName: personalDetails.firstName ? personalDetails.firstName : "",
-          // lastName: personalDetails.lastName ? personalDetails.lastName : "",
-          // email: personalDetails.email ? personalDetails.email : "",
-          // phone: personalDetails.phone ? personalDetails.phone : "",
-          // presentAddress: personalDetails.currentAddress ? personalDetails.currentAddress : "",
-          // permanentAddress: personalDetails.permanentAddress ? personalDetails.permanentAddress : "",
-          // dateOfBirth: this.dataService.formatDateToISO(personalDetails.dob),
-          // sexID: parseInt(personalDetails.sex),
-          // religionID: parseInt(personalDetails.religion),
-          // casteID: parseInt(personalDetails.category),
-          // caste: personalDetails.caste ? personalDetails.caste : "",
-          // bloodGroupID: parseInt(personalDetails.bloodGroup),
-          // rationID: personalDetails.rationCardNumber,
-          // differentlyAbled: Boolean(personalDetails.whetherDifferentlyAbled),
-          // exServiceMen: Boolean(personalDetails.exServicemen),
-          // aadhaarID: personalDetails.aadharId ? personalDetails.aadharId : "",
-          // identificationMark1: personalDetails.identificationMarksOne ? personalDetails.identificationMarksOne : "",
-          // identificationMark2: personalDetails.identificationMarksTwo ? personalDetails.identificationMarksTwo : "",
-          // height: personalDetails.height ? personalDetails.height : "",
-          // fatherName: personalDetails.fathersName ? personalDetails.fathersName : "",
-          // motherName: personalDetails.mothersName ? personalDetails.mothersName : "",
-          // interReligion: Boolean(personalDetails.interReligion),
-          // maritalStatusID: parseInt(personalDetails.maritalStatus),
-          // spouseName: personalDetails.spousesName ? personalDetails.spousesName : "",
-          // spouseReligion: parseInt(personalDetails.spousesReligion),
-          // statusID: 1,
-          // spouseCaste: personalDetails.spousesCaste ? personalDetails.spousesCaste : "",
-          // panID: personalDetails.pan,
-          // voterID: personalDetails.voterId ? personalDetails.voterId : "",
-          // educations: null,
-          // departmentID: null,
-          // districtID: null,
-          // pfNummber: null,
-          // pran: null,
-          // dateOfJoin: null,
-          // dateOfJoinDepartment: null,
-          // categoryID: null,
-          // schoolTypeID: null,
-          // fromDate: null,
-          // toDate: null,
-          // documentID: null,
-          // eligibilityTestQualified: null,
-          // trainingAttended: null,
-          // designationID: null,
-          // subjectID: null,
-          // employeeTypeID: null,
-          // hireDate: null,
-          // workStartDate: null,
-          // retireDate: null,
-          // promotionEligible: null
         };
       }
 
       if (this.educationForm.valid) {
-        // formData.educations = educationDetails.educations.map((edu: any) => ({
-        //   educationTypeID: parseInt(edu.educationType.courseID),
-        //   courseID: parseInt(edu.courseName.courseID),
-        //   schoolName: edu.schoolName,
-        //   fromDate: this.dataService.formatDateToISO(edu.fromDate),
-        //   toDate: this.dataService.formatDateToISO(edu.toDate),
-        //   certificate: edu.certificate || ""
-        // }));
         formData.educations = educationDetails.educations
-
       }
-      console.log("after sec", formData)
+
 
       if (this.professionalForm.valid) {
         formData = {
           ...formData,
           ...professionalDetails
-          // departmentID: parseInt(professionalDetails.department.employeeTypeID),
-          // districtID: parseInt(professionalDetails.district.districtID),
-          // pfNummber: professionalDetails.pfNumber,
-          // pran: professionalDetails.pran,
-          // dateOfJoin: this.dataService.formatDateToISO(professionalDetails.dateOfJoin),
-          // dateOfJoinDepartment: this.dataService.formatDateToISO(professionalDetails.dateOfJoinDepartment),
-          // categoryID: parseInt(professionalDetails.categoryID),
-          // schoolTypeID: parseInt(professionalDetails.schoolTypeID),
-          // fromDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-          // toDate: this.dataService.formatDateToISO(professionalDetails.toDate),
-          // documentID: parseInt(professionalDetails.documentID),
-          // eligibilityTestQualified: Boolean(professionalDetails.eligibilityTestQualified),
-          // trainingAttended: Boolean(professionalDetails.trainingAttended),
-          // designationID: professionalDetails.designation ? parseInt(professionalDetails.designation.designationID) : null,
-          // subjectID: parseInt(professionalDetails.subject.subjectID),
-          // employeeTypeID: professionalDetails.employeeType ? parseInt(professionalDetails.employeeType.employeeTypeID) : null,
-          // hireDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-          // workStartDate: this.dataService.formatDateToISO(professionalDetails.fromDate),
-          // retireDate: this.dataService.formatDateToISO(professionalDetails.toDate),
-          // promotionEligible: Boolean(professionalDetails.promotionEligible),
         };
-
-        // this.dataService.addTeacher(formData).subscribe(
-        //   (response) => {
-        //     console.log('Employee added successfully:', response);
-        //     if (response.employeeID) {
-        //       console.log(response.employeeID);
-
-        //     }
-
-        //   },
-        //   (error) => {
-        //     console.error(error);
-        //   }
-        // );
-
       }
 
       this.fullFormData = formData
