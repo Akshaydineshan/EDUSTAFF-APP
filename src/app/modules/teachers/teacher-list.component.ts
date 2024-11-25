@@ -502,7 +502,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
 
-          { field: "experienceYear", filter: true, floatingFilter: false },
+          { field: "experienceYear", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value < 0 ? 0 : `${params.value}`, },
           { field: "age", filter: true, floatingFilter: false },
           {
             field: "phoneNumber", filter: true, floatingFilter: false,

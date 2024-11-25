@@ -272,6 +272,7 @@ export class NonTeacherListComponent implements OnInit {
               cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
 
             } : {}),
+            ... (column === 'experienceYear' ? { valueFormatter: (params: any) => params.value < 0 ? 0 : `${params.value}` } : {}),
 
             ... (column === 'schoolName' ? { width: 300 } : {}),
             ...(column === "phoneNumber" ? { valueFormatter: (params: any) => `+91 ${params.value}`, } : {})
