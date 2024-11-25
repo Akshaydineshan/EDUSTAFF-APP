@@ -27,6 +27,8 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   maxDate!: string;
   minDate: any=new Date('1900-01-01');
 
+  isUploadImage:boolean=false;
+
   constructor(private fb: FormBuilder,private dataService:DataService,private teacherService:TeacherDataService) { }
 
   ngOnInit(): void {
@@ -55,6 +57,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
 
   onFileSelected(event: any): void {
     debugger
+    
     const file = event.target.files[0];
     if (file) {
       this.file = file;
@@ -70,6 +73,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
 
   uploadFile(): void {
     debugger
+    this.isUploadImage=true
     if (this.file) {
      
       let file=this.file
@@ -77,8 +81,12 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
         (response) => {
           console.log('File uploaded successfully', response);
           this.personalDetailsForm.get('photoId')?.setValue({photoId:response.photoID,photoImageName:response.photoImageName})
+        
+          this.isUploadImage=false
+      
         },
         (error) => {
+          this.isUploadImage=false;
           console.error('Error uploading file', error);
         }
       );
@@ -86,6 +94,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
       
     } else {
       console.error('No file selected');
+      this.isUploadImage=false
     }
   }
 
