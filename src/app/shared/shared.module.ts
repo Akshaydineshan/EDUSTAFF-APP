@@ -19,6 +19,7 @@ import { EmployeeHoverPopupComponent } from './components/employee-hover-popup/e
 import { SchoolHoverPopupComponent } from './components/school-hover-popup/school-hover-popup.component';
 import { TeacherTableNameSectionComponent } from './components/teacher-table-name-section/teacher-table-name-section.component';
 import { EmployeeMenuClickListMenuComponent } from './components/employee-menu-click-list-menu/employee-menu-click-list-menu.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { EmployeeMenuClickListMenuComponent } from './components/employee-menu-c
    
     MatProgressSpinnerModule,
     ToastrModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot()
   ],
   exports: [
     TopbarComponent,
@@ -59,6 +61,7 @@ import { EmployeeMenuClickListMenuComponent } from './components/employee-menu-c
     TeacherTableNameSectionComponent,
     EmployeeMenuClickListMenuComponent,
     AgGridModule,
+    NgMultiSelectDropDownModule
   ]
 })
 export class SharedModule { }

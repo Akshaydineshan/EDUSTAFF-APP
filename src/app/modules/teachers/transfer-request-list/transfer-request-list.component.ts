@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, HostListener, OnInit, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -20,7 +21,7 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' },{ headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -49,32 +50,50 @@ export class TransferRequestListComponent implements OnInit {
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
   minDate: any;
+  toSchoolPr1:any;
+  toSchoolPr2:any;
+  toSchoolPr3:any;
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService,private ngZone:NgZone,private router:Router) {
+  selectedSchoolPriority1!: any
+  schoolDropdownSettings: IDropdownSettings = {
+    singleSelection: true,
+    idField: 'schoolId',
+    textField: 'schoolName',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+
+    itemsShowLimit: 1,
+    allowSearchFilter: true,
+
+  };
+  schoolDropDownListFilter: any[] = [];
+  showSecondDropdown: boolean = false;
+
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
 
 
   }
 
   ngOnInit(): void {
     this.loadtransferRequestList()
-    this.loadDropdownData()
+    // this.loadDropdownData()
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
     this.transferRequestForm = this.fb.group({
       fromSchool: [''],
-      toSchool: ['', Validators.required],
+      toSchool: ['',],
       documentUrl: ['', Validators.required],
       date: ['', [minAndMaxDateValidator(this.minDate, true, false)]],
       comment: ['']
     })
 
   }
-  dateChange(){
+  dateChange() {
     const dateControl = this.transferRequestForm.get('date');
-console.log("control",dateControl)
-    
+    console.log("control", dateControl)
+
     dateControl?.updateValueAndValidity();  // Manually trigger validation
   }
 
@@ -123,13 +142,30 @@ console.log("control",dateControl)
   }
 
   loadDropdownData() {
-
+    // let filterSchool:number[]=[this.selectMenuRowData.toSchoolID_One,this.selectMenuRowData.toSchoolID_Two,this.selectMenuRowData.toSchoolID_Three]
+    let filterSchool: any[] = [{ id: this.selectMenuRowData.toSchoolID_One, name: "Priority 1" },
+    { id: this.selectMenuRowData.toSchoolID_Two, name: "Priority 2" },
+    { id: this.selectMenuRowData.toSchoolID_Three, name: "Priority 3" },
+    ]
     forkJoin({
-      schools: this.dataService.getSchoolWithCity()
+      schools: this.dataService.getSchoolList()
 
     }).subscribe({
       next: (results: any) => {
+        console.log("school list", results)
         this.schoolDropDownList = results.schools;
+        const updatedList = [];
+        filterSchool.forEach((item: any) => {
+          const school = results.schools.find((school: any) => school.schoolId == item.id);
+          if (school) {
+            updatedList.push({
+              schoolId: school.schoolId,
+              schoolName: `${school.schoolName} (${item.name})`
+            });
+          }
+        })
+        updatedList.push({ schoolId: 0, schoolName: "Choose Other school" });
+        this.schoolDropDownListFilter = updatedList;
 
 
       },
@@ -139,6 +175,18 @@ console.log("control",dateControl)
       },
     });
   }
+
+  onFirstDropdownChange(selectedItem: any): void {
+    if (selectedItem && selectedItem.schoolId === 0) {
+      this.showSecondDropdown = true; // Show the second dropdown
+      this.transferRequestForm.get('toSchool')?.setValue(null)
+
+    } else {
+      this.showSecondDropdown = false; // Hide the second dropdown
+      // this.transferRequestForm.get('toSchool')?.setValue(null); // Reset the second dropdown value
+    }
+  }
+
 
 
   @HostListener('mousemove', ['$event'])
@@ -179,8 +227,8 @@ console.log("control",dateControl)
           field: column.field,
           filter: true,
           floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' || column.field === "toSchoolName" || column.field === "fromSchoolName" ? {
-            cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
+          ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
+            cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
             width: 220
           } : {}),
 
@@ -213,17 +261,17 @@ console.log("control",dateControl)
                     plusButton.classList.add('menuButton')
                     // plusButton.style.float = 'right';
                     plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
-                    this.ngZone.run(()=>{
+                    this.ngZone.run(() => {
                       plusButton.addEventListener('click', (event: any) => {
                         if (params.onStatusClick) {
                           params.onStatusClick(event, params);
                         }
                       });
                     })
-                   
+
                     div.appendChild(plusButton);
 
-                  }else{
+                  } else {
                     const plusButton = document.createElement('a');
                     plusButton.style.marginLeft = '10px';
                     plusButton.classList.add('menuButton')
@@ -302,22 +350,32 @@ console.log("control",dateControl)
 
 
   statusMenuClick(event: any, params: any) {
+
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
+    this.toSchoolPr1=this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2=this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3=this.selectMenuRowData.toSchoolThreeName;
     console.log("selectMenuRowData", this.selectMenuRowData)
+
 
     this.updateMenuMousePosition(event)
 
   }
 
   listClickFromMenuList(event: any) {
+    this.loadDropdownData()
     const dateControl = this.transferRequestForm.get('date');
+    this.showSecondDropdown = false;
     if (event.value === 'approve') {
       this.isRejectedClick = false;
-     dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false),Validators.required]);
+      this.transferRequestForm.get('toSchool')?.setValidators(Validators.required)
+      dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false), Validators.required]);
 
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
-      this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+      // this.transferRequestForm.get("toSchool")?.setValue([
+      //   this.schoolDropDownList.find((item:any)=> item.schoolId ===this.selectMenuRowData.toSchoolID )
+      // ])
       this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
       this.isTransferPopup = event.clicked
       this.isMenuVisible = false
@@ -325,7 +383,8 @@ console.log("control",dateControl)
       dateControl?.clearValidators();
       this.isRejectedClick = true;
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
-      this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+      // this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+      this.transferRequestForm.get('toSchool')?.clearValidators()
       this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
       this.isTransferPopup = event.clicked
       this.isMenuVisible = false
@@ -415,8 +474,8 @@ console.log("control",dateControl)
     } else if (event.colDef.field === "fromSchoolName") {
       this.onSchoolHover(rowData.fromSchoolID, rowData, event.event)
     }
-    else if (event.colDef.field === "toSchoolName") {
-      this.onSchoolHover(rowData.toSchoolID, rowData, event.event)
+    else if (event.colDef.field === "toApprovedSchoolName") {
+      this.onSchoolHover(rowData.toApprovedSchoolID, rowData, event.event)
     }
   }
   rowMouseHoverOut(event: any) {
@@ -436,14 +495,14 @@ console.log("control",dateControl)
       console.log("transfer form", this.transferRequestForm.value)
       let formValue: any = this.transferRequestForm.value;
       let employee: any = this.selectMenuRowData
-      if(!this.isRejectedClick){
+      if (!this.isRejectedClick) {
         let payload: any = {
-
+          "toSchoolIDApproved": formValue.toSchool[0].schoolId,
           "transferDate": formValue.date,
           "ApproverComment": formValue.comment,
           "filePath": formValue.documentUrl
         }
-          this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+        this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
@@ -456,22 +515,22 @@ console.log("control",dateControl)
               });
               this.transferRequestForm.reset()
               this.loadtransferRequestList()
-  
+
             }
-  
+
           },
           error: (error: any) => {
-  
+
           },
           complete: () => {
-  
-  
+
+
           }
         })
 
-      }else{
+      } else {
         let payload: any = {
-           "ApproverComment": formValue.comment,
+          "ApproverComment": formValue.comment,
         }
 
         this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
@@ -487,24 +546,24 @@ console.log("control",dateControl)
               });
               this.transferRequestForm.reset()
               this.loadtransferRequestList()
-  
+
             }
-  
+
           },
           error: (error: any) => {
-  
+
           },
           complete: () => {
-  
-  
+
+
           }
         })
 
       }
-    
+
     } else {
 
-      console.log("invalid form")
+      console.log("invalid form",this.transferRequestForm)
     }
   }
 
@@ -515,7 +574,7 @@ console.log("control",dateControl)
 
     if (event.colDef.field === "employeeName") {
       let teacherId: number = rowData.employeeID
-   
+
       this.ngZone.run(() => {
         this.router.navigate(['/teachers/view-teacher', teacherId])
       })
@@ -523,7 +582,7 @@ console.log("control",dateControl)
     } else if (event.colDef.field === "fromSchoolName") {
       let schoolId: number = rowData.fromSchoolID
       this.router.navigate(['/schools/view', schoolId])
-    }else if (event.colDef.field === "toSchoolName") {
+    } else if (event.colDef.field === "toSchoolName") {
       let schoolId: number = rowData.toSchoolID
       this.router.navigate(['/schools/view', schoolId])
     }

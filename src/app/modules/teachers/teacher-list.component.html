@@ -58,33 +58,32 @@
                     class="range-slider max-slider" (input)="onSliderChange()">
                   <div class="slider-track"></div>
                 </div> -->
-                
-                
+
+
                 <div class="range-slider">
                   <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="minSelected"
-                  [ngModelOptions]="{standalone: true}" 
-                    class="slider min-range" (change)="validateRange($event,'min')" />
+                    [ngModelOptions]="{standalone: true}" class="slider min-range"
+                    (change)="validateRange($event,'min')" />
 
                   <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="maxSelected"
-                  [ngModelOptions]="{standalone: true}" 
-                    class="slider max-range" (change)="validateRange($event,'max')" />
+                    [ngModelOptions]="{standalone: true}" class="slider max-range"
+                    (change)="validateRange($event,'max')" />
 
-                  <div class="slider-tracker" 
-                  ></div>
+                  <div class="slider-tracker"></div>
                   <div class="slider-range" [style.left.%]="((minSelected ) - minValue) / (maxValue - minValue) * 100"
                     [style.right.%]="100 - ((maxSelected) - minValue) / (maxValue - minValue) * 100">
                   </div>
-                  <div  class="range-inputs" style="position: relative; top:30px;">
-                    <input type="number" min="0" max="100" class="range-input" [(ngModel)]="minSelected" (change)="validateRange($event,'min')" 
-                    [ngModelOptions]="{standalone: true}">
-                    <input type="number" min="0" max="100" class="range-input" [(ngModel)]="maxSelected" (change)="validateRange($event,'max')" 
-                    [ngModelOptions]="{standalone: true}" >
+                  <div class="range-inputs" style="position: relative; top:30px;">
+                    <input type="number" min="0" max="100" class="range-input" [(ngModel)]="minSelected"
+                      (change)="validateRange($event,'min')" [ngModelOptions]="{standalone: true}">
+                    <input type="number" min="0" max="100" class="range-input" [(ngModel)]="maxSelected"
+                      (change)="validateRange($event,'max')" [ngModelOptions]="{standalone: true}">
                   </div>
 
-              
+
                 </div>
 
-              
+
 
                 <!-- <div class="range-inputs">
                   <input type="number" formControlName="minExperienceYear" class="range-input" min="0" max="100"
@@ -288,24 +287,73 @@
         </div>
       </div>
 
+    
       <div class="row mb-1">
-        <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
+        <label for="" class="col-sm-12 col-form-label"><span>Transfer To School (priority 1)</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
-          <select class="form-control" placeholder="select" formControlName="toSchool">
+
+          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+            [data]="schoolDropDownList" formControlName="toSchoolPriority1"  (onSelect)="onFirstDropdownChange($event)"  />
+            <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
             <option [disabled]="true" [value]="null">Select School</option>
             <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
             </option>
-          </select>
+          </select> -->
           <div
-            *ngIf="transferRequestForm.get('toSchool')?.invalid && (transferRequestForm.get('toSchool')?.['dirty'] || transferRequestForm.get('toSchool')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['pattern']">Invalid
-              Pattern</small>
-          </div>
+          *ngIf="transferRequestForm.get('toSchoolPriority1')?.invalid && ( transferRequestForm.get('toSchoolPriority1')?.['touched']  || submitted)">
+          <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['required']">Field is
+            required</small>
+          <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['pattern']">Invalid
+            Pattern</small>
+        </div>
         </div>
       </div>
+
+      <div class="row mb-1">
+        <label for="" class="col-sm-12 col-form-label"><span>Transfer To School (priority 2)</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
+        <div class="col-sm-12">
+
+          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+            [data]="schoolDropDownList" formControlName="toSchoolPriority2"  />
+            <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
+            <option [disabled]="true" [value]="null">Select School</option>
+            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
+            </option>
+          </select> -->
+          <div
+          *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
+          <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['required']">Field is
+            required</small>
+          <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['pattern']">Invalid
+            Pattern</small>
+        </div>
+        </div>
+      </div>
+
+      <div class="row mb-1">
+        <label for="" class="col-sm-12 col-form-label"><span>Transfer To School (priority 3)</span><span
+          class="text-danger ms-1 mad-f">*</span></label>
+        <div class="col-sm-12">
+
+          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+            [data]="schoolDropDownList" formControlName="toSchoolPriority3"  />
+            <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
+            <option [disabled]="true" [value]="null">Select School</option>
+            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
+            </option>
+          </select> -->
+          <div
+          *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
+          <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['required']">Field is
+            required</small>
+          <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['pattern']">Invalid
+            Pattern</small>
+        </div>
+        </div>
+      </div>
+   
       <div class="row mb-1 ">
         <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
             class="text-danger ms-1 mad-f">*</span></label>
@@ -323,7 +371,7 @@
 
       <div class="row mb-1">
 
-        <label for="" class="col-sm-12 col-form-label"><span>Date</span><span
+        <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
             class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <input type="date" [min]="minDate" class="form-control" formControlName="date">

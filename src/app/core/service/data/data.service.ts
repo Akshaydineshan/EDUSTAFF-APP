@@ -288,6 +288,9 @@ export class DataService {
   getSchoolWithCity(): Observable<any> {
     return this.http.get(`${this.apiUrl}School/withcity`);
   }
+  getSchoolList(): Observable<any> {
+    return this.http.get(`${this.apiUrl}ProfileDetails/GetAllSchools`);
+  }
   getAllDesignations(): Observable<any> {
     return this.http.get(`${this.apiUrl}ProfileDetails/GetAllDesignations`);
   }

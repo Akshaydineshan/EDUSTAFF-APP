@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { TeacherTableNameSectionComponent } from 'src/app/shared/components/teacher-table-name-section/teacher-table-name-section.component';
 import { forkJoin } from 'rxjs';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -92,6 +93,19 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   minSelected:any = 0; 
   maxSelected:any = 100; 
 
+  selectedSchoolPriority1!:any
+  schoolDropdownSettings:IDropdownSettings = {
+    singleSelection: true,
+    idField: 'schoolId',
+    textField: 'schoolName',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+   
+    itemsShowLimit: 3,
+    allowSearchFilter: true,
+  
+  };
+
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
@@ -116,7 +130,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     this.transferRequestForm = this.fb.group({
       fromSchool: [{ value: '', }],
-      toSchool: ['', Validators.required],
+      toSchoolPriority1: ['', Validators.required],
+      toSchoolPriority2: ['', Validators.required],
+      toSchoolPriority3: ['', Validators.required],
       documentUrl: ['', Validators.required],
       date: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: ['']
@@ -247,6 +263,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   transferRequestFormSubmit() {
     this.submitted = true
+    console.log("transferForm",this.transferRequestForm)
 
     if (this.transferRequestForm.valid) {
       console.log("transfer form", this.transferRequestForm.value)
@@ -254,7 +271,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       let employee: any = this.selectMenuRowData
       let payload: any = {
         "employeeID": employee.teacherId,
-        "toSchoolID": formValue.toSchool.schoolID,
+        "toSchoolIDOne": formValue.toSchoolPriority1[0].schoolId,
+        "toSchoolIDTwo": formValue.toSchoolPriority2[0].schoolId,
+        "toSchoolIDThree": formValue.toSchoolPriority3[0].schoolId,
         "transferDate": this.dataService.formatDateToISO(formValue.date),
         // "approvalDate": this.dataService.formatDateToISO(formValue.date),
         // "requestedByID": null,
@@ -556,12 +575,13 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   loadDropdownData() {
 
     forkJoin({
-      schools: this.dataService.getSchoolWithCity()
+      schools: this.dataService.getSchoolList()
 
     }).subscribe({
       next: (results: any) => {
+        console.log("result",results)
 
-        this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolID);
+        this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
       },
       error: (error) => {
         console.error('Error loading dropdown data', error);
@@ -638,6 +658,10 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       this.showFilterModal = !this.showFilterModal;
     })
 
+  }
+
+  onFirstDropdownChange(selectedItem: any): void {
+  
   }
 
   applyFilters() {
