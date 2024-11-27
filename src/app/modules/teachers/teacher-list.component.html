@@ -305,9 +305,24 @@
         </div>
         </div>
       </div>
+      <div class="row mb-1 ">
+        <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
+            class="text-danger ms-1 mad-f"></span></label>
+        <div class="col-sm-12">
+          <input type="text" class="form-control" formControlName="documentUrl">
+          <div
+            *ngIf="leaveRequestForm.get('documentUrl')?.invalid && (leaveRequestForm.get('documentUrl')?.['dirty'] || leaveRequestForm.get('documentUrl')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="leaveRequestForm.get('documentUrl')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
+        </div>
+      </div>
 
       <div class="row mb-1 ">
-        <label class="col-sm-12 col-form-label">Reason</label>
+        <label for="" class="col-sm-12 col-form-label"><span>Reason</span><span
+          class="text-danger ms-1 mad-f"></span></label>
         <div class="col-sm-12">
           <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
             formControlName="comment">

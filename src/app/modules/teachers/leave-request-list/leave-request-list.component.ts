@@ -491,12 +491,11 @@ export class LeaveRequestListComponent {
       let employee: any = this.selectMenuRowData
       if (!this.isRejectedClick) {
         let payload: any = {
-          "toSchoolIDApproved": formValue.toSchool[0].schoolId,
-          "transferDate": formValue.date,
+         
           "ApproverComment": formValue.comment,
-          "filePath": formValue.documentUrl
+         
         }
-        this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+        this.dataService.approveLeaveRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
@@ -527,7 +526,7 @@ export class LeaveRequestListComponent {
           "ApproverComment": formValue.comment,
         }
 
-        this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+        this.dataService.rejectLeaveRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false

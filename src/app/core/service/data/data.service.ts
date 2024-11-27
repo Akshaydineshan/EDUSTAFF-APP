@@ -226,6 +226,16 @@ export class DataService {
     formData.append('PhotoFile', photoFile);
     return this.http.post(this.apiUrl + 'Teacher/UploadPhoto' + '/' + teacherId, formData);
   }
+  createLeaveRequest(data: any): Observable<any> {
+
+    return this.http.post(this.apiUrl + 'LeaveRequest/CreateLeaveRequest', data);
+  }
+  approveLeaveRequest(data: any, id: number): Observable<any> {
+    return this.http.patch(this.apiUrl + `LeaveRequest/ApproveLeaveRequest/${id}`, data);
+  }
+  rejectLeaveRequest(data: any, id: number): Observable<any> {
+    return this.http.put(this.apiUrl + `LeaveRequest/RejectLeaveRequest/${id}`, data);
+  }
   createTransferRequest(data: any): Observable<any> {
 
     return this.http.post(this.apiUrl + 'TransferRequest/CreateTransferRequest', data);

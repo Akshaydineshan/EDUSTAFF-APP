@@ -90,24 +90,24 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   minDate: any;
 
 
-  minValue:any = 0; 
-  maxValue:any = 100; 
-  minSelected:any = 0; 
-  maxSelected:any = 100; 
+  minValue: any = 0;
+  maxValue: any = 100;
+  minSelected: any = 0;
+  maxSelected: any = 100;
 
-  selectedSchoolPriority1!:any
-  schoolDropdownSettings:IDropdownSettings = {
+  selectedSchoolPriority1!: any
+  schoolDropdownSettings: IDropdownSettings = {
     singleSelection: true,
     idField: 'schoolId',
     textField: 'schoolName',
     selectAllText: 'Select All',
     unSelectAllText: 'UnSelect All',
-   
+
     itemsShowLimit: 3,
     allowSearchFilter: true,
-  
+
   };
-  tableColorChange:boolean=false;
+  tableColorChange: boolean = false;
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
@@ -145,7 +145,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.leaveRequestForm = this.fb.group({
       fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
-      comment: ['']
+      comment: [''],
+      documentUrl: ['',],
     })
 
     // this.loadDropdownData()
@@ -154,7 +155,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     //   this.updateSliderTrack();
     // });
 
- 
+
 
   }
 
@@ -211,13 +212,13 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   onMenuAction(action: string, teacher: any) {
   }
 
-  validateRange(event:any,changed: 'min' | 'max'): void {
+  validateRange(event: any, changed: 'min' | 'max'): void {
     if (changed === 'min' && this.minSelected >= this.maxSelected) {
       event.preventDefault()
       this.minSelected = this.maxSelected - 1;
     } else if (changed === 'max' && this.maxSelected <= this.minSelected) {
       event.preventDefault()
-      this.maxSelected = this.minSelected + 1; 
+      this.maxSelected = this.minSelected + 1;
     }
   }
 
@@ -273,7 +274,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   transferRequestFormSubmit() {
     this.submitted = true
-    console.log("transferForm",this.transferRequestForm)
+    console.log("transferForm", this.transferRequestForm)
 
     if (this.transferRequestForm.valid) {
       console.log("transfer form", this.transferRequestForm.value)
@@ -339,25 +340,25 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   }
 
-  leaveRequestFormSubmit(){
+  leaveRequestFormSubmit() {
     this.submitted = true
-    console.log("leaveForm",this.leaveRequestForm)
+    console.log("leaveForm", this.leaveRequestForm)
 
     if (this.leaveRequestForm.valid) {
-     
+
       let formValue: any = this.leaveRequestForm.value;
       let employee: any = this.selectMenuRowData
       let payload: any = {
         "employeeID": employee.teacherId,
-         "startDate":formValue.startDate,
-         "endDate":formValue.endDate,
-         "RequestorComment": formValue.comment,
+        "fromDate": this.dataService.formatDateToLocal(formValue.fromDate),
+        "toDate": this.dataService.formatDateToLocal(formValue.toDate),
+        "RequestorComment": formValue.comment,
         "filePath": formValue.documentUrl
       }
-    
 
 
-      this.dataService.createTransferRequest(payload).subscribe({
+
+      this.dataService.createLeaveRequest(payload).subscribe({
         next: (response: any) => {
           console.log(response, response)
           if (response.status == 200) {
@@ -651,7 +652,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     }).subscribe({
       next: (results: any) => {
-        console.log("result",results)
+        console.log("result", results)
 
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
       },
@@ -733,17 +734,17 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   onFirstDropdownChange(selectedItem: any): void {
-  
+
   }
 
   applyFilters() {
     debugger
-   
+
     this.ngZone.run(() => {
       debugger
       const filters = this.filterForm.value;
-      filters.minExperienceYear=this.minSelected;
-      filters.maxExperienceYear=this.maxSelected
+      filters.minExperienceYear = this.minSelected;
+      filters.maxExperienceYear = this.maxSelected
 
       this.dataService.filterTeacherList(filters).subscribe((data: any) => {
         this.teacherList = data.map((teacher: TeacherDocument) => ({
@@ -764,8 +765,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   resetFilter() {
-    this.minSelected=0;
-    this.maxSelected=100
+    this.minSelected = 0;
+    this.maxSelected = 100
     this.ngZone.run(() => {
       this.filterForm.reset({
         subjectFilter: "",
@@ -779,7 +780,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         newRecruit: false
       });
       this.loadTeachersList();
-      this.showFilterModal=false
+      this.showFilterModal = false
     })
   }
 
@@ -828,7 +829,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 1);
+      }, 400);
     }
   }
 
@@ -854,7 +855,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      }, 400);
     }
   }
 
@@ -980,14 +981,14 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   menuBtnEventFunction(event: any, params: any) {
-  debugger
+    debugger
     this.showPopup = false;
     this.showSchoolPopup = false
     this.isTransferPopup
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
-   
-   
+
+
     this.updateMenuMousePosition(event)
   }
 
@@ -1003,18 +1004,18 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   listClickFromMenuList(event: any) {
     debugger
-    console.log("EVENT->",event)
+    console.log("EVENT->", event)
     this.showPopup = false;
     this.showSchoolPopup = false;
 
-    this.tableColorChange=true
+    this.tableColorChange = true
     if (event.value === 'transferRequest') {
       debugger
       this.loadDropdownData()
       this.isTransferPopup = event.clicked
       this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
       this.isMenuVisible = false
-    }else if(event.value ==='leaveRequest'){
+    } else if (event.value === 'leaveRequest') {
       this.isLeavePopup = event.clicked
       this.isMenuVisible = false
     }
@@ -1026,14 +1027,14 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.submitted = false
     this.isTransferPopup = false
     this.isMenuVisible = false
-    this.tableColorChange=false
+    this.tableColorChange = false
   }
   closeLeavePopup() {
     // this.leaveRequestForm.reset()
     this.submitted = false
     this.isLeavePopup = false
     this.isMenuVisible = false
-    this.tableColorChange=false
+    this.tableColorChange = false
   }
 
 
