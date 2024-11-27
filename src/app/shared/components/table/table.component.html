@@ -1,17 +1,19 @@
 
-<ag-grid-angular
-[rowData]="rowData"
-[columnDefs]="colDefs"
-class="ag-theme-quartz"
-style="height: 600px;"
-[pagination]="paginationConfig.pagination"
-[paginationPageSize]="paginationConfig.paginationPageSize"
-[paginationPageSizeSelector]="paginationConfig.paginationPageSizeSelector"
-[domLayout]="'autoHeight'"
-(menuBtnClickE)="BtnClick($event)" 
-(cellMouseOver)="onRowMouseEnter($event)" 
-(cellMouseOut)="onCellMouseOut($event)"  
-(cellClicked)="onCellClicked($event)"
-(gridReady)="onGridReady($event)"
+    <ag-grid-angular
+    [rowData]="rowData"
+    [columnDefs]="colDefs"
+    class="ag-theme-quartz "
+    [ngClass]="tableColorChange? 'ag-theme-alpine' : '' "
+    style="height: 600px;"
+    [pagination]="paginationConfig.pagination"
+    [paginationPageSize]="paginationConfig.paginationPageSize"
+    [paginationPageSizeSelector]="paginationConfig.paginationPageSizeSelector"
+    [domLayout]="'autoHeight'"
+    (menuBtnClickE)="BtnClick($event)" 
+    (cellMouseOver)="onRowMouseEnter($event)" 
+    (cellMouseOut)="onCellMouseOut($event)"  
+    (cellClicked)="onCellClicked($event)"
+    (gridReady)="onGridReady($event)"
+    
+    />
 
-/>

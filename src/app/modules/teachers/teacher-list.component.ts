@@ -36,6 +36,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   paginatedData: any[] = [];
   displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
   isTransferPopup: boolean = false;
+  isLeavePopup: boolean = false;
   selectedTeacher: any = null;
   hoveredTeacherId: number | null = null;
   hoverTimeout: any;
@@ -66,6 +67,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   };
 
   transferRequestForm!: FormGroup
+  leaveRequestForm!: FormGroup
 
   schools = [
     { id: '1', name: 'School A' },
@@ -105,6 +107,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     allowSearchFilter: true,
   
   };
+  tableColorChange:boolean=false;
+
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
     this.filterForm = this.fb.group({
@@ -135,6 +139,12 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       toSchoolPriority3: ['', Validators.required],
       documentUrl: ['', Validators.required],
       date: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
+      comment: ['']
+    })
+
+    this.leaveRequestForm = this.fb.group({
+      fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
+      toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: ['']
     })
 
@@ -324,6 +334,68 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       console.log("invalid form")
     }
 
+
+
+
+  }
+
+  leaveRequestFormSubmit(){
+    this.submitted = true
+    console.log("leaveForm",this.leaveRequestForm)
+
+    if (this.leaveRequestForm.valid) {
+     
+      let formValue: any = this.leaveRequestForm.value;
+      let employee: any = this.selectMenuRowData
+      let payload: any = {
+        "employeeID": employee.teacherId,
+         "startDate":formValue.startDate,
+         "endDate":formValue.endDate,
+         "RequestorComment": formValue.comment,
+        "filePath": formValue.documentUrl
+      }
+    
+
+
+      this.dataService.createTransferRequest(payload).subscribe({
+        next: (response: any) => {
+          console.log(response, response)
+          if (response.status == 200) {
+            this.submitted = false
+            this.isLeavePopup = false;
+            this.toastr.success('Leave Requested !', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            this.leaveRequestForm.reset()
+
+          }
+
+        },
+        error: (error: any) => {
+          if (error.status === 409) {
+            this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            // this.isTransferPopup = false;
+          }
+
+
+        },
+        complete: () => {
+          this.leaveRequestForm.reset()
+
+        }
+      })
+    } else {
+
+      console.log("invalid form")
+    }
 
 
 
@@ -935,12 +1007,15 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.showPopup = false;
     this.showSchoolPopup = false;
 
-
+    this.tableColorChange=true
     if (event.value === 'transferRequest') {
       debugger
       this.loadDropdownData()
       this.isTransferPopup = event.clicked
       this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
+      this.isMenuVisible = false
+    }else if(event.value ==='leaveRequest'){
+      this.isLeavePopup = event.clicked
       this.isMenuVisible = false
     }
 
@@ -951,6 +1026,14 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.submitted = false
     this.isTransferPopup = false
     this.isMenuVisible = false
+    this.tableColorChange=false
+  }
+  closeLeavePopup() {
+    // this.leaveRequestForm.reset()
+    this.submitted = false
+    this.isLeavePopup = false
+    this.isMenuVisible = false
+    this.tableColorChange=false
   }
 
 

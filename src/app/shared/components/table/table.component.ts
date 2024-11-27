@@ -16,6 +16,7 @@ export class TableComponent implements OnInit {
   // Row Data: The data to be displayed.
   @Input() rowData!: any[]
   @Input() colDefs!: any[]
+  @Input() tableColorChange:boolean=false
   @Input() paginationConfig!: PagonationConfig
   @Output() OnRowMouseOverEvent: any = new EventEmitter()
   @Output() OnRowMouseOutEvent: any = new EventEmitter()

@@ -13,6 +13,7 @@ import { EducationalDetailsComponent } from './add-teacher/educational-details/e
 import { ProfessionalDetailsComponent } from './add-teacher/professional-details/professional-details.component';
 import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
+import { LeaveRequestListComponent } from './leave-request-list/leave-request-list.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { TransferRequestListComponent } from './transfer-request-list/transfer-r
     EducationalDetailsComponent,
     ProfessionalDetailsComponent,
     TeacherViewComponent,
-    TransferRequestListComponent
+    TransferRequestListComponent,
+    LeaveRequestListComponent
   ],
   imports: [
     CommonModule,

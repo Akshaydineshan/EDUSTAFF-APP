@@ -17,11 +17,19 @@ export function minAndMaxDateValidator(minDate: string,min:boolean,max:boolean):
 console.log("inside")
   return (control: AbstractControl): ValidationErrors | null => {
     debugger
+    console.log("control.value->",control)
+    if (control.value == null || control.value=='') {
+     
+      return { 'required': true };
+    }
+
    
     const inputDate = new Date(control.value);
+   
   
     const minDateObj = new Date(minDate);  // Convert minDate string to a Date object
 
+   
     // If the date is not valid or if the input is before the minDate
     if (isNaN(inputDate.getTime()) || inputDate.getFullYear().toString().length !== 4) {
       return { 'invalidDate': true };
