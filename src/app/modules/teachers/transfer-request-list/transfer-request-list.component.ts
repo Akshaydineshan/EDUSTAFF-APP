@@ -515,6 +515,7 @@ export class TransferRequestListComponent implements OnInit {
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
+              this.tableColorChange=false;
               this.toastr.success('Transfer Approved !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -531,7 +532,8 @@ export class TransferRequestListComponent implements OnInit {
 
           },
           complete: () => {
-
+            this.isTransferPopup = false;
+            this.tableColorChange=false;
 
           }
         })
@@ -546,6 +548,7 @@ export class TransferRequestListComponent implements OnInit {
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
+              this.tableColorChange=false;
               this.toastr.success('Transfer Rejected !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -562,7 +565,8 @@ export class TransferRequestListComponent implements OnInit {
 
           },
           complete: () => {
-
+            this.isTransferPopup = false;
+            this.tableColorChange=false;
 
           }
         })

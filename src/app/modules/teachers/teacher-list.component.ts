@@ -301,6 +301,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           if (response.status == 200) {
             this.submitted = false
             this.isTransferPopup = false;
+            this.tableColorChange = false;
             this.toastr.success('Transfer Requested !', 'Success', {
               closeButton: true,
               progressBar: true,
@@ -327,6 +328,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         },
         complete: () => {
           this.transferRequestForm.reset()
+          this.isTransferPopup = false;
+          this.tableColorChange = false;
 
         }
       })
@@ -341,6 +344,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   leaveRequestFormSubmit() {
+
     this.submitted = true
     console.log("leaveForm", this.leaveRequestForm)
 
@@ -364,6 +368,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           if (response.status == 200) {
             this.submitted = false
             this.isLeavePopup = false;
+            this.tableColorChange = false;
             this.toastr.success('Leave Requested !', 'Success', {
               closeButton: true,
               progressBar: true,
@@ -390,6 +395,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         },
         complete: () => {
           this.leaveRequestForm.reset()
+          this.isLeavePopup = false;
+          this.tableColorChange = false;
 
         }
       })
@@ -883,7 +890,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   nameColumnHover(event: any, ev: any) {
-
+    this.isMenuVisible = false;
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
@@ -893,7 +900,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
   rowMouseHover(event: any) {
-    debugger
+    this.isMenuVisible = false;
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "schoolName") {
