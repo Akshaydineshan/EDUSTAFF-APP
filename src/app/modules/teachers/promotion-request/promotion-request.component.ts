@@ -11,25 +11,28 @@ interface PagonationConfig {
   paginationPageSize: number,
   paginationPageSizeSelector: number[]
 }
+
 @Component({
-  selector: 'app-leave-request-list',
-  templateUrl: './leave-request-list.component.html',
-  styleUrls: ['./leave-request-list.component.scss'],
+  selector: 'app-promotion-request',
+  templateUrl: './promotion-request.component.html',
+  styleUrls: ['./promotion-request.component.scss'],
   providers: [DatePipe]
 })
-export class LeaveRequestListComponent {
+export class PromotionRequestComponent {
+
+
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Start Date', field: 'fromDate' }, { headerName: 'End Date', field: 'toDate' }, { headerName: 'Applied Date', field: 'requestDate' }, { headerName: 'Reason', field: 'requestorComment' }, { headerName: 'ManagerComment', field: 'approverComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
-  leaveList: any[] = [];
-  leaveTableRows: any;
-  leaveTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
+  transferList: any[] = [];
+  transferTableRows: any;
+  transferTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
 
   mouseX!: number
   mouseY!: number
   hoveredEmployee: any;
-  showPopup!: boolean
+  showPopup!: boolean;
   hoverTimeout!: any;
   showSchoolPopup: boolean = false;
   selectedSchool: any;
@@ -49,9 +52,9 @@ export class LeaveRequestListComponent {
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
   minDate: any;
-  toSchoolPr1: any;
-  toSchoolPr2: any;
-  toSchoolPr3: any;
+  toSchoolPr1:any;
+  toSchoolPr2:any;
+  toSchoolPr3:any;
 
   selectedSchoolPriority1!: any
   schoolDropdownSettings: IDropdownSettings = {
@@ -67,8 +70,8 @@ export class LeaveRequestListComponent {
   };
   schoolDropDownListFilter: any[] = [];
   showSecondDropdown: boolean = false;
-  isLeavePopup: boolean = false;
-  tableColorChange: boolean = false;
+  isLeavePopup: boolean=false;
+  tableColorChange:boolean=false;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
 
@@ -76,17 +79,17 @@ export class LeaveRequestListComponent {
   }
 
   ngOnInit(): void {
-    this.loadLeaveRequestList()
+    this.loadtransferRequestList()
     // this.loadDropdownData()
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
     this.leaveRequestForm = this.fb.group({
-
-      // documentUrl: ['', Validators.required],
-      fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
-      toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
+     
+      documentUrl: ['', Validators.required],
+      fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false),Validators.required]],
+      toDate: ['', [minAndMaxDateValidator(this.minDate, true, false),Validators.required]],
       comment: ['']
     })
 
@@ -143,7 +146,7 @@ export class LeaveRequestListComponent {
   }
 
   // loadDropdownData() {
-
+   
   //   let filterSchool: any[] = [{ id: this.selectMenuRowData.toSchoolID_One, name: "Priority 1" },
   //   { id: this.selectMenuRowData.toSchoolID_Two, name: "Priority 2" },
   //   { id: this.selectMenuRowData.toSchoolID_Three, name: "Priority 3" },
@@ -184,7 +187,7 @@ export class LeaveRequestListComponent {
 
   //   } else {
   //     this.showSecondDropdown = false; 
-
+      
   //   }
   // }
 
@@ -212,117 +215,116 @@ export class LeaveRequestListComponent {
 
   }
 
-  loadLeaveRequestList() {
+  loadtransferRequestList() {
 
-    this.dataService.getLeaveRequestData().subscribe(
-      (data: any) => {
-        debugger
-        this.leaveList = data;
-        console.log("leave list data", this.leaveList);
-        this.leaveTableRows = this.leaveList
-        this.leaveTableColumns = this.displayColumns.map((column) => ({
-          headerName: column.headerName,
-         
-          valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'fromDate' || column.field === 'toDate'
-            ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
-            : undefined,
-          field: column.field,
-          filter: true,
-          floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' ? {
-            cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
-            width: 220
-          } : {}),
+    // this.dataService.getTransferRequestData().subscribe(
+    //   (data: any) => {
+    //     debugger
+    //     this.transferList = data;
+    //     console.log("school list data", this.transferList);
+    //     this.transferTableRows = this.transferList
+    //     this.transferTableColumns = this.displayColumns.map((column) => ({
+    //       headerName: column.headerName,
+    //       valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
+    //         ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
+    //         : undefined,
+    //       field: column.field,
+    //       filter: true,
+    //       floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
+    //       ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
+    //         cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
+    //         width: 220
+    //       } : {}),
 
-          ...(column.field === 'status' ?
-            {
-              cellRenderer: (params: any) => {
-                if (true) {
-                  const div = document.createElement('div');
-                  div.style.display = "flex"
-                  div.style.justifyContent = "space-between"
+    //       ...(column.field === 'status' ?
+    //         {
+    //           cellRenderer: (params: any) => {
+    //             if (true) {
+    //               const div = document.createElement('div');
+    //               div.style.display = "flex"
+    //               div.style.justifyContent = "space-between"
 
-                  // Create anchor element for the name
-                  const divSub = document.createElement('div');
-                  divSub.style.height = "100%"
-
-
-                  const nameLink = document.createElement('a');
-                  nameLink.style.cursor = 'pointer';
-                  // nameLink.style.color = '#246CC1';
-
-                  nameLink.textContent = params.value;
-                  divSub.appendChild(nameLink)
-                  div.appendChild(divSub);
-
-                  // Create another anchor element for the plus button
-
-                  if (params.value == 'Pending') {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
-                    this.ngZone.run(() => {
-                      plusButton.addEventListener('click', (event: any) => {
-                        if (params.onStatusClick) {
-                          params.onStatusClick(event, params);
-                        }
-                      });
-                    })
-
-                    div.appendChild(plusButton);
-
-                  } else {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
-                    plusButton.addEventListener('click', (event: any) => {
-                      // if (params.onStatusClick) {
-                      //   params.onStatusClick(event, params);
-                      // }
-                    });
-                    div.appendChild(plusButton);
-
-                  }
+    //               // Create anchor element for the name
+    //               const divSub = document.createElement('div');
+    //               divSub.style.height = "100%"
 
 
+    //               const nameLink = document.createElement('a');
+    //               nameLink.style.cursor = 'pointer';
+    //               // nameLink.style.color = '#246CC1';
 
+    //               nameLink.textContent = params.value;
+    //               divSub.appendChild(nameLink)
+    //               div.appendChild(divSub);
 
-                  // Append the elements to the div
+    //               // Create another anchor element for the plus button
+
+    //               if (params.value == 'Pending') {
+    //                 const plusButton = document.createElement('a');
+    //                 plusButton.style.marginLeft = '10px';
+    //                 plusButton.classList.add('menuButton')
+    //                 // plusButton.style.float = 'right';
+    //                 plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+    //                 this.ngZone.run(() => {
+    //                   plusButton.addEventListener('click', (event: any) => {
+    //                     if (params.onStatusClick) {
+    //                       params.onStatusClick(event, params);
+    //                     }
+    //                   });
+    //                 })
+
+    //                 div.appendChild(plusButton);
+
+    //               } else {
+    //                 const plusButton = document.createElement('a');
+    //                 plusButton.style.marginLeft = '10px';
+    //                 plusButton.classList.add('menuButton')
+    //                 // plusButton.style.float = 'right';
+    //                 plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
+    //                 plusButton.addEventListener('click', (event: any) => {
+    //                   // if (params.onStatusClick) {
+    //                   //   params.onStatusClick(event, params);
+    //                   // }
+    //                 });
+    //                 div.appendChild(plusButton);
+
+    //               }
 
 
 
 
-                  return div;
-
-                } else {
-                  return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
-                }
-              }
+    //               // Append the elements to the div
 
 
 
-              ,
-              cellRendererParams: {
-                onStatusClick: (event: MouseEvent, params: any) => {
-                  this.statusMenuClick(event, params)
-                },
-              }
-            } : {}
-          )
 
-        }));
+    //               return div;
+
+    //             } else {
+    //               return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
+    //             }
+    //           }
 
 
 
-      },
-      (error: any) => {
-        console.error('Error fetching school data:', error);
-      }
-    );
+    //           ,
+    //           cellRendererParams: {
+    //             onStatusClick: (event: MouseEvent, params: any) => {
+    //               this.statusMenuClick(event, params)
+    //             },
+    //           }
+    //         } : {}
+    //       )
+
+    //     }));
+
+
+
+    //   },
+    //   (error: any) => {
+    //     console.error('Error fetching school data:', error);
+    //   }
+    // );
 
   }
 
@@ -355,9 +357,9 @@ export class LeaveRequestListComponent {
 
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
-    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
-    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
-    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+    this.toSchoolPr1=this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2=this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3=this.selectMenuRowData.toSchoolThreeName;
     console.log("selectMenuRowData", this.selectMenuRowData)
 
 
@@ -367,18 +369,18 @@ export class LeaveRequestListComponent {
 
   listClickFromMenuList(event: any) {
     // this.loadDropdownData()
-    this.tableColorChange = true;
-
+     this.tableColorChange=true;
+   
     if (event.value === 'approve') {
-      this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
-      this.leaveRequestForm.get("toDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.toDate))
       this.isRejectedClick = false;
+     
+
       this.isLeavePopup = event.clicked
-      this.isMenuVisible = false;
+      this.isMenuVisible = false
     } else if (event.value === 'reject') {
-      this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
-      this.leaveRequestForm.get("toDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.toDate))
+  
       this.isRejectedClick = true;
+     
       this.isLeavePopup = event.clicked
       this.isMenuVisible = false
     }
@@ -444,7 +446,7 @@ export class LeaveRequestListComponent {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 450);
+      }, 200);
     }
   }
   onTeacherMouseOut(): void {
@@ -492,24 +494,23 @@ export class LeaveRequestListComponent {
       let employee: any = this.selectMenuRowData
       if (!this.isRejectedClick) {
         let payload: any = {
-
+         
           "ApproverComment": formValue.comment,
-
+         
         }
-        this.dataService.approveLeaveRequest(payload, this.selectMenuRowData.leaveRequestID).subscribe({
+        this.dataService.approveLeaveRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
-              this.isLeavePopup = false;
-              this.tableColorChange = false;
-              this.toastr.success('Leave Approved !', 'Success', {
+              this.isTransferPopup = false;
+              this.toastr.success('Transfer Approved !', 'Success', {
                 closeButton: true,
                 progressBar: true,
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
               this.leaveRequestForm.reset()
-              this.loadLeaveRequestList()
+              this.loadtransferRequestList()
 
             }
 
@@ -518,8 +519,7 @@ export class LeaveRequestListComponent {
 
           },
           complete: () => {
-            this.isLeavePopup = false;
-            this.tableColorChange = false;
+
 
           }
         })
@@ -529,12 +529,11 @@ export class LeaveRequestListComponent {
           "ApproverComment": formValue.comment,
         }
 
-        this.dataService.rejectLeaveRequest(payload, this.selectMenuRowData.leaveRequestID).subscribe({
+        this.dataService.rejectLeaveRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
-              this.isLeavePopup = false;
-              this.tableColorChange = false;
+              this.isTransferPopup = false;
               this.toastr.success('Transfer Rejected !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -542,23 +541,15 @@ export class LeaveRequestListComponent {
                 timeOut: 4500,
               });
               this.leaveRequestForm.reset()
-              this.loadLeaveRequestList()
+              this.loadtransferRequestList()
 
             }
 
           },
           error: (error: any) => {
-            this.toastr.error('Leave Reject !', 'Failed', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
 
           },
           complete: () => {
-            this.isLeavePopup = false;
-            this.tableColorChange = false;
 
 
           }
@@ -568,7 +559,7 @@ export class LeaveRequestListComponent {
 
     } else {
 
-      console.log("invalid form", this.leaveRequestForm)
+      console.log("invalid form",this.leaveRequestForm)
     }
   }
 
@@ -599,7 +590,7 @@ export class LeaveRequestListComponent {
     this.submitted = false;
     this.isLeavePopup = false;
     this.isMenuVisible = false;
-    this.tableColorChange = false;
+    this.tableColorChange=false;
   }
   overlayClick() {
     this.showPopup = false;
@@ -607,4 +598,3 @@ export class LeaveRequestListComponent {
 
   }
 }
-

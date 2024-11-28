@@ -1,6 +1,6 @@
 import { ColDef } from 'ag-grid-community';
 import { AfterViewInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Teacher, TeacherDocument, TransferRequest } from 'src/app/core/models/teacher/teacher';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { environment } from 'src/environments/environment';
@@ -108,6 +108,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   };
   tableColorChange: boolean = false;
+  file: any;
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
@@ -147,6 +148,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: [''],
       documentUrl: ['',],
+      document: ['',]
     })
 
     // this.loadDropdownData()
@@ -357,7 +359,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         "fromDate": this.dataService.formatDateToLocal(formValue.fromDate),
         "toDate": this.dataService.formatDateToLocal(formValue.toDate),
         "RequestorComment": formValue.comment,
-        "filePath": formValue.documentUrl
+        "DocumentID": formValue.document.documentID
       }
 
 
@@ -1042,6 +1044,38 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.isLeavePopup = false
     this.isMenuVisible = false
     this.tableColorChange = false
+  }
+
+  
+  onCertificateUpload(event: any): void {
+    debugger
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+    }
+    this.uploadFile()
+  }
+
+  uploadFile(): void {
+    debugger
+    if (this.file) {
+
+      let file = this.file
+      this.dataService.uploadDocument(file).subscribe(
+        (response) => {
+          console.log('File uploaded successfully', response);
+          const educations = this.leaveRequestForm.get('document') as FormControl;
+          educations.patchValue(response)
+        },
+        (error) => {
+          console.error('Error uploading file', error);
+        }
+      );
+
+
+    } else {
+      console.error('No file selected');
+    }
   }
 
 

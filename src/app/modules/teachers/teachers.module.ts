@@ -14,6 +14,7 @@ import { ProfessionalDetailsComponent } from './add-teacher/professional-details
 import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
 import { LeaveRequestListComponent } from './leave-request-list/leave-request-list.component';
+import { PromotionRequestComponent } from './promotion-request/promotion-request.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { LeaveRequestListComponent } from './leave-request-list/leave-request-li
     ProfessionalDetailsComponent,
     TeacherViewComponent,
     TransferRequestListComponent,
-    LeaveRequestListComponent
+    LeaveRequestListComponent,
+    PromotionRequestComponent
   ],
   imports: [
     CommonModule,

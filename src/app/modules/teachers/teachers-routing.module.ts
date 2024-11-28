@@ -8,12 +8,14 @@ import { TeacherDetailsComponent } from './teacher-details/teacher-details.compo
 import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
 import { LeaveRequestListComponent } from './leave-request-list/leave-request-list.component';
+import { PromotionRequestComponent } from './promotion-request/promotion-request.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
   { path: 'teacher-list', component: TeacherListComponent },
   { path: 'transfer-request-list', component: TransferRequestListComponent },
   { path: 'leave', component: LeaveRequestListComponent },
+  { path: 'promotion-requests', component: PromotionRequestComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
   { path: 'add-teacher', component: AddTeacherComponent },
   { path: 'add-teacher/:id', component: AddTeacherComponent },

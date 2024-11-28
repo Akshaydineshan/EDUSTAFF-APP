@@ -3,8 +3,8 @@
 
 
 
-<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup || isLeavePopup"
-  (click)="overlayClick()">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed"
+  [class.blur-content]="isTransferPopup || isLeavePopup" (click)="overlayClick()">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>Teachers List
       <span class="badge badge-secondary">{{ teacherList.length }}</span>
@@ -295,17 +295,17 @@
         <div class="col-sm-12">
           <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
           <div
-          *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
-          <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
-            required</small>
-          <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['invalidDate']">Invalid Date
-            .</small>
-          <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['minDate']">Past dates are not
-            allowed .</small>
-        </div>
+            *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
+              required</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['invalidDate']">Invalid Date
+              .</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['minDate']">Past dates are not
+              allowed .</small>
+          </div>
         </div>
       </div>
-      <div class="row mb-1 ">
+      <!-- <div class="row mb-1 ">
         <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
             class="text-danger ms-1 mad-f"></span></label>
         <div class="col-sm-12">
@@ -318,11 +318,45 @@
               Pattern</small>
           </div>
         </div>
+      </div> -->
+
+      <div class="row mb-3 align-items-center">
+        <label class="col-sm-12 col-form-label">Document</label>
+        <div class="col-sm-12 d-flex align-items-center">
+
+          <input #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg" style="display: none;"
+            (change)="onCertificateUpload($event)" />
+
+
+          <button type="button" class="btn btn-md btn-teal-default-border me-3" (click)="fileInput.click()">
+            <i class="bi bi-upload"></i> {{ leaveRequestForm.get('document')?.value.documentName &&
+            leaveRequestForm.get('document')?.value.documentID ? "Update" : "Upload" }}
+          </button>
+
+
+          <!-- <div class="uploaded-file d-flex align-items-center"
+            >
+            <span   style="width:70%;"
+              *ngIf=" leaveRequestForm.get('document')?.value && leaveRequestForm.get('document')?.value && leaveRequestForm.get('document')?.value && leaveRequestForm.get('document')?.value != '' ">
+              <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>
+              <strong>
+                <p style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
+                  {{
+                  leaveRequestForm.get('document')?.value.documentName.substring(leaveRequestForm.get('document')?.value.documentName.lastIndexOf('/')
+                  + 1)}}
+                </p>
+              </strong>
+            </span>
+          </div> -->
+
+
+        </div>
+
       </div>
 
       <div class="row mb-1 ">
         <label for="" class="col-sm-12 col-form-label"><span>Reason</span><span
-          class="text-danger ms-1 mad-f"></span></label>
+            class="text-danger ms-1 mad-f"></span></label>
         <div class="col-sm-12">
           <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
             formControlName="comment">
@@ -339,8 +373,8 @@
 
       <div class="btn-sec d-flex justify-content-center">
 
-        <button class="sub-btn" (click)="leaveRequestFormSubmit()"> <img class="me-2"
-            src="assets/icons/tr-sub-icon.png" alt="">Submit</button>
+        <button class="sub-btn" (click)="leaveRequestFormSubmit()"> <img class="me-2" src="assets/icons/tr-sub-icon.png"
+            alt="">Submit</button>
       </div>
     </form>
 

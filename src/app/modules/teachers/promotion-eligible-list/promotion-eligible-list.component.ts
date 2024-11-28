@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, NgZone } from '@angular/core';
 import { DataService } from 'src/app/core/service/data/data.service';
 interface PagonationConfig {
   pagination: boolean,
@@ -28,7 +28,7 @@ export class PromotionEligibleListComponent {
   mouseY!: number
   hoveredEmployee: any;
   showPopup!: boolean;
-  constructor(private dataService: DataService) { }
+  constructor(private dataService: DataService,private ngZone:NgZone) { }
 
   ngOnInit(): void {
     this.loadPromotionEligibleList();
@@ -69,7 +69,109 @@ export class PromotionEligibleListComponent {
             filter: true,
             floatingFilter: column === 'name',
             ... (column === 'name' || column === 'schoolName' ? {
-              cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
+              // cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
+              cellRenderer: (params: any) => {
+                console.log("params-", params)
+                const div = document.createElement('div');
+                div.style.display = "flex"
+                div.style.justifyContent = "space-between"
+  
+  
+                // Create anchor element for the name
+                const divSub = document.createElement('div');
+                divSub.style.height = "100%"
+                divSub.style.width = "75%";
+                divSub.style.overflow = "hidden";
+                divSub.style.textOverflow = "ellipsis";
+  
+  
+  
+  
+                const nameLink = document.createElement('a');
+                nameLink.style.cursor = 'pointer';
+                nameLink.style.color = '#246CC1';
+  
+                nameLink.textContent = params.value;
+  
+  
+                this.ngZone.run(() => {
+                  divSub.addEventListener('mouseover', (event) => {
+                    debugger
+  
+                    if (params.onNameHover) {
+                      params.onNameHover(event, params);
+  
+                    }
+                  });
+                })
+  
+                this.ngZone.run(() => {
+                  divSub.addEventListener('mouseout', (event) => {
+                    debugger
+  
+                    if (params.onNameHover) {
+                      params.onNameHoverOut(event, params);
+  
+                    }
+                  });
+  
+                })
+  
+                this.ngZone.run(() => {
+                  divSub.addEventListener('mouseleave', (event) => {
+                    debugger
+  
+                    if (params.onNameHover) {
+                      params.onNameHoverOut(event, params);
+  
+                    }
+                  });
+  
+                })
+  
+                this.ngZone.run(() => {
+                  nameLink.addEventListener('click', (event) => {
+                    debugger
+                    if (params.onNameClick) {
+                      params.onNameClick(event, params);
+  
+                    }
+                  });
+  
+                })
+  
+  
+  
+  
+                // Create another anchor element for the plus button
+                const plusButton = document.createElement('a');
+                plusButton.classList.add("menuButton")
+  
+  
+                // plusButton.style.float = 'right';
+                plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
+                this.ngZone.run(() => {
+                  plusButton.addEventListener('click', (event) => {
+                    if (params.onPlusButtonClick) {
+                      params.onPlusButtonClick(event, params);
+                    }
+                  });
+                })
+                this.ngZone.run(() => {
+                  plusButton.addEventListener('mouseleave', (event) => {
+                    if (params.onPlusButtonHoverout) {
+                      params.onPlusButtonHoverout(event, params);
+                    }
+                  });
+                })
+  
+                // Append the elements to the div
+                divSub.appendChild(nameLink)
+                div.appendChild(divSub);
+                div.appendChild(plusButton);
+  
+                return div;
+              },
 
             } : {}),
 
@@ -142,11 +244,10 @@ export class PromotionEligibleListComponent {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 200);
+      }, 450);
     }
   }
   onTeacherMouseOut(): void {
-
     this.showPopup = false;
     this.hoveredEmployee = null;
     if (this.hoverTimeout) {
