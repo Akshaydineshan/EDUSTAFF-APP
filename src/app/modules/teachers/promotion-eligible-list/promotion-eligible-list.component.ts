@@ -1,4 +1,6 @@
 import { Component, HostListener, NgZone } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
 interface PagonationConfig {
   pagination: boolean,
@@ -15,6 +17,12 @@ export class PromotionEligibleListComponent {
   displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject'];
 
   promotionEligibleList: any[] = [];
+  selectMenuRowData: any;
+  menuListItems: any[] = [
+    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest' },
+   
+  ]
+  isMenuVisible:boolean=false;
 
 
   // table related variables
@@ -24,14 +32,27 @@ export class PromotionEligibleListComponent {
 
   //table hover related variable
   hoverTimeout!: any;
-  mouseX!: number
-  mouseY!: number
+  mouseX: number = 0;
+  mouseY: number = 0;
+  mouseMenuX: number = 0;
+  mouseMenuY: number = 0;
   hoveredEmployee: any;
   showPopup!: boolean;
-  constructor(private dataService: DataService,private ngZone:NgZone) { }
+  isPromotionPopup: boolean=false;
+  tableColorChange: boolean=false;
+  submitted: boolean=false;
+  promotionRequestForm!:FormGroup
+  constructor(private dataService: DataService,private ngZone:NgZone,private router:Router,private fb:FormBuilder) { }
 
   ngOnInit(): void {
     this.loadPromotionEligibleList();
+
+
+    
+    this.promotionRequestForm = this.fb.group({
+    
+      comment: ['']
+    })
   }
 
   @HostListener('mousemove', ['$event'])
@@ -68,7 +89,7 @@ export class PromotionEligibleListComponent {
             field: column,
             filter: true,
             floatingFilter: column === 'name',
-            ... (column === 'name' || column === 'schoolName' ? {
+            ... (column === 'name' ? {
               // cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
               cellRenderer: (params: any) => {
                 console.log("params-", params)
@@ -172,6 +193,25 @@ export class PromotionEligibleListComponent {
   
                 return div;
               },
+              cellRendererParams: {
+                onNameClick: (event: MouseEvent, params: any) => {
+                  this.onCellClicked(params)
+                },
+                onNameHover: (event: MouseEvent, params: any) => {
+                  this.nameColumnHover(params, event)
+                },
+                onNameHoverOut: (event: MouseEvent, params: any) => {
+                  this.rowMouseHoverOut(params)
+                },
+  
+                onPlusButtonClick: (event: MouseEvent, params: any) => {
+                  this.menuBtnEventFunction(event, params)
+  
+                },
+                onPlusButtonHoverout: (event: MouseEvent, params: any) => {
+                  this.menuBtnhoverOut(event, params)
+                },
+              }
 
             } : {}),
 
@@ -187,6 +227,120 @@ export class PromotionEligibleListComponent {
       }
     );
   }
+
+  promotionRequestFormSubmit(){
+
+  }
+
+  onCellClicked(event: any) {
+
+    debugger
+
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+
+    if (event.colDef.field === "name") {
+      let teacherId: number = rowData.id
+      this.ngZone.run(() => {
+        this.router.navigate(['/teachers/view-teacher', teacherId])
+      })
+
+    } else if (event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
+      this.router.navigate(['/schools/view', schoolId])
+    }
+
+  }
+
+  onCellClick(event: any) {
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+    if (event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
+      this.ngZone.run(() => {
+        this.router.navigate(['/schools/view', schoolId])
+      })
+    }
+
+  }
+  closePromotionPopup() {
+    this.promotionRequestForm.reset()
+    this.submitted = false
+    this.isPromotionPopup = false
+    this.isMenuVisible = false
+    this.tableColorChange = false
+  }
+
+
+  updateMenuMousePosition(event: MouseEvent): void {
+    debugger;
+    console.log("eventRR", event.clientX, event.clientY)
+    const offset = 13; // Offset for positioning
+    this.mouseMenuX = event.clientX + offset;
+    this.mouseMenuY = event.clientY;
+    const popupWidth = 200; // Assume a fixed width for the popup
+    const popupHeight = 100; // Assume a fixed height for the popup
+
+    // Check right edge
+    if (this.mouseMenuX + popupWidth > window.innerWidth) {
+
+      this.mouseMenuX = window.innerWidth - popupWidth - offset; // Position left
+    }
+
+    // Check bottom edge
+    if (this.mouseMenuY + popupHeight > window.innerHeight) {
+      this.mouseMenuY = event.clientY - popupHeight; // Position above the mouse
+    }
+
+
+  }
+
+  
+  nameColumnHover(event: any, ev: any) {
+    this.isMenuVisible = false;
+    const rowNode: any = event.node;
+    const rowData = rowNode.data;
+    if (event.colDef.field === "name") {
+    
+      this.onTeacherHover(rowData.id, rowData, ev)
+    }
+  }
+
+
+
+  menuBtnEventFunction(event: any, params: any) {
+    debugger
+    this.showPopup = false;
+    this.isMenuVisible = true;
+    this.isPromotionPopup=false;
+    this.selectMenuRowData = params.node.data
+
+
+    this.updateMenuMousePosition(event)
+  }
+
+  menuBtnhoverOut(event: any, params: any) {
+
+  }
+
+  
+  listClickFromMenuList(event: any) {
+    debugger
+    console.log("EVENT->", event)
+    this.showPopup = false;
+    // this.showSchoolPopup = false;
+
+    this.tableColorChange = true
+    if (event.value === 'promotionRequest') {
+      this.isMenuVisible = false
+      // this.loadDropdownData()
+      this.isPromotionPopup = event.clicked
+      this.tableColorChange=true;
+      
+    } 
+
+  }
+
 
 
   // onSchoolHover(schoolId: number, schoolData: any, event: MouseEvent): void {
@@ -259,11 +413,11 @@ export class PromotionEligibleListComponent {
 
 
   rowMouseHover(event: any) {
-    const rowNode: any = event.node;
-    const rowData = rowNode.data;
-    if (event.colDef.field === "name") {
-      this.onTeacherHover(rowData.id, rowData, event.event)
-    }
+    // const rowNode: any = event.node;
+    // const rowData = rowNode.data;
+    // if (event.colDef.field === "name") {
+    //   this.onTeacherHover(rowData.id, rowData, event.event)
+    // }
   }
   rowMouseHoverOut(event: any) {
     // if (event.colDef.field === "principalName") {

@@ -993,7 +993,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     debugger
     this.showPopup = false;
     this.showSchoolPopup = false
-    this.isTransferPopup
+    this.isTransferPopup=false
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
 
