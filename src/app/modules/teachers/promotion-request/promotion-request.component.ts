@@ -23,7 +23,7 @@ export class PromotionRequestComponent {
 
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'From Designation', field: 'fromDesignation' },{ headerName: 'To Designation', field: 'toDesignation' },{ headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -47,7 +47,7 @@ export class PromotionRequestComponent {
   ]
   isTransferPopup: boolean = false;
 
-  leaveRequestForm!: FormGroup
+  promotionRequestForm!: FormGroup
   submitted!: boolean;
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
@@ -70,7 +70,7 @@ export class PromotionRequestComponent {
   };
   schoolDropDownListFilter: any[] = [];
   showSecondDropdown: boolean = false;
-  isLeavePopup: boolean=false;
+  isPromotionPopup: boolean=false;
   tableColorChange:boolean=false;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
@@ -85,17 +85,17 @@ export class PromotionRequestComponent {
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
-    this.leaveRequestForm = this.fb.group({
-     
-      documentUrl: ['', Validators.required],
-      fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false),Validators.required]],
-      toDate: ['', [minAndMaxDateValidator(this.minDate, true, false),Validators.required]],
+    this.promotionRequestForm = this.fb.group({
+      fromSchool:[''],
+      fromDesignation:[''],
+      toDesignation:[''],
       comment: ['']
     })
 
+
   }
   dateChange() {
-    const dateControl = this.leaveRequestForm.get('date');
+    const dateControl = this.promotionRequestForm.get('date');
     console.log("control", dateControl)
 
     dateControl?.updateValueAndValidity();  // Manually trigger validation
@@ -217,114 +217,114 @@ export class PromotionRequestComponent {
 
   loadtransferRequestList() {
 
-    // this.dataService.getTransferRequestData().subscribe(
-    //   (data: any) => {
-    //     debugger
-    //     this.transferList = data;
-    //     console.log("school list data", this.transferList);
-    //     this.transferTableRows = this.transferList
-    //     this.transferTableColumns = this.displayColumns.map((column) => ({
-    //       headerName: column.headerName,
-    //       valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
-    //         ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
-    //         : undefined,
-    //       field: column.field,
-    //       filter: true,
-    //       floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-    //       ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
-    //         cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
-    //         width: 220
-    //       } : {}),
+    this.dataService.getTransferRequestData().subscribe(
+      (data: any) => {
+        debugger
+        this.transferList = [{employeeName:"dummy",fromSchoolName:"dummy",fromDesignation:"dummy",toDesignation:"dummy",requestDate:"dummy",status:"Pending"}];
+        console.log("school list data", this.transferList);
+        this.transferTableRows = this.transferList
+        this.transferTableColumns = this.displayColumns.map((column) => ({
+          headerName: column.headerName,
+          // valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
+          //   ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
+          //   : undefined,
+          field: column.field,
+          filter: true,
+          floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
+          ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
+            cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
+            width: 220
+          } : {}),
 
-    //       ...(column.field === 'status' ?
-    //         {
-    //           cellRenderer: (params: any) => {
-    //             if (true) {
-    //               const div = document.createElement('div');
-    //               div.style.display = "flex"
-    //               div.style.justifyContent = "space-between"
+          ...(column.field === 'status' ?
+            {
+              cellRenderer: (params: any) => {
+                if (true) {
+                  const div = document.createElement('div');
+                  div.style.display = "flex"
+                  div.style.justifyContent = "space-between"
 
-    //               // Create anchor element for the name
-    //               const divSub = document.createElement('div');
-    //               divSub.style.height = "100%"
-
-
-    //               const nameLink = document.createElement('a');
-    //               nameLink.style.cursor = 'pointer';
-    //               // nameLink.style.color = '#246CC1';
-
-    //               nameLink.textContent = params.value;
-    //               divSub.appendChild(nameLink)
-    //               div.appendChild(divSub);
-
-    //               // Create another anchor element for the plus button
-
-    //               if (params.value == 'Pending') {
-    //                 const plusButton = document.createElement('a');
-    //                 plusButton.style.marginLeft = '10px';
-    //                 plusButton.classList.add('menuButton')
-    //                 // plusButton.style.float = 'right';
-    //                 plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
-    //                 this.ngZone.run(() => {
-    //                   plusButton.addEventListener('click', (event: any) => {
-    //                     if (params.onStatusClick) {
-    //                       params.onStatusClick(event, params);
-    //                     }
-    //                   });
-    //                 })
-
-    //                 div.appendChild(plusButton);
-
-    //               } else {
-    //                 const plusButton = document.createElement('a');
-    //                 plusButton.style.marginLeft = '10px';
-    //                 plusButton.classList.add('menuButton')
-    //                 // plusButton.style.float = 'right';
-    //                 plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
-    //                 plusButton.addEventListener('click', (event: any) => {
-    //                   // if (params.onStatusClick) {
-    //                   //   params.onStatusClick(event, params);
-    //                   // }
-    //                 });
-    //                 div.appendChild(plusButton);
-
-    //               }
+                  // Create anchor element for the name
+                  const divSub = document.createElement('div');
+                  divSub.style.height = "100%"
 
 
+                  const nameLink = document.createElement('a');
+                  nameLink.style.cursor = 'pointer';
+                  // nameLink.style.color = '#246CC1';
 
+                  nameLink.textContent = params.value;
+                  divSub.appendChild(nameLink)
+                  div.appendChild(divSub);
 
-    //               // Append the elements to the div
+                  // Create another anchor element for the plus button
+
+                  if (params.value == 'Pending') {
+                    const plusButton = document.createElement('a');
+                    plusButton.style.marginLeft = '10px';
+                    plusButton.classList.add('menuButton')
+                    // plusButton.style.float = 'right';
+                    plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+                    this.ngZone.run(() => {
+                      plusButton.addEventListener('click', (event: any) => {
+                        if (params.onStatusClick) {
+                          params.onStatusClick(event, params);
+                        }
+                      });
+                    })
+
+                    div.appendChild(plusButton);
+
+                  } else {
+                    const plusButton = document.createElement('a');
+                    plusButton.style.marginLeft = '10px';
+                    plusButton.classList.add('menuButton')
+                    // plusButton.style.float = 'right';
+                    plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
+                    plusButton.addEventListener('click', (event: any) => {
+                      // if (params.onStatusClick) {
+                      //   params.onStatusClick(event, params);
+                      // }
+                    });
+                    div.appendChild(plusButton);
+
+                  }
 
 
 
 
-    //               return div;
-
-    //             } else {
-    //               return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
-    //             }
-    //           }
+                  // Append the elements to the div
 
 
 
-    //           ,
-    //           cellRendererParams: {
-    //             onStatusClick: (event: MouseEvent, params: any) => {
-    //               this.statusMenuClick(event, params)
-    //             },
-    //           }
-    //         } : {}
-    //       )
 
-    //     }));
+                  return div;
+
+                } else {
+                  return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
+                }
+              }
 
 
 
-    //   },
-    //   (error: any) => {
-    //     console.error('Error fetching school data:', error);
-    //   }
-    // );
+              ,
+              cellRendererParams: {
+                onStatusClick: (event: MouseEvent, params: any) => {
+                  this.statusMenuClick(event, params)
+                },
+              }
+            } : {}
+          )
+
+        }));
+
+
+
+      },
+      (error: any) => {
+        console.error('Error fetching school data:', error);
+      }
+    );
 
   }
 
@@ -375,13 +375,13 @@ export class PromotionRequestComponent {
       this.isRejectedClick = false;
      
 
-      this.isLeavePopup = event.clicked
+      this.isPromotionPopup = event.clicked
       this.isMenuVisible = false
     } else if (event.value === 'reject') {
   
       this.isRejectedClick = true;
      
-      this.isLeavePopup = event.clicked
+      this.isPromotionPopup = event.clicked
       this.isMenuVisible = false
     }
   }
@@ -485,12 +485,12 @@ export class PromotionRequestComponent {
 
 
 
-  leaveRequestFormSubmit() {
+  promotionRequestFormSubmit() {
     this.submitted = true
 
-    if (this.leaveRequestForm.valid) {
-      console.log("transfer form", this.leaveRequestForm.value)
-      let formValue: any = this.leaveRequestForm.value;
+    if (this.promotionRequestForm.valid) {
+      console.log("transfer form", this.promotionRequestForm.value)
+      let formValue: any = this.promotionRequestForm.value;
       let employee: any = this.selectMenuRowData
       if (!this.isRejectedClick) {
         let payload: any = {
@@ -509,7 +509,7 @@ export class PromotionRequestComponent {
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
-              this.leaveRequestForm.reset()
+              this.promotionRequestForm.reset()
               this.loadtransferRequestList()
 
             }
@@ -540,7 +540,7 @@ export class PromotionRequestComponent {
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
-              this.leaveRequestForm.reset()
+              this.promotionRequestForm.reset()
               this.loadtransferRequestList()
 
             }
@@ -559,7 +559,7 @@ export class PromotionRequestComponent {
 
     } else {
 
-      console.log("invalid form",this.leaveRequestForm)
+      console.log("invalid form",this.promotionRequestForm)
     }
   }
 
@@ -586,9 +586,9 @@ export class PromotionRequestComponent {
   }
 
   closeLeavePopup() {
-    this.leaveRequestForm.reset()
+    this.promotionRequestForm.reset()
     this.submitted = false;
-    this.isLeavePopup = false;
+    this.isPromotionPopup = false;
     this.isMenuVisible = false;
     this.tableColorChange=false;
   }

@@ -97,6 +97,90 @@
 
 
 }
+
+.p-request-popup-main {
+  position: fixed;
+  max-width: 500px;
+  width:100%;
+  background: #FFFFFF;
+  // height: 507px;
+  top:44px;
+  border-radius: 7px;
+  left:50%;
+  transform: translateX(-50%);
+  gap: 0px;
+  opacity: 0px;
+  z-index: 100000;
+  box-shadow: 0px 2px 6px 0px #00000014;
+  border: 1px solid #E7E7E7;
+  padding: 20px;
+ 
+  .header {
+
+    p {
+      font-family: 'Inter';
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 19px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+
+    }
+
+
+    img {
+      width: 24px;
+      height: 24px;
+      background-color: none;
+    }
+  }
+
+  .body {
+    label {
+      font-family: Inter;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 16px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+
+    }
+
+    .btn-sec {
+      margin-top:20px;
+      img{
+        color:white;
+      }
+      .sub-btn {
+      
+        width: Hug (117px)px;
+        height: Hug (39px)px;
+        top: 520px;
+        left: 619px;
+        padding: 8px 10px 8px 8px;
+        gap: 8px;
+        border-radius:4px;
+        opacity: 0px;
+        border:none;
+        color:white;
+        background: #008060;
+
+
+
+      }
+    }
+  }
+
+
+
+}
+// @media screen and (max-width:768px) {
+//   .t-request-popup-main{
+//     width:70%;
+//   }
+// }
 .blur-content {
   filter: blur(0.5px); /* Adjust blur intensity here */
   pointer-events: none; /* Prevent interaction with blurred content */

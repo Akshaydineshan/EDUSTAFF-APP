@@ -2,6 +2,7 @@
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
 <!-- container start -->
 <div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup" (click)="overlayClick()">
+  <app-back-button [url]="'/dashboard'" class=""></app-back-button>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>TransferRequest List
       <span class="badge badge-secondary">{{ this.transferList.length }}</span>

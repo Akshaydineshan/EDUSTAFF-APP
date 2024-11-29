@@ -3,6 +3,7 @@
 <!-- container start -->
 <div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isLeavePopup"
     (click)="overlayClick()">
+    <app-back-button [url]="'/dashboard'" class=""></app-back-button>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Leave List
             <span class="badge badge-secondary">{{ this.leaveList.length }}</span>

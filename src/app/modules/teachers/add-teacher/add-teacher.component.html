@@ -2,6 +2,11 @@
 <app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
 <div class="main-container " [class.shifted]="isSidebarClosed" [class.shifted]="isSidebarClosed">
 
+  <div style="padding:15px 20px">
+    <app-back-button [url]="'/dashboard'" class=""></app-back-button>
+  </div>
+
+
   <div class="container-fluid d-flex flex-column align-items-center" [class.shifted]="isSidebarClosed">
     <div class=" row step-indicator mb-4">
       <ul class="d-flex justify-content-between align-items-center p-0">
@@ -16,7 +21,7 @@
             </div>
             <div class="step-text">{{ step }}</div>
           </div>
-         
+
         </li>
       </ul>
       <!-- <ul class="d-flex justify-content-between align-items-center p-0">
