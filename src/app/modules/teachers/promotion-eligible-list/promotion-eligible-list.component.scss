@@ -23,6 +23,7 @@
 .p-request-popup-main {
   position: fixed;
   max-width: 500px;
+  width:100%;
   background: #FFFFFF;
   // height: 507px;
   top:44px;
@@ -35,8 +36,6 @@
   box-shadow: 0px 2px 6px 0px #00000014;
   border: 1px solid #E7E7E7;
   padding: 20px;
-  max-height:700px;
-  overflow-y:scroll;
  
   .header {
 
@@ -98,6 +97,11 @@
 
 
 
+}
+@media screen and (max-width:768px) {
+  .t-request-popup-main{
+    width:70%;
+  }
 }
 .blur-content {
   filter: blur(0.5px); /* Adjust blur intensity here */

@@ -47,7 +47,9 @@ export class PromotionEligibleListComponent {
     this.loadPromotionEligibleList();
 
     this.promotionRequestForm = this.fb.group({
-
+      fromSchool:[''],
+      fromDesignation:[''],
+      toDesignation:[''],
       comment: ['']
     })
   }
@@ -419,6 +421,9 @@ export class PromotionEligibleListComponent {
       // this.loadDropdownData()
       this.isPromotionPopup = event.clicked
       this.tableColorChange = true;
+      this.promotionRequestForm.get("fromDesignation")?.setValue(this.selectMenuRowData.fromDesignation);
+      this.promotionRequestForm.get("toDesignation")?.setValue(this.selectMenuRowData.toDesignation)
+      this.promotionRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.schoolName)
     }
 
   }
