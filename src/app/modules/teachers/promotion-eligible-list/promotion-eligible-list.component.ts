@@ -14,47 +14,76 @@ interface PagonationConfig {
 })
 export class PromotionEligibleListComponent {
   isSidebarClosed = false;
-  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject'];
 
-  promotionEligibleList: any[] = [];
+  // column menu hover related 
   selectMenuRowData: any;
   menuListItems: any[] = [
-    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest' },
-   
-  ]
-  isMenuVisible:boolean=false;
-
+    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest' },]
+  isMenuVisible: boolean = false;
+  mouseMenuX: number = 0;
+  mouseMenuY: number = 0;
+  isPromotionPopup: boolean = false;
+  tableColorChange: boolean = false;
+  submitted: boolean = false;
+  promotionRequestForm!: FormGroup
 
   // table related variables
   promotionEligibleTableRows: any[] = []
   promotionEligibleTableColumns: any[] = []
-  paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
+  paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] };
+  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject'];
+  promotionEligibleList: any[] = [];
 
-  //table hover related variable
+  //table hover popup related variable
   hoverTimeout!: any;
   mouseX: number = 0;
   mouseY: number = 0;
-  mouseMenuX: number = 0;
-  mouseMenuY: number = 0;
   hoveredEmployee: any;
   showPopup!: boolean;
-  isPromotionPopup: boolean=false;
-  tableColorChange: boolean=false;
-  submitted: boolean=false;
-  promotionRequestForm!:FormGroup
-  constructor(private dataService: DataService,private ngZone:NgZone,private router:Router,private fb:FormBuilder) { }
+
+  constructor(private dataService: DataService, private ngZone: NgZone, private router: Router, private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.loadPromotionEligibleList();
 
-
-    
     this.promotionRequestForm = this.fb.group({
-    
+
       comment: ['']
     })
   }
 
+  // for menu popup hide click outside the popup and button
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(target: HTMLElement) {
+    const menuButtons = document.getElementsByClassName('menuButton');
+
+    const menuPops = document.getElementsByClassName('menuPop');
+
+    let clickedInsidePopup = false;
+    let clickedOnButton = false;
+
+    for (let i = 0; i < menuPops.length; i++) {
+      if (menuPops[i].contains(target)) {
+        clickedInsidePopup = true;
+        break;
+      }
+    }
+
+    for (let i = 0; i < menuButtons.length; i++) {
+      if (menuButtons[i].contains(target)) {
+        clickedOnButton = true;
+        break;
+      }
+    }
+    if (!clickedOnButton && !clickedInsidePopup) {
+      this.isMenuVisible = false; // Hide the popup if clicked outside
+    }
+
+
+
+
+  }
+  //  mouse position updation for show column hovered popup
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
     const offset = 15; // Offset for positioning
@@ -77,6 +106,7 @@ export class PromotionEligibleListComponent {
 
   }
 
+  // get table data
   loadPromotionEligibleList(): void {
     this.dataService.getTeachersPromotionEligibilityList().subscribe(
       (data) => {
@@ -96,79 +126,79 @@ export class PromotionEligibleListComponent {
                 const div = document.createElement('div');
                 div.style.display = "flex"
                 div.style.justifyContent = "space-between"
-  
-  
+
+
                 // Create anchor element for the name
                 const divSub = document.createElement('div');
                 divSub.style.height = "100%"
                 divSub.style.width = "75%";
                 divSub.style.overflow = "hidden";
                 divSub.style.textOverflow = "ellipsis";
-  
-  
-  
-  
+
+
+
+
                 const nameLink = document.createElement('a');
                 nameLink.style.cursor = 'pointer';
                 nameLink.style.color = '#246CC1';
-  
+
                 nameLink.textContent = params.value;
-  
-  
+
+
                 this.ngZone.run(() => {
                   divSub.addEventListener('mouseover', (event) => {
                     debugger
-  
+
                     if (params.onNameHover) {
                       params.onNameHover(event, params);
-  
+
                     }
                   });
                 })
-  
+
                 this.ngZone.run(() => {
                   divSub.addEventListener('mouseout', (event) => {
                     debugger
-  
+
                     if (params.onNameHover) {
                       params.onNameHoverOut(event, params);
-  
+
                     }
                   });
-  
+
                 })
-  
+
                 this.ngZone.run(() => {
                   divSub.addEventListener('mouseleave', (event) => {
                     debugger
-  
+
                     if (params.onNameHover) {
                       params.onNameHoverOut(event, params);
-  
+
                     }
                   });
-  
+
                 })
-  
+
                 this.ngZone.run(() => {
                   nameLink.addEventListener('click', (event) => {
                     debugger
                     if (params.onNameClick) {
                       params.onNameClick(event, params);
-  
+
                     }
                   });
-  
+
                 })
-  
-  
-  
-  
+
+
+
+
                 // Create another anchor element for the plus button
                 const plusButton = document.createElement('a');
                 plusButton.classList.add("menuButton")
-  
-  
+
+
                 // plusButton.style.float = 'right';
                 plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
                 this.ngZone.run(() => {
@@ -185,12 +215,12 @@ export class PromotionEligibleListComponent {
                     }
                   });
                 })
-  
+
                 // Append the elements to the div
                 divSub.appendChild(nameLink)
                 div.appendChild(divSub);
                 div.appendChild(plusButton);
-  
+
                 return div;
               },
               cellRendererParams: {
@@ -203,10 +233,10 @@ export class PromotionEligibleListComponent {
                 onNameHoverOut: (event: MouseEvent, params: any) => {
                   this.rowMouseHoverOut(params)
                 },
-  
+
                 onPlusButtonClick: (event: MouseEvent, params: any) => {
                   this.menuBtnEventFunction(event, params)
-  
+
                 },
                 onPlusButtonHoverout: (event: MouseEvent, params: any) => {
                   this.menuBtnhoverOut(event, params)
@@ -228,17 +258,17 @@ export class PromotionEligibleListComponent {
     );
   }
 
-  promotionRequestFormSubmit(){
+  // promotion request submit 
+  promotionRequestFormSubmit() {
 
   }
 
+
+  // TABLE COLUMN CLICK EVENT
+  // click name and school column redirect to view page
   onCellClicked(event: any) {
-
-    debugger
-
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-
     if (event.colDef.field === "name") {
       let teacherId: number = rowData.id
       this.ngZone.run(() => {
@@ -263,6 +293,11 @@ export class PromotionEligibleListComponent {
     }
 
   }
+
+
+
+
+  // close promotion popup
   closePromotionPopup() {
     this.promotionRequestForm.reset()
     this.submitted = false
@@ -271,7 +306,7 @@ export class PromotionEligibleListComponent {
     this.tableColorChange = false
   }
 
-
+  // Update Menu posision For showing MEnu popup when click Morebutton in table Column
   updateMenuMousePosition(event: MouseEvent): void {
     debugger;
     console.log("eventRR", event.clientX, event.clientY)
@@ -295,24 +330,74 @@ export class PromotionEligibleListComponent {
 
   }
 
-  
+
+
+  // column hover time show details using popup
+  onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
+    console.log("teacherId", teacherId, teacherData)
+
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+    }
+
+    if (teacherId && teacherData) {
+      this.hoverTimeout = setTimeout(() => {
+        this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
+          (data) => {
+            this.hoveredEmployee = data; // Store the detailed info
+            if (this.hoveredEmployee && teacherId) {
+              this.showPopup = true;
+              this.updateMousePosition(event);
+            }
+          },
+          (error) => {
+            console.error('Error fetching teacher details:', error);
+          }
+        );
+      }, 450);
+    }
+  }
+  onTeacherMouseOut(): void {
+    this.showPopup = false;
+    this.hoveredEmployee = null;
+    if (this.hoverTimeout) {
+      clearTimeout(this.hoverTimeout);
+      this.hoverTimeout = null;
+    }
+  }
+  rowMouseHover(event: any) {
+    // const rowNode: any = event.node;
+    // const rowData = rowNode.data;
+    // if (event.colDef.field === "name") {
+    //   this.onTeacherHover(rowData.id, rowData, event.event)
+    // }
+  }
+  rowMouseHoverOut(event: any) {
+    // if (event.colDef.field === "principalName") {
+    this.onTeacherMouseOut()
+    // } else if (event.colDef.field === "name") {
+    // this.onSchoolMouseOut()
+
+    // }
+
+  }
   nameColumnHover(event: any, ev: any) {
     this.isMenuVisible = false;
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
-    
+
       this.onTeacherHover(rowData.id, rowData, ev)
     }
   }
 
 
-
+  //  click more btn in table column
   menuBtnEventFunction(event: any, params: any) {
     debugger
     this.showPopup = false;
     this.isMenuVisible = true;
-    this.isPromotionPopup=false;
+    this.isPromotionPopup = false;
     this.selectMenuRowData = params.node.data
 
 
@@ -323,10 +408,8 @@ export class PromotionEligibleListComponent {
 
   }
 
-  
+  // select menu item
   listClickFromMenuList(event: any) {
-    debugger
-    console.log("EVENT->", event)
     this.showPopup = false;
     // this.showSchoolPopup = false;
 
@@ -335,9 +418,8 @@ export class PromotionEligibleListComponent {
       this.isMenuVisible = false
       // this.loadDropdownData()
       this.isPromotionPopup = event.clicked
-      this.tableColorChange=true;
-      
-    } 
+      this.tableColorChange = true;
+    }
 
   }
 
@@ -377,55 +459,5 @@ export class PromotionEligibleListComponent {
   //   }
   // }
 
-  onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    console.log("teacherId",teacherId,teacherData)
 
-    if (this.hoverTimeout) {
-      clearTimeout(this.hoverTimeout);
-    }
-
-    if (teacherId && teacherData) {
-      this.hoverTimeout = setTimeout(() => {
-        this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
-          (data) => {
-            this.hoveredEmployee = data; // Store the detailed info
-            if (this.hoveredEmployee && teacherId) {
-              this.showPopup = true;
-              this.updateMousePosition(event);
-            }
-          },
-          (error) => {
-            console.error('Error fetching teacher details:', error);
-          }
-        );
-      }, 450);
-    }
-  }
-  onTeacherMouseOut(): void {
-    this.showPopup = false;
-    this.hoveredEmployee = null;
-    if (this.hoverTimeout) {
-      clearTimeout(this.hoverTimeout);
-      this.hoverTimeout = null;
-    }
-  }
-
-
-
-  rowMouseHover(event: any) {
-    // const rowNode: any = event.node;
-    // const rowData = rowNode.data;
-    // if (event.colDef.field === "name") {
-    //   this.onTeacherHover(rowData.id, rowData, event.event)
-    // }
-  }
-  rowMouseHoverOut(event: any) {
-    // if (event.colDef.field === "principalName") {
-    this.onTeacherMouseOut()
-    // } else if (event.colDef.field === "name") {
-    // this.onSchoolMouseOut()
-
-    // }
-
-  }
 }

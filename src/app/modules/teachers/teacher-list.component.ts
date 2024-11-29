@@ -24,77 +24,57 @@ interface PagonationConfig {
 })
 export class TeacherListComponent implements OnInit, AfterViewInit {
   @ViewChild('transferModal') transferModal!: ElementRef;
-  // ngAfterViewInit(){
-
-  // }
-
   isSidebarClosed = false;
+
+  //  Table related variables
   teacherList: any[] = [];
   teacherTableRows: any[] = []
   teacherTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
   displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
-  isTransferPopup: boolean = false;
-  isLeavePopup: boolean = false;
+
+  // Table Column Hover Related
   selectedTeacher: any = null;
   hoveredTeacherId: number | null = null;
   hoverTimeout: any;
   mouseX: number = 0;
   mouseY: number = 0;
-  mouseMenuX: number = 0;
-  mouseMenuY: number = 0;
   showPopup: boolean = false;
   showSchoolPopup: boolean = false;
   selectedSchool: any = null;
-  apiUrl = environment.imageBaseUrl;
 
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-
-  sortedColumn: string = '';
-  sortDirection: 'asc' | 'desc' = 'asc';
-
-  filterForm: FormGroup;
-
-  showFilterModal = false;
-
-  transferRequest: TransferRequest = {
-    school: '',
-    position: '',
-    date: '',
-    comment: ''
-  };
-
+  // Table Column MoreBtn Click Related(transfer and leave)
   transferRequestForm!: FormGroup
   leaveRequestForm!: FormGroup
-
-  schools = [
-    { id: '1', name: 'School A' },
-    { id: '2', name: 'School B' },
-  ];
-
-  positions = ['Teacher', 'Headmaster', 'Vice Principal'];
-  teacherId!: any;
-  schoolId!: any;
-
-  API_BASE_IMAGE: any = environment.imageBaseUrl
-  isMenuVisible: boolean = false;
-  selectMenuRowData: any;
-  schoolDropDownList: any;
-  submitted: boolean = false;
+  mouseMenuX: number = 0;
+  mouseMenuY: number = 0;
   menuListItems: any[] = [
     { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest' },
     { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
   ]
-  minDate: any;
+  isTransferPopup: boolean = false;
+  isLeavePopup: boolean = false;
+  isMenuVisible: boolean = false;
+  selectMenuRowData: any;
+  tableColorChange: boolean = false;
+  submitted: boolean = false;
 
 
+
+
+
+  // Filter Range Picker 
   minValue: any = 0;
   maxValue: any = 100;
   minSelected: any = 0;
   maxSelected: any = 100;
+  filterForm: FormGroup;
+  showFilterModal = false;
 
+
+  // Popup Multi Select dropdown 
+  schoolDropDownList: any;
   selectedSchoolPriority1!: any
   schoolDropdownSettings: IDropdownSettings = {
     singleSelection: true,
@@ -107,8 +87,29 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     allowSearchFilter: true,
 
   };
-  tableColorChange: boolean = false;
+
   file: any;
+
+  apiUrl = environment.imageBaseUrl;
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  sortedColumn: string = '';
+  sortDirection: 'asc' | 'desc' = 'asc';
+  transferRequest: TransferRequest = {
+    school: '',
+    position: '',
+    date: '',
+    comment: ''
+  };
+  schools = [
+    { id: '1', name: 'School A' },
+    { id: '2', name: 'School B' },
+  ];
+  positions = ['Teacher', 'Headmaster', 'Vice Principal'];
+  teacherId!: any;
+  schoolId!: any;
+  API_BASE_IMAGE: any = environment.imageBaseUrl
+  minDate: any;
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
@@ -161,10 +162,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   }
 
-
-
-
-
+  // For Hide Menu Popup click Outside the popup
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: HTMLElement) {
     debugger
@@ -214,6 +212,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   onMenuAction(action: string, teacher: any) {
   }
 
+  // Filter Range Related Fun
   validateRange(event: any, changed: 'min' | 'max'): void {
     if (changed === 'min' && this.minSelected >= this.maxSelected) {
       event.preventDefault()
@@ -224,7 +223,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
   }
 
-
+  // Update Menu position hover column
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
 
@@ -274,6 +273,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
   }
 
+
+  // Transfer Request Submit
   transferRequestFormSubmit() {
     this.submitted = true
     console.log("transferForm", this.transferRequestForm)
@@ -294,8 +295,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         "RequestorComment": formValue.comment,
         "filePath": formValue.documentUrl
       }
-      console.log(payload)
-      debugger
+
 
       this.dataService.createTransferRequest(payload).subscribe({
         next: (response: any) => {
@@ -456,6 +456,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     track.style.background = `linear-gradient(to right, #ddd ${minPercent}%, #4CAF50 ${minPercent}%, #4CAF50 ${maxPercent}%, #ddd ${maxPercent}%)`;
   }
 
+
+  // Getting Teacher Table Data
   loadTeachersList(): void {
     debugger
 
@@ -746,6 +748,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   }
 
+  // Filter Related
   applyFilters() {
     debugger
 
@@ -767,12 +770,6 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     })
 
   }
-  navigateToAddPage() {
-    this.ngZone.run(() => {
-      this.router.navigate(['/teachers/add-teacher']);
-    })
-  }
-
   resetFilter() {
     this.minSelected = 0;
     this.maxSelected = 100
@@ -794,6 +791,15 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
 
+  navigateToAddPage() {
+    this.ngZone.run(() => {
+      this.router.navigate(['/teachers/add-teacher']);
+    })
+  }
+
+
+
+
 
   get getTeacherImage() {
     debugger
@@ -805,6 +811,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }
+
+  // Table Column Hover Retaed Funs
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
     debugger
@@ -925,6 +933,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   }
 
+
+
   get getschoolImage() {
     let result = '';
     if (this.apiUrl && this.selectedSchool?.photo && this.selectedSchool?.photo !== 'null') {
@@ -933,9 +943,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }
-  onCellClicked(event: any) {
 
-    debugger
+  // Table Cell Clicked Related Fun
+  onCellClicked(event: any) {
 
     const rowNode: any = event.node;
     const rowData = rowNode.data;
@@ -966,6 +976,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
 
+
+  // CEll Menu Btn Related Funs
   updateMenuMousePosition(event: MouseEvent): void {
     debugger;
     console.log("eventRR", event.clientX, event.clientY)
@@ -993,7 +1005,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     debugger
     this.showPopup = false;
     this.showSchoolPopup = false
-    this.isTransferPopup=false
+    this.isTransferPopup = false
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
 
@@ -1004,13 +1016,6 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   menuBtnhoverOut(event: any, params: any) {
 
   }
-
-  overlayClick() {
-    this.showPopup = false;
-    this.showSchoolPopup = false;
-
-  }
-
   listClickFromMenuList(event: any) {
     debugger
     console.log("EVENT->", event)
@@ -1030,7 +1035,6 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
 
   }
-
   closeTransferPopup() {
     this.transferRequestForm.reset()
     this.submitted = false
@@ -1046,7 +1050,17 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.tableColorChange = false
   }
 
-  
+
+
+
+  overlayClick() {
+    this.showPopup = false;
+    this.showSchoolPopup = false;
+
+  }
+
+
+  // UploadFile Related funs
   onCertificateUpload(event: any): void {
     debugger
     const file = event.target.files[0];

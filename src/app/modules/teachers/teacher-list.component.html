@@ -305,20 +305,7 @@
           </div>
         </div>
       </div>
-      <!-- <div class="row mb-1 ">
-        <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
-            class="text-danger ms-1 mad-f"></span></label>
-        <div class="col-sm-12">
-          <input type="text" class="form-control" formControlName="documentUrl">
-          <div
-            *ngIf="leaveRequestForm.get('documentUrl')?.invalid && (leaveRequestForm.get('documentUrl')?.['dirty'] || leaveRequestForm.get('documentUrl')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="leaveRequestForm.get('documentUrl')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="leaveRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
-              Pattern</small>
-          </div>
-        </div>
-      </div> -->
+
 
       <div class="row mb-3 align-items-center">
         <label class="col-sm-12 col-form-label">Document</label>
@@ -334,20 +321,6 @@
           </button>
 
 
-          <!-- <div class="uploaded-file d-flex align-items-center"
-            >
-            <span   style="width:70%;"
-              *ngIf=" leaveRequestForm.get('document')?.value && leaveRequestForm.get('document')?.value && leaveRequestForm.get('document')?.value && leaveRequestForm.get('document')?.value != '' ">
-              <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>
-              <strong>
-                <p style="overflow:hidden;white-space: nowrap; text-overflow: ellipsis;">
-                  {{
-                  leaveRequestForm.get('document')?.value.documentName.substring(leaveRequestForm.get('document')?.value.documentName.lastIndexOf('/')
-                  + 1)}}
-                </p>
-              </strong>
-            </span>
-          </div> -->
 
 
         </div>
@@ -395,9 +368,7 @@
 
   </div>
   <hr>
-
-
-  <div class="body">
+   <div class="body">
 
     <form action="" [formGroup]="transferRequestForm">
       <div class="row mb-1">
@@ -447,11 +418,7 @@
 
           <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
             [data]="schoolDropDownList" formControlName="toSchoolPriority2" />
-          <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
-            <option [disabled]="true" [value]="null">Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
-            </option>
-          </select> -->
+         
           <div
             *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['required']">Field
@@ -470,11 +437,7 @@
 
           <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
             [data]="schoolDropDownList" formControlName="toSchoolPriority3" />
-          <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
-            <option [disabled]="true" [value]="null">Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
-            </option>
-          </select> -->
+    
           <div
             *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['required']">Field
