@@ -5,7 +5,7 @@
     (click)="overlayClick()">
     <app-back-button [url]="'/dashboard'" class=""></app-back-button>
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4>Leave List
+        <h4>Leave Application List
             <span class="badge badge-secondary">{{ this.leaveList.length }}</span>
         </h4>
         <!-- <button class="btn btn-success" [routerLink]="['/schools/add-school']">
@@ -64,7 +64,7 @@
           <label for="" class="col-sm-12 col-form-label"><span>Start Date</span><span
               class="text-danger ms-1 mad-f">*</span></label>
           <div class="col-sm-12">
-            <input type="date" [min]="minDate" class="form-control" formControlName="fromDate">
+            <input type="date" [min]="minDate" class="form-control disabled-input" formControlName="fromDate">
             <div
               *ngIf="leaveRequestForm.get('fromDate')?.invalid && (leaveRequestForm.get('fromDate')?.['dirty'] || leaveRequestForm.get('fromDate')?.['touched']  || submitted)">
               <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['required']">Field is
@@ -81,7 +81,7 @@
           <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
               class="text-danger ms-1 mad-f">*</span></label>
           <div class="col-sm-12">
-            <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
+            <input type="date" [min]="minDate" class="form-control disabled-input" formControlName="toDate">
             <div
             *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is

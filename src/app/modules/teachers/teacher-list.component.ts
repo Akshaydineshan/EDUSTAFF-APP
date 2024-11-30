@@ -356,8 +356,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       let employee: any = this.selectMenuRowData
       let payload: any = {
         "employeeID": employee.teacherId,
-        "fromDate": this.dataService.formatDateToLocal(formValue.fromDate),
-        "toDate": this.dataService.formatDateToLocal(formValue.toDate),
+        "fromDate": this.dataService.formatDateToISO(formValue.fromDate),
+        "toDate": this.dataService.formatDateToISO(formValue.toDate),
         "RequestorComment": formValue.comment,
         "DocumentID": formValue.document.documentID
       }

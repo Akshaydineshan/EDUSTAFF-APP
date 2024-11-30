@@ -145,7 +145,15 @@ export class AuthInterceptor implements HttpInterceptor {
           this.spinnerService.hide(); // Hide spinner if it was shown
         }
         if (error.status === 0) {
-           alert("Please check your internet connection and try again.!")
+          
+           if (!navigator.onLine) {
+          
+            alert("No internet connection detected. Please check your network and try again. !")
+          } else {
+            // Server unreachable
+            alert("Unable to reach the server. Please try again later !")
+           
+          }
            
           // this.toaster.warning('', 'Warning', {
           //   closeButton: true,
