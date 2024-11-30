@@ -25,11 +25,12 @@
 
 
 
-  <div class="table-responsive">
+  <div class="table-responsive"  *ngIf="promotionEligibleList.length">
     <app-table [rowData]="promotionEligibleTableRows" [colDefs]="promotionEligibleTableColumns"
       [paginationConfig]="paginationConfig" (OnRowMouseOverEvent)="rowMouseHover($event)"
       (OnRowMouseOutEvent)="rowMouseHoverOut($event)" [tableColorChange]="tableColorChange"></app-table>
   </div>
+  <app-no-data-found *ngIf="!promotionEligibleList.length"></app-no-data-found>
 
 
 
@@ -88,7 +89,7 @@
         <label for="" class="col-sm-12 col-form-label"><span>Designation To</span><span
             class="text-danger ms-1 mad-f"></span></label>
         <div class="col-sm-12">
-          <input type="text" placeholder="" class="form-control disabled-input" [disabled]="true"  formControlName="toDesignation">
+          <input type="text" placeholder="" class="form-control disabled-input"  formControlName="toDesignation">
           <!-- <div
               *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
               <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is
@@ -102,7 +103,7 @@
         <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
             class="text-danger ms-1 mad-f"></span></label>
         <div class="col-sm-12">
-          <input type="text" placeholder="" class="form-control"  formControlName="comment">
+          <input type="text" placeholder="" class="form-control"  formControlName="documentUrl">
           <!-- <div
               *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
               <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is

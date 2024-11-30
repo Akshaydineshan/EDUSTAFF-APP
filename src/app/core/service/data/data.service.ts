@@ -98,6 +98,24 @@ export class DataService {
     // }
     // return this.teachersDataCache.asObservable();
   }
+  // Promotion/GetAllTeacherPromotionRequests
+  getPromotionRequestData(): Observable<any[]> {
+    debugger
+    // if (this.teachersDataCache.value.length === 0) {
+    return this.fetchPromotionRequestData();
+    // }
+    // return this.teachersDataCache.asObservable();
+  }
+  private fetchPromotionRequestData(): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.apiUrl + 'Promotion/GetAllTeacherPromotionRequests', { headers: { accept: '*/*' } }).pipe(
+      tap(data => this.teachersDataCache.next(data)),
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
 
   getTransferRequestData(): Observable<any[]> {
     debugger
@@ -265,8 +283,21 @@ export class DataService {
   rejectTransferRequest(data: any, id: number): Observable<any> {
     return this.http.put(this.apiUrl + `TransferRequest/RejectTransferRequest/${id}`, data);
   }
+
+
+  createPromotionRequest(data: any): Observable<any> {
+
+    return this.http.post(this.apiUrl + 'Promotion/CreatePromotionRequest', data);
+  }
+
+  approvePromotionRequest(data: any, id: number): Observable<any> {
+    return this.http.patch(this.apiUrl + `Promotion/ApprovePromotionRequest/${id}`, data);
+  }
+  rejectPromotionRequest(data: any, id: number): Observable<any> {
+    return this.http.put(this.apiUrl + `Promotion/RejectPromotionRequest/${id}`, data);
+  }
   uploadProfilePhoto(photoFile: File): Observable<any> {
-    debugger
+   
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
     return this.http.post(this.apiUrl + 'FileUpload/AddPhoto', formData);

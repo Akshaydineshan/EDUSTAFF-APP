@@ -1,6 +1,8 @@
 import { Component, HostListener, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Toast } from 'bootstrap';
+import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
 interface PagonationConfig {
   pagination: boolean,
@@ -41,7 +43,7 @@ export class PromotionEligibleListComponent {
   hoveredEmployee: any;
   showPopup!: boolean;
 
-  constructor(private dataService: DataService, private ngZone: NgZone, private router: Router, private fb: FormBuilder) { }
+  constructor(private dataService: DataService, private ngZone: NgZone, private router: Router, private fb: FormBuilder,private toastr:ToastrService) { }
 
   ngOnInit(): void {
     this.loadPromotionEligibleList();
@@ -50,6 +52,7 @@ export class PromotionEligibleListComponent {
       fromSchool:[''],
       fromDesignation:[''],
       toDesignation:[''],
+      documentUrl: [''],
       comment: ['']
     })
   }
@@ -262,7 +265,63 @@ export class PromotionEligibleListComponent {
 
   // promotion request submit 
   promotionRequestFormSubmit() {
+    this.submitted = true
+    console.log("transferForm", this.promotionRequestForm)
 
+    if (this.promotionRequestForm.valid) {
+      console.log("transfer form", this.promotionRequestForm.value)
+      let formValue: any = this.promotionRequestForm.value;
+      let employee: any = this.selectMenuRowData
+      let payload: any = {
+        "employeeID": employee.id,
+        "requestorComment": formValue.comment,
+        "filePath": formValue.documentUrl
+     
+      }
+
+
+      this.dataService.createPromotionRequest(payload).subscribe({
+        next: (response: any) => {
+          console.log(response, response)
+          if (response.status == 200) {
+            this.submitted = false
+            this.isPromotionPopup = false;
+            this.tableColorChange = false;
+            this.toastr.success('Transfer Requested !', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            this.promotionRequestForm.reset()
+
+          }
+
+        },
+        error: (error: any) => {
+          if (error.status === 409) {
+            this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            // this.isTransferPopup = false;
+          }
+
+
+        },
+        complete: () => {
+          this.promotionRequestForm.reset()
+          this.isPromotionPopup = false;
+          this.tableColorChange = false;
+
+        }
+      })
+    } else {
+
+      console.log("invalid form")
+    }
   }
 
 
@@ -463,6 +522,7 @@ export class PromotionEligibleListComponent {
   //     this.hoverTimeout = null;
   //   }
   // }
+
 
 
 }

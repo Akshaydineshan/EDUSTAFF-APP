@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 interface PagonationConfig {
@@ -23,7 +24,7 @@ export class PromotionRequestComponent {
 
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'From Designation', field: 'fromDesignation' },{ headerName: 'To Designation', field: 'toDesignation' },{ headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -46,17 +47,20 @@ export class PromotionRequestComponent {
     { name: 'Reject', icon: "assets/icons/reject.png", value: 'reject' }
   ]
   isTransferPopup: boolean = false;
+  isPromotionPopup: boolean=false;
 
   promotionRequestForm!: FormGroup
   submitted!: boolean;
-  schoolDropDownList: any;
+ 
   isRejectedClick: boolean = false;
   minDate: any;
   toSchoolPr1:any;
   toSchoolPr2:any;
   toSchoolPr3:any;
 
-  selectedSchoolPriority1!: any
+ 
+  schoolDropDownListFilter: any[] = [];
+  schoolDropDownList: any;
   schoolDropdownSettings: IDropdownSettings = {
     singleSelection: true,
     idField: 'schoolId',
@@ -68,9 +72,9 @@ export class PromotionRequestComponent {
     allowSearchFilter: true,
 
   };
-  schoolDropDownListFilter: any[] = [];
+ 
   showSecondDropdown: boolean = false;
-  isPromotionPopup: boolean=false;
+
   tableColorChange:boolean=false;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
@@ -79,16 +83,18 @@ export class PromotionRequestComponent {
   }
 
   ngOnInit(): void {
-    this.loadtransferRequestList()
-    // this.loadDropdownData()
+    this.loadPromotionRequestList()
+    this.loadDropdownData()
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
     this.promotionRequestForm = this.fb.group({
       fromSchool:[''],
+      toSchool:[''],
       fromDesignation:[''],
       toDesignation:[''],
+      documentUrl: [''],
       comment: ['']
     })
 
@@ -145,51 +151,29 @@ export class PromotionRequestComponent {
 
   }
 
-  // loadDropdownData() {
+  loadDropdownData() {
    
-  //   let filterSchool: any[] = [{ id: this.selectMenuRowData.toSchoolID_One, name: "Priority 1" },
-  //   { id: this.selectMenuRowData.toSchoolID_Two, name: "Priority 2" },
-  //   { id: this.selectMenuRowData.toSchoolID_Three, name: "Priority 3" },
-  //   ]
-  //   forkJoin({
-  //     schools: this.dataService.getSchoolList()
+ 
+    forkJoin({
+      schools: this.dataService.getSchoolList()
 
-  //   }).subscribe({
-  //     next: (results: any) => {
-  //       console.log("school list", results)
-  //       this.schoolDropDownList = results.schools;
-  //       const updatedList = [];
-  //       filterSchool.forEach((item: any) => {
-  //         const school = results.schools.find((school: any) => school.schoolId == item.id);
-  //         if (school) {
-  //           updatedList.push({
-  //             schoolId: school.schoolId,
-  //             schoolName: `${school.schoolName} (${item.name})`
-  //           });
-  //         }
-  //       })
-  //       updatedList.push({ schoolId: 0, schoolName: "Choose Other school" });
-  //       this.schoolDropDownListFilter = updatedList;
+    }).subscribe({
+      next: (results: any) => {
+        console.log("school list", results)
+        this.schoolDropDownList = results.schools;
+       
+        
 
 
-  //     },
-  //     error: (error) => {
-  //       console.error('Error loading dropdown data', error);
+      },
+      error: (error) => {
+        console.error('Error loading dropdown data', error);
 
-  //     },
-  //   });
-  // }
+      },
+    });
+  }
 
-  // onFirstDropdownChange(selectedItem: any): void {
-  //   if (selectedItem && selectedItem.schoolId === 0) {
-  //     this.showSecondDropdown = true; 
-  //     this.transferRequestForm.get('toSchool')?.setValue(null)
-
-  //   } else {
-  //     this.showSecondDropdown = false; 
-      
-  //   }
-  // }
+ 
 
 
 
@@ -215,12 +199,13 @@ export class PromotionRequestComponent {
 
   }
 
-  loadtransferRequestList() {
+  loadPromotionRequestList() {
 
-    this.dataService.getTransferRequestData().subscribe(
+    this.dataService.getPromotionRequestData().subscribe(
       (data: any) => {
         debugger
-        this.transferList = [{employeeName:"dummy",fromSchoolName:"dummy",fromDesignation:"dummy",toDesignation:"dummy",requestDate:"dummy",status:"Pending"}];
+        this.transferList = data
+        // [{employeeName:"dummy",fromSchoolName:"dummy",fromDesignation:"dummy",toDesignation:"dummy",requestDate:"dummy",status:"Pending"}];
         console.log("school list data", this.transferList);
         this.transferTableRows = this.transferList
         this.transferTableColumns = this.displayColumns.map((column) => ({
@@ -231,10 +216,13 @@ export class PromotionRequestComponent {
           field: column.field,
           filter: true,
           floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
+          ... (column.field === 'employeeName' ? {
             cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
             width: 220
           } : {}),
+          valueFormatter: column.field === 'requestDate'
+          ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
+          : undefined,
 
           ...(column.field === 'status' ?
             {
@@ -370,6 +358,11 @@ export class PromotionRequestComponent {
   listClickFromMenuList(event: any) {
     // this.loadDropdownData()
      this.tableColorChange=true;
+     this.promotionRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.promotedFromSchool)
+     this.promotionRequestForm.get("fromDesignation")?.setValue(this.selectMenuRowData.promotedFromDesignation)
+     this.promotionRequestForm.get("toDesignation")?.setValue(this.selectMenuRowData.promotedToDesignation)
+     this.promotionRequestForm.get("toSchool")?.setValue([this.schoolDropDownList.find((item:any)=>item.schoolId === this.selectMenuRowData.fromSchoolID )])
+
    
     if (event.value === 'approve') {
       this.isRejectedClick = false;
@@ -489,16 +482,17 @@ export class PromotionRequestComponent {
     this.submitted = true
 
     if (this.promotionRequestForm.valid) {
-      console.log("transfer form", this.promotionRequestForm.value)
+      console.log("promotion  form", this.promotionRequestForm.value)
       let formValue: any = this.promotionRequestForm.value;
       let employee: any = this.selectMenuRowData
       if (!this.isRejectedClick) {
         let payload: any = {
          
-          "ApproverComment": formValue.comment,
+          "approverComment": formValue.comment,
+          "approvedSchoolID": formValue.toSchool[0].schoolId
          
         }
-        this.dataService.approveLeaveRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+        this.dataService.approvePromotionRequest(payload, this.selectMenuRowData.promotionID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
@@ -510,7 +504,7 @@ export class PromotionRequestComponent {
                 timeOut: 4500,
               });
               this.promotionRequestForm.reset()
-              this.loadtransferRequestList()
+              this.loadPromotionRequestList()
 
             }
 
@@ -519,6 +513,9 @@ export class PromotionRequestComponent {
 
           },
           complete: () => {
+            this.promotionRequestForm.reset()
+            this.tableColorChange=false;
+            this.isPromotionPopup=false
 
 
           }
@@ -526,10 +523,11 @@ export class PromotionRequestComponent {
 
       } else {
         let payload: any = {
-          "ApproverComment": formValue.comment,
+          "approverComment": formValue.comment,
+          
         }
 
-        this.dataService.rejectLeaveRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+        this.dataService.rejectPromotionRequest(payload, this.selectMenuRowData.promotionID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
@@ -541,7 +539,7 @@ export class PromotionRequestComponent {
                 timeOut: 4500,
               });
               this.promotionRequestForm.reset()
-              this.loadtransferRequestList()
+              this.loadPromotionRequestList()
 
             }
 
@@ -550,8 +548,9 @@ export class PromotionRequestComponent {
 
           },
           complete: () => {
-
-
+            this.promotionRequestForm.reset()
+            this.tableColorChange=false;
+            this.isPromotionPopup=false
           }
         })
 
@@ -597,4 +596,7 @@ export class PromotionRequestComponent {
     this.showSchoolPopup = false;
 
   }
+
+
+
 }

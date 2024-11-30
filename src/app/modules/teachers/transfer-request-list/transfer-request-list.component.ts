@@ -156,7 +156,8 @@ export class TransferRequestListComponent implements OnInit {
         console.log("school list", results)
         this.schoolDropDownList = results.schools.filter((school: any) =>
           !filterSchool.some((filter) => filter.id === school.schoolId)
-        );
+        ).filter((item:any)=> item.schoolId !==this.selectMenuRowData. fromSchoolID
+        )
         
         console.log("filt", this.schoolDropDownList)
       

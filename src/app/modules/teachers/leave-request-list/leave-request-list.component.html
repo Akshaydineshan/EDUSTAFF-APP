@@ -18,7 +18,7 @@
 
     <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
         [position]="{'top.px': mouseY, 'left.px': mouseX}" />
-    <div class="table-responsive">
+    <div class="table-responsive" *ngIf="leaveList.length">
 
         <app-employee-menu-click-list-menu class="menuPop" [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY"
             [mouseX]="mouseMenuX" (clickListEvent)="listClickFromMenuList($event)"
@@ -40,6 +40,7 @@
         <!-- table end -->
 
     </div>
+    <app-no-data-found *ngIf="!leaveList.length"></app-no-data-found>
 </div>
 <!-- container end -->
 
@@ -92,6 +93,24 @@
           </div>
           </div>
         </div>
+        <div class="row mb-1 " *ngIf="getDocument">
+          <label class="col-sm-12 col-form-label">Document</label>
+          <div class="col-sm-12 ms-1">
+            <!-- <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
+              formControlName="documentUrl"> -->
+              <img  (click)="documentClick(getDocument)"  [src]="transform(getDocument)" width="32" height="32" alt="">
+              <span><p  (click)="documentClick(getDocument)" class="file-name ms-2" style="display:inline; color:rgb(77, 98, 184);  text-decoration: underline; cursor: pointer;">view</p></span>
+              
+            <!-- <div
+              *ngIf="leaveRequestForm.get('documentUrl')?.invalid && (leaveRequestForm.get('documentUrl')?.['dirty'] || leaveRequestForm.get('documentUrl')?.['touched']  || submitted)">
+              <small class="text-danger" *ngIf="leaveRequestForm.get('documentUrl')?.errors?.['required']">Field is
+                required</small>
+              <small class="text-danger" *ngIf="leaveRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+                Pattern</small>
+            </div>
+   -->
+          </div>
+        </div>
   
         <div class="row mb-1 ">
           <label class="col-sm-12 col-form-label">Comment</label>
@@ -108,6 +127,9 @@
   
           </div>
         </div>
+        
+
+      
   
         <div class="btn-sec d-flex justify-content-center">
   

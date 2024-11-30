@@ -1,7 +1,8 @@
 <app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
 <!-- container start -->
-<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup" (click)="overlayClick()">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup"
+  (click)="overlayClick()">
   <app-back-button [url]="'/dashboard'" class=""></app-back-button>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>TransferRequest List
@@ -17,7 +18,7 @@
 
   <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
     [position]="{'top.px': mouseY, 'left.px': mouseX}" />
-  <div class="table-responsive">
+  <div class="table-responsive" *ngIf="transferList.length">
 
     <app-employee-menu-click-list-menu class="menuPop" [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY"
       [mouseX]="mouseMenuX" (clickListEvent)="listClickFromMenuList($event)"
@@ -39,6 +40,8 @@
     <!-- table end -->
 
   </div>
+
+  <app-no-data-found *ngIf="!transferList.length"></app-no-data-found>
 </div>
 <!-- container end -->
 
@@ -60,51 +63,53 @@
     <form action="" [formGroup]="transferRequestForm">
       <div class="row mb-1">
         <label for="" class="col-sm-12 col-form-label"><span>Transfer From</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
 
           <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
-        
+
         </div>
       </div>
 
       <ng-container *ngIf="isRejectedClick">
         <div class="row mb-1">
           <label for="" class="col-sm-12 col-form-label"><span>Transfer To(Priority 1)</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
+              class="text-danger ms-1 mad-f">*</span></label>
           <div class="col-sm-12">
-  
-            <input type="text" class="form-control" [(ngModel)]="toSchoolPr1" [ngModelOptions]="{standalone: true}" [readonly]="true">
-          
+
+            <input type="text" class="form-control" [(ngModel)]="toSchoolPr1" [ngModelOptions]="{standalone: true}"
+              [readonly]="true">
+
           </div>
         </div>
         <div class="row mb-1">
           <label for="" class="col-sm-12 col-form-label"><span>Transfer To(Priority 2)</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
+              class="text-danger ms-1 mad-f">*</span></label>
           <div class="col-sm-12">
-  
-            <input type="text" class="form-control" [(ngModel)]="toSchoolPr2" [ngModelOptions]="{standalone: true}" [readonly]="true">
-          
+
+            <input type="text" class="form-control" [(ngModel)]="toSchoolPr2" [ngModelOptions]="{standalone: true}"
+              [readonly]="true">
+
           </div>
         </div>
         <div class="row mb-1">
           <label for="" class="col-sm-12 col-form-label"><span>Transfer To(Priority 3)</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
+              class="text-danger ms-1 mad-f">*</span></label>
           <div class="col-sm-12">
-  
-            <input type="text" class="form-control" [(ngModel)]="toSchoolPr3" [ngModelOptions]="{standalone: true}" [readonly]="true">
-          
+
+            <input type="text" class="form-control" [(ngModel)]="toSchoolPr3" [ngModelOptions]="{standalone: true}"
+              [readonly]="true">
+
           </div>
         </div>
       </ng-container>
 
       <div class="row mb-1" *ngIf="!showSecondDropdown && !isRejectedClick">
         <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <ng-multiselect-dropdown [placeholder]="'Select Requested School'" [settings]="schoolDropdownSettings"
-          [data]="schoolDropDownListFilter" formControlName="toSchool" 
-          (onSelect)="onFirstDropdownChange($event)" />
+            [data]="schoolDropDownListFilter" formControlName="toSchool" (onSelect)="onFirstDropdownChange($event)" />
           <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
               <option disabled>Select School</option>
               <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
@@ -123,10 +128,10 @@
 
       <div class="row mb-1" *ngIf="showSecondDropdown && !isRejectedClick">
         <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-          [data]="schoolDropDownList" formControlName="toSchool"  />
+            [data]="schoolDropDownList" formControlName="toSchool" />
           <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
               <option disabled>Select School</option>
               <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
@@ -143,10 +148,10 @@
         </div>
       </div>
 
-      
+
       <div class="row mb-1 ">
         <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <input type="text" class="form-control" formControlName="documentUrl" [readonly]="true">
           <div
@@ -161,15 +166,17 @@
 
       <div class="row mb-1" *ngIf="!isRejectedClick">
         <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
-          <input type="date" [min]="minDate" class="form-control" formControlName="date"  >
+          <input type="date" [min]="minDate" class="form-control" formControlName="date">
           <div
             *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
               required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date .</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are not allowed .</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date
+              .</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are not
+              allowed .</small>
           </div>
         </div>
       </div>

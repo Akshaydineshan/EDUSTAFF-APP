@@ -21,6 +21,7 @@ import { TeacherTableNameSectionComponent } from './components/teacher-table-nam
 import { EmployeeMenuClickListMenuComponent } from './components/employee-menu-click-list-menu/employee-menu-click-list-menu.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BackButtonComponent } from './components/back-button/back-button.component';
+import { NoDataFoundComponent } from './components/no-data-found/no-data-found.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
     SchoolHoverPopupComponent,
     TeacherTableNameSectionComponent,
     EmployeeMenuClickListMenuComponent,
-    BackButtonComponent
+    BackButtonComponent,
+    NoDataFoundComponent
     
   ],
   imports: [
@@ -64,7 +66,8 @@ import { BackButtonComponent } from './components/back-button/back-button.compon
     EmployeeMenuClickListMenuComponent,
     AgGridModule,
     NgMultiSelectDropDownModule,
-    BackButtonComponent
+    BackButtonComponent,
+    NoDataFoundComponent
   ]
 })
 export class SharedModule { }

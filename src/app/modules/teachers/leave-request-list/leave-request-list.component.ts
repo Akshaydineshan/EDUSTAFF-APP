@@ -6,6 +6,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
+import { environment } from 'src/environments/environment';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -18,7 +19,7 @@ interface PagonationConfig {
   providers: [DatePipe]
 })
 export class LeaveRequestListComponent {
-
+  apiUrl = environment.imageBaseUrl;
   isSidebarClosed = false;
   displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Start Date', field: 'fromDate' }, { headerName: 'End Date', field: 'toDate' }, { headerName: 'Applied Date', field: 'requestDate' }, { headerName: 'Reason', field: 'requestorComment' }, { headerName: 'ManagerComment', field: 'approverComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
@@ -84,10 +85,11 @@ export class LeaveRequestListComponent {
 
     this.leaveRequestForm = this.fb.group({
 
-      // documentUrl: ['', Validators.required],
+      documentUrl: [''],
       fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
-      comment: ['']
+      comment: [''],
+    
     })
 
   }
@@ -140,6 +142,40 @@ export class LeaveRequestListComponent {
 
 
 
+  }
+
+  get getDocument() {
+    let result = '';
+
+     let image=this.leaveRequestForm.get('documentUrl')?.value;
+    if(this.leaveRequestForm.get('documentUrl')?.value =='No Photo assigned' || null || '') image=""
+
+    if (this.apiUrl && image ) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
+    }
+    console.log("result",result)
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    return result;
+  }
+
+  transform(url: string): string {
+    const fileTypeIcons: { [key: string]: string } = {
+      pdf: "../../../../assets/icons/pdf-ic.png",
+      jpg: "../../../../assets/icons/img-ic.png",
+      jpeg: "../../../../assets/icons/img-ic.png",
+      png: "../../../../assets/icons/docs-ic.png",
+      doc: "../../../../assets/icons/docs-ic.png",
+      docx: "../../../../assets/icons/docs-ic.png",
+     default: "../../../../assets/icons/docs-ic.png",
+    };
+     const extension = url.split('.').pop()?.toLowerCase() || '';
+    let result:any= fileTypeIcons[extension] || fileTypeIcons['default'];
+  
+    return result;
+  }
+
+  documentClick(url:any){
+    window.open(url,"_blank")
   }
 
   // loadDropdownData() {
@@ -231,6 +267,10 @@ export class LeaveRequestListComponent {
           floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
           ... (column.field === 'employeeName' ? {
             cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
+            width: 220
+          } : {}),
+          ... (column.field === 'requestorComment' || column.field === "approverComment" ? {
+            cellRenderer: (params: any) => params.value ? `${params.value}` : `<a style="cursor: pointer;color:grey;  " target="_blank">No Value</a>`,
             width: 220
           } : {}),
 
@@ -368,6 +408,8 @@ export class LeaveRequestListComponent {
   listClickFromMenuList(event: any) {
     // this.loadDropdownData()
     this.tableColorChange = true;
+    this.leaveRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.documentpath)
+    console.log("trans",this.leaveRequestForm.value,this.selectMenuRowData.documentpath)
 
     if (event.value === 'approve') {
       this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))

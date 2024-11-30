@@ -193,7 +193,7 @@
 
   </div> -->
 
-  <div class="table-responsive">
+  <div class="table-responsive" *ngIf="teacherList.length">
     <!-- <table class="table table-striped table-hover table-bordered">
       <thead>
         <tr>
@@ -239,6 +239,8 @@
 
 
   </div>
+
+  <app-no-data-found *ngIf="!teacherList.length"></app-no-data-found>
 
   <!-- <div class="pagination-controls d-flex justify-content-start align-items-center mt-3">
     <button class="btn btn-outline-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
