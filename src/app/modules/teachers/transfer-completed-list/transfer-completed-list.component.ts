@@ -22,7 +22,7 @@ export class TransferCompletedListComponent {
   isSidebarClosed = false;
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' }, { headerName: 'Subject', field: 'subject' }, { headerName: 'Age', field: 'age' }, { headerName: 'Experience', field: 'experienceYear' }, { headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
@@ -39,7 +39,7 @@ export class TransferCompletedListComponent {
 
 
 
- 
+
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
 
@@ -48,7 +48,7 @@ export class TransferCompletedListComponent {
 
   ngOnInit(): void {
     this.loadTableDataList()
-   
+
 
   }
 
@@ -79,7 +79,7 @@ export class TransferCompletedListComponent {
   }
 
   loadTableDataList() {
-    let tableDataListApiEndPoint: string = ''
+    let tableDataListApiEndPoint: string = 'Teacher/GetAllTransferedTeacher'
     this.dataService.getTableListData(tableDataListApiEndPoint).subscribe(
       (data: any) => {
         debugger
@@ -93,9 +93,16 @@ export class TransferCompletedListComponent {
             : undefined,
           field: column.field,
           filter: true,
-          floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
+          floatingFilter: column.field === 'name', // For example, only these columns have floating filters
+          ... (column.field == 'experienceYear' ? {
+            valueFormatter: (params: any) => params.value <= 0 ? 0 : `${params.value}`
+          } : {}),
+          ... (column.field === 'name' || column.field === "schoolName" ? {
             cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
+            width: 220
+          } : {}),
+          ... (column.field === 'status' ? {
+            cellRenderer: (params: any) => `Completed`,
             width: 220
           } : {}),
 
@@ -192,12 +199,12 @@ export class TransferCompletedListComponent {
   }
 
 
- 
 
 
- 
 
- 
+
+
+
 
 
 
@@ -213,13 +220,13 @@ export class TransferCompletedListComponent {
         // this.showSchoolPopup = true;
         // this.updateMousePosition(event);
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.selectedSchool = data;
             console.log("school", this.selectedSchool)
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
-          (error:any) => {
+          (error: any) => {
             console.error('Error fetching school details:', error);
           }
         );
@@ -248,14 +255,14 @@ export class TransferCompletedListComponent {
     if (teacherId && teacherData) {
       this.hoverTimeout = setTimeout(() => {
         this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.hoveredEmployee = data; // Store the detailed info
             if (this.hoveredEmployee && teacherId) {
               this.showPopup = true;
               this.updateMousePosition(event);
             }
           },
-          (error:any) => {
+          (error: any) => {
             console.error('Error fetching teacher details:', error);
           }
         );
@@ -322,7 +329,7 @@ export class TransferCompletedListComponent {
 
   }
 
-  
+
   overlayClick() {
     this.showPopup = false;
     this.showSchoolPopup = false;
