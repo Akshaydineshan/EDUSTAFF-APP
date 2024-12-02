@@ -9,6 +9,8 @@ import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
 import { LeaveRequestListComponent } from './leave-request-list/leave-request-list.component';
 import { PromotionRequestComponent } from './promotion-request/promotion-request.component';
+import { PromotionCompletedListComponent } from './promotion-completed-list/promotion-completed-list.component';
+import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
@@ -21,6 +23,8 @@ const routes: Routes = [
   { path: 'add-teacher/:id', component: AddTeacherComponent },
   { path: 'teacher-details', component: TeacherDetailsComponent },
   { path: 'view-teacher/:id', component: TeacherViewComponent },
+  { path: 'promotion-completed', component: PromotionCompletedListComponent },
+  { path: 'transfer-completed', component: TransferCompletedListComponent },
   { 
     path: '**',
     component: PageNotFoundComponent

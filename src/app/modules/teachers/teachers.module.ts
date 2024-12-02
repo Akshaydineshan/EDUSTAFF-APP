@@ -15,6 +15,8 @@ import { TeacherViewComponent } from './teacher-view/teacher-view.component';
 import { TransferRequestListComponent } from './transfer-request-list/transfer-request-list.component';
 import { LeaveRequestListComponent } from './leave-request-list/leave-request-list.component';
 import { PromotionRequestComponent } from './promotion-request/promotion-request.component';
+import { PromotionCompletedListComponent } from './promotion-completed-list/promotion-completed-list.component';
+import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { PromotionRequestComponent } from './promotion-request/promotion-request
     TeacherViewComponent,
     TransferRequestListComponent,
     LeaveRequestListComponent,
-    PromotionRequestComponent
+    PromotionRequestComponent,
+    PromotionCompletedListComponent,
+    TransferCompletedListComponent
   ],
   imports: [
     CommonModule,

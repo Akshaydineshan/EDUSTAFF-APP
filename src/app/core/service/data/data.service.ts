@@ -155,6 +155,18 @@ export class DataService {
     );
   }
 
+  
+   getTableListData(url:string): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.apiUrl + url, { headers: { accept: '*/*' } }).pipe(
+     
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
+
 
   getTeachersData(): Observable<any[]> {
     debugger

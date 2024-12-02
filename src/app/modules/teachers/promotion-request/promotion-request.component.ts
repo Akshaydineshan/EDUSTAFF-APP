@@ -24,7 +24,7 @@ export class PromotionRequestComponent {
 
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -95,6 +95,7 @@ export class PromotionRequestComponent {
       fromDesignation:[''],
       toDesignation:[''],
       documentUrl: [''],
+      promotionDate:[''],
       comment: ['']
     })
 
@@ -362,6 +363,7 @@ export class PromotionRequestComponent {
      this.promotionRequestForm.get("fromDesignation")?.setValue(this.selectMenuRowData.promotedFromDesignation)
      this.promotionRequestForm.get("toDesignation")?.setValue(this.selectMenuRowData.promotedToDesignation)
      this.promotionRequestForm.get("toSchool")?.setValue([this.schoolDropDownList.find((item:any)=>item.schoolId === this.selectMenuRowData.fromSchoolID )])
+     this.promotionRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
 
    
     if (event.value === 'approve') {
@@ -487,7 +489,7 @@ export class PromotionRequestComponent {
       let employee: any = this.selectMenuRowData
       if (!this.isRejectedClick) {
         let payload: any = {
-         
+          "promotionDate":this.dataService.formatDateToISO(formValue.promotionDate),
           "approverComment": formValue.comment,
           "approvedSchoolID": formValue.toSchool[0].schoolId
          
