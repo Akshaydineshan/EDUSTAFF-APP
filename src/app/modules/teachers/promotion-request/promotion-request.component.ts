@@ -91,11 +91,11 @@ export class PromotionRequestComponent {
 
     this.promotionRequestForm = this.fb.group({
       fromSchool:[''],
-      toSchool:[''],
+      toSchool:['',[Validators.required]],
       fromDesignation:[''],
       toDesignation:[''],
       documentUrl: [''],
-      promotionDate:[''],
+      promotionDate:['',[Validators.required]],
       comment: ['']
     })
 
