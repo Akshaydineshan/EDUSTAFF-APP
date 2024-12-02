@@ -1,0 +1,33 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+<!-- container start -->
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" 
+    (click)="overlayClick()">
+    <app-back-button [url]="'/dashboard'" class=""></app-back-button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Retired Teachers List
+            <span class="badge badge-secondary">{{ this.tableDataList.length }}</span>
+        </h4>
+        <!-- <button class="btn btn-success" [routerLink]="['/schools/add-school']">
+      <i class="fas fa-plus-circle"></i> Add School Details
+    </button> -->
+    </div>
+
+    <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="hoveredEmployee"
+        [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+
+    <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
+        [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+    <div class="table-responsive" *ngIf="tableDataList.length">
+
+        <!-- table start -->
+        <app-table [rowData]="tableRows" [colDefs]="tableColumns" [paginationConfig]="paginationConfig"
+            (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+            (onCellClickedEvent)="onCellClicked($event)"></app-table>
+        <!-- table end -->
+
+    </div>
+    <app-no-data-found *ngIf="!tableDataList.length"></app-no-data-found>
+</div>
+<!-- container end -->
+

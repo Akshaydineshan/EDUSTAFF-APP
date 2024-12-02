@@ -11,6 +11,7 @@ import { LeaveRequestListComponent } from './leave-request-list/leave-request-li
 import { PromotionRequestComponent } from './promotion-request/promotion-request.component';
 import { PromotionCompletedListComponent } from './promotion-completed-list/promotion-completed-list.component';
 import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
+import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teacher-list.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'view-teacher/:id', component: TeacherViewComponent },
   { path: 'promotion-completed', component: PromotionCompletedListComponent },
   { path: 'transfer-completed', component: TransferCompletedListComponent },
+  { path: 'retired-teachers', component: RetiredTeacherListComponent },
   { 
     path: '**',
     component: PageNotFoundComponent
