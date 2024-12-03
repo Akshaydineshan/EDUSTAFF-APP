@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, NgZone } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
+import dayjs, { Dayjs } from 'dayjs';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -14,13 +15,15 @@ interface PagonationConfig {
   templateUrl: './promotion-completed-list.component.html',
   styleUrls: ['./promotion-completed-list.component.scss'],
   providers: [DatePipe]
+  
 })
 export class PromotionCompletedListComponent {
 
   isSidebarClosed = false;
+  designationList:any=[]
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Age', field: 'age' },{ headerName: 'Experience', field: 'experienceYear' },{ headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Age', field: 'age' },{ headerName: 'Experience', field: 'experienceYear' },{ headerName: 'Promotion Date', field: 'promotionDate' },{ headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
@@ -35,19 +38,47 @@ export class PromotionCompletedListComponent {
   showSchoolPopup: boolean = false;
   selectedSchool: any;
 
-
+ // Filter Range Picker  
+ minValue: any = 0;
+ maxValue: any = 100;
+ minSelected: any = 0;
+ maxSelected: any = 100;
+ filterForm!: FormGroup;
+ showFilterModal:boolean = false;
+ selected!: {startDate: Dayjs|null, endDate: Dayjs|null} ;
 
 
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
-
+    this.filterForm = this.fb.group({
+      designationFilter:[''],
+      schoolNameFilter: [''],
+      uniqueIdFilter: [''],
+      
+    });
 
   }
 
   ngOnInit(): void {
     this.loadTableDataList()
+    this.loadDropdownListData()
 
 
+  }
+
+  loadDropdownListData(){
+      this.dataService.getAllDesignations().subscribe({
+        next:(data:any)=>{
+          console.log("designt",data)
+         this.designationList=data;
+        },
+        error:(error:any)=>{
+
+        },
+        complete:()=>{
+
+        }
+      })
   }
 
 
@@ -86,7 +117,7 @@ export class PromotionCompletedListComponent {
         this.tableRows = this.tableDataList
         this.tableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
-          valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
+          valueFormatter:  column.field === 'promotionDate' 
             ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
             : undefined,
           field: column.field,
@@ -231,15 +262,15 @@ export class PromotionCompletedListComponent {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
 
-    if (event.colDef.field === "employeeName") {
-      let teacherId: number = rowData.employeeID
+    if (event.colDef.field === "name") {
+      let teacherId: number = rowData.teacherId
 
       this.ngZone.run(() => {
         this.router.navigate(['/teachers/view-teacher', teacherId])
       })
 
-    } else if (event.colDef.field === "fromSchoolName") {
-      let schoolId: number = rowData.fromSchoolID
+    } else if (event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
       this.router.navigate(['/schools/view', schoolId])
     } else if (event.colDef.field === "toSchoolName") {
       let schoolId: number = rowData.toSchoolID
@@ -254,4 +285,88 @@ export class PromotionCompletedListComponent {
     this.showSchoolPopup = false;
 
   }
+
+
+
+  // Filter related funtions
+  toggleFilterDropdown() {
+    console.log("filter click")
+    this.ngZone.run(() => {
+     
+      this.showFilterModal = !this.showFilterModal;
+    })
+  }
+
+  applyFilters() {
+   
+    this.ngZone.run(() => {
+      debugger
+      console.log("isSelected",this.selected)
+      const filters = this.filterForm.value;
+
+      let filter:any={
+        "designation":filters.designationFilter.designationID,
+        "uniqueID":filters.uniqueIdFilter,
+        "schoolName":filters.schoolNameFilter,
+        "fromPromotionDate":this.dataService.formatDateToISO(this.selected['startDate']),
+        "toPromotionDate":this.dataService.formatDateToISO(this.selected['endDate'])
+
+
+      }
+      console.log("payload",filter)
+    
+
+      this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+        this.tableDataList = data.map((teacher: any) => ({
+          ...teacher,
+         
+        }));
+        // this.teacherTableRows = this.teacherList;
+        // this.updatePaginatedData();
+        this.showFilterModal = false;
+      });
+    })
+
+  }
+  resetFilter() {
+    // this.minSelected = 0;
+    // this.maxSelected = 100
+    this.ngZone.run(() => {
+      // this.filterForm.reset({
+      //   subjectFilter: "",
+      //   retiringInMonths: "",
+      //   schoolNameFilter: "",
+      //   uniqueIdFilter: "",
+      //   documents: false,
+      //   minExperienceYear: 0,
+      //   maxExperienceYear: 100,
+       
+      //   newRecruit: false
+      // });
+      // this.selected = {
+      //   startDate: dayjs(), // current date/time as default startDate
+      //   endDate: dayjs(),   // current date/time as default endDate
+      // };
+      // this.selected={startDate:null,endDate:null}
+      this.filterForm.reset({
+        designationFilter:"",
+        schoolNameFilter: "",
+        uniqueIdFilter: "",
+      })
+      this.loadTableDataList();
+      this.showFilterModal = false
+    })
+  }
+
+  validateRange(event: any, changed: 'min' | 'max'): void {
+    if (changed === 'min' && this.minSelected >= this.maxSelected) {
+      event.preventDefault()
+      this.minSelected = this.maxSelected - 1;
+    } else if (changed === 'max' && this.maxSelected <= this.minSelected) {
+      event.preventDefault()
+      this.maxSelected = this.minSelected + 1;
+    }
+  }
+
+
 }

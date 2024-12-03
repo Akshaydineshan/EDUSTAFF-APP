@@ -20,7 +20,7 @@ export class RetiredTeacherListComponent {
   isSidebarClosed = false;
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Age', field: 'age' },{ headerName: 'Experience', field: 'experienceYear' },{ headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Age', field: 'age' },{ headerName: 'Experience', field: 'experienceYear' },{ headerName: 'Designation', field: 'designation' }, ];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
@@ -99,10 +99,7 @@ export class RetiredTeacherListComponent {
           ... (column.field == 'experienceYear' ? {
             valueFormatter: (params: any) => params.value <= 0 ? 0 : `${params.value}`
           } : {}),
-          ... (column.field === 'status'  ? {
-            cellRenderer: (params: any) =>  `Completed`,
-            width: 220
-          } : {}),
+      
 
 
         }));

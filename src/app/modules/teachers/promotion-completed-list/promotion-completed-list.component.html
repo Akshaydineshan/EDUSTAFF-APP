@@ -1,16 +1,75 @@
 <app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
 <app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
 <!-- container start -->
-<div class="main-container mt-4" [class.shifted]="isSidebarClosed" 
-    (click)="overlayClick()">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" (click)="overlayClick()">
     <app-back-button [url]="'/dashboard'" class=""></app-back-button>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>Promoted Teacher List
             <span class="badge badge-secondary">{{ this.tableDataList.length }}</span>
         </h4>
-        <!-- <button class="btn btn-success" [routerLink]="['/schools/add-school']">
-      <i class="fas fa-plus-circle"></i> Add School Details
-    </button> -->
+     
+
+        <div class="d-flex justify-content-between align-items-end gap-3">
+            <!-- <button class="btn btn-success" style="visibility: hidden;">
+                <i class="fas fa-plus-circle"></i> Add Teacher Details
+            </button> -->
+            <div class="dropdown">
+                <button id="filterButton" class="btn btn-outline-secondary me-2" (click)="toggleFilterDropdown()">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <div id="filterDropdown" class="dropdown-menu p-3" [class.show]="showFilterModal">
+                    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+                        <h5>Filter</h5>
+                        <div class="form-group">
+                            <label for="school">School</label>
+                            <input formControlName="schoolNameFilter" type="text" class="form-control"
+                                placeholder="School Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="school">Designation</label>
+                            <!-- <input formControlName="designationFilter" type="text" class="form-control"
+                                placeholder="Designation"> -->
+                                <select name="" id="" class="form-control" formControlName="designationFilter">
+                                    <option value="" [disabled]="true">Select Designation</option>
+                                    <option *ngFor="let item of designationList; let i=index;" [ngValue]="item">{{item.designationName}}</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="school">Promotion Date</label>
+                            <input type="text" placeholder="Pick Date Range" 
+                            ngxDaterangepickerBootstrap 
+                            [locale]="{applyLabel: 'ok', format: 'DD-MM-YYYY'}"
+                            [closeOnAutoApply]="true"
+                            [autoApply]="true"
+                            readonly
+                        
+                            [(ngModel)]="selected" [ngModelOptions]="{standalone: true}"
+                             class="form-control" />
+
+                        </div>
+
+                        <div class="form-group">
+                            <label for="school">Unique Id</label>
+                            <input formControlName="uniqueIdFilter" type="text" class="form-control"
+                                placeholder="Unique Id">
+                        </div>
+
+                    
+                       
+
+                       
+
+                        <div class="form-group d-flex justify-content-between mt-3">
+                            <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset
+                                Filter</button>
+                            <button type="submit" class="btn btn-success">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
     <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="hoveredEmployee"
@@ -30,4 +89,3 @@
     <app-no-data-found *ngIf="!tableDataList.length"></app-no-data-found>
 </div>
 <!-- container end -->
-

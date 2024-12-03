@@ -6,6 +6,7 @@ import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
+import dayjs, { Dayjs } from 'dayjs';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -38,18 +39,47 @@ export class TransferCompletedListComponent {
   selectedSchool: any;
 
 
+  // Filter Range Picker  
+
+  filterForm!: FormGroup;
+  showFilterModal: boolean = false;
+  selected!: { startDate: Dayjs | null, endDate: Dayjs | null };
+  designationList: any[] = [];
+
+
 
 
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
+    this.filterForm = this.fb.group({
+      designationFilter: [''],
+      schoolNameFilter: [''],
+      uniqueIdFilter: [''],
 
+    });
 
   }
 
   ngOnInit(): void {
     this.loadTableDataList()
+    this.loadDropdownListData()
 
 
+  }
+  loadDropdownListData() {
+  
+    this.dataService.getAllDesignations().subscribe({
+      next: (data: any) => {
+        console.log("designt", data)
+        this.designationList = data;
+      },
+      error: (error: any) => {
+
+      },
+      complete: () => {
+
+      }
+    })
   }
 
 
@@ -335,4 +365,80 @@ export class TransferCompletedListComponent {
     this.showSchoolPopup = false;
 
   }
+
+
+
+  // Filter related funtions
+  toggleFilterDropdown() {
+    console.log("filter click")
+    this.ngZone.run(() => {
+
+      this.showFilterModal = !this.showFilterModal;
+    })
+  }
+
+  applyFilters() {
+
+    this.ngZone.run(() => {
+      debugger
+      console.log("isSelected", this.selected)
+      const filters = this.filterForm.value;
+
+      let filter: any = {
+        "designation": filters.designationFilter.designationID,
+        "uniqueID": filters.uniqueIdFilter,
+        "schoolName": filters.schoolNameFilter,
+        "fromPromotionDate": this.dataService.formatDateToISO(this.selected['startDate']),
+        "toPromotionDate": this.dataService.formatDateToISO(this.selected['endDate'])
+
+
+      }
+      console.log("payload", filter)
+
+
+      this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+        this.tableDataList = data.map((teacher: any) => ({
+          ...teacher,
+
+        }));
+        // this.teacherTableRows = this.teacherList;
+        // this.updatePaginatedData();
+        this.showFilterModal = false;
+      });
+    })
+
+  }
+  resetFilter() {
+    // this.minSelected = 0;
+    // this.maxSelected = 100
+    this.ngZone.run(() => {
+      // this.filterForm.reset({
+      //   subjectFilter: "",
+      //   retiringInMonths: "",
+      //   schoolNameFilter: "",
+      //   uniqueIdFilter: "",
+      //   documents: false,
+      //   minExperienceYear: 0,
+      //   maxExperienceYear: 100,
+
+      //   newRecruit: false
+      // });
+      // this.selected = {
+      //   startDate: dayjs(), // current date/time as default startDate
+      //   endDate: dayjs(),   // current date/time as default endDate
+      // };
+      // this.selected={startDate:null,endDate:null}
+      this.filterForm.reset({
+        designationFilter: "",
+        schoolNameFilter: "",
+        uniqueIdFilter: "",
+      })
+      this.loadTableDataList();
+      this.showFilterModal = false
+    })
+  }
+
+
+
+
 }

@@ -259,6 +259,39 @@ export class DataService {
     }
   }
 
+  filterInTeacherList(filters: any): any {
+    debugger
+
+    let params = new HttpParams();
+      // Iterate over the filter keys dynamically
+  for (const key in filters) {
+    if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
+      // Append only non-empty values to HttpParams
+     
+      if(['uniqueID', 'schoolName'].includes(key)){
+        params = params.append(key, filters[key].trim());
+      }else{
+        params = params.append(key, filters[key]);
+      }
+    }
+  }
+   
+    // if (filters.schoolName) params = params.append('schoolName', filters.schoolName);
+    // if (filters.designation) params = params.append('designation', filters.designation );
+    // if (filters.uniqueID) params = params.append('uniqueId', filters.uniqueID?.trim());
+    // if (filters.fromPromotionDate) params = params.append('fromPromotionDate', filters.fromPromotionDate);
+    // if (filters.toPromotionDate) params = params.append('toPromotionDate', filters.toPromotionDate);
+    console.log("params",params)
+
+    if (params) {
+      return filters ? this.http.get<any[]>(`${this.apiUrl}Promotion/Promotionfilter`, { params }).pipe(
+        catchError((error) => {
+          console.error('Error fetching teacher list:', error);
+          return throwError('Failed to fetch teacher list.');
+        })
+      ) : null
+    }
+  }
 
   listNonTeachersData(): Observable<any> {
     return this.http.get<any>(this.apiUrl + 'Teacher/GetTeacherList', { headers: { accept: '*/*' } }).pipe(

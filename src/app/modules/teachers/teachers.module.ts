@@ -18,6 +18,7 @@ import { PromotionRequestComponent } from './promotion-request/promotion-request
 import { PromotionCompletedListComponent } from './promotion-completed-list/promotion-completed-list.component';
 import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
 import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teacher-list.component';
+import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,9 @@ import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teac
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxDaterangepickerBootstrapModule.forRoot()
    
-  ]
+  ],
+  providers: [NgxDaterangepickerLocaleService],
 })
 export class TeachersModule { }
