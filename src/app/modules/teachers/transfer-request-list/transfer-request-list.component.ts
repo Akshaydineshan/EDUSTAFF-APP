@@ -22,7 +22,7 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'Transfer Requested Schools', field: 'toSchoolOneName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -51,9 +51,9 @@ export class TransferRequestListComponent implements OnInit {
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
   minDate: any;
-  toSchoolPr1:any;
-  toSchoolPr2:any;
-  toSchoolPr3:any;
+  toSchoolPr1: any;
+  toSchoolPr2: any;
+  toSchoolPr3: any;
 
   selectedSchoolPriority1!: any
   schoolDropdownSettings: IDropdownSettings = {
@@ -69,7 +69,7 @@ export class TransferRequestListComponent implements OnInit {
   };
   schoolDropDownListFilter: any[] = [];
   showSecondDropdown: boolean = false;
-  tableColorChange:boolean=false;
+  tableColorChange: boolean = false;
 
 
   // Filter Range Picker  
@@ -80,7 +80,7 @@ export class TransferRequestListComponent implements OnInit {
   filterForm!: FormGroup;
   showFilterModal: boolean = false;
   selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
-  selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
+  selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
   designationList: any = [];
   schoolList: any = []
 
@@ -178,11 +178,11 @@ export class TransferRequestListComponent implements OnInit {
         console.log("school list", results)
         this.schoolDropDownList = results.schools.filter((school: any) =>
           !filterSchool.some((filter) => filter.id === school.schoolId)
-        ).filter((item:any)=> item.schoolId !==this.selectMenuRowData. fromSchoolID
+        ).filter((item: any) => item.schoolId !== this.selectMenuRowData.fromSchoolID
         )
-        
+
         console.log("filt", this.schoolDropDownList)
-      
+
         const updatedList = [];
         filterSchool.forEach((item: any) => {
           const school = results.schools.find((school: any) => school.schoolId == item.id);
@@ -260,6 +260,30 @@ export class TransferRequestListComponent implements OnInit {
             cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
             width: 220
           } : {}),
+
+          ...(column.field === "toSchoolOneName" ? {
+            cellRenderer: (params: any) => {
+              // Combine fields styled as inline-block elements
+              const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
+              return `
+         <div style="display: block; margin: 0; padding: 0;">
+        <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
+          <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
+        </span>
+        <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
+          <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
+        </span>
+        <span style="display: block; padding: 0; margin: 0;">
+          <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
+        </span>
+      </div>
+              
+              `;
+            }, autoHeight: true, width: 250, cellStyle: {
+              padding: '0px',
+            },
+          } : {}),
+
 
           ...(column.field === 'status' ?
             {
@@ -382,9 +406,9 @@ export class TransferRequestListComponent implements OnInit {
 
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
-    this.toSchoolPr1=this.selectMenuRowData.toSchoolOneName;
-    this.toSchoolPr2=this.selectMenuRowData.toSchoolTwoName;
-    this.toSchoolPr3=this.selectMenuRowData.toSchoolThreeName;
+    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
     console.log("selectMenuRowData", this.selectMenuRowData)
 
 
@@ -396,7 +420,7 @@ export class TransferRequestListComponent implements OnInit {
     this.loadDropdownData()
     const dateControl = this.transferRequestForm.get('date');
     this.showSecondDropdown = false;
-    this.tableColorChange=true;
+    this.tableColorChange = true;
     if (event.value === 'approve') {
       this.isRejectedClick = false;
       this.transferRequestForm.get('toSchool')?.setValidators(Validators.required)
@@ -538,7 +562,7 @@ export class TransferRequestListComponent implements OnInit {
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
-              this.tableColorChange=false;
+              this.tableColorChange = false;
               this.toastr.success('Transfer Approved !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -556,7 +580,7 @@ export class TransferRequestListComponent implements OnInit {
           },
           complete: () => {
             this.isTransferPopup = false;
-            this.tableColorChange=false;
+            this.tableColorChange = false;
 
           }
         })
@@ -571,7 +595,7 @@ export class TransferRequestListComponent implements OnInit {
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
-              this.tableColorChange=false;
+              this.tableColorChange = false;
               this.toastr.success('Transfer Rejected !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -589,7 +613,7 @@ export class TransferRequestListComponent implements OnInit {
           },
           complete: () => {
             this.isTransferPopup = false;
-            this.tableColorChange=false;
+            this.tableColorChange = false;
 
           }
         })
@@ -598,7 +622,7 @@ export class TransferRequestListComponent implements OnInit {
 
     } else {
 
-      console.log("invalid form",this.transferRequestForm)
+      console.log("invalid form", this.transferRequestForm)
     }
   }
 
@@ -628,7 +652,7 @@ export class TransferRequestListComponent implements OnInit {
     this.submitted = false;
     this.isTransferPopup = false;
     this.isMenuVisible = false;
-    this.tableColorChange=false;
+    this.tableColorChange = false;
   }
   overlayClick() {
     this.showPopup = false;
@@ -638,102 +662,102 @@ export class TransferRequestListComponent implements OnInit {
 
 
 
-  
-    // Filter related funtions
-  
+
+  // Filter related funtions
 
 
-    loadDropdownListData() {
+
+  loadDropdownListData() {
 
 
-      forkJoin({
-        designations: this.dataService.getAllDesignations(),
-        schools: this.dataService.getSchoolList()
-      }).subscribe({
-        next: (results:any) => {
-        
-          this.designationList=results.designations
-          this.schoolList = results.schools;
-  
-        },
-        error: (error:any) => {
-          console.error('Error loading dropdown data', error);
-  
-        },
-              complete: () => {
-  
-        }
+    forkJoin({
+      designations: this.dataService.getAllDesignations(),
+      schools: this.dataService.getSchoolList()
+    }).subscribe({
+      next: (results: any) => {
+
+        this.designationList = results.designations
+        this.schoolList = results.schools;
+
+      },
+      error: (error: any) => {
+        console.error('Error loading dropdown data', error);
+
+      },
+      complete: () => {
+
+      }
+    });
+    // this.dataService.getAllDesignations().subscribe({
+    //   next: (data: any) => {
+    //     console.log("designt", data)
+    //     this.designationList = data;
+    //   },
+    //   error: (error: any) => {
+
+    //   },
+    //   complete: () => {
+
+    //   }
+    // })
+  }
+
+  toggleFilterDropdown() {
+    console.log("filter click")
+    this.ngZone.run(() => {
+
+      this.showFilterModal = !this.showFilterModal;
+    })
+  }
+
+  applyFilters() {
+
+    this.ngZone.run(() => {
+      debugger
+      console.log("isSelected", this.selected)
+      const filters = this.filterForm.value;
+
+      let filter: any = {
+        "designationID": filters.designationFilter.designationID,
+        "uniqueID": filters.uniqueIdFilter,
+        "schoolID": filters.schoolNameFilter.schoolId,
+        "fromTransferDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
+        "toTransferDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
+        // "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
+        // "toWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['endDate'])
+
+
+      }
+      console.log("payload", filter)
+
+      let url: string = 'TransferRequest/TeacherTransferRequestfilter'
+      this.dataService.filterInTeacherList(url, filter).subscribe((data: any) => {
+        this.transferList = data.map((teacher: any) => ({
+          ...teacher,
+
+        }));
+        this.transferTableRows = this.transferList
+        // this.teacherTableRows = this.teacherList;
+        // this.updatePaginatedData();
+        this.showFilterModal = false;
       });
-      // this.dataService.getAllDesignations().subscribe({
-      //   next: (data: any) => {
-      //     console.log("designt", data)
-      //     this.designationList = data;
-      //   },
-      //   error: (error: any) => {
-  
-      //   },
-      //   complete: () => {
-  
-      //   }
-      // })
-    }
-  
-    toggleFilterDropdown() {
-      console.log("filter click")
-      this.ngZone.run(() => {
-  
-        this.showFilterModal = !this.showFilterModal;
+    })
+
+  }
+  resetFilter() {
+
+    this.ngZone.run(() => {
+
+      this.selected = null;
+      this.selectedWithEffectFrom = null;
+      this.filterForm.reset({
+        designationFilter: "",
+        schoolNameFilter: "",
+        uniqueIdFilter: "",
       })
-    }
-  
-    applyFilters() {
-  
-      this.ngZone.run(() => {
-        debugger
-        console.log("isSelected", this.selected)
-        const filters = this.filterForm.value;
-  
-        let filter: any = {
-          "designationID": filters.designationFilter.designationID,
-          "uniqueID": filters.uniqueIdFilter,
-          "schoolID": filters.schoolNameFilter.schoolId,
-          "fromTransferDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
-          "toTransferDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
-          // "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
-          // "toWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['endDate'])
-  
-  
-        }
-        console.log("payload", filter)
-  
-        let url:string='TransferRequest/TeacherTransferRequestfilter'
-        this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
-          this.transferList = data.map((teacher: any) => ({
-            ...teacher,
-  
-          }));
-          this.transferTableRows = this.transferList
-          // this.teacherTableRows = this.teacherList;
-          // this.updatePaginatedData();
-          this.showFilterModal = false;
-        });
-      })
-  
-    }
-    resetFilter() {
-  
-      this.ngZone.run(() => {
-     
-        this.selected = null;
-        this.selectedWithEffectFrom=null;
-        this.filterForm.reset({
-          designationFilter: "",
-          schoolNameFilter: "",
-          uniqueIdFilter: "",
-        })
-        this.loadtransferRequestList();
-        this.showFilterModal = false
-      })
-    }
-  
+      this.loadtransferRequestList();
+      this.showFilterModal = false
+    })
+  }
+
 }
