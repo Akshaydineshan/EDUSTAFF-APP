@@ -697,16 +697,16 @@ export class TransferRequestListComponent implements OnInit {
           "designationID": filters.designationFilter.designationID,
           "uniqueID": filters.uniqueIdFilter,
           "schoolID": filters.schoolNameFilter.schoolId,
-          "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
-          "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
-          "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
-          "toWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['endDate'])
+          "fromTransferDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
+          "toTransferDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
+          // "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
+          // "toWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['endDate'])
   
   
         }
         console.log("payload", filter)
   
-        let url:string='TransferRequest/Transferfilter'
+        let url:string='TransferRequest/TeacherTransferRequestfilter'
         this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
           this.transferList = data.map((teacher: any) => ({
             ...teacher,

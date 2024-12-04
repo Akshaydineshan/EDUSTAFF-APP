@@ -346,7 +346,7 @@ export class PromotionCompletedListComponent {
       console.log("payload", filter)
 
 
-      let url:string='Promotion/Promotionfilter'
+      let url:string='Promotion/TeacherPromotionCompletedfilter'  
       this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.tableDataList = data.map((teacher: any) => ({
           ...teacher,

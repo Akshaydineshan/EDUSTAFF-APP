@@ -428,7 +428,7 @@ export class TransferCompletedListComponent {
       console.log("payload", filter)
 
 
-      let url:string='TransferRequest/Transferfilter'
+      let url:string='TransferRequest/TeacherTransferCompletedfilter'
       this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.tableDataList = data.map((teacher: any) => ({
           ...teacher,

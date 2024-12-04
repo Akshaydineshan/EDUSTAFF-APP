@@ -690,7 +690,7 @@ export class PromotionRequestComponent {
       }
       console.log("payload", filter)
 
-      let url:string='Promotion/Promotionfilter'
+      let url:string='Promotion/TeacherPromotionRequestedfilter'
       this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.transferList = data.map((teacher: any) => ({
           ...teacher,

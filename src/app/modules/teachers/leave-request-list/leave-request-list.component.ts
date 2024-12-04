@@ -7,6 +7,8 @@ import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import { environment } from 'src/environments/environment';
+import dayjs, { Dayjs } from 'dayjs';
+import { forkJoin } from 'rxjs';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -71,13 +73,32 @@ export class LeaveRequestListComponent {
   isLeavePopup: boolean = false;
   tableColorChange: boolean = false;
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
 
+
+    // Filter Range Picker  
+    minValue: any = 0;
+    maxValue: any = 100;
+    minSelected: any = 0;
+    maxSelected: any = 100;
+    filterForm!: FormGroup;
+    showFilterModal: boolean = false;
+    selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
+    designationList: any = [];
+    schoolList: any = []
+
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
+    this.filterForm = this.fb.group({
+      designationFilter: [''],
+      schoolNameFilter: [''],
+      uniqueIdFilter: [''],
+
+    });
 
   }
 
   ngOnInit(): void {
     this.loadLeaveRequestList()
+    this.loadDropdownListData()
     // this.loadDropdownData()
 
     const today = new Date();
@@ -103,14 +124,17 @@ export class LeaveRequestListComponent {
 
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: HTMLElement) {
-    debugger
+
+    if (!target.closest('.dropdown') && this.showFilterModal) {
+      this.showFilterModal = false; // Close dropdown when clicking outside
+    }
 
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
     const menuPops = document.getElementsByClassName('menuPop');
-
+    console.log("menubn", menuButtons)
     let clickedInsidePopup = false;
-    let clickedOnButton = menuButtons[0].contains(target);
+    let clickedOnButton = false
     //  let clickedOnButtonI = false;
 
     for (let i = 0; i < menuPops.length; i++) {
@@ -648,5 +672,100 @@ export class LeaveRequestListComponent {
     this.showSchoolPopup = false;
 
   }
+
+
+   // Filter related funtions
+  
+
+
+   loadDropdownListData() {
+
+
+    forkJoin({
+      designations: this.dataService.getAllDesignations(),
+      schools: this.dataService.getSchoolList()
+    }).subscribe({
+      next: (results:any) => {
+      
+        this.designationList=results.designations
+        this.schoolList = results.schools;
+        this.schoolDropDownList = results.schools;
+
+      },
+      error: (error:any) => {
+        console.error('Error loading dropdown data', error);
+
+      },
+            complete: () => {
+
+      }
+    });
+    // this.dataService.getAllDesignations().subscribe({
+    //   next: (data: any) => {
+    //     console.log("designt", data)
+    //     this.designationList = data;
+    //   },
+    //   error: (error: any) => {
+
+    //   },
+    //   complete: () => {
+
+    //   }
+    // })
+  }
+toggleFilterDropdown() {
+  console.log("filter click")
+  this.ngZone.run(() => {
+
+    this.showFilterModal = !this.showFilterModal;
+  })
+}
+
+applyFilters() {
+
+  this.ngZone.run(() => {
+    debugger
+    console.log("isSelected", this.selected)
+    const filters = this.filterForm.value;
+
+    let filter: any = {
+      "designationID": filters.designationFilter.designationID,
+      "uniqueID": filters.uniqueIdFilter,
+      "schoolID": filters.schoolNameFilter.schoolId,
+      // "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
+      // "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate'])
+
+
+    }
+    console.log("payload", filter)
+
+    let url:string='LeaveRequest/TeacherLeaveRequestedfilter'
+    this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
+      this.leaveList = data.map((teacher: any) => ({
+        ...teacher,
+
+      }));
+      this.leaveTableRows = this.leaveList
+      // this.teacherTableRows = this.teacherList;
+      // this.updatePaginatedData();
+      this.showFilterModal = false;
+    });
+  })
+
+}
+resetFilter() {
+
+  this.ngZone.run(() => {
+ 
+    this.selected = null;
+    this.filterForm.reset({
+      designationFilter: "",
+      schoolNameFilter: "",
+      uniqueIdFilter: "",
+    })
+    this.loadLeaveRequestList();
+    this.showFilterModal = false
+  })
+}
 }
 
