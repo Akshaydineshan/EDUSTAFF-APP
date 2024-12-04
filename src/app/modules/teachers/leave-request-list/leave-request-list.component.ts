@@ -107,8 +107,8 @@ export class LeaveRequestListComponent {
     this.leaveRequestForm = this.fb.group({
 
       documentUrl: [''],
-      fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
-      toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
+      fromDate: ['', [ Validators.required]],
+      toDate: ['', [ Validators.required]],
       comment: [''],
     
     })
