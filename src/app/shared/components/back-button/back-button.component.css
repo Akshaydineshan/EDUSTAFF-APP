@@ -1,0 +1,25 @@
+/* Back Button Container */
+.back-button-container {
+  display: inline-block; /* Make the container fit its content */
+  border-radius: 50%; /* Circle shape for modern look */
+  padding: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  cursor: pointer; /* Pointer cursor to indicate it's clickable */
+  transition: all 0.3s ease; /* Smooth transition for hover and click effects */
+}
+
+/* Hover Effect */
+.back-button-container:hover {
+  background-color: #e0e0e0; /* Slightly darker background */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Elevate shadow on hover */
+  transform: translateY(-1px); /* Move slightly upwards */
+}
+
+/* Active/Click Effect */
+.back-button-container:active {
+  background-color: #d0d0d0; /* Darker background on click */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Reset shadow */
+  transform: translateY(1px); /* Slight downward movement */
+}
+
+/* Back Icon *//*# sourceMappingURL=back-button.component.css.map */

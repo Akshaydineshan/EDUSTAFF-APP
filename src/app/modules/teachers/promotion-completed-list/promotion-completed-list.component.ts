@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
 import dayjs, { Dayjs } from 'dayjs';
+import { forkJoin } from 'rxjs';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -20,7 +21,7 @@ interface PagonationConfig {
 export class PromotionCompletedListComponent {
 
   isSidebarClosed = false;
-  designationList: any = []
+
 
   // table related vaiables
   displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedToSchool' },{ headerName: 'To School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
@@ -46,6 +47,8 @@ export class PromotionCompletedListComponent {
   filterForm!: FormGroup;
   showFilterModal: boolean = false;
   selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
+  designationList: any = []
+  schoolList:any[]=[]
 
 
 
@@ -283,18 +286,38 @@ export class PromotionCompletedListComponent {
   }
 
   loadDropdownListData() {
-    this.dataService.getAllDesignations().subscribe({
-      next: (data: any) => {
-        console.log("designt", data)
-        this.designationList = data;
-      },
-      error: (error: any) => {
+
+
+    forkJoin({
+      designations: this.dataService.getAllDesignations(),
+      schools: this.dataService.getSchoolList()
+    }).subscribe({
+      next: (results) => {
+      
+        this.designationList=results.designations
+        this.schoolList = results.schools;
 
       },
-      complete: () => {
+      error: (error) => {
+        console.error('Error loading dropdown data', error);
+
+      },
+            complete: () => {
 
       }
-    })
+    });
+    // this.dataService.getAllDesignations().subscribe({
+    //   next: (data: any) => {
+    //     console.log("designt", data)
+    //     this.designationList = data;
+    //   },
+    //   error: (error: any) => {
+
+    //   },
+    //   complete: () => {
+
+    //   }
+    // })
   }
   toggleFilterDropdown() {
     console.log("filter click")
@@ -314,7 +337,7 @@ export class PromotionCompletedListComponent {
       let filter: any = {
         "designationID": filters.designationFilter.designationID,
         "uniqueID": filters.uniqueIdFilter,
-        "schoolName": filters.schoolNameFilter,
+        "schoolID": filters.schoolNameFilter.schoolId,
         "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
         "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate'])
 
@@ -323,7 +346,8 @@ export class PromotionCompletedListComponent {
       console.log("payload", filter)
 
 
-      this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+      let url:string='Promotion/Promotionfilter'
+      this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.tableDataList = data.map((teacher: any) => ({
           ...teacher,
 

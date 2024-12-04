@@ -259,7 +259,7 @@ export class DataService {
     }
   }
 
-  filterInTeacherList(filters: any): any {
+  filterInTeacherList(url:any,filters: any): any {
     debugger
 
     let params = new HttpParams();
@@ -268,7 +268,7 @@ export class DataService {
     if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
       // Append only non-empty values to HttpParams
      
-      if(['uniqueID', 'schoolName'].includes(key)){
+      if(['uniqueID'].includes(key)){
         params = params.append(key, filters[key].trim());
       }else{
         params = params.append(key, filters[key]);
@@ -284,7 +284,7 @@ export class DataService {
     console.log("params",params)
 
     if (params) {
-      return filters ? this.http.get<any[]>(`${this.apiUrl}Promotion/Promotionfilter`, { params }).pipe(
+      return filters ? this.http.get<any[]>(`${this.apiUrl}${url}`, { params }).pipe(
         catchError((error) => {
           console.error('Error fetching teacher list:', error);
           return throwError('Failed to fetch teacher list.');

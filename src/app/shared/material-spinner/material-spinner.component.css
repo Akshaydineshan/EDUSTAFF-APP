@@ -15,4 +15,8 @@
 
 .spinner {
   margin: auto;
+}
+
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: white;
 }/*# sourceMappingURL=material-spinner.component.css.map */

@@ -20,8 +20,12 @@
                   <h5>Filter</h5>
                   <div class="form-group">
                       <label for="school">School</label>
-                      <input formControlName="schoolNameFilter" type="text" class="form-control"
-                          placeholder="School Name">
+                      <!-- <input formControlName="schoolNameFilter" type="text" class="form-control"
+                          placeholder="School Name"> -->
+                          <select name="" id="" class="form-control" formControlName="schoolNameFilter">
+                            <option value="" [disabled]="true">Select School</option>
+                            <option *ngFor="let item of schoolList; let i=index;" [ngValue]="item">{{item.schoolName}}</option>
+                        </select>
                   </div>
                   <div class="form-group">
                       <label for="school">Designation</label>

@@ -81,7 +81,8 @@ export class TransferRequestListComponent implements OnInit {
   showFilterModal: boolean = false;
   selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
   selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
-  designationList: any = []
+  designationList: any = [];
+  schoolList: any = []
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router,) {
 
@@ -96,6 +97,7 @@ export class TransferRequestListComponent implements OnInit {
   ngOnInit(): void {
     this.loadtransferRequestList()
     // this.loadDropdownData()
+    this.loadDropdownListData()
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -125,9 +127,10 @@ export class TransferRequestListComponent implements OnInit {
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
     const menuPops = document.getElementsByClassName('menuPop');
+    console.log("menubn", menuButtons)
 
     let clickedInsidePopup = false;
-    let clickedOnButton = menuButtons[0].contains(target);
+    let clickedOnButton = false
     //  let clickedOnButtonI = false;
 
     for (let i = 0; i < menuPops.length; i++) {
@@ -641,19 +644,40 @@ export class TransferRequestListComponent implements OnInit {
 
 
     loadDropdownListData() {
-      this.dataService.getAllDesignations().subscribe({
-        next: (data: any) => {
-          console.log("designt", data)
-          this.designationList = data;
-        },
-        error: (error: any) => {
+
+
+      forkJoin({
+        designations: this.dataService.getAllDesignations(),
+        schools: this.dataService.getSchoolList()
+      }).subscribe({
+        next: (results:any) => {
+        
+          this.designationList=results.designations
+          this.schoolList = results.schools;
   
         },
-        complete: () => {
+        error: (error:any) => {
+          console.error('Error loading dropdown data', error);
+  
+        },
+              complete: () => {
   
         }
-      })
+      });
+      // this.dataService.getAllDesignations().subscribe({
+      //   next: (data: any) => {
+      //     console.log("designt", data)
+      //     this.designationList = data;
+      //   },
+      //   error: (error: any) => {
+  
+      //   },
+      //   complete: () => {
+  
+      //   }
+      // })
     }
+  
     toggleFilterDropdown() {
       console.log("filter click")
       this.ngZone.run(() => {
@@ -672,7 +696,7 @@ export class TransferRequestListComponent implements OnInit {
         let filter: any = {
           "designationID": filters.designationFilter.designationID,
           "uniqueID": filters.uniqueIdFilter,
-          "schoolName": filters.schoolNameFilter,
+          "schoolID": filters.schoolNameFilter.schoolId,
           "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
           "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
           "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
@@ -682,8 +706,8 @@ export class TransferRequestListComponent implements OnInit {
         }
         console.log("payload", filter)
   
-  
-        this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+        let url:string='TransferRequest/Transferfilter'
+        this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
           this.transferList = data.map((teacher: any) => ({
             ...teacher,
   

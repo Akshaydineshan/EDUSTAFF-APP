@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.popup-menu {
+  position: fixed;
+  width: 200px;
+  height: 100px;
+  background: #FFFFFF;
+  border-radius: 4px;
+  border: Mixed solid #E7E7E7;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.0784313725);
+  padding: 14px 14px;
+  z-index: 10000;
+}
+.popup-menu li {
+  list-style: none;
+  line-height: 30px;
+  cursor: pointer;
+  width: calc(100% + 28px); /* Full width plus padding offset */
+  margin: 0 -14px; /* Offset the padding */
+  padding: 0 14px;
+}
+.popup-menu li img {
+  width: 20px;
+  height: 19px;
+  gap: 16px;
+  opacity: 0px;
+}
+.popup-menu li:hover {
+  background-color: rgb(245, 243, 243);
+}
+.popup-menu li .text {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: left;
+  text-underline-position: from-font;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
+  display: inline-block;
+  margin: 0px 0px 0px 10px;
+}/*# sourceMappingURL=employee-menu-click-list-menu.component.css.map */

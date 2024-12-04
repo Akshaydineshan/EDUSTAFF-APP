@@ -1,0 +1,200 @@
+.main-container {
+  margin-left: 60px;
+  transition: margin-left 0.3s;
+}
+
+.main-container.shifted {
+  margin-left: 0 !important;
+}
+
+.top-banner {
+  width: 100%;
+  max-width: 100%;
+  height: 145px;
+  opacity: 0px;
+  background: linear-gradient(90deg, #74EBD5 0%, #ACB6E5 100%);
+}
+
+.prof-img {
+  width: 112px;
+  height: 112px;
+  position: relative;
+  bottom: 5px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: 0.5s ease;
+}
+
+.prof-img:hover {
+  transform: scale(1.1);
+}
+
+.content-main {
+  margin: 0px 44px;
+}
+
+.prof-img-btns-sec {
+  position: relative;
+  bottom: 50px;
+}
+
+.prof-img-btns-sec .p-n {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: left;
+  color: #000000;
+}
+
+.prof-img-btns-sec .p-d {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  text-align: left;
+  background: #000000;
+}
+
+.prof-img-btns-sec .p-a {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  text-align: left;
+}
+
+.styled-hr {
+  border: none;
+  border-top: 1px solid;
+  /* Customize color and thickness */
+  margin-top: -38px;
+  /* Slightly moves up to make closer */
+}
+
+.card {
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 7px;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  background-color: #E8E8E8;
+  color: #333; /* Dark text for readability */
+  font-weight: bold;
+  padding: 10px 15px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+}
+
+/* Layout Adjustments for Smaller Screens */
+@media (max-width: 768px) {
+  .card-header {
+    font-size: 1rem;
+    text-align: center;
+  }
+  .info-list {
+    list-style: none;
+  }
+}
+.info-list {
+  list-style: none;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  line-height: 30px;
+}
+
+/* Fixed width for labels to ensure consistent alignment */
+.info-list li strong {
+  min-width: 150px;
+  /* Adjust this for larger label area if needed */
+  margin-right: 7px;
+  /* Spacing between label and value */
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+  width: 300px;
+}
+
+/* Flexible width for values to adjust for variable content length */
+.info-list li span {
+  flex-grow: 1;
+  color: #555;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.uq-f {
+  color: #333;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.uq-id {
+  color: #555;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.r-btns {
+  width: 255px;
+  height: 40px;
+}
+
+.inline-det {
+  display: flex;
+  gap: 28px;
+}
+
+.inline-det p {
+  margin: 0;
+  margin: 8px 0px 0px 0px;
+  text-align: left;
+  display: inline-block;
+}
+
+.inline-det .p-m {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 9px;
+  text-align: left;
+}
+.inline-det .p-w,
+.inline-det .p-e {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 9px;
+  text-align: left;
+  color: #246CC1;
+}
+
+.s-head {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 14px;
+  text-align: left;
+  margin-top: 20px;
+}
+
+table {
+  border-collapse: collapse;
+  border: 1px solid;
+  width: 30%;
+}
+table th,
+table td {
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid;
+  padding: 8px;
+  text-align: left;
+}/*# sourceMappingURL=view-school.component.css.map */

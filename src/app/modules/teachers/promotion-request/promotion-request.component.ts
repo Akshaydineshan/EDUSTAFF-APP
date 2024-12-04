@@ -88,7 +88,8 @@ export class PromotionRequestComponent {
    filterForm!: FormGroup;
    showFilterModal: boolean = false;
    selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
-   designationList: any = []
+   designationList: any = [];
+   schoolList: any = []
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
 
@@ -102,7 +103,8 @@ export class PromotionRequestComponent {
 
   ngOnInit(): void {
     this.loadPromotionRequestList()
-    this.loadDropdownData()
+    // this.loadDropdownData()
+    this.loadDropdownListData()
 
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -137,9 +139,9 @@ export class PromotionRequestComponent {
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
     const menuPops = document.getElementsByClassName('menuPop');
-
+    console.log("menubn", menuButtons)
     let clickedInsidePopup = false;
-    let clickedOnButton = menuButtons[0].contains(target);
+    let clickedOnButton = false
     //  let clickedOnButtonI = false;
 
     for (let i = 0; i < menuPops.length; i++) {
@@ -173,27 +175,27 @@ export class PromotionRequestComponent {
 
   }
 
-  loadDropdownData() {
+  // loadDropdownData() {
    
  
-    forkJoin({
-      schools: this.dataService.getSchoolList()
+  //   forkJoin({
+  //     schools: this.dataService.getSchoolList()
 
-    }).subscribe({
-      next: (results: any) => {
-        console.log("school list", results)
-        this.schoolDropDownList = results.schools;
+  //   }).subscribe({
+  //     next: (results: any) => {
+  //       console.log("school list", results)
+  //       this.schoolDropDownList = results.schools;
        
         
 
 
-      },
-      error: (error) => {
-        console.error('Error loading dropdown data', error);
+  //     },
+  //     error: (error) => {
+  //       console.error('Error loading dropdown data', error);
 
-      },
-    });
-  }
+  //     },
+  //   });
+  // }
 
  
 
@@ -627,20 +629,41 @@ export class PromotionRequestComponent {
   
 
 
-  loadDropdownListData() {
-    this.dataService.getAllDesignations().subscribe({
-      next: (data: any) => {
-        console.log("designt", data)
-        this.designationList = data;
-      },
-      error: (error: any) => {
+    loadDropdownListData() {
 
-      },
-      complete: () => {
 
-      }
-    })
-  }
+      forkJoin({
+        designations: this.dataService.getAllDesignations(),
+        schools: this.dataService.getSchoolList()
+      }).subscribe({
+        next: (results:any) => {
+        
+          this.designationList=results.designations
+          this.schoolList = results.schools;
+          this.schoolDropDownList = results.schools;
+  
+        },
+        error: (error:any) => {
+          console.error('Error loading dropdown data', error);
+  
+        },
+              complete: () => {
+  
+        }
+      });
+      // this.dataService.getAllDesignations().subscribe({
+      //   next: (data: any) => {
+      //     console.log("designt", data)
+      //     this.designationList = data;
+      //   },
+      //   error: (error: any) => {
+  
+      //   },
+      //   complete: () => {
+  
+      //   }
+      // })
+    }
   toggleFilterDropdown() {
     console.log("filter click")
     this.ngZone.run(() => {
@@ -659,7 +682,7 @@ export class PromotionRequestComponent {
       let filter: any = {
         "designationID": filters.designationFilter.designationID,
         "uniqueID": filters.uniqueIdFilter,
-        "schoolName": filters.schoolNameFilter,
+        "schoolID": filters.schoolNameFilter.schoolId,
         "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
         "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate'])
 
@@ -667,8 +690,8 @@ export class PromotionRequestComponent {
       }
       console.log("payload", filter)
 
-
-      this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+      let url:string='Promotion/Promotionfilter'
+      this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.transferList = data.map((teacher: any) => ({
           ...teacher,
 

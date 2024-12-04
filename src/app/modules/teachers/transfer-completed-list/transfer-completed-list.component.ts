@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import dayjs, { Dayjs } from 'dayjs';
+import { forkJoin } from 'rxjs';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -46,6 +47,7 @@ export class TransferCompletedListComponent {
   selected!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
   selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
   designationList: any[] = [];
+  schoolList: any[] = [];
 
 
 
@@ -77,22 +79,41 @@ export class TransferCompletedListComponent {
       this.showFilterModal = false; // Close dropdown when clicking outside
     }
   }
+ 
   loadDropdownListData() {
-  
-    this.dataService.getAllDesignations().subscribe({
-      next: (data: any) => {
-        console.log("designt", data)
-        this.designationList = data;
-      },
-      error: (error: any) => {
+
+
+    forkJoin({
+      designations: this.dataService.getAllDesignations(),
+      schools: this.dataService.getSchoolList()
+    }).subscribe({
+      next: (results:any) => {
+      
+        this.designationList=results.designations
+        this.schoolList = results.schools;
 
       },
-      complete: () => {
+      error: (error:any) => {
+        console.error('Error loading dropdown data', error);
+
+      },
+            complete: () => {
 
       }
-    })
-  }
+    });
+    // this.dataService.getAllDesignations().subscribe({
+    //   next: (data: any) => {
+    //     console.log("designt", data)
+    //     this.designationList = data;
+    //   },
+    //   error: (error: any) => {
 
+    //   },
+    //   complete: () => {
+
+    //   }
+    // })
+  }
 
 
 
@@ -396,7 +417,7 @@ export class TransferCompletedListComponent {
       let filter: any = {
         "designationID": filters.designationFilter.designationID,
         "uniqueID": filters.uniqueIdFilter,
-        "schoolName": filters.schoolNameFilter,
+        "schoolID": filters.schoolNameFilter.schoolId,
         "fromTransferDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
         "toTransferDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
         "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
@@ -407,7 +428,8 @@ export class TransferCompletedListComponent {
       console.log("payload", filter)
 
 
-      this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+      let url:string='TransferRequest/Transferfilter'
+      this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.tableDataList = data.map((teacher: any) => ({
           ...teacher,
 

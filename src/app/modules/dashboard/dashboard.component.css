@@ -76,8 +76,8 @@ h6 {
 
 .sub-card {
   flex: 1;
-  max-width: 140px;
-  max-height: 120px;
+  max-width: 175px;
+  max-height: 175px;
   text-align: center;
   padding: 1rem;
   border: 1px solid #ddd;
@@ -130,4 +130,9 @@ h6 {
   padding-left: 0;
   margin-left: 60px;
   transition: margin-left 0.3s;
+}
+
+.sub-card img {
+  width: 65px;
+  height: 63.5px;
 }/*# sourceMappingURL=dashboard.component.css.map */

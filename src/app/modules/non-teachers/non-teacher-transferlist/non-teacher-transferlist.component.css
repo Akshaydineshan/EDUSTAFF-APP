@@ -1,0 +1,82 @@
+.main-container {
+  padding: 2rem;
+  margin-left: 60px;
+  padding-top: 50px !important;
+  padding-bottom: 2rem;
+  transition: margin-left 0.3s;
+}
+
+.main-container.shifted {
+  margin-left: 0 !important;
+}
+
+.table-responsive {
+  margin-top: 1rem;
+}
+
+.t-request-popup-main {
+  position: fixed;
+  max-width: 500px;
+  background: #FFFFFF;
+  top: 44px;
+  border-radius: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 0px;
+  opacity: 0px;
+  z-index: 100000;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.0784313725);
+  border: 1px solid #E7E7E7;
+  padding: 20px;
+}
+.t-request-popup-main .header p {
+  font-family: "Inter";
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 19px;
+  text-align: left;
+  text-underline-position: from-font;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
+}
+.t-request-popup-main .header img {
+  width: 24px;
+  height: 24px;
+  background-color: none;
+}
+.t-request-popup-main .body label {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16px;
+  text-align: left;
+  text-underline-position: from-font;
+  -webkit-text-decoration-skip-ink: none;
+          text-decoration-skip-ink: none;
+}
+.t-request-popup-main .body .btn-sec {
+  margin-top: 20px;
+}
+.t-request-popup-main .body .btn-sec img {
+  color: white;
+}
+.t-request-popup-main .body .btn-sec .sub-btn {
+  width: Hug 117px px;
+  height: Hug 39px px;
+  top: 520px;
+  left: 619px;
+  padding: 8px 10px 8px 8px;
+  gap: 8px;
+  border-radius: 4px;
+  opacity: 0px;
+  border: none;
+  color: white;
+  background: #008060;
+}
+
+.blur-content {
+  filter: blur(0.5px); /* Adjust blur intensity here */
+  pointer-events: none; /* Prevent interaction with blurred content */
+  transition: filter 0.3s ease; /* Smooth transition for blur effect */
+  background: rgba(0, 0, 0, 0.3019607843);
+}/*# sourceMappingURL=non-teacher-transferlist.component.css.map */

@@ -3,6 +3,11 @@
   max-width: 95rem;
 }
 
+@media screen and (max-width: 768px) {
+  .container {
+    margin-left: 0px;
+  }
+}
 .login-container {
   background-color: rgba(255, 255, 255, 0.9);
   padding: 30px;

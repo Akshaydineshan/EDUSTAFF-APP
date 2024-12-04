@@ -6,4 +6,8 @@ img {
 input[readonly] {
   pointer-events: none;
   cursor: default;
+}
+
+.row label span:last-child {
+  display: none;
 }/*# sourceMappingURL=personal-details.component.css.map */
