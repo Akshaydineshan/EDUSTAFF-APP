@@ -219,11 +219,11 @@ export class PromotionCompletedListComponent {
     const rowData = rowNode.data;
     if (event.colDef.field === "employeeName") {
       this.onTeacherHover(rowData.employeeID, rowData, event.event)
-    } else if (event.colDef.field === "fromSchoolName") {
+    } else if (event.colDef.field === "promotedFromSchool") {
       this.onSchoolHover(rowData.fromSchoolID, rowData, event.event)
     }
-    else if (event.colDef.field === "toApprovedSchoolName") {
-      this.onSchoolHover(rowData.toApprovedSchoolID, rowData, event.event)
+    else if (event.colDef.field === "promotedToSchool") {
+      this.onSchoolHover(rowData.approvedSchoolID, rowData, event.event)
     }
   }
   rowMouseHoverOut(event: any) {
