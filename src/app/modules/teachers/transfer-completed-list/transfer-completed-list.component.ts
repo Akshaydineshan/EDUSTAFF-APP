@@ -43,7 +43,8 @@ export class TransferCompletedListComponent {
 
   filterForm!: FormGroup;
   showFilterModal: boolean = false;
-  selected!: { startDate: Dayjs | null, endDate: Dayjs | null };
+  selected!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
+  selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
   designationList: any[] = [];
 
 
@@ -385,11 +386,13 @@ export class TransferCompletedListComponent {
       const filters = this.filterForm.value;
 
       let filter: any = {
-        "designation": filters.designationFilter.designationID,
+        "designationID": filters.designationFilter.designationID,
         "uniqueID": filters.uniqueIdFilter,
         "schoolName": filters.schoolNameFilter,
-        "fromPromotionDate": this.dataService.formatDateToISO(this.selected['startDate']),
-        "toPromotionDate": this.dataService.formatDateToISO(this.selected['endDate'])
+        "fromTransferDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
+        "toTransferDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
+        "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
+        "toWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['endDate'])
 
 
       }
@@ -401,6 +404,7 @@ export class TransferCompletedListComponent {
           ...teacher,
 
         }));
+        this.tableRows=this.tableDataList
         // this.teacherTableRows = this.teacherList;
         // this.updatePaginatedData();
         this.showFilterModal = false;
@@ -428,6 +432,9 @@ export class TransferCompletedListComponent {
       //   endDate: dayjs(),   // current date/time as default endDate
       // };
       // this.selected={startDate:null,endDate:null}
+      this.selected=null
+      this.selectedWithEffectFrom=null
+      console.log("after reset",this.selected)
       this.filterForm.reset({
         designationFilter: "",
         schoolNameFilter: "",

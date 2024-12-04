@@ -45,7 +45,7 @@ export class PromotionCompletedListComponent {
  maxSelected: any = 100;
  filterForm!: FormGroup;
  showFilterModal:boolean = false;
- selected!: {startDate: Dayjs|null, endDate: Dayjs|null} ;
+ selected!: {startDate: Dayjs|null, endDate: Dayjs|null}|null ;
 
 
 
@@ -305,11 +305,11 @@ export class PromotionCompletedListComponent {
       const filters = this.filterForm.value;
 
       let filter:any={
-        "designation":filters.designationFilter.designationID,
+        "designationID":filters.designationFilter.designationID,
         "uniqueID":filters.uniqueIdFilter,
         "schoolName":filters.schoolNameFilter,
-        "fromPromotionDate":this.dataService.formatDateToISO(this.selected['startDate']),
-        "toPromotionDate":this.dataService.formatDateToISO(this.selected['endDate'])
+        "fromPromotionDate":this.dataService.formatDateToISO(this.selected?.['startDate']),
+        "toPromotionDate":this.dataService.formatDateToISO(this.selected?.['endDate'])
 
 
       }
@@ -321,6 +321,7 @@ export class PromotionCompletedListComponent {
           ...teacher,
          
         }));
+        this.tableRows=this.tableDataList
         // this.teacherTableRows = this.teacherList;
         // this.updatePaginatedData();
         this.showFilterModal = false;
@@ -348,6 +349,7 @@ export class PromotionCompletedListComponent {
       //   endDate: dayjs(),   // current date/time as default endDate
       // };
       // this.selected={startDate:null,endDate:null}
+      this.selected=null;
       this.filterForm.reset({
         designationFilter:"",
         schoolNameFilter: "",
