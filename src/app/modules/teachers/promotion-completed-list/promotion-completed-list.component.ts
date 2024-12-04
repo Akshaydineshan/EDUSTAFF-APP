@@ -15,15 +15,15 @@ interface PagonationConfig {
   templateUrl: './promotion-completed-list.component.html',
   styleUrls: ['./promotion-completed-list.component.scss'],
   providers: [DatePipe]
-  
+
 })
 export class PromotionCompletedListComponent {
 
   isSidebarClosed = false;
-  designationList:any=[]
+  designationList: any = []
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Age', field: 'age' },{ headerName: 'Experience', field: 'experienceYear' },{ headerName: 'Promotion Date', field: 'promotionDate' },{ headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' }, { headerName: 'Subject', field: 'subject' }, { headerName: 'Age', field: 'age' }, { headerName: 'Experience', field: 'experienceYear' }, { headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
@@ -38,23 +38,23 @@ export class PromotionCompletedListComponent {
   showSchoolPopup: boolean = false;
   selectedSchool: any;
 
- // Filter Range Picker  
- minValue: any = 0;
- maxValue: any = 100;
- minSelected: any = 0;
- maxSelected: any = 100;
- filterForm!: FormGroup;
- showFilterModal:boolean = false;
- selected!: {startDate: Dayjs|null, endDate: Dayjs|null}|null ;
+  // Filter Range Picker  
+  minValue: any = 0;
+  maxValue: any = 100;
+  minSelected: any = 0;
+  maxSelected: any = 100;
+  filterForm!: FormGroup;
+  showFilterModal: boolean = false;
+  selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
 
 
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
     this.filterForm = this.fb.group({
-      designationFilter:[''],
+      designationFilter: [''],
       schoolNameFilter: [''],
       uniqueIdFilter: [''],
-      
+
     });
 
   }
@@ -66,19 +66,28 @@ export class PromotionCompletedListComponent {
 
   }
 
-  loadDropdownListData(){
-      this.dataService.getAllDesignations().subscribe({
-        next:(data:any)=>{
-          console.log("designt",data)
-         this.designationList=data;
-        },
-        error:(error:any)=>{
+  // For Hide Menu Popup click Outside the popup
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(target: HTMLElement) {
+    debugger
+    if (!target.closest('.dropdown') && this.showFilterModal) {
+      this.showFilterModal = false; // Close dropdown when clicking outside
+    }
+  }
 
-        },
-        complete:()=>{
+  loadDropdownListData() {
+    this.dataService.getAllDesignations().subscribe({
+      next: (data: any) => {
+        console.log("designt", data)
+        this.designationList = data;
+      },
+      error: (error: any) => {
 
-        }
-      })
+      },
+      complete: () => {
+
+      }
+    })
   }
 
 
@@ -117,7 +126,7 @@ export class PromotionCompletedListComponent {
         this.tableRows = this.tableDataList
         this.tableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
-          valueFormatter:  column.field === 'promotionDate' 
+          valueFormatter: column.field === 'promotionDate'
             ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
             : undefined,
           field: column.field,
@@ -130,8 +139,8 @@ export class PromotionCompletedListComponent {
           ... (column.field == 'experienceYear' ? {
             valueFormatter: (params: any) => params.value <= 0 ? 0 : `${params.value}`
           } : {}),
-          ... (column.field === 'status'  ? {
-            cellRenderer: (params: any) =>  `Completed`,
+          ... (column.field === 'status' ? {
+            cellRenderer: (params: any) => `Completed`,
             width: 220
           } : {}),
 
@@ -292,36 +301,36 @@ export class PromotionCompletedListComponent {
   toggleFilterDropdown() {
     console.log("filter click")
     this.ngZone.run(() => {
-     
+
       this.showFilterModal = !this.showFilterModal;
     })
   }
 
   applyFilters() {
-   
+
     this.ngZone.run(() => {
       debugger
-      console.log("isSelected",this.selected)
+      console.log("isSelected", this.selected)
       const filters = this.filterForm.value;
 
-      let filter:any={
-        "designationID":filters.designationFilter.designationID,
-        "uniqueID":filters.uniqueIdFilter,
-        "schoolName":filters.schoolNameFilter,
-        "fromPromotionDate":this.dataService.formatDateToISO(this.selected?.['startDate']),
-        "toPromotionDate":this.dataService.formatDateToISO(this.selected?.['endDate'])
+      let filter: any = {
+        "designationID": filters.designationFilter.designationID,
+        "uniqueID": filters.uniqueIdFilter,
+        "schoolName": filters.schoolNameFilter,
+        "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
+        "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate'])
 
 
       }
-      console.log("payload",filter)
-    
+      console.log("payload", filter)
+
 
       this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
         this.tableDataList = data.map((teacher: any) => ({
           ...teacher,
-         
+
         }));
-        this.tableRows=this.tableDataList
+        this.tableRows = this.tableDataList
         // this.teacherTableRows = this.teacherList;
         // this.updatePaginatedData();
         this.showFilterModal = false;
@@ -341,7 +350,7 @@ export class PromotionCompletedListComponent {
       //   documents: false,
       //   minExperienceYear: 0,
       //   maxExperienceYear: 100,
-       
+
       //   newRecruit: false
       // });
       // this.selected = {
@@ -349,9 +358,9 @@ export class PromotionCompletedListComponent {
       //   endDate: dayjs(),   // current date/time as default endDate
       // };
       // this.selected={startDate:null,endDate:null}
-      this.selected=null;
+      this.selected = null;
       this.filterForm.reset({
-        designationFilter:"",
+        designationFilter: "",
         schoolNameFilter: "",
         uniqueIdFilter: "",
       })

@@ -67,6 +67,16 @@ export class TransferCompletedListComponent {
 
 
   }
+
+  
+  // For Hide Menu Popup click Outside the popup
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(target: HTMLElement) {
+    debugger
+    if (!target.closest('.dropdown') && this.showFilterModal) {
+      this.showFilterModal = false; // Close dropdown when clicking outside
+    }
+  }
   loadDropdownListData() {
   
     this.dataService.getAllDesignations().subscribe({
