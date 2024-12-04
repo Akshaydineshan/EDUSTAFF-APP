@@ -80,6 +80,7 @@ export class TransferRequestListComponent implements OnInit {
   filterForm!: FormGroup;
   showFilterModal: boolean = false;
   selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
+  selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } |null;
   designationList: any = []
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router,) {
@@ -673,7 +674,9 @@ export class TransferRequestListComponent implements OnInit {
           "uniqueID": filters.uniqueIdFilter,
           "schoolName": filters.schoolNameFilter,
           "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
-          "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate'])
+          "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate']),
+          "fromWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['startDate']),
+          "toWithEffectDate": this.dataService.formatDateToISO(this.selectedWithEffectFrom?.['endDate'])
   
   
         }
@@ -698,6 +701,7 @@ export class TransferRequestListComponent implements OnInit {
       this.ngZone.run(() => {
      
         this.selected = null;
+        this.selectedWithEffectFrom=null;
         this.filterForm.reset({
           designationFilter: "",
           schoolNameFilter: "",
