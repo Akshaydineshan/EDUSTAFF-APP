@@ -615,7 +615,7 @@ export class TransferRequestListComponent implements OnInit {
       let schoolId: number = rowData.fromSchoolID
       this.router.navigate(['/schools/view', schoolId])
     } else if (event.colDef.field === "toSchoolName") {
-      let schoolId: number = rowData.toSchoolID
+      let schoolId: number = rowData.toApprovedSchoolID
       this.router.navigate(['/schools/view', schoolId])
     }
 

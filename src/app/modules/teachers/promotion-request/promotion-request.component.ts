@@ -25,7 +25,7 @@ export class PromotionRequestComponent {
 
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' },{ headerName: 'To School', field: 'promotedToSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -238,7 +238,7 @@ export class PromotionRequestComponent {
           field: column.field,
           filter: true,
           floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' ? {
+          ... (column.field === 'employeeName' || column.field === "promotedToSchool" || column.field === "promotedFromSchool"  ? {
             cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
             width: 220
           } : {}),
@@ -597,13 +597,14 @@ export class PromotionRequestComponent {
         this.router.navigate(['/teachers/view-teacher', teacherId])
       })
 
-    } else if (event.colDef.field === "fromSchoolName") {
+    } else if (event.colDef.field === "promotedFromSchool") {
       let schoolId: number = rowData.fromSchoolID
       this.router.navigate(['/schools/view', schoolId])
-    } else if (event.colDef.field === "toSchoolName") {
-      let schoolId: number = rowData.toSchoolID
+    } else if (event.colDef.field === "promotedToSchool") {
+      let schoolId: number = rowData.approvedSchoolID
       this.router.navigate(['/schools/view', schoolId])
     }
+
 
   }
 

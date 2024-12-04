@@ -23,7 +23,7 @@ export class PromotionCompletedListComponent {
   designationList: any = []
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'schoolName' }, { headerName: 'Subject', field: 'subject' }, { headerName: 'Age', field: 'age' }, { headerName: 'Experience', field: 'experienceYear' }, { headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Designation', field: 'designation' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedToSchool' },{ headerName: 'To School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
@@ -94,7 +94,7 @@ export class PromotionCompletedListComponent {
   }
 
   loadTableDataList() {
-    let tableDataListApiEndPoint: string = 'Teacher/GetAllPromotedTeacher'
+    let tableDataListApiEndPoint: string = 'Promotion/GetAllPromotedTeacher'
     this.dataService.getTableListData(tableDataListApiEndPoint).subscribe(
       (data: any) => {
         debugger
@@ -103,23 +103,20 @@ export class PromotionCompletedListComponent {
         this.tableRows = this.tableDataList
         this.tableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
-          valueFormatter: column.field === 'promotionDate'
+          valueFormatter: column.field === 'promotionDate' || column.field ===  'requestDate'
             ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
             : undefined,
           field: column.field,
           filter: true,
-          floatingFilter: column.field === 'name', // For example, only these columns have floating filters
-          ... (column.field === 'name' || column.field === "schoolName" ? {
+          floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
+          ... (column.field === 'employeeName' || column.field === "promotedToSchool" || column.field === "promotedFromSchool" ? {
             cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
             width: 220
           } : {}),
           ... (column.field == 'experienceYear' ? {
             valueFormatter: (params: any) => params.value <= 0 ? 0 : `${params.value}`
           } : {}),
-          ... (column.field === 'status' ? {
-            cellRenderer: (params: any) => `Completed`,
-            width: 220
-          } : {}),
+        
 
 
         }));
@@ -248,18 +245,18 @@ export class PromotionCompletedListComponent {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
 
-    if (event.colDef.field === "name") {
-      let teacherId: number = rowData.teacherId
+    if (event.colDef.field === "employeeName") {
+      let teacherId: number = rowData.employeeID
 
       this.ngZone.run(() => {
         this.router.navigate(['/teachers/view-teacher', teacherId])
       })
 
-    } else if (event.colDef.field === "schoolName") {
-      let schoolId: number = rowData.schoolId
+    } else if (event.colDef.field === "promotedFromSchool") {
+      let schoolId: number = rowData.fromSchoolID
       this.router.navigate(['/schools/view', schoolId])
-    } else if (event.colDef.field === "toSchoolName") {
-      let schoolId: number = rowData.toSchoolID
+    } else if (event.colDef.field === "promotedToSchool") {
+      let schoolId: number = rowData.approvedSchoolID
       this.router.navigate(['/schools/view', schoolId])
     }
 
