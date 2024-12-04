@@ -66,29 +66,6 @@ export class PromotionCompletedListComponent {
 
   }
 
-  // For Hide Menu Popup click Outside the popup
-  @HostListener('document:click', ['$event.target'])
-  onClickOutside(target: HTMLElement) {
-    debugger
-    if (!target.closest('.dropdown') && this.showFilterModal) {
-      this.showFilterModal = false; // Close dropdown when clicking outside
-    }
-  }
-
-  loadDropdownListData() {
-    this.dataService.getAllDesignations().subscribe({
-      next: (data: any) => {
-        console.log("designt", data)
-        this.designationList = data;
-      },
-      error: (error: any) => {
-
-      },
-      complete: () => {
-
-      }
-    })
-  }
 
 
 
@@ -298,6 +275,30 @@ export class PromotionCompletedListComponent {
 
 
   // Filter related funtions
+  
+  // For Hide Menu Popup click Outside the popup
+  @HostListener('document:click', ['$event.target'])
+  onClickOutside(target: HTMLElement) {
+    debugger
+    if (!target.closest('.dropdown') && this.showFilterModal) {
+      this.showFilterModal = false; // Close dropdown when clicking outside
+    }
+  }
+
+  loadDropdownListData() {
+    this.dataService.getAllDesignations().subscribe({
+      next: (data: any) => {
+        console.log("designt", data)
+        this.designationList = data;
+      },
+      error: (error: any) => {
+
+      },
+      complete: () => {
+
+      }
+    })
+  }
   toggleFilterDropdown() {
     console.log("filter click")
     this.ngZone.run(() => {

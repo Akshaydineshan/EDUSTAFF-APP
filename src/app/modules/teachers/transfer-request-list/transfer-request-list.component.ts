@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
+import dayjs, { Dayjs } from 'dayjs';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -70,9 +71,25 @@ export class TransferRequestListComponent implements OnInit {
   showSecondDropdown: boolean = false;
   tableColorChange:boolean=false;
 
+
+  // Filter Range Picker  
+  minValue: any = 0;
+  maxValue: any = 100;
+  minSelected: any = 0;
+  maxSelected: any = 100;
+  filterForm!: FormGroup;
+  showFilterModal: boolean = false;
+  selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
+  designationList: any = []
+
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router,) {
 
+    this.filterForm = this.fb.group({
+      designationFilter: [''],
+      schoolNameFilter: [''],
+      uniqueIdFilter: [''],
 
+    });
   }
 
   ngOnInit(): void {
@@ -101,8 +118,9 @@ export class TransferRequestListComponent implements OnInit {
 
   @HostListener('document:click', ['$event.target'])
   onClickOutside(target: HTMLElement) {
-    debugger
-
+    if (!target.closest('.dropdown') && this.showFilterModal) {
+      this.showFilterModal = false; // Close dropdown when clicking outside
+    }
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
     const menuPops = document.getElementsByClassName('menuPop');
@@ -613,4 +631,81 @@ export class TransferRequestListComponent implements OnInit {
     this.showSchoolPopup = false;
 
   }
+
+
+
+  
+    // Filter related funtions
+  
+
+
+    loadDropdownListData() {
+      this.dataService.getAllDesignations().subscribe({
+        next: (data: any) => {
+          console.log("designt", data)
+          this.designationList = data;
+        },
+        error: (error: any) => {
+  
+        },
+        complete: () => {
+  
+        }
+      })
+    }
+    toggleFilterDropdown() {
+      console.log("filter click")
+      this.ngZone.run(() => {
+  
+        this.showFilterModal = !this.showFilterModal;
+      })
+    }
+  
+    applyFilters() {
+  
+      this.ngZone.run(() => {
+        debugger
+        console.log("isSelected", this.selected)
+        const filters = this.filterForm.value;
+  
+        let filter: any = {
+          "designationID": filters.designationFilter.designationID,
+          "uniqueID": filters.uniqueIdFilter,
+          "schoolName": filters.schoolNameFilter,
+          "fromPromotionDate": this.dataService.formatDateToISO(this.selected?.['startDate']),
+          "toPromotionDate": this.dataService.formatDateToISO(this.selected?.['endDate'])
+  
+  
+        }
+        console.log("payload", filter)
+  
+  
+        this.dataService.filterInTeacherList(filter).subscribe((data: any) => {
+          this.transferList = data.map((teacher: any) => ({
+            ...teacher,
+  
+          }));
+          this.transferTableRows = this.transferList
+          // this.teacherTableRows = this.teacherList;
+          // this.updatePaginatedData();
+          this.showFilterModal = false;
+        });
+      })
+  
+    }
+    resetFilter() {
+  
+      this.ngZone.run(() => {
+     
+        this.selected = null;
+        this.filterForm.reset({
+          designationFilter: "",
+          schoolNameFilter: "",
+          uniqueIdFilter: "",
+        })
+        this.loadtransferRequestList();
+        this.showFilterModal = false
+      })
+    }
+  
 }
