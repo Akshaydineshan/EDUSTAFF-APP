@@ -1,0 +1,14 @@
+.main-container {
+
+    padding: 2rem;
+    margin-left: 60px;
+    padding-top: 50px  !important;
+    padding-bottom: 2rem;
+    transition: margin-left 0.3s;
+    max-width: 100%;
+  }
+  
+  .main-container.shifted {
+    margin-left: 0 !important;
+  }
+  

@@ -19,6 +19,7 @@ import { PromotionCompletedListComponent } from './promotion-completed-list/prom
 import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
 import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teacher-list.component';
 import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
+import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } fr
     PromotionRequestComponent,
     PromotionCompletedListComponent,
     TransferCompletedListComponent,
-    RetiredTeacherListComponent
+    RetiredTeacherListComponent,
+    PromotionEligiblePriorityComponent
   ],
   imports: [
     CommonModule,

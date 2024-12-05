@@ -12,6 +12,7 @@ import { PromotionRequestComponent } from './promotion-request/promotion-request
 import { PromotionCompletedListComponent } from './promotion-completed-list/promotion-completed-list.component';
 import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
 import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teacher-list.component';
+import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
@@ -27,6 +28,10 @@ const routes: Routes = [
   { path: 'promotion-completed', component: PromotionCompletedListComponent },
   { path: 'transfer-completed', component: TransferCompletedListComponent },
   { path: 'retired-teachers', component: RetiredTeacherListComponent },
+  { path: 'promotion-priorities', component: PromotionEligiblePriorityComponent },
+
+
+  
   { 
     path: '**',
     component: PageNotFoundComponent
