@@ -116,7 +116,7 @@ h6 {
 
 .stats-panel {
     background-color: #f6f6f6;
-    width: 100vw;
+    width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -127,9 +127,11 @@ h6 {
 
 .main-panel {
     padding: 2rem;
+    width:100%;
 }
 
 .container.shifted {
+    // max-width: 100%;
     margin-left: 0;
     padding-left: 0;
 }
@@ -137,6 +139,7 @@ h6 {
 .container {
     padding-left: 0;
     margin-left: 60px;
+    // max-width: 100%;
     // padding-top: 50px;
     transition: margin-left 0.3s;
     // overflow-y: hidden;
