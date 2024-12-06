@@ -22,7 +22,7 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'Transfer Requested Schools', field: 'toSchoolOneName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -261,28 +261,28 @@ export class TransferRequestListComponent implements OnInit {
             width: 220
           } : {}),
 
-          ...(column.field === "toSchoolOneName" ? {
-            cellRenderer: (params: any) => {
-              // Combine fields styled as inline-block elements
-              const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
-              return `
-         <div style="display: block; margin: 0; padding: 0;">
-        <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
-          <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
-        </span>
-        <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
-          <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
-        </span>
-        <span style="display: block; padding: 0; margin: 0;">
-          <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
-        </span>
-      </div>
+      //     ...(column.field === "toSchoolOneName" ? {
+      //       cellRenderer: (params: any) => {
+      //         // Combine fields styled as inline-block elements
+      //         const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
+      //         return `
+      //    <div style="display: block; margin: 0; padding: 0;">
+      //   <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
+      //     <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
+      //   </span>
+      //   <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
+      //     <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
+      //   </span>
+      //   <span style="display: block; padding: 0; margin: 0;">
+      //     <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
+      //   </span>
+      // </div>
               
-              `;
-            }, autoHeight: true, width: 250, cellStyle: {
-              padding: '0px',
-            },
-          } : {}),
+      //         `;
+      //       }, autoHeight: true, width: 250, cellStyle: {
+      //         padding: '0px',
+      //       },
+      //     } : {}),
 
 
           ...(column.field === 'status' ?

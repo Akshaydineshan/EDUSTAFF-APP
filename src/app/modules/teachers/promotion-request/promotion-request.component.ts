@@ -111,11 +111,11 @@ export class PromotionRequestComponent {
 
     this.promotionRequestForm = this.fb.group({
       fromSchool:[''],
-      toSchool:['',[Validators.required]],
+      toSchool:['',],
       fromDesignation:[''],
       toDesignation:[''],
       documentUrl: [''],
-      promotionDate:['',[Validators.required]],
+      promotionDate:[''],
       comment: ['']
     })
 
@@ -382,23 +382,25 @@ export class PromotionRequestComponent {
   listClickFromMenuList(event: any) {
     // this.loadDropdownData()
      this.tableColorChange=true;
+  
+
      this.promotionRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.promotedFromSchool)
      this.promotionRequestForm.get("fromDesignation")?.setValue(this.selectMenuRowData.promotedFromDesignation)
      this.promotionRequestForm.get("toDesignation")?.setValue(this.selectMenuRowData.promotedToDesignation)
-     this.promotionRequestForm.get("toSchool")?.setValue([this.schoolDropDownList.find((item:any)=>item.schoolId === this.selectMenuRowData.fromSchoolID )])
-     this.promotionRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
-
-   
     if (event.value === 'approve') {
       this.isRejectedClick = false;
+      this.promotionRequestForm.get('promotionDate')?.setValidators(Validators.required)
+      this.promotionRequestForm.get('toSchool')?.setValidators(Validators.required)
      
-
-      this.isPromotionPopup = event.clicked
+      this.promotionRequestForm.get("toSchool")?.setValue([this.schoolDropDownList.find((item:any)=>item.schoolId === this.selectMenuRowData.fromSchoolID )])
+      this.promotionRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+       this.isPromotionPopup = event.clicked
       this.isMenuVisible = false
     } else if (event.value === 'reject') {
   
       this.isRejectedClick = true;
-     
+      this.promotionRequestForm.get('promotionDate')?.clearValidators();
+      this.promotionRequestForm.get('toSchool')?.clearValidators()
       this.isPromotionPopup = event.clicked
       this.isMenuVisible = false
     }
