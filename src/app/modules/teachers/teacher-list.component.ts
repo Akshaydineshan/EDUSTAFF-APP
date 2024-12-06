@@ -815,8 +815,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   // Table Column Hover Retaed Funs
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    debugger
-    console.log("event00", event)
+  
     this.selectedTeacher = null
     this.teacherId = teacherId;
     if (this.hoverTimeout) {
@@ -824,28 +823,26 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
     this.hoveredTeacherId = teacherId;
     if (teacherId && teacherData) {
-      console.log("ee")
+     
       this.hoverTimeout = setTimeout(() => {
+        this.selectedTeacher = teacherData.teacherPopUpDTO;
+        this.showPopup = true;
+        this.updateMousePosition(event);
 
-        this.selectedTeacher = teacherData; // Store the detailed info
+        // this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
+        //   (data) => {
+        //    // Store the detailed info
+        //     console.log("teachres", data)
+        //     if (this.selectedTeacher && teacherId) {
+        //       this.showPopup = true;
+        //       this.updateMousePosition(event);
 
-        // this.showPopup = true;
-        // this.updateMousePosition(event);
-
-        this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
-          (data) => {
-            this.selectedTeacher = data; // Store the detailed info
-            console.log("teachres", data)
-            if (this.selectedTeacher && teacherId) {
-              this.showPopup = true;
-              this.updateMousePosition(event);
-
-            }
-          },
-          (error) => {
-            console.error('Error fetching teacher details:', error);
-          }
-        );
+        //     }
+        //   },
+        //   (error) => {
+        //     console.error('Error fetching teacher details:', error);
+        //   }
+        // );
       }, 400);
     }
   }
