@@ -289,7 +289,7 @@ export class TransferCompletedListComponent {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      }, 450);
     }
   }
 
@@ -325,7 +325,7 @@ export class TransferCompletedListComponent {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 200);
+      }, 450);
     }
   }
   onTeacherMouseOut(): void {
