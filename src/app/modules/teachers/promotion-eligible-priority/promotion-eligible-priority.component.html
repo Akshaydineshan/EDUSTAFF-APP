@@ -12,21 +12,21 @@
     </div>
 
     <div class="row g-4">
-        <div class="col-md-2">
-            <select name="" id="" class="form-select">
-                <option value="" disabled selected>Select Subject</option>
-                <option value="1" *ngFor="let item of subjectList" [ngValue]="item">{{item.subjectName}}</option>
-               
+        <div class="col-6 col-sm-4 col-md-3">
+            <select name="" id="" class="form-select" [(ngModel)]="selectedSubject" (ngModelChange)="onFilterChange()">
+              <!-- Disabled option as placeholder -->
+              <option value="" disabled selected>Select Subject</option>
+              <option *ngFor="let item of subjectList" [ngValue]="item">{{ item.subjectName }}</option>
             </select>
-        </div>
-        <div class="col-md-2">
-            <select name="" id="" class="form-select">
-                <option value="" disabled selected>Select Designation</option>
-                <option value="1" *ngFor="let item of designationList" [ngValue]="item">{{item.designationName}}</option>
-               
+          </div>
+        
+          <div class="col-6 col-sm-4 col-md-3">
+            <select name="" id="" class="form-select" [(ngModel)]="selectedDesignation" (ngModelChange)="onFilterChange()">
+              <!-- Disabled option as placeholder -->
+              <option value="" disabled selected>Select Designation</option>
+              <option *ngFor="let item of designationList" [ngValue]="item">{{ item.designationName }}</option>
             </select>
-
-        </div>
+          </div>
 
 
 

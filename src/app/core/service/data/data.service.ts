@@ -166,6 +166,31 @@ export class DataService {
       })
     );
   }
+  getPromotionEligiblePriorityListData(data: any): Observable<any[]> {
+    let params = new HttpParams();
+  
+    // Append parameters only if data exists
+    if (data) {
+      if (data.designationId) {
+        params = params.append('designationId', data.designationId);
+      }
+      if (data.subjectId) {
+        params = params.append('subjectId', data.subjectId);
+      }
+    }
+  
+    // Make the HTTP POST request with an empty body
+    return this.http.get<any[]>(`${this.apiUrl}Promotion/promotion-list`, {
+      params,
+      headers: { accept: '*/*' }
+    }).pipe(
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
+  
 
 
   getTeachersData(): Observable<any[]> {

@@ -307,7 +307,14 @@ export class AddTeacherComponent implements OnInit {
           courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
           schoolName: [education.schoolName, Validators.required],
-          fromDate: [this.dataService.formatDateToLocal(education.fromDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
+
+          fromDate: [
+            education.fromDate?this.dataService.formatDateToLocal(education.fromDate):'',
+            education.educationTypeID === 5
+              ? []
+              : [minAndMaxDateValidator('1900-01-01', true, true), Validators.required],
+          ],
+
           toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
           certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
         },
@@ -443,7 +450,7 @@ export class AddTeacherComponent implements OnInit {
     this.educationForm.get('educations')?.valueChanges.subscribe(educationArray => {
 
       debugger
-      const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 4);
+      const hasTeacherTraining = educationArray.some((edu: any) => edu.educationType.educationTypeID === 5);
 
       if (hasTeacherTraining) {
         this.professionalForm.get('eligibleTestQualified')?.setValue(true);
@@ -598,7 +605,7 @@ export class AddTeacherComponent implements OnInit {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
+      fromDate: ['',],
       toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
       certificate: ['']
     },

@@ -37,6 +37,8 @@ export class PromotionEligiblePriorityComponent {
 
   subjectList: any[]=[];
   designationList: any[]=[];
+  selectedDesignation:any='';
+  selectedSubject:any='';
 
 
 
@@ -104,9 +106,22 @@ export class PromotionEligiblePriorityComponent {
 
   }
 
+  onFilterChange(){
+   
+    this.loadTableDataList()
+  }
+
   loadTableDataList() {
-    let tableDataListApiEndPoint: string = 'Teacher/GetAllPromotedTeacher'
-    this.dataService.getTableListData(tableDataListApiEndPoint).subscribe(
+    console.log(this.selectedDesignation,this.selectedSubject)
+    let data:any={
+      designationId:this.selectedDesignation.designationID,
+      subjectId:this.selectedSubject.subjectID
+    }
+    console.log("payload",data)
+
+
+   
+    this.dataService.getPromotionEligiblePriorityListData(data).subscribe(
       (data: any) => {
         debugger
         this.tableDataList = data;
