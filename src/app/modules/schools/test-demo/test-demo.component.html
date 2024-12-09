@@ -1,48 +1,91 @@
-<div style="padding:20px 90px;">
-  <div class="row">
-    <div class="col-sm-7">
-      <ng-multiselect-dropdown [placeholder]="'custom placeholder'" [settings]="dropdownSettings" [data]="dropdownList"
-        [(ngModel)]="selectedItems" (onSelect)="onItemSelect($event)" (onSelectAll)="onSelectAll($event)">
+<div class="request-popup-main">
 
-        <ng-template ngFor let-item [ngForOf]="selectedItems">
-          <div class="custom-selected-item">
-            <i class="pi pi-map-marker"></i>
-            <span>{{ item.item_text }}</span>
-          </div>
-        </ng-template>
+  <div class="head-sec">
+    <p class="head-lab">Transfer Request</p>
 
-        <!-- Custom template for dropdown options -->
-        <ng-template ngFor let-item [ngForOf]="dropdownList">
-          <div class="custom-dropdown-item">
-            <i class="pi pi-globe"></i>
-            <span>{{ item.item_text }}</span>
-          </div>
-        </ng-template>
-
-      </ng-multiselect-dropdown>
+    <div class="popup-close">
+      <img src="../../../../assets/icons/popup-close.png" alt="">
     </div>
-  </div>
-</div>
 
-
-<div class="range-slider">
-  <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="minSelected" class="slider min-range" (change)="validateRange($event,'min')" />
-
-  <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="maxSelected" class="slider max-range" (change)="validateRange($event,'max')" />
-
-  <div class="slider-track" ></div>
-  <div class="slider-range" [style.left.%]="((minSelected ) - minValue) / (maxValue - minValue) * 100"
-    [style.right.%]="100 - ((maxSelected) - minValue) / (maxValue - minValue) * 100">
   </div>
 
-  <div style="position: relative; top:60px;">
-    <input type="number" min="0" max="100" [(ngModel)]="minSelected">
-    <input type="number" min="0" max="100"  [(ngModel)]="maxSelected">
-  </div>
-</div>
+  <div class="head-line"></div>
 
+  <div class="main-body">
+    <form>
+      <div class="main-sec">
 
+        <div class="left-sec">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer From</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="text" class="form-control" formControlName="" [readonly]="true">
+            </div>
+          </div>
 
+          <div class="head-line a-tf"></div>
 
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 1)</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="text" class="form-select" formControlName="" [readonly]="true">
+            </div>
+          </div>
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 2)</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="text" class="form-select" formControlName="" [readonly]="true">
+            </div>
+          </div>
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 3)</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="text" class="form-select" formControlName="" [readonly]="true">
+            </div>
+          </div>
 
+        </div>
 
+        <div class="center-line"></div>
+
+        <div class="right-sec">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="date" class="form-control" formControlName="" [readonly]="true">
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label">
+              <span>Document Url</span>
+              <span class="text-danger ms-1 mad-f">*</span>
+            </label>
+            <div class="col-sm-12">
+              <input type="text" class="form-control custom-input" formControlName="" [readonly]="true"
+                placeholder="Paste URL here">
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label">
+              <span>Comment</span>
+              <span class="text-danger ms-1 mad-f"></span>
+            </label>
+            <div class="col-sm-12">
+              <input type="text" class="form-control custom-input" formControlName="" [readonly]="true"
+                placeholder="Write Somthing ...">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </form>
+    <div>
+
+    </div>

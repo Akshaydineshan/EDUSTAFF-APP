@@ -1,81 +1,169 @@
 .custom-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-dropdown-item i {
+  color: #007ad9;
+}
+
+.custom-selected-item {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.custom-selected-item i {
+  color: green;
+}
+
+
+
+
+.range-slider {
+  position: relative;
+  width: 40%;
+  height: 50px;
+  margin: 100px;
+}
+
+.slider {
+  position: absolute;
+  pointer-events: none;
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  background: none;
+  z-index: 99999;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: all;
+  width: 22px;
+  height: 22px;
+  background: #4CAF50;
+  border-radius: 50%;
+  cursor: pointer;
+
+}
+
+// .slider::-webkit-slider-thumb {
+//   -webkit-appearance: none;
+//   appearance: none;
+//   width: 20px;
+//   height: 20px;
+//   border-radius: 50%;
+//   background: #4CAF50;
+//   cursor: pointer;
+//   pointer-events: auto;
+// }
+
+.slider-track {
+  position: absolute;
+  height: 6px;
+  background: #ddd;
+  width: 100%;
+  top: 22%;
+
+  transform: translateY(-50%);
+}
+
+.slider-range {
+  position: absolute;
+  height: 6px;
+  background: #4CAF50;
+  top: 22%;
+
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+
+.request-popup-main {
+  position: fixed;
+  max-width: 900px;
+  width: 70%;
+  background: #FFFFFF;
+
+  top: 44px;
+  // border-radius: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 16px 20px 16px;
+  opacity: 0px;
+  z-index: 100000;
+  border: Mixed solid #D9D9D9;
+  box-shadow: 0px 2px 6px 0px #00000014;
+
+  .head-sec{
     display: flex;
-    align-items: center;
-    gap: 8px;
+    justify-content: space-between;
   }
-  
-  .custom-dropdown-item i {
-    color: #007ad9;
+
+  .head-sec p {
+    font-family: Roboto;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 18px;
+   }
+
+  .head-line {
+    border: 0.8px solid #f6f3f3
   }
-  
-  .custom-selected-item {
+  .popup-close img{
+    width:20px;
+    height:20px;
+  }
+
+
+
+  .main-sec {
+    width: 100%;
     display: flex;
-    align-items: center;
-    gap: 40px;
-  }
-  
-  .custom-selected-item i {
-    color: green;
+    padding:28px 0px 0px 0px;
+
+    .body-lab {
+      font-family: Roboto;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 21.09px;
+      text-align: center;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+
+    }
+
+    .head-line.a-tf {
+      margin-top: 30px;
+    }
+    .center-line{
+      border: 0.8px solid #f1ecec;
+      height:290px;
+     
+    }
+
+    .custom-input {
+      height: 70px; /* Adjust height as needed */
+      font-size: 16px; /* Optional: Adjust font size */
+      padding-top: 10px; /* Optional: Adjust padding to align text at the top */
+      vertical-align: top; /* Ensure text aligns at the top */
+    }
+
+
+    .left-sec {
+      width: 50%;
+      padding: 0px 22px 0px 0px;
+    }
+
+    .right-sec {
+      width: 50%;
+      padding: 0px 0px 0px 22px;
+    }
+
   }
 
 
-
-
-  .range-slider {
-    position: relative;
-    width: 40%;
-    height: 50px;
-   margin: 100px;
-  }
-  
-  .slider {
-    position: absolute;
-    pointer-events: none;
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    background: none;
-    z-index: 99999;
-  }
-  
-  .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-    appearance: none;
-    pointer-events: all;
-    width: 22px;
-    height: 22px;
-    background: #4CAF50;
-    border-radius: 50%;
-    cursor: pointer;
- 
-  }
-  // .slider::-webkit-slider-thumb {
-  //   -webkit-appearance: none;
-  //   appearance: none;
-  //   width: 20px;
-  //   height: 20px;
-  //   border-radius: 50%;
-  //   background: #4CAF50;
-  //   cursor: pointer;
-  //   pointer-events: auto;
-  // }
-  
-  .slider-track {
-    position: absolute;
-    height: 6px;
-    background: #ddd;
-    width: 100%;
-    top: 22%;
-   
-    transform: translateY(-50%);
-  }
-  
-  .slider-range {
-    position: absolute;
-    height: 6px;
-    background: #4CAF50;
-    top: 22%;
-  
-    transform: translateY(-50%);
-    z-index: 1;
-  }
+}
