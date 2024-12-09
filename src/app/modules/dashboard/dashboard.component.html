@@ -9,7 +9,7 @@
         <!-- <div class="d-flex" > -->
             <div class="row" style="padding: 0px  0px 0px 2rem ;">
                 <div class="col-lg-3 col-md-6 mb-3 mb-lg-0 ">
-                    <div class="card">
+                    <div class="card" title="Total Teachers" >
                         <div class="card-body d-flex align-items-center" [routerLink]="['/teachers/teacher-list']">
                             <i class="fas fa-user icon-lg mr-3" ></i>
                             <div class="text-left">
@@ -31,7 +31,7 @@
                     </div>
                 </div> -->
                 <div class="col-lg-3 col-md-6 mb-3 mb-lg-0 ">
-                    <div class="card">
+                    <div class="card" title="Total Schools">
                         <div class="card-body d-flex align-items-center" [routerLink]="['/schools/school-list']">
                             <i class="fas fa-school icon-lg mr-3"></i>
                             <div class="text-left">
@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6  mb-3 mb-lg-0 ">
-                    <div class="card">
+                    <div class="card" title="Vacant Positions">
                         <div class="card-body d-flex align-items-center"  [routerLink]="['/schools/vacant-positions']">
                             <i class="fas fa-briefcase icon-lg mr-3"></i>
                             <div class="text-left">
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-3 mb-lg-0 " >
-                    <div class="card last-c" >
+                    <div class="card last-c" title="Promotion Eligible" >
                         <div class="card-body d-flex align-items-center"
                             [routerLink]="['/teachers/eligible-promotions']">
                             <i class="fas fa-user-check icon-lg mr-3"></i>
@@ -78,44 +78,44 @@
                     <div class="sub-head-line"></div>
                 </div>
                 <div class="d-flex flex-wrap gap-3">
-                    <div class="sub-card" [routerLink]="['/teachers/teacher-list']">
+                    <div class="sub-card" title="Teacher List" [routerLink]="['/teachers/teacher-list']">
                         <img src="../../../assets/icons/teach.png" alt="Help Icon" >
                         <h6>Teachers List</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/add-teacher']">
+                    <div class="sub-card" title=" Add New Teacher" [routerLink]="['/teachers/add-teacher']">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon" >
                         <h6>Add New Teacher</h6>
                     </div>
-                    <div class="sub-card">
+                    <div class="sub-card" title="Update Teacher">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" >
                         <h6>Update Teacher Details</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/transfer-request-list']">
+                    <div class="sub-card" title="Transfer Request" [routerLink]="['/teachers/transfer-request-list']">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon" >
                         <h6>Transfer Request</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/transfer-completed']">
+                    <div class="sub-card" title="Transfer Completed" [routerLink]="['/teachers/transfer-completed']">
                         <img src="../../../assets/icons/transfer-com.png" alt="Help Icon" >
                         <h6>Transfer Completed</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/leave']">
+                    <div class="sub-card" title="Leave Applications" [routerLink]="['/teachers/leave']">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon">
                         <h6>Leave Application</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/promotion-requests']">
+                    <div class="sub-card" title="Promotion Application" [routerLink]="['/teachers/promotion-requests']">
                         <img  src="../../../assets/icons/promotion.png" alt="Help Icon">
                         <h6>Promotion Application</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/promotion-completed']">
+                    <div class="sub-card" title="Promotion Completed" [routerLink]="['/teachers/promotion-completed']">
                         <img    src="../../../assets/icons/promotion-com.png" alt="Help Icon">
                         <h6>Promotion Completed</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/retired-teachers']" >
+                    <div class="sub-card" title="Retired Teachers" [routerLink]="['/teachers/retired-teachers']" >
                         <img   src="../../../assets/icons/retired.png" alt="Help Icon">
                         <h6>Retired Techers</h6>
                     </div>
 
-                    <div class="sub-card" [routerLink]="['/teachers/promotion-priorities']" >
+                    <div class="sub-card" title="Promotion Eligible Priorities" [routerLink]="['/teachers/promotion-priorities']" >
                         <img    src="../../../assets/icons/promotion.png" alt="Help Icon">
                         <h6>Promotion Eligible Priorities</h6>
                     </div>
