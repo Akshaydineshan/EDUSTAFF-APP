@@ -144,7 +144,9 @@
 // .ag-theme-quartz .ag-text-field-input {
 //   height: 3px;
 // }
-
+.ag-row-hover {
+  background-color: red !important; /* Replace with your desired color */
+}
 .ag-theme-quartz .ag-header {
   font-family: cursive;
   font-weight: 900px;

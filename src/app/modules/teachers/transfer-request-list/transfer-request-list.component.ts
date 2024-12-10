@@ -22,7 +22,8 @@ interface PagonationConfig {
 export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  // { headerName: 'Requested School', field: 'toSchoolOneName' },
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' },  { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -83,6 +84,7 @@ export class TransferRequestListComponent implements OnInit {
   selectedWithEffectFrom!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
   designationList: any = [];
   schoolList: any = []
+  gridOptions: any
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router,) {
 
@@ -261,90 +263,99 @@ export class TransferRequestListComponent implements OnInit {
             width: 220
           } : {}),
 
-      //     ...(column.field === "toSchoolOneName" ? {
-      //       cellRenderer: (params: any) => {
-      //         // Combine fields styled as inline-block elements
-      //         const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
-      //         return `
-      //    <div style="display: block; margin: 0; padding: 0;">
-      //   <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
-      //     <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
-      //   </span>
-      //   <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
-      //     <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
-      //   </span>
-      //   <span style="display: block; padding: 0; margin: 0;">
-      //     <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
-      //   </span>
-      // </div>
-              
-      //         `;
-      //       }, autoHeight: true, width: 250, cellStyle: {
-      //         padding: '0px',
-      //       },
-      //     } : {}),
+          // ...(column.field === "toSchoolOneName" ? {
+          //   cellRenderer: (params: any) => {
+          //     // Combine fields styled as inline-block elements
+          //     if (params.data.status === 'Pending') {
+          //       const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
+          //       return `
+          //      <div style="display: block; margin: 0; padding: 0;">
+          //     <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
+          //       <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
+          //     </span>
+          //     <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
+          //       <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
+          //     </span>
+          //     <span style="display: block; padding: 0; margin: 0;">
+          //       <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
+          //     </span>
+          //   </div>
+  
+          //           `;
+          //     } else {
+          //       return ''
+          //     }
+
+          //   }, autoHeight: true, width: 250, cellStyle: {
+          //     padding: '0px',
+          //   },
+          // } : {}),
 
 
           ...(column.field === 'status' ?
             {
               cellRenderer: (params: any) => {
                 if (true) {
-                  const div = document.createElement('div');
-                  div.style.display = "flex"
-                  div.style.justifyContent = "space-between"
+                  let div = document.createElement('div');
+                  div.style.margin = '9px 0px'
+                  div.style.display = "flex";
+                  div.style.flexDirection = "column";
+                  div.style.alignItems = "center";
 
-                  // Create anchor element for the name
-                  const divSub = document.createElement('div');
-                  divSub.style.height = "100%"
-
-
+                  let divSub = document.createElement('div');
                   const nameLink = document.createElement('a');
                   nameLink.style.cursor = 'pointer';
-                  // nameLink.style.color = '#246CC1';
-
-                  nameLink.textContent = params.value;
-                  divSub.appendChild(nameLink)
-                  div.appendChild(divSub);
-
-                  // Create another anchor element for the plus button
 
                   if (params.value == 'Pending') {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+                    nameLink.style.color = '#FFBE18';
+                    divSub.style.display = "flex";
+                    divSub.style.gap = "5px"
+
+                    let approveBtn = document.createElement('button');
+                    approveBtn.classList.add('btn', 'btn-sm', 'btn-outline-success', 'status-btn');
+                    approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
+                    approveBtn.style.width = '86px';
+                    approveBtn.style.paddingRight = "10px"
+
+
+
+                    let rejectBtn = document.createElement('button');
+                    rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
+                    rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
+                    rejectBtn.style.width = '80px';
+
+                    divSub.appendChild(approveBtn);
+                    divSub.appendChild(rejectBtn)
+
+
                     this.ngZone.run(() => {
-                      plusButton.addEventListener('click', (event: any) => {
-                        if (params.onStatusClick) {
-                          params.onStatusClick(event, params);
+                      approveBtn.addEventListener('click', (event: any) => {
+                        if (params.onApproveClick) {
+                          params.onApproveClick(event, params);
                         }
-                      });
+                      }),
+                        rejectBtn.addEventListener('click', (event: any) => {
+                          if (params.onRejectClick) {
+                            params.onRejectClick(event, params);
+                          }
+                        });
+
                     })
 
-                    div.appendChild(plusButton);
+                    // div.appendChild(plusButton);
 
                   } else {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
-                    plusButton.addEventListener('click', (event: any) => {
-                      // if (params.onStatusClick) {
-                      //   params.onStatusClick(event, params);
-                      // }
-                    });
-                    div.appendChild(plusButton);
+                    if (params.value === 'Rejected') {
+                      nameLink.style.color = '#FE2D53';
+                    } else {
+                      nameLink.style.color = '#31904E';
+                    }
 
                   }
 
-
-
-
-                  // Append the elements to the div
-
-
+                  nameLink.textContent = params.value;
+                  div.appendChild(nameLink)
+                  div.appendChild(divSub);
 
 
                   return div;
@@ -358,15 +369,31 @@ export class TransferRequestListComponent implements OnInit {
 
               ,
               cellRendererParams: {
-                onStatusClick: (event: MouseEvent, params: any) => {
-                  this.statusMenuClick(event, params)
+                onApproveClick: (event: MouseEvent, params: any) => {
+                  this.approveClick(event, params)
                 },
-              }
+                onRejectClick: (event: MouseEvent, params: any) => {
+                  this.rejectClick(event, params)
+                },
+              }, autoHeight: true, width: 250,
             } : {}
           )
 
+
+
         }));
 
+        // Add the row styling based on the status
+        this.gridOptions = {
+          getRowStyle: (params: any) => {
+            if (params.data.status === 'Rejected') {
+              return { backgroundColor: '#F8113A08', color: 'black' };
+            }else if(params.data.status === 'Approved'){
+              return { backgroundColor: '#17F65A08', color: 'black' };
+            }
+            return null; // No styling for other statuses
+          },
+        };
 
 
       },
@@ -402,18 +429,63 @@ export class TransferRequestListComponent implements OnInit {
   }
 
 
-  statusMenuClick(event: any, params: any) {
+  // statusMenuClick(event: any, params: any) {
 
-    this.isMenuVisible = true
+  //   this.isMenuVisible = true
+  //   this.selectMenuRowData = params.node.data
+  //   this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+  //   this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+  //   this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+  //   console.log("selectMenuRowData", this.selectMenuRowData)
+
+
+  //   this.updateMenuMousePosition(event)
+
+  // }
+
+  approveClick(event: any, params: any) {
     this.selectMenuRowData = params.node.data
     this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
     this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
     this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
-    console.log("selectMenuRowData", this.selectMenuRowData)
+    this.loadDropdownData()
+    const dateControl = this.transferRequestForm.get('date');
+    this.showSecondDropdown = false;
+    this.tableColorChange = true;
+    this.isRejectedClick = false;
 
+    this.transferRequestForm.get('toSchool')?.setValidators(Validators.required)
+    this.transferRequestForm.get('date')?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.transferDate))
+    dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false), Validators.required]);
 
-    this.updateMenuMousePosition(event)
+    this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
+    // this.transferRequestForm.get("toSchool")?.setValue([
+    //   this.schoolDropDownList.find((item:any)=> item.schoolId ===this.selectMenuRowData.toSchoolID )
+    // ])
+    this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+    this.isTransferPopup = true;
+    this.isMenuVisible = false
 
+  }
+
+  rejectClick(event: any, params: any) {
+    this.selectMenuRowData = params.node.data
+    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+    this.loadDropdownData()
+    const dateControl = this.transferRequestForm.get('date');
+    this.showSecondDropdown = false;
+    this.tableColorChange = true;
+
+    dateControl?.clearValidators();
+    this.isRejectedClick = true;
+    this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
+    // this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+    this.transferRequestForm.get('toSchool')?.clearValidators()
+    this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+    this.isTransferPopup = true
+    this.isMenuVisible = false
   }
 
   listClickFromMenuList(event: any) {
@@ -428,9 +500,7 @@ export class TransferRequestListComponent implements OnInit {
       dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false), Validators.required]);
 
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
-      // this.transferRequestForm.get("toSchool")?.setValue([
-      //   this.schoolDropDownList.find((item:any)=> item.schoolId ===this.selectMenuRowData.toSchoolID )
-      // ])
+
       this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
       this.isTransferPopup = event.clicked
       this.isMenuVisible = false
@@ -438,7 +508,7 @@ export class TransferRequestListComponent implements OnInit {
       dateControl?.clearValidators();
       this.isRejectedClick = true;
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
-      // this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+
       this.transferRequestForm.get('toSchool')?.clearValidators()
       this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
       this.isTransferPopup = event.clicked
