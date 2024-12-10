@@ -50,8 +50,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   mouseMenuX: number = 0;
   mouseMenuY: number = 0;
   menuListItems: any[] = [
-    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest' },
-    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
+    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest',icons:'fa-solid fa-arrow-right-arrow-left' },
+    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest',icons:'bi bi-hourglass-split' }
   ]
   isTransferPopup: boolean = false;
   isLeavePopup: boolean = false;
@@ -854,7 +854,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         //     console.error('Error fetching teacher details:', error);
         //   }
         // );
-      }, 400);
+      }, 450);
     }
   }
 
@@ -880,7 +880,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 400);
+      }, 450);
     }
   }
 

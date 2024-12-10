@@ -1,5 +1,15 @@
 <div *ngIf="isMenuVisible" class="popup-menu" id="menuPop" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}">
-    <ul>
-      <li   *ngFor="let item of menuListItems;" (click)="listClick(item.value)"><span><span><img [src]="item.icon" alt=""></span><p class="text">{{item.value}}</p></span></li>
-    </ul>
-  </div>
+  <ul>
+    <li *ngFor="let item of menuListItems;" (click)="listClick(item.value)">
+      <span *ngIf="!item.icons">
+        <img [src]="item.icon" alt=""></span>
+
+      <span *ngIf="item.icons">
+        <i class={{item.icons}}></i>
+      </span>
+      <span>
+        <p class="text">{{item.value}}</p>
+      </span>
+    </li>
+  </ul>
+</div>

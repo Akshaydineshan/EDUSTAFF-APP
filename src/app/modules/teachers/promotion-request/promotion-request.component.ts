@@ -352,7 +352,7 @@ export class PromotionRequestComponent {
                     approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
                     approveBtn.style.width = '86px';
                     approveBtn.style.paddingRight = "10px"
-                    approveBtn.setAttribute('title','Approve Transfer Request')
+                    approveBtn.setAttribute('title','Approve Promotion Request')
 
 
 
@@ -360,7 +360,7 @@ export class PromotionRequestComponent {
                     rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
                     rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
                     rejectBtn.style.width = '80px';
-                    rejectBtn.setAttribute('title','Reject Transfer Request')
+                    rejectBtn.setAttribute('title','Reject Promotion Request')
 
                     divSub.appendChild(approveBtn);
                     divSub.appendChild(rejectBtn)

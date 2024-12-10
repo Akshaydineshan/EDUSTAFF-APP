@@ -20,7 +20,7 @@ export class PromotionEligibleListComponent {
   // column menu hover related 
   selectMenuRowData: any;
   menuListItems: any[] = [
-    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest' },]
+    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest',icons:'bi bi-trophy' },]
   isMenuVisible: boolean = false;
   mouseMenuX: number = 0;
   mouseMenuY: number = 0;
