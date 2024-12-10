@@ -9,7 +9,7 @@
   <app-back-button [url]="'/dashboard'" class=""></app-back-button>
 
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>  Teachers List
+    <h4> Teachers List
       <span class="badge badge-secondary ">{{ teacherList.length }}</span>
     </h4>
     <div class="d-flex justify-content-between align-items-end gap-3">
@@ -362,155 +362,165 @@
 </div>
 
 
-<div class="t-request-popup-main" *ngIf="isTransferPopup">
 
-  <div class="header d-flex justify-content-between">
-    <p>Transfer Request-{{selectMenuRowData.name}}</p>
-    <div>
-      <a (click)="closeTransferPopup()"> <img src="assets/icons/close.jpg" alt=""></a>
+<div class="request-popup-main" *ngIf="isTransferPopup">
+   <div class="head-sec">
+    <p class="head-lab">Transfer Request</p>
 
+    <div class="popup-close">
+      <img (click)="closeTransferPopup()" src="../../../../assets/icons/popup-close.png" alt="">
     </div>
 
   </div>
-  <hr>
-   <div class="body">
 
-    <form action="" [formGroup]="transferRequestForm">
-      <div class="row mb-1">
-        <label for="" class="col-sm-12 col-form-label"><span>Transfer From</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
+  <div class="head-line"></div>
+   <div class="main-body">
+    <form [formGroup]="transferRequestForm">
+      <div class="main-sec">
 
-          <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
-          <div
-            *ngIf="transferRequestForm.get('fromSchool')?.invalid && (transferRequestForm.get('fromSchool')?.['dirty'] || transferRequestForm.get('fromSchool')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['required']"></small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['pattern']">Invalid
-              Pattern</small>
+        <div class="left-sec">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer From</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
+            </div>
           </div>
-        </div>
-      </div>
 
+          <div class="head-line a-tf"></div>
 
-      <div class="row mb-1">
-        <label for="" class="col-sm-12 col-form-label"><span>Transfer To School (priority 1)</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 1)</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                [data]="schoolDropDownList" formControlName="toSchoolPriority1"
+                (onSelect)="onFirstDropdownChange($event)" />
 
-          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-            [data]="schoolDropDownList" formControlName="toSchoolPriority1"
-            (onSelect)="onFirstDropdownChange($event)" />
-          <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
-            <option [disabled]="true" [value]="null">Select School</option>
-            <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
-            </option>
-          </select> -->
-          <div
-            *ngIf="transferRequestForm.get('toSchoolPriority1')?.invalid && ( transferRequestForm.get('toSchoolPriority1')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['required']">Field
-              is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['pattern']">Invalid
-              Pattern</small>
+              <div
+                *ngIf="transferRequestForm.get('toSchoolPriority1')?.invalid && ( transferRequestForm.get('toSchoolPriority1')?.['touched']  || submitted)">
+                <small class="text-danger"
+                  *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['required']">Field
+                  is
+                  required</small>
+                <small class="text-danger"
+                  *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['pattern']">Invalid
+                  Pattern</small>
+              </div>
+
+            </div>
           </div>
-        </div>
-      </div>
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 2)</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                [data]="schoolDropDownList" formControlName="toSchoolPriority2" />
 
-      <div class="row mb-1">
-        <label for="" class="col-sm-12 col-form-label"><span>Transfer To School (priority 2)</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
-
-          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-            [data]="schoolDropDownList" formControlName="toSchoolPriority2" />
-         
-          <div
-            *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['required']">Field
-              is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['pattern']">Invalid
-              Pattern</small>
+              <div
+                *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
+                <small class="text-danger"
+                  *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['required']">Field
+                  is
+                  required</small>
+                <small class="text-danger"
+                  *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['pattern']">Invalid
+                  Pattern</small>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 3)</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                [data]="schoolDropDownList" formControlName="toSchoolPriority3" />
 
-      <div class="row mb-1">
-        <label for="" class="col-sm-12 col-form-label"><span>Transfer To School (priority 3)</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
+              <div
+                *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
+                <small class="text-danger"
+                  *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['required']">Field
+                  is
+                  required</small>
+                <small class="text-danger"
+                  *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['pattern']">Invalid
+                  Pattern</small>
+              </div>
 
-          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-            [data]="schoolDropDownList" formControlName="toSchoolPriority3" />
-    
-          <div
-            *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['required']">Field
-              is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['pattern']">Invalid
-              Pattern</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-1 ">
-        <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
-          <input type="text" class="form-control" formControlName="documentUrl">
-          <div
-            *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
-              Pattern</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-1">
-
-        <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
-          <input type="date" [min]="minDate" class="form-control" formControlName="date">
-          <div
-            *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date
-              .</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are not
-              allowed .</small>
-          </div>
-        </div>
-      </div>
-
-      <div class="row mb-1 ">
-        <label class="col-sm-12 col-form-label">Comment (if any)</label>
-        <div class="col-sm-12">
-          <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
-            formControlName="comment">
-          <div
-            *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
-              Pattern</small>
+            </div>
           </div>
 
         </div>
-      </div>
 
-      <div class="btn-sec d-flex justify-content-center">
+        <div class="center-line"></div>
 
-        <button class="sub-btn" (click)="transferRequestFormSubmit()"> <img class="me-2"
-            src="assets/icons/tr-sub-icon.png" alt="">Submit</button>
+        <div class="right-sec">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="date" [min]="minDate" class="form-control" formControlName="date">
+              <div
+                *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
+                  required</small>
+                <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date
+                  .</small>
+                <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are
+                  not
+                  allowed .</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label">
+              <span>Document Url</span>
+              <span class="text-danger ms-1 mad-f">*</span>
+            </label>
+            <div class="col-sm-12">
+              <!-- <input type="text" class="form-control big-inp" placeholder="Past url here" formControlName="documentUrl"> -->
+              <textarea name="" id="" class="form-control big-inp " placeholder="Past url here"
+                formControlName="documentUrl" rows="2" cols="3"></textarea>
+              <div
+                *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
+                  required</small>
+                <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+                  Pattern</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label">
+              <span>Comment</span>
+              <span class="text-danger ms-1 mad-f"></span>
+            </label>
+            <div class="col-sm-12">
+
+              <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
+                placeholder="Write something.." formControlName="comment" rows="4" cols="3"></textarea>
+              <div
+                *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
+                  required</small>
+                <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                  Pattern</small>
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-sec">
+            <button (click)="resetTransferRequest()" class="reset">Reset</button>
+            <button (click)="transferRequestFormSubmit()" class="submit">Submit</button>
+          </div>
+
+        </div>
       </div>
     </form>
+    <div>
 
-
+    </div>
   </div>
-
 </div>

@@ -344,6 +344,17 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   }
+  resetTransferRequest(){
+    this.transferRequestForm.reset({
+      fromSchool:this.selectMenuRowData.schoolName,
+      toSchoolPriority1: "",
+      toSchoolPriority2: "",
+      toSchoolPriority3: "",
+      documentUrl: "",
+      date: "",
+      comment: ""
+    });
+  }
 
   leaveRequestFormSubmit() {
 
