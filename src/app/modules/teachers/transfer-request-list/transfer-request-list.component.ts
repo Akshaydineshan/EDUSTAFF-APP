@@ -316,6 +316,7 @@ export class TransferRequestListComponent implements OnInit {
                     approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
                     approveBtn.style.width = '86px';
                     approveBtn.style.paddingRight = "10px"
+                    approveBtn.setAttribute('title','Approve Transfer Request')
 
 
 
@@ -323,6 +324,7 @@ export class TransferRequestListComponent implements OnInit {
                     rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
                     rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
                     rejectBtn.style.width = '80px';
+                    rejectBtn.setAttribute('title','Reject Transfer Request')
 
                     divSub.appendChild(approveBtn);
                     divSub.appendChild(rejectBtn)
