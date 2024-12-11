@@ -407,7 +407,6 @@ export class TransferRequestListComponent implements OnInit {
 
   }
 
-
   updateMenuMousePosition(event: MouseEvent): void {
     debugger;
     console.log("eventRR", event.clientX, event.clientY)

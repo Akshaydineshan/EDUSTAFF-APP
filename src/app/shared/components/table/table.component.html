@@ -2,6 +2,7 @@
     <ag-grid-angular
     [rowData]="rowData"
     [columnDefs]="colDefs"
+    [gridOptions]="gridOptions"
     class="ag-theme-quartz "
     [ngClass]="tableColorChange? 'ag-theme-alpine' : '' "
     style="height: 600px;"
@@ -14,7 +15,7 @@
     (cellMouseOut)="onCellMouseOut($event)"  
     (cellClicked)="onCellClicked($event)"
     (gridReady)="onGridReady($event)"
-    [gridOptions]="gridOptions"
+    
     [suppressRowHoverHighlight]="true"
     
     />

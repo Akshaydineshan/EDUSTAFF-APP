@@ -23,6 +23,7 @@ export class TableComponent implements OnInit {
   @Output() onCellClickedEvent: any = new EventEmitter()
   @Output() BtnClickedEvent: any = new EventEmitter()
   @Input() gridOptions:any
+  
 
   //  gridOptions: GridOptions = {
   //   onCellMouseOver: this.rowMouseEnter.bind(this) , // Bind the cell mouse over event

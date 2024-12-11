@@ -69,7 +69,7 @@ export class NonTeacherTransferlistComponent {
   schoolDropDownListFilter: any[] = [];
   showSecondDropdown: boolean = false;
   tableColorChange: boolean = false;
-  gridOptions: any;
+  gridOptions: any
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private ngZone: NgZone) {
 
@@ -78,7 +78,7 @@ export class NonTeacherTransferlistComponent {
 
   ngOnInit(): void {
     this.loadtransferRequestList()
-   
+
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
@@ -103,8 +103,8 @@ export class NonTeacherTransferlistComponent {
     const menuPops = document.getElementsByClassName('menuPop');
 
     let clickedInsidePopup = false;
-    let clickedOnButton = menuButtons[0].contains(target);
-    //  let clickedOnButtonI = false;
+   
+     let clickedOnButton = false;
 
     for (let i = 0; i < menuPops.length; i++) {
       if (menuPops[i].contains(target)) {
@@ -201,7 +201,7 @@ export class NonTeacherTransferlistComponent {
 
   }
 
-  
+
   onFirstDropdownChange(selectedItem: any): void {
     if (selectedItem && selectedItem.schoolId === 0) {
       this.showSecondDropdown = true; // Show the second dropdown
@@ -216,116 +216,11 @@ export class NonTeacherTransferlistComponent {
 
   loadtransferRequestList() {
 
-    // this.dataService.getNonTeacherTransferRequestData().subscribe(
-    //   (data: any) => {
-    //     debugger
-    //     this.transferList = data;
-    //     console.log("school list data", this.transferList);
-    //     this.transferTableRows = this.transferList
-    //     this.transferTableColumns = this.displayColumns.map((column) => ({
-    //       headerName: column.headerName,
-    //       valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
-    //         ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
-    //         : undefined,
-    //       field: column.field,
-    //       filter: true,
-    //       floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-    //       ... (column.field === 'employeeName' || column.field === "toSchoolName" || column.field === "fromSchoolName" ? {
-    //         cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
-    //         width: 220
-    //       } : {}),
-
-    //       ...(column.field === 'status' ?
-    //         {
-    //           cellRenderer: (params: any) => {
-    //             if (true) {
-    //               const div = document.createElement('div');
-    //               div.style.display = "flex"
-    //               div.style.justifyContent = "space-between"
-
-    //               // Create anchor element for the name
-    //               const divSub = document.createElement('div');
-    //               divSub.style.height = "100%"
-
-
-    //               const nameLink = document.createElement('a');
-    //               nameLink.style.cursor = 'pointer';
-    //               // nameLink.style.color = '#246CC1';
-
-    //               nameLink.textContent = params.value;
-    //               divSub.appendChild(nameLink)
-    //               div.appendChild(divSub);
-
-    //               // Create another anchor element for the plus button
-
-    //               if (params.value == 'Pending') {
-    //                 const plusButton = document.createElement('a');
-    //                 plusButton.style.marginLeft = '10px';
-    //                 plusButton.classList.add('menuButton')
-    //                 // plusButton.style.float = 'right';
-    //                 plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
-    //                 plusButton.addEventListener('click', (event: any) => {
-    //                   if (params.onStatusClick) {
-    //                     params.onStatusClick(event, params);
-    //                   }
-    //                 });
-    //                 div.appendChild(plusButton);
-
-    //               }else{
-    //                 const plusButton = document.createElement('a');
-    //                 plusButton.style.marginLeft = '10px';
-    //                 plusButton.classList.add('menuButton')
-    //                 // plusButton.style.float = 'right';
-    //                 plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
-    //                 plusButton.addEventListener('click', (event: any) => {
-    //                   // if (params.onStatusClick) {
-    //                   //   params.onStatusClick(event, params);
-    //                   // }
-    //                 });
-    //                 div.appendChild(plusButton);
-
-    //               }
-
-
-
-
-    //               // Append the elements to the div
-
-
-
-
-    //               return div;
-
-    //             } else {
-    //               return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
-    //             }
-    //           }
-
-
-
-    //           ,
-    //           cellRendererParams: {
-    //             onStatusClick: (event: MouseEvent, params: any) => {
-    //               this.statusMenuClick(event, params)
-    //             },
-    //           }
-    //         } : {}
-    //       )
-
-    //     }));
-
-
-
-    //   },
-    //   (error: any) => {
-    //     console.error('Error fetching school data:', error);
-    //   }
-    // );
     this.dataService.getNonTeacherTransferRequestData().subscribe(
       (data: any) => {
         debugger
         this.transferList = data;
-
+        console.log("school list data", this.transferList);
         this.transferTableRows = this.transferList
         this.transferTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -343,7 +238,7 @@ export class NonTeacherTransferlistComponent {
           ...(column.field === "toSchoolOneName" ? {
             cellRenderer: (params: any) => {
               // Combine fields styled as inline-block elements
-              if (params.data.status === 'Pending' || true) {
+              if (params.data.status === 'Pending' ||true) {
                 const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
                 return `
                <div style="display: block; margin: 0; padding: 0;">
@@ -393,7 +288,7 @@ export class NonTeacherTransferlistComponent {
                     approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
                     approveBtn.style.width = '86px';
                     approveBtn.style.paddingRight = "10px"
-                    approveBtn.setAttribute('title', 'Approve Transfer Request')
+                    approveBtn.setAttribute('title','Approve Transfer Request')
 
 
 
@@ -401,7 +296,7 @@ export class NonTeacherTransferlistComponent {
                     rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
                     rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
                     rejectBtn.style.width = '80px';
-                    rejectBtn.setAttribute('title', 'Reject Transfer Request')
+                    rejectBtn.setAttribute('title','Reject Transfer Request')
 
                     divSub.appendChild(approveBtn);
                     divSub.appendChild(rejectBtn)
@@ -461,21 +356,19 @@ export class NonTeacherTransferlistComponent {
 
 
         }));
+
+        // Add the row styling based on the status
         this.gridOptions = {
           getRowStyle: (params: any) => {
-             console.log("akshay")
+           
             if (params.data.status === 'Rejected') {
               return { backgroundColor: '#F8113A08', color: 'black' };
-            } else if (params.data.status === 'Approved') {
+            }else if(params.data.status === 'Approved'){
               return { backgroundColor: '#17F65A08', color: 'black' };
             }
             return null; // No styling for other statuses
           },
         };
-        // Add the row styling based on the status
-        console.log("ak")
-       
-        console.log("ak",this.gridOptions)
 
 
       },
@@ -483,7 +376,9 @@ export class NonTeacherTransferlistComponent {
         console.error('Error fetching school data:', error);
       }
     );
+
   }
+
 
 
   updateMenuMousePosition(event: MouseEvent): void {
@@ -867,7 +762,7 @@ export class NonTeacherTransferlistComponent {
       console.log("invalid form", this.transferRequestForm)
     }
   }
- 
+
   closeTransferPopup() {
     this.transferRequestForm.reset()
     this.submitted = false;
