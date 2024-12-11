@@ -308,7 +308,8 @@ export class NonTeacherListComponent implements OnInit {
               cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
 
             } : {}),
-            ... (column === 'experienceYear' ? { valueFormatter: (params: any) => params.value < 0 ? 0 : `${params.value}` } : {}),
+            ... (column === 'experienceYear' ? { valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner': `${params.value}` } : {}),
+            ... (column === 'age' ? { valueFormatter: (params: any) => params.value <= 0 ? 'N/A': `${params.value}` } : {}),
 
             ... (column === 'schoolName' ? { width: 300 } : {}),
             ...(column === "phoneNumber" ? { valueFormatter: (params: any) => `+91 ${params.value}`, } : {})
@@ -399,7 +400,7 @@ export class NonTeacherListComponent implements OnInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 300);
+      }, 450);
     }
   }
 
@@ -425,7 +426,7 @@ export class NonTeacherListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      }, 450);
     }
   }
 

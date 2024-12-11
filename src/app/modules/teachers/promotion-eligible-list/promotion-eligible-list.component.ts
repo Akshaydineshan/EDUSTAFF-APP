@@ -250,7 +250,10 @@ export class PromotionEligibleListComponent {
 
             } : {}),
 
-            ... (column === 'schoolName' ? { width: 300 } : {})
+            ... (column === 'schoolName' ? { width: 300 } : {}),
+            ... (column === 'experienceYear' ? { valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner' : `${params.value}` } : {}),
+            ... (column === 'age' ? { valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` } : {})
+
 
           }
 

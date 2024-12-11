@@ -255,7 +255,7 @@ export class DataService {
   }
 
   private fetchTeachersPromotionEligibilityList(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl + '/Teacher/GetPromotionEligibilityTeachersList', { headers: { accept: '*/*' } }).pipe(
+    return this.http.get<any[]>(this.apiUrl + 'Promotion/GetSortedPromotionEligibleEmployees', { headers: { accept: '*/*' } }).pipe(
       tap(data => this.teachersPromotionEligibilityCache.next(data)),
       catchError((error) => {
         console.error('Error fetching teachers promotion eligibility List:', error);
