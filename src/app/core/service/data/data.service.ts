@@ -98,6 +98,25 @@ export class DataService {
     // }
     // return this.teachersDataCache.asObservable();
   }
+  private fetchStaffLeaveRequestData(): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.apiUrl + 'LeaveRequest/GetAllNonTeacherLeaveRequests', { headers: { accept: '*/*' } }).pipe(
+     
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
+  getStaffLeaveRequestData(): Observable<any[]> {
+    debugger
+    // if (this.teachersDataCache.value.length === 0) {
+    return this.fetchStaffLeaveRequestData();
+    // }
+    // return this.teachersDataCache.asObservable();
+  }
+
+  
   // Promotion/GetAllTeacherPromotionRequests
   getPromotionRequestData(): Observable<any[]> {
     debugger

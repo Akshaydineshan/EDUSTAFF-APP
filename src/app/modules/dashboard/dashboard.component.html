@@ -132,28 +132,28 @@
                     <div class="sub-head-line"></div>
                 </div>
 
-                <div class="d-flex flex-wrap gap-3">
-                    <div class="sub-card" [routerLink]="['/non-teachers/non-teacher-list']">
+                <div class="d-flex flex-wrap gap-3" >
+                    <div class="sub-card" [routerLink]="['/non-teachers/non-teacher-list']" title="Non Teachers list">
                         <img src="../../../assets/icons/staff.png" alt="Help Icon" >
                         <h6>List</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/non-teachers/add']">
+                    <div class="sub-card" [routerLink]="['/non-teachers/add']" title="Add New ">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon" >
                         <h6>Add New</h6>
                     </div>
-                    <div class="sub-card">
+                    <div class="sub-card" title="Update Non Teacher">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" >
                         <h6>Update Details</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/non-teachers/transfer-request']">
+                    <div class="sub-card" [routerLink]="['/non-teachers/transfer-request']" title="Transfer Request">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon" width="30" height="30">
                         <h6>Transfer Request</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/transfer-completed']">
+                    <div class="sub-card" [routerLink]="['/non-teachers/transfer-completed']" title="Transfer Complete">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon" >
                         <h6>Transfer Completed</h6>
                     </div>
-                    <div class="sub-card">
+                    <div class="sub-card" [routerLink]="['/non-teachers/leave']" title="Leave Application">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
                         <h6>Leave Application</h6>
                     </div>
@@ -175,24 +175,24 @@
         <div class="row">
             <div class="col-12">
               
-                <div class="sub-head-container">
+                <div class="sub-head-container" >
                     <p class="sub-head">Schools</p>
                     <div class="sub-head-line"></div>
                 </div>
-                <div class="d-flex flex-wrap gap-3">
+                <div class="d-flex flex-wrap gap-3" title="School List">
                     <div class="sub-card" [routerLink]="['/schools/school-list']">
                         <img src="../../../assets/icons/school-list.png" alt="Help Icon" width="30" height="30">
                         <h6>School List</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/schools/add-school']">
+                    <div class="sub-card" [routerLink]="['/schools/add-school']" title="Add New School">
                         <img src="../../../assets/icons/school-add.png" alt="Help Icon" width="30" height="30">
                         <h6>Add New School</h6>
                     </div>
-                    <div class="sub-card" >
+                    <div class="sub-card"  title="Update School">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" width="30" height="30">
                         <h6>Update School Details</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/teachers/eligible-promotions']">
+                    <div class="sub-card" [routerLink]="['/teachers/eligible-promotions']" title="Promotion Eligible List">
                         <img src="../../../assets/icons/promotion.png" alt="Help Icon" width="30" height="30">
                         <h6>Promotion Eligible List</h6>
                     </div>

@@ -4,6 +4,7 @@
 
 
 <div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup || isLeavePopup" (click)="overlayClick()">
+  <app-back-button [url]="'/dashboard'" class=""></app-back-button>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>Non Teachers List
       <span class="badge badge-secondary">{{ nonTeacherList.length }}</span>

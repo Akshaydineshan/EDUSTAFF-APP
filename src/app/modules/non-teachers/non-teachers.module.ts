@@ -12,6 +12,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AddNonTeacherPreviewComponent } from './add-non-teacher/add-non-teacher-preview/add-non-teacher-preview.component';
 import { ViewNonTeacherDetailsComponent } from './view-non-teacher-details/view-non-teacher-details.component';
 import { NonTeacherTransferlistComponent } from './non-teacher-transferlist/non-teacher-transferlist.component';
+import { StaffLeaveApplicationsComponent } from './staff-leave-applications/staff-leave-applications.component';
+import { StaffTransferCompletedListComponent } from './staff-transfer-completed-list/staff-transfer-completed-list.component';
+import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
 
 @NgModule({
   declarations: [
@@ -22,14 +25,17 @@ import { NonTeacherTransferlistComponent } from './non-teacher-transferlist/non-
     NonTeacherProfessionalDetailsComponent,
     AddNonTeacherPreviewComponent,
     ViewNonTeacherDetailsComponent,
-    NonTeacherTransferlistComponent
+    NonTeacherTransferlistComponent,
+    StaffLeaveApplicationsComponent,
+    StaffTransferCompletedListComponent
   ],
   imports: [
     CommonModule,
     NonTeachersRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxDaterangepickerBootstrapModule.forRoot()
   ]
 })
 export class NonTeachersModule { }

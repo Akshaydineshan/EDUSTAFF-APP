@@ -47,8 +47,8 @@ export class NonTeacherListComponent implements OnInit {
 
   submitted: boolean = false;
   menuListItems: any[] = [
-    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest' },
-    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest' }
+    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest',icons:'fa-solid fa-arrow-right-arrow-left' },
+    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest',icons:'bi bi-hourglass-split' }
   ]
   isTransferPopup: boolean = false;
   minDate: any;
