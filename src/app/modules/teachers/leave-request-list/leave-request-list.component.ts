@@ -85,6 +85,7 @@ export class LeaveRequestListComponent {
     selected!: { startDate: Dayjs | null, endDate: Dayjs | null } | null;
     designationList: any = [];
     schoolList: any = []
+  gridOptions: any;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
     this.filterForm = this.fb.group({
@@ -298,66 +299,141 @@ export class LeaveRequestListComponent {
             width: 220
           } : {}),
 
+          // ...(column.field === 'status' ?
+          //   {
+          //     cellRenderer: (params: any) => {
+          //       if (true) {
+          //         const div = document.createElement('div');
+          //         div.style.display = "flex"
+          //         div.style.justifyContent = "space-between"
+
+                
+          //         const divSub = document.createElement('div');
+          //         divSub.style.height = "100%"
+
+
+          //         const nameLink = document.createElement('a');
+          //         nameLink.style.cursor = 'pointer';
+                 
+          //         nameLink.textContent = params.value;
+          //         divSub.appendChild(nameLink)
+          //         div.appendChild(divSub);
+
+              
+
+          //         if (params.value == 'Pending') {
+          //           const plusButton = document.createElement('a');
+          //           plusButton.style.marginLeft = '10px';
+          //           plusButton.classList.add('menuButton')
+          //           // plusButton.style.float = 'right';
+          //           plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+          //           this.ngZone.run(() => {
+          //             plusButton.addEventListener('click', (event: any) => {
+          //               if (params.onStatusClick) {
+          //                 params.onStatusClick(event, params);
+          //               }
+          //             });
+          //           })
+
+          //           div.appendChild(plusButton);
+
+          //         } else {
+          //           const plusButton = document.createElement('a');
+          //           plusButton.style.marginLeft = '10px';
+          //           plusButton.classList.add('menuButton')
+                   
+          //           plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
+          //           plusButton.addEventListener('click', (event: any) => {
+                  
+          //           });
+          //           div.appendChild(plusButton);
+
+          //         }
+
+
+          //         return div;
+
+          //       } else {
+          //         return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
+          //       }
+          //     }
+
+
+
+          //     ,
+          //     cellRendererParams: {
+          //       onStatusClick: (event: MouseEvent, params: any) => {
+          //         this.statusMenuClick(event, params)
+          //       },
+          //     }
+          //   } : {}
+          // )
           ...(column.field === 'status' ?
             {
               cellRenderer: (params: any) => {
                 if (true) {
-                  const div = document.createElement('div');
-                  div.style.display = "flex"
-                  div.style.justifyContent = "space-between"
+                  let div = document.createElement('div');
+                  div.style.margin = '9px 0px'
+                  div.style.display = "flex";
+                  div.style.flexDirection = "column";
+                  div.style.alignItems = "center";
 
-                  // Create anchor element for the name
-                  const divSub = document.createElement('div');
-                  divSub.style.height = "100%"
-
-
+                  let divSub = document.createElement('div');
                   const nameLink = document.createElement('a');
                   nameLink.style.cursor = 'pointer';
-                  // nameLink.style.color = '#246CC1';
-
-                  nameLink.textContent = params.value;
-                  divSub.appendChild(nameLink)
-                  div.appendChild(divSub);
-
-                  // Create another anchor element for the plus button
 
                   if (params.value == 'Pending') {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+                    nameLink.style.color = '#FFBE18';
+                    divSub.style.display = "flex";
+                    divSub.style.gap = "5px"
+
+                    let approveBtn = document.createElement('button');
+                    approveBtn.classList.add('btn', 'btn-sm', 'btn-outline-success', 'status-btn');
+                    approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
+                    approveBtn.style.width = '86px';
+                    approveBtn.style.paddingRight = "10px"
+                    approveBtn.setAttribute('title','Approve Transfer Request')
+
+
+
+                    let rejectBtn = document.createElement('button');
+                    rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
+                    rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
+                    rejectBtn.style.width = '80px';
+                    rejectBtn.setAttribute('title','Reject Transfer Request')
+
+                    divSub.appendChild(approveBtn);
+                    divSub.appendChild(rejectBtn)
+
+
                     this.ngZone.run(() => {
-                      plusButton.addEventListener('click', (event: any) => {
-                        if (params.onStatusClick) {
-                          params.onStatusClick(event, params);
+                      approveBtn.addEventListener('click', (event: any) => {
+                        if (params.onApproveClick) {
+                          params.onApproveClick(event, params);
                         }
-                      });
+                      }),
+                        rejectBtn.addEventListener('click', (event: any) => {
+                          if (params.onRejectClick) {
+                            params.onRejectClick(event, params);
+                          }
+                        });
+
                     })
 
-                    div.appendChild(plusButton);
+                    // div.appendChild(plusButton);
 
                   } else {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
-                    plusButton.addEventListener('click', (event: any) => {
-                      // if (params.onStatusClick) {
-                      //   params.onStatusClick(event, params);
-                      // }
-                    });
-                    div.appendChild(plusButton);
+                    if (params.value === 'Rejected') {
+                      nameLink.style.color = '#FE2D53';
+                    } else {
+                      nameLink.style.color = '#31904E';
+                    }
 
                   }
 
-
-
-
-                  // Append the elements to the div
-
-
+                  nameLink.textContent = params.value;
+                  div.appendChild(nameLink)
+                  div.appendChild(divSub);
 
 
                   return div;
@@ -371,14 +447,29 @@ export class LeaveRequestListComponent {
 
               ,
               cellRendererParams: {
-                onStatusClick: (event: MouseEvent, params: any) => {
-                  this.statusMenuClick(event, params)
+                onApproveClick: (event: MouseEvent, params: any) => {
+                  this.approveClick(event, params)
                 },
-              }
+                onRejectClick: (event: MouseEvent, params: any) => {
+                  this.rejectClick(event, params)
+                },
+              }, autoHeight: true, width: 250,
             } : {}
           )
 
+
         }));
+         // Add the row styling based on the status
+         this.gridOptions = {
+          getRowStyle: (params: any) => {
+            if (params.data.status === 'Rejected') {
+              return { backgroundColor: '#F8113A08', color: 'black' };
+            }else if(params.data.status === 'Approved'){
+              return { backgroundColor: '#17F65A08', color: 'black' };
+            }
+            return null; // No styling for other statuses
+          },
+        };
 
 
 
@@ -448,6 +539,36 @@ export class LeaveRequestListComponent {
       this.isLeavePopup = event.clicked
       this.isMenuVisible = false
     }
+  }
+
+  approveClick(event: any, params: any){
+    this.selectMenuRowData = params.node.data
+    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+    this.tableColorChange = true;
+    this.leaveRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.documentpath)
+
+    this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
+    this.leaveRequestForm.get("toDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.toDate))
+    this.isRejectedClick = false;
+    this.isLeavePopup = true;
+
+  }
+
+  rejectClick(event: any, params: any){
+    this.selectMenuRowData = params.node.data
+    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+    this.tableColorChange = true;
+    this.leaveRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.documentpath)
+
+    this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
+    this.leaveRequestForm.get("toDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.toDate))
+    this.isRejectedClick = true;
+    this.isLeavePopup = true;
+
   }
 
 

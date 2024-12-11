@@ -98,7 +98,7 @@
         <!-- table start -->
         <app-table [rowData]="leaveTableRows" [colDefs]="leaveTableColumns" [paginationConfig]="paginationConfig"
             (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-            (onCellClickedEvent)="onCellClicked($event)" [tableColorChange]="tableColorChange"></app-table>
+            (onCellClickedEvent)="onCellClicked($event)" [tableColorChange]="tableColorChange" [gridOptions]="gridOptions"></app-table>
         <!-- table end -->
 
     </div>
