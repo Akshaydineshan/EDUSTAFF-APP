@@ -3,10 +3,11 @@ import { Component, HostListener, NgZone, OnInit } from '@angular/core';
 import { NonTeacherService } from './non-teacher.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -25,7 +26,7 @@ export class NonTeacherListComponent implements OnInit {
 
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', 'documentCount'];
-  nonTeacherTableRows: any[] = []
+  nonTeacherTableRows: any[] = [] 
   nonTeacherTableColumns: any[] = []
   nonTeacherList: any[] = [];
   selectedTeacher: any;
@@ -37,12 +38,13 @@ export class NonTeacherListComponent implements OnInit {
   mouseMenuY: number = 0;
   selectedSchool: any;
   showSchoolPopup: boolean = false;
-  transferRequestForm!: FormGroup
+  transferRequestForm!: FormGroup;
+  leaveRequestForm!:FormGroup;
 
 
   isMenuVisible: boolean = false;
   selectMenuRowData: any;
-  schoolDropDownList: any;
+
   submitted: boolean = false;
   menuListItems: any[] = [
     { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest' },
@@ -51,6 +53,26 @@ export class NonTeacherListComponent implements OnInit {
   isTransferPopup: boolean = false;
   minDate: any;
 
+
+  
+  // Popup Multi Select dropdown 
+  schoolDropDownList!: any;
+  selectedSchoolPriority1!: any
+  schoolDropdownSettings: IDropdownSettings = {
+    singleSelection: true,
+    idField: 'schoolId',
+    textField: 'schoolName',
+    selectAllText: 'Select All',
+    closeDropDownOnSelection: true,
+    unSelectAllText: 'UnSelect All',
+
+    itemsShowLimit: 3,
+    allowSearchFilter: true,
+
+  };
+  tableColorChange: boolean=false;
+  isLeavePopup: boolean = false;
+  file: any;
 
   constructor(private NonTeacherService: NonTeacherService, private router: Router, private dataService: DataService, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone) { }
 
@@ -61,12 +83,22 @@ export class NonTeacherListComponent implements OnInit {
     // this.loadDropdownData()
 
 
+   
     this.transferRequestForm = this.fb.group({
       fromSchool: [{ value: '', }],
-      toSchool: ['', Validators.required],
+      toSchoolPriority1: ['', Validators.required],
+      toSchoolPriority2: ['', Validators.required],
+      toSchoolPriority3: ['', Validators.required],
       documentUrl: ['', Validators.required],
       date: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
       comment: ['']
+    })
+    this.leaveRequestForm = this.fb.group({
+      fromDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
+      toDate: ['', [minAndMaxDateValidator(this.minDate, true, false), Validators.required]],
+      comment: [''],
+      documentUrl: ['',],
+      document: ['',]
     })
 
 
@@ -135,6 +167,10 @@ export class NonTeacherListComponent implements OnInit {
       this.mouseY = event.clientY - popupHeight + 20; // Position above the mouse
     }
 
+
+  }
+
+  onFirstDropdownChange(selectedItem: any): void {
 
   }
   getNonTeacherListData() {
@@ -308,15 +344,15 @@ export class NonTeacherListComponent implements OnInit {
   loadDropdownData() {
 
     forkJoin({
-      schools: this.dataService.getSchoolWithCity()
+      schools: this.dataService.getSchoolList()
 
     }).subscribe({
       next: (results: any) => {
-        this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolID);
+        console.log("result", results)
 
-
+        this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
       },
-      error: (error: any) => {
+      error: (error) => {
         console.error('Error loading dropdown data', error);
 
       },
@@ -510,10 +546,9 @@ export class NonTeacherListComponent implements OnInit {
 
   }
   menuBtnEventFunction(event: any, params: any) {
-
     this.showPopup = false;
     this.showSchoolPopup = false
-    this.isTransferPopup = false;
+    this.isTransferPopup = false
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
     this.updateMenuMousePosition(event)
@@ -522,88 +557,201 @@ export class NonTeacherListComponent implements OnInit {
 
 
   }
+  // listClickFromMenuList(event: any) {
+  //   this.showPopup = false;
+  //   this.showSchoolPopup = false;
+
+
+  //   if (event.value === 'transferRequest') {
+  //     this.loadDropdownData()
+  //     this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
+  //     this.isTransferPopup = event.clicked
+  //     this.isMenuVisible = false;
+  //     console.log("afert")
+  //   }
+
+  // }
   listClickFromMenuList(event: any) {
+    debugger
+    console.log("EVENT->", event)
     this.showPopup = false;
     this.showSchoolPopup = false;
 
-
+    this.tableColorChange = true
     if (event.value === 'transferRequest') {
       this.loadDropdownData()
-      this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
       this.isTransferPopup = event.clicked
+      this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
+      this.isMenuVisible = false
+    } else if (event.value === 'leaveRequest') {
+      this.isLeavePopup = event.clicked
       this.isMenuVisible = false
     }
 
   }
-  transferRequestFormSubmit() {
-    this.submitted = true
-
-    if (this.transferRequestForm.valid) {
-      console.log("transfer form", this.transferRequestForm.value)
-      let formValue: any = this.transferRequestForm.value;
-      let employee: any = this.selectMenuRowData
-      let payload: any = {
-        "employeeID": employee.teacherId,
-        "toSchoolID": formValue.toSchool.schoolID,
-        "transferDate": this.dataService.formatDateToISO(formValue.date),
-        // "approvalDate": this.dataService.formatDateToISO(formValue.date),
-        // "requestedByID": null,
-        // "approvedByID": null,
-        "RequestorComment": formValue.comment,
-        "filePath": formValue.documentUrl
-      }
-      console.log(payload)
-      debugger
-
-      this.dataService.createTransferRequest(payload).subscribe({
-        next: (response: any) => {
-          console.log(response, response)
-          if (response.status == 200) {
-            this.submitted = false
-            this.isTransferPopup = false;
-            this.toastr.success('Transfer Requested !', 'Success', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
-            this.transferRequestForm.reset()
-
-          }
-
-        },
-        error: (error: any) => {
-          if (error.status === 409) {
-            this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
-            // this.isTransferPopup = false;
-          }
-
-
-        },
-        complete: () => {
-          this.transferRequestForm.reset()
-
+    // Transfer Request Submit
+    transferRequestFormSubmit() {
+      this.submitted = true
+      console.log("transferForm", this.transferRequestForm)
+  
+      if (this.transferRequestForm.valid) {
+        console.log("transfer form", this.transferRequestForm.value)
+        let formValue: any = this.transferRequestForm.value;
+        let employee: any = this.selectMenuRowData
+        let payload: any = {
+          "employeeID": employee.teacherId,
+          "toSchoolIDOne": formValue.toSchoolPriority1[0].schoolId,
+          "toSchoolIDTwo": formValue.toSchoolPriority2[0].schoolId,
+          "toSchoolIDThree": formValue.toSchoolPriority3[0].schoolId,
+          "transferDate": this.dataService.formatDateToISO(formValue.date),
+          // "approvalDate": this.dataService.formatDateToISO(formValue.date),
+          // "requestedByID": null,
+          // "approvedByID": null,
+          "RequestorComment": formValue.comment,
+          "filePath": formValue.documentUrl
         }
-      })
-    } else {
 
-      console.log("invalid form")
+        console.log("payload",payload)
+  
+  
+        this.dataService.createTransferRequest(payload).subscribe({
+          next: (response: any) => {
+            console.log(response, response)
+            if (response.status == 200) {
+              this.submitted = false
+              this.isTransferPopup = false;
+              this.tableColorChange = false;
+              this.toastr.success('Transfer Requested !', 'Success', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              this.transferRequestForm.reset()
+  
+            }
+  
+          },
+          error: (error: any) => {
+            if (error.status === 409) {
+              this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              // this.isTransferPopup = false;
+            }
+  
+  
+          },
+          complete: () => {
+            this.transferRequestForm.reset()
+            this.isTransferPopup = false;
+            this.tableColorChange = false;
+  
+          }
+        })
+      } else {
+  
+        console.log("invalid form")
+      }
+  
+  
+  
+  
+    }
+    resetTransferRequest(){
+      this.transferRequestForm.reset({
+        fromSchool:this.selectMenuRowData.schoolName,
+        toSchoolPriority1: "",
+        toSchoolPriority2: "",
+        toSchoolPriority3: "",
+        documentUrl: "",
+        date: "",
+        comment: ""
+      });
+    }
+  
+    leaveRequestFormSubmit() {
+  
+      this.submitted = true
+      console.log("leaveForm", this.leaveRequestForm)
+  
+      if (this.leaveRequestForm.valid) {
+  
+        let formValue: any = this.leaveRequestForm.value;
+        let employee: any = this.selectMenuRowData
+        let payload: any = {
+          "employeeID": employee.teacherId,
+          "fromDate": this.dataService.formatDateToISO(formValue.fromDate),
+          "toDate": this.dataService.formatDateToISO(formValue.toDate),
+          "RequestorComment": formValue.comment,
+          "DocumentID": formValue.document.documentID
+        }
+  
+  
+  
+        this.dataService.createLeaveRequest(payload).subscribe({
+          next: (response: any) => {
+            console.log(response, response)
+            if (response.status == 200) {
+              this.submitted = false
+              this.isLeavePopup = false;
+              this.tableColorChange = false;
+              this.toastr.success('Leave Requested !', 'Success', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              this.leaveRequestForm.reset()
+  
+            }
+  
+          },
+          error: (error: any) => {
+            if (error.status === 409) {
+              this.toastr.warning('Failed ! This employee has an existing incomplete request', 'Warning', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
+              // this.isTransferPopup = false;
+            }
+  
+  
+          },
+          complete: () => {
+            this.leaveRequestForm.reset()
+            this.isLeavePopup = false;
+            this.tableColorChange = false;
+  
+          }
+        })
+      } else {
+  
+        console.log("invalid form")
+      }
+  
+  
+  
     }
 
-
-
-
-  }
   closeTransferPopup() {
     this.transferRequestForm.reset()
     this.submitted = false
     this.isTransferPopup = false
     this.isMenuVisible = false
+    this.tableColorChange = false
+  }
+  closeLeavePopup() {
+    // this.leaveRequestForm.reset()
+    this.submitted = false
+    this.isLeavePopup = false
+    this.isMenuVisible = false
+    this.tableColorChange = false
   }
   overlayClick() {
     this.showPopup = false;
@@ -616,4 +764,37 @@ export class NonTeacherListComponent implements OnInit {
       this.router.navigate(['/non-teachers/add']);
     })
   }
+
+
+    // UploadFile Related funs
+    onCertificateUpload(event: any): void {
+      debugger
+      const file = event.target.files[0];
+      if (file) {
+        this.file = file;
+      }
+      this.uploadFile()
+    }
+  
+    uploadFile(): void {
+      debugger
+      if (this.file) {
+  
+        let file = this.file
+        this.dataService.uploadDocument(file).subscribe(
+          (response) => {
+            console.log('File uploaded successfully', response);
+            const educations = this.leaveRequestForm.get('document') as FormControl;
+            educations.patchValue(response)
+          },
+          (error) => {
+            console.error('Error uploading file', error);
+          }
+        );
+  
+  
+      } else {
+        console.error('No file selected');
+      }
+    }
 }

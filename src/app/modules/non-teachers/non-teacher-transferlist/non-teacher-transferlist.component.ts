@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, HostListener, NgZone } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
@@ -19,7 +20,8 @@ interface PagonationConfig {
 })
 export class NonTeacherTransferlistComponent {
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'fromSchoolName' }, { headerName: 'To School', field: 'toSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'Requested School', field: 'toSchoolOneName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -48,15 +50,35 @@ export class NonTeacherTransferlistComponent {
   schoolDropDownList: any;
   isRejectedClick: boolean = false;
   minDate: any;
+  toSchoolPr1: any;
+  toSchoolPr2: any;
+  toSchoolPr3: any;
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService,private router:Router,private ngZone:NgZone) {
+  selectedSchoolPriority1!: any
+  schoolDropdownSettings: IDropdownSettings = {
+    singleSelection: true,
+    idField: 'schoolId',
+    textField: 'schoolName',
+    selectAllText: 'Select All',
+    unSelectAllText: 'UnSelect All',
+
+    itemsShowLimit: 1,
+    allowSearchFilter: true,
+
+  };
+  schoolDropDownListFilter: any[] = [];
+  showSecondDropdown: boolean = false;
+  tableColorChange: boolean = false;
+  gridOptions: any;
+
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private router: Router, private ngZone: NgZone) {
 
 
   }
 
   ngOnInit(): void {
     this.loadtransferRequestList()
-    this.loadDropdownData()
+   
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
@@ -116,17 +138,40 @@ export class NonTeacherTransferlistComponent {
   }
 
   loadDropdownData() {
-
+    // let filterSchool:number[]=[this.selectMenuRowData.toSchoolID_One,this.selectMenuRowData.toSchoolID_Two,this.selectMenuRowData.toSchoolID_Three]
+    let filterSchool: any[] = [{ id: this.selectMenuRowData.toSchoolID_One, name: "Priority 1" },
+    { id: this.selectMenuRowData.toSchoolID_Two, name: "Priority 2" },
+    { id: this.selectMenuRowData.toSchoolID_Three, name: "Priority 3" },
+    ]
     forkJoin({
-      schools: this.dataService.getSchoolWithCity()
+      schools: this.dataService.getSchoolList()
 
     }).subscribe({
       next: (results: any) => {
-        this.schoolDropDownList = results.schools;
+        console.log("school list", results)
+        this.schoolDropDownList = results.schools.filter((school: any) =>
+          !filterSchool.some((filter) => filter.id === school.schoolId)
+        ).filter((item: any) => item.schoolId !== this.selectMenuRowData.fromSchoolID
+        )
+
+        console.log("filt", this.schoolDropDownList)
+
+        const updatedList = [];
+        filterSchool.forEach((item: any) => {
+          const school = results.schools.find((school: any) => school.schoolId == item.id);
+          if (school) {
+            updatedList.push({
+              schoolId: school.schoolId,
+              schoolName: `${school.schoolName} (${item.name})`
+            });
+          }
+        })
+        updatedList.push({ schoolId: 0, schoolName: "Choose Other school" });
+        this.schoolDropDownListFilter = updatedList;
 
 
       },
-      error: (error:any) => {
+      error: (error) => {
         console.error('Error loading dropdown data', error);
 
       },
@@ -156,13 +201,131 @@ export class NonTeacherTransferlistComponent {
 
   }
 
+  
+  onFirstDropdownChange(selectedItem: any): void {
+    if (selectedItem && selectedItem.schoolId === 0) {
+      this.showSecondDropdown = true; // Show the second dropdown
+      this.transferRequestForm.get('toSchool')?.setValue(null)
+
+    } else {
+      this.showSecondDropdown = false; // Hide the second dropdown
+      // this.transferRequestForm.get('toSchool')?.setValue(null); // Reset the second dropdown value
+    }
+  }
+
+
   loadtransferRequestList() {
 
+    // this.dataService.getNonTeacherTransferRequestData().subscribe(
+    //   (data: any) => {
+    //     debugger
+    //     this.transferList = data;
+    //     console.log("school list data", this.transferList);
+    //     this.transferTableRows = this.transferList
+    //     this.transferTableColumns = this.displayColumns.map((column) => ({
+    //       headerName: column.headerName,
+    //       valueFormatter: column.field === 'requestDate' || column.field === 'approvalDate' || column.field === 'transferDate'
+    //         ? (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
+    //         : undefined,
+    //       field: column.field,
+    //       filter: true,
+    //       floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
+    //       ... (column.field === 'employeeName' || column.field === "toSchoolName" || column.field === "fromSchoolName" ? {
+    //         cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
+    //         width: 220
+    //       } : {}),
+
+    //       ...(column.field === 'status' ?
+    //         {
+    //           cellRenderer: (params: any) => {
+    //             if (true) {
+    //               const div = document.createElement('div');
+    //               div.style.display = "flex"
+    //               div.style.justifyContent = "space-between"
+
+    //               // Create anchor element for the name
+    //               const divSub = document.createElement('div');
+    //               divSub.style.height = "100%"
+
+
+    //               const nameLink = document.createElement('a');
+    //               nameLink.style.cursor = 'pointer';
+    //               // nameLink.style.color = '#246CC1';
+
+    //               nameLink.textContent = params.value;
+    //               divSub.appendChild(nameLink)
+    //               div.appendChild(divSub);
+
+    //               // Create another anchor element for the plus button
+
+    //               if (params.value == 'Pending') {
+    //                 const plusButton = document.createElement('a');
+    //                 plusButton.style.marginLeft = '10px';
+    //                 plusButton.classList.add('menuButton')
+    //                 // plusButton.style.float = 'right';
+    //                 plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
+    //                 plusButton.addEventListener('click', (event: any) => {
+    //                   if (params.onStatusClick) {
+    //                     params.onStatusClick(event, params);
+    //                   }
+    //                 });
+    //                 div.appendChild(plusButton);
+
+    //               }else{
+    //                 const plusButton = document.createElement('a');
+    //                 plusButton.style.marginLeft = '10px';
+    //                 plusButton.classList.add('menuButton')
+    //                 // plusButton.style.float = 'right';
+    //                 plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
+    //                 plusButton.addEventListener('click', (event: any) => {
+    //                   // if (params.onStatusClick) {
+    //                   //   params.onStatusClick(event, params);
+    //                   // }
+    //                 });
+    //                 div.appendChild(plusButton);
+
+    //               }
+
+
+
+
+    //               // Append the elements to the div
+
+
+
+
+    //               return div;
+
+    //             } else {
+    //               return `<a style="cursor: pointer; " target="_blank">${params.value}</a>`
+    //             }
+    //           }
+
+
+
+    //           ,
+    //           cellRendererParams: {
+    //             onStatusClick: (event: MouseEvent, params: any) => {
+    //               this.statusMenuClick(event, params)
+    //             },
+    //           }
+    //         } : {}
+    //       )
+
+    //     }));
+
+
+
+    //   },
+    //   (error: any) => {
+    //     console.error('Error fetching school data:', error);
+    //   }
+    // );
     this.dataService.getNonTeacherTransferRequestData().subscribe(
       (data: any) => {
         debugger
         this.transferList = data;
-        console.log("school list data", this.transferList);
+
         this.transferTableRows = this.transferList
         this.transferTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -172,68 +335,106 @@ export class NonTeacherTransferlistComponent {
           field: column.field,
           filter: true,
           floatingFilter: column.field === 'employeeName', // For example, only these columns have floating filters
-          ... (column.field === 'employeeName' || column.field === "toSchoolName" || column.field === "fromSchoolName" ? {
-            cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
+          ... (column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
+            cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
             width: 220
           } : {}),
+
+          ...(column.field === "toSchoolOneName" ? {
+            cellRenderer: (params: any) => {
+              // Combine fields styled as inline-block elements
+              if (params.data.status === 'Pending' || true) {
+                const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
+                return `
+               <div style="display: block; margin: 0; padding: 0;">
+              <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
+                <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
+              </span>
+              <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
+                <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
+              </span>
+              <span style="display: block; padding: 0; margin: 0;">
+                <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
+              </span>
+            </div>
+  
+                    `;
+              } else {
+                return ''
+              }
+
+            }, autoHeight: true, width: 250, cellStyle: {
+              padding: '0px',
+            },
+          } : {}),
+
 
           ...(column.field === 'status' ?
             {
               cellRenderer: (params: any) => {
                 if (true) {
-                  const div = document.createElement('div');
-                  div.style.display = "flex"
-                  div.style.justifyContent = "space-between"
+                  let div = document.createElement('div');
+                  div.style.margin = '9px 0px'
+                  div.style.display = "flex";
+                  div.style.flexDirection = "column";
+                  div.style.alignItems = "center";
 
-                  // Create anchor element for the name
-                  const divSub = document.createElement('div');
-                  divSub.style.height = "100%"
-
-
+                  let divSub = document.createElement('div');
                   const nameLink = document.createElement('a');
                   nameLink.style.cursor = 'pointer';
-                  // nameLink.style.color = '#246CC1';
-
-                  nameLink.textContent = params.value;
-                  divSub.appendChild(nameLink)
-                  div.appendChild(divSub);
-
-                  // Create another anchor element for the plus button
 
                   if (params.value == 'Pending') {
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:black;" class="bi bi-three-dots-vertical"></i>';
-                    plusButton.addEventListener('click', (event: any) => {
-                      if (params.onStatusClick) {
-                        params.onStatusClick(event, params);
-                      }
-                    });
-                    div.appendChild(plusButton);
+                    nameLink.style.color = '#FFBE18';
+                    divSub.style.display = "flex";
+                    divSub.style.gap = "5px"
 
-                  }else{
-                    const plusButton = document.createElement('a');
-                    plusButton.style.marginLeft = '10px';
-                    plusButton.classList.add('menuButton')
-                    // plusButton.style.float = 'right';
-                    plusButton.innerHTML = '<i  style="color:grey;" class="bi bi-three-dots-vertical"></i>';
-                    plusButton.addEventListener('click', (event: any) => {
-                      // if (params.onStatusClick) {
-                      //   params.onStatusClick(event, params);
-                      // }
-                    });
-                    div.appendChild(plusButton);
+                    let approveBtn = document.createElement('button');
+                    approveBtn.classList.add('btn', 'btn-sm', 'btn-outline-success', 'status-btn');
+                    approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
+                    approveBtn.style.width = '86px';
+                    approveBtn.style.paddingRight = "10px"
+                    approveBtn.setAttribute('title', 'Approve Transfer Request')
+
+
+
+                    let rejectBtn = document.createElement('button');
+                    rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
+                    rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
+                    rejectBtn.style.width = '80px';
+                    rejectBtn.setAttribute('title', 'Reject Transfer Request')
+
+                    divSub.appendChild(approveBtn);
+                    divSub.appendChild(rejectBtn)
+
+
+                    this.ngZone.run(() => {
+                      approveBtn.addEventListener('click', (event: any) => {
+                        if (params.onApproveClick) {
+                          params.onApproveClick(event, params);
+                        }
+                      }),
+                        rejectBtn.addEventListener('click', (event: any) => {
+                          if (params.onRejectClick) {
+                            params.onRejectClick(event, params);
+                          }
+                        });
+
+                    })
+
+                    // div.appendChild(plusButton);
+
+                  } else {
+                    if (params.value === 'Rejected') {
+                      nameLink.style.color = '#FE2D53';
+                    } else {
+                      nameLink.style.color = '#31904E';
+                    }
 
                   }
 
-
-
-
-                  // Append the elements to the div
-
-
+                  nameLink.textContent = params.value;
+                  div.appendChild(nameLink)
+                  div.appendChild(divSub);
 
 
                   return div;
@@ -247,15 +448,34 @@ export class NonTeacherTransferlistComponent {
 
               ,
               cellRendererParams: {
-                onStatusClick: (event: MouseEvent, params: any) => {
-                  this.statusMenuClick(event, params)
+                onApproveClick: (event: MouseEvent, params: any) => {
+                  this.approveClick(event, params)
                 },
-              }
+                onRejectClick: (event: MouseEvent, params: any) => {
+                  this.rejectClick(event, params)
+                },
+              }, autoHeight: true, width: 250,
             } : {}
           )
 
-        }));
 
+
+        }));
+        this.gridOptions = {
+          getRowStyle: (params: any) => {
+             console.log("akshay")
+            if (params.data.status === 'Rejected') {
+              return { backgroundColor: '#F8113A08', color: 'black' };
+            } else if (params.data.status === 'Approved') {
+              return { backgroundColor: '#17F65A08', color: 'black' };
+            }
+            return null; // No styling for other statuses
+          },
+        };
+        // Add the row styling based on the status
+        console.log("ak")
+       
+        console.log("ak",this.gridOptions)
 
 
       },
@@ -263,7 +483,6 @@ export class NonTeacherTransferlistComponent {
         console.error('Error fetching school data:', error);
       }
     );
-
   }
 
 
@@ -291,6 +510,52 @@ export class NonTeacherTransferlistComponent {
   }
 
 
+  approveClick(event: any, params: any) {
+    this.selectMenuRowData = params.node.data
+    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+    this.loadDropdownData()
+    const dateControl = this.transferRequestForm.get('date');
+    this.showSecondDropdown = false;
+    this.tableColorChange = true;
+    this.isRejectedClick = false;
+
+    this.transferRequestForm.get('toSchool')?.setValidators(Validators.required)
+    this.transferRequestForm.get('date')?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.transferDate))
+    dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false), Validators.required]);
+
+    this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
+    // this.transferRequestForm.get("toSchool")?.setValue([
+    //   this.schoolDropDownList.find((item:any)=> item.schoolId ===this.selectMenuRowData.toSchoolID )
+    // ])
+    this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+    this.isTransferPopup = true;
+    this.isMenuVisible = false
+
+  }
+
+  rejectClick(event: any, params: any) {
+    this.selectMenuRowData = params.node.data
+    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
+    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
+    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+    this.loadDropdownData()
+    const dateControl = this.transferRequestForm.get('date');
+    this.showSecondDropdown = false;
+    this.tableColorChange = true;
+
+    dateControl?.clearValidators();
+    this.isRejectedClick = true;
+    this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
+    // this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
+    this.transferRequestForm.get('toSchool')?.clearValidators()
+    this.transferRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
+    this.isTransferPopup = true
+    this.isMenuVisible = false
+  }
+
+
   statusMenuClick(event: any, params: any) {
     this.isMenuVisible = true
     this.selectMenuRowData = params.node.data
@@ -307,7 +572,7 @@ export class NonTeacherTransferlistComponent {
 
     if (event.colDef.field === "employeeName") {
       let teacherId: number = rowData.employeeID
-   
+
       this.ngZone.run(() => {
         this.router.navigate(['/teachers/view-teacher', teacherId])
       })
@@ -315,7 +580,7 @@ export class NonTeacherTransferlistComponent {
     } else if (event.colDef.field === "fromSchoolName") {
       let schoolId: number = rowData.fromSchoolID
       this.router.navigate(['/schools/view', schoolId])
-    }else if (event.colDef.field === "toSchoolName") {
+    } else if (event.colDef.field === "toSchoolName") {
       let schoolId: number = rowData.toSchoolID
       this.router.navigate(['/schools/view', schoolId])
     }
@@ -326,7 +591,7 @@ export class NonTeacherTransferlistComponent {
     const dateControl = this.transferRequestForm.get('date');
     if (event.value === 'approve') {
       this.isRejectedClick = false;
-      dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false),Validators.required]);
+      dateControl?.setValidators([minAndMaxDateValidator(this.minDate, true, false), Validators.required]);
 
       this.transferRequestForm.get("fromSchool")?.setValue(this.selectMenuRowData.fromSchoolName)
       this.transferRequestForm.get("toSchool")?.setValue(this.selectMenuRowData.toSchoolName)
@@ -358,13 +623,13 @@ export class NonTeacherTransferlistComponent {
         // this.showSchoolPopup = true;
         // this.updateMousePosition(event);
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.selectedSchool = data;
             console.log("school", this.selectedSchool)
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
-          (error:any) => {
+          (error: any) => {
             console.error('Error fetching school details:', error);
           }
         );
@@ -393,7 +658,7 @@ export class NonTeacherTransferlistComponent {
     if (teacherId && teacherData) {
       this.hoverTimeout = setTimeout(() => {
         this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
-          (data:any) => {
+          (data: any) => {
             this.hoveredEmployee = data; // Store the detailed info
             if (this.hoveredEmployee && teacherId) {
               this.showPopup = true;
@@ -441,6 +706,85 @@ export class NonTeacherTransferlistComponent {
 
   }
 
+  // transferRequestFormSubmit() {
+  //   this.submitted = true
+
+  //   if (this.transferRequestForm.valid) {
+  //     console.log("transfer form", this.transferRequestForm.value)
+  //     let formValue: any = this.transferRequestForm.value;
+  //     let employee: any = this.selectMenuRowData
+  //     if (!this.isRejectedClick) {
+  //       let payload: any = {
+
+  //         "transferDate": formValue.date,
+  //         "ApproverComment": formValue.comment,
+  //         "filePath": formValue.documentUrl
+  //       }
+  //       this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+  //         next: (response: any) => {
+  //           if (response.status == 200) {
+  //             this.submitted = false
+  //             this.isTransferPopup = false;
+  //             this.toastr.success('Transfer Approved !', 'Success', {
+  //               closeButton: true,
+  //               progressBar: true,
+  //               positionClass: 'toast-top-left',
+  //               timeOut: 4500,
+  //             });
+  //             this.transferRequestForm.reset()
+  //             this.loadtransferRequestList()
+
+  //           }
+
+  //         },
+  //         error: (error: any) => {
+
+  //         },
+  //         complete: () => {
+
+
+  //         }
+  //       })
+
+  //     } else {
+  //       let payload: any = {
+  //         "ApproverComment": formValue.comment,
+  //       }
+
+  //       this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+  //         next: (response: any) => {
+  //           if (response.status == 200) {
+  //             this.submitted = false
+  //             this.isTransferPopup = false;
+  //             this.toastr.success('Transfer Rejected !', 'Success', {
+  //               closeButton: true,
+  //               progressBar: true,
+  //               positionClass: 'toast-top-left',
+  //               timeOut: 4500,
+  //             });
+  //             this.transferRequestForm.reset()
+  //             this.loadtransferRequestList()
+
+  //           }
+
+  //         },
+  //         error: (error: any) => {
+
+  //         },
+  //         complete: () => {
+
+
+  //         }
+  //       })
+
+  //     }
+
+  //   } else {
+
+  //     console.log("invalid form")
+  //   }
+  // }
+
   transferRequestFormSubmit() {
     this.submitted = true
 
@@ -448,18 +792,19 @@ export class NonTeacherTransferlistComponent {
       console.log("transfer form", this.transferRequestForm.value)
       let formValue: any = this.transferRequestForm.value;
       let employee: any = this.selectMenuRowData
-      if(!this.isRejectedClick){
+      if (!this.isRejectedClick) {
         let payload: any = {
-
+          "toSchoolIDApproved": formValue.toSchool[0].schoolId,
           "transferDate": formValue.date,
           "ApproverComment": formValue.comment,
           "filePath": formValue.documentUrl
         }
-          this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+        this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
           next: (response: any) => {
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
+              this.tableColorChange = false;
               this.toastr.success('Transfer Approved !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -468,22 +813,23 @@ export class NonTeacherTransferlistComponent {
               });
               this.transferRequestForm.reset()
               this.loadtransferRequestList()
-  
+
             }
-  
+
           },
           error: (error: any) => {
-  
+
           },
           complete: () => {
-  
-  
+            this.isTransferPopup = false;
+            this.tableColorChange = false;
+
           }
         })
 
-      }else{
+      } else {
         let payload: any = {
-           "ApproverComment": formValue.comment,
+          "ApproverComment": formValue.comment,
         }
 
         this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
@@ -491,6 +837,7 @@ export class NonTeacherTransferlistComponent {
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
+              this.tableColorChange = false;
               this.toastr.success('Transfer Rejected !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -499,31 +846,34 @@ export class NonTeacherTransferlistComponent {
               });
               this.transferRequestForm.reset()
               this.loadtransferRequestList()
-  
+
             }
-  
+
           },
           error: (error: any) => {
-  
+
           },
           complete: () => {
-  
-  
+            this.isTransferPopup = false;
+            this.tableColorChange = false;
+
           }
         })
 
       }
-    
+
     } else {
 
-      console.log("invalid form")
+      console.log("invalid form", this.transferRequestForm)
     }
   }
+ 
   closeTransferPopup() {
     this.transferRequestForm.reset()
-    this.submitted = false
-    this.isTransferPopup = false
-    this.isMenuVisible = false
+    this.submitted = false;
+    this.isTransferPopup = false;
+    this.isMenuVisible = false;
+    this.tableColorChange = false;
   }
   overlayClick() {
     this.showPopup = false;

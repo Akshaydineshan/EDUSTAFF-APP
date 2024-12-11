@@ -3,7 +3,7 @@
 
 
 
-<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup" (click)="overlayClick()">
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" [class.blur-content]="isTransferPopup || isLeavePopup" (click)="overlayClick()">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>Non Teachers List
       <span class="badge badge-secondary">{{ nonTeacherList.length }}</span>
@@ -156,12 +156,13 @@
 
     <app-table [rowData]="nonTeacherTableRows" [colDefs]="nonTeacherTableColumns" [paginationConfig]="paginationConfig"
       (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-      (onCellClickedEvent)="onCellClick($event)"></app-table>
+      (onCellClickedEvent)="onCellClick($event)" [tableColorChange]="tableColorChange" ></app-table>
 
   </div>
 
 </div>
-<div class="t-request-popup-main" *ngIf="isTransferPopup">
+<!-- <div class="t-request-popup-main" *ngIf="isTransferPopup">
+
 
   <div class="header d-flex justify-content-between">
     <p>Transfer Request- {{selectMenuRowData.name}}</p>
@@ -260,6 +261,267 @@
 
         <button class="sub-btn" (click)="transferRequestFormSubmit()"> <img class="me-2"
             src="assets/icons/tr-sub-icon.png" alt="">Submit</button>
+      </div>
+    </form>
+
+
+  </div>
+
+</div> -->
+
+<div class="request-popup-main" *ngIf="isTransferPopup">
+  <div class="head-sec">
+   <p class="head-lab">Transfer Request</p>
+
+   <div class="popup-close">
+     <img (click)="closeTransferPopup()" src="../../../../assets/icons/popup-close.png" alt="">
+   </div>
+
+ </div>
+
+ <div class="head-line"></div>
+  <div class="main-body">
+   <form [formGroup]="transferRequestForm">
+     <div class="main-sec">
+
+       <div class="left-sec">
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer From</span><span
+               class="text-danger ms-1 mad-f">*</span></label>
+           <div class="col-sm-12">
+             <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
+           </div>
+         </div>
+
+         <div class="head-line a-tf"></div>
+
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 1)</span><span
+               class="text-danger ms-1 mad-f">*</span></label>
+           <div class="col-sm-12">
+             <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+               [data]="schoolDropDownList" formControlName="toSchoolPriority1"
+               (onSelect)="onFirstDropdownChange($event)" />
+
+             <div
+               *ngIf="transferRequestForm.get('toSchoolPriority1')?.invalid && ( transferRequestForm.get('toSchoolPriority1')?.['touched']  || submitted)">
+               <small class="text-danger"
+                 *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['required']">Field
+                 is
+                 required</small>
+               <small class="text-danger"
+                 *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['pattern']">Invalid
+                 Pattern</small>
+             </div>
+
+           </div>
+         </div>
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 2)</span><span
+               class="text-danger ms-1 mad-f">*</span></label>
+           <div class="col-sm-12">
+             <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+               [data]="schoolDropDownList" formControlName="toSchoolPriority2" />
+
+             <div
+               *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
+               <small class="text-danger"
+                 *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['required']">Field
+                 is
+                 required</small>
+               <small class="text-danger"
+                 *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['pattern']">Invalid
+                 Pattern</small>
+             </div>
+           </div>
+         </div>
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 3)</span><span
+               class="text-danger ms-1 mad-f">*</span></label>
+           <div class="col-sm-12">
+             <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+               [data]="schoolDropDownList" formControlName="toSchoolPriority3" />
+
+             <div
+               *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
+               <small class="text-danger"
+                 *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['required']">Field
+                 is
+                 required</small>
+               <small class="text-danger"
+                 *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['pattern']">Invalid
+                 Pattern</small>
+             </div>
+
+           </div>
+         </div>
+
+       </div>
+
+       <div class="center-line"></div>
+
+       <div class="right-sec">
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
+               class="text-danger ms-1 mad-f">*</span></label>
+           <div class="col-sm-12">
+             <input type="date" [min]="minDate" class="form-control" formControlName="date">
+             <div
+               *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
+               <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
+                 required</small>
+               <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date
+                 .</small>
+               <small class="text-danger" *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are
+                 not
+                 allowed .</small>
+             </div>
+           </div>
+         </div>
+
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label b-label">
+             <span>Document Url</span>
+             <span class="text-danger ms-1 mad-f">*</span>
+           </label>
+           <div class="col-sm-12">
+             <!-- <input type="text" class="form-control big-inp" placeholder="Past url here" formControlName="documentUrl"> -->
+             <textarea name="" id="" class="form-control big-inp " placeholder="Paste URL here"
+               formControlName="documentUrl" rows="2" cols="3"></textarea>
+             <div
+               *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
+               <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
+                 required</small>
+               <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+                 Pattern</small>
+             </div>
+           </div>
+         </div>
+
+         <div class="row mb-1">
+           <label for="" class="col-sm-12 col-form-label b-label">
+             <span>Comment</span>
+             <span class="text-danger ms-1 mad-f"></span>
+           </label>
+           <div class="col-sm-12">
+
+             <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
+               placeholder="Write something.." formControlName="comment" rows="4" cols="3"></textarea>
+             <div
+               *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
+               <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
+                 required</small>
+               <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                 Pattern</small>
+             </div>
+           </div>
+         </div>
+
+         <div class="btn-sec">
+           <button (click)="resetTransferRequest()" class="reset">Reset</button>
+           <button (click)="transferRequestFormSubmit()" class="submit">Submit</button>
+         </div>
+
+       </div>
+     </div>
+   </form>
+   <div>
+
+   </div>
+ </div>
+</div>
+<div class="l-request-popup-main" *ngIf="isLeavePopup">
+
+  <div class="header d-flex justify-content-between">
+    <p>Leave Request-{{selectMenuRowData.name}}</p>
+    <div>
+      <a (click)="closeLeavePopup()"> <img src="assets/icons/close.jpg" alt=""></a>
+    </div>
+  </div>
+
+  <hr>
+  <div class="body">
+
+    <form action="" [formGroup]="leaveRequestForm">
+
+
+      <div class="row mb-1">
+
+        <label for="" class="col-sm-12 col-form-label"><span>Start Date</span><span
+            class="text-danger ms-1 mad-f">*</span></label>
+        <div class="col-sm-12">
+          <input type="date" [min]="minDate" class="form-control" formControlName="fromDate">
+          <div
+            *ngIf="leaveRequestForm.get('fromDate')?.invalid && (leaveRequestForm.get('fromDate')?.['dirty'] || leaveRequestForm.get('fromDate')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['invalidDate']">Invalid Date
+              .</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['minDate']">Past dates are not
+              allowed .</small>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-1">
+
+        <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
+            class="text-danger ms-1 mad-f">*</span></label>
+        <div class="col-sm-12">
+          <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
+          <div
+            *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
+              required</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['invalidDate']">Invalid Date
+              .</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['minDate']">Past dates are not
+              allowed .</small>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="row mb-3 align-items-center">
+        <label class="col-sm-12 col-form-label">Document</label>
+        <div class="col-sm-12 d-flex align-items-center">
+
+          <input #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg" style="display: none;"
+            (change)="onCertificateUpload($event)" />
+
+
+          <button type="button" class="btn btn-md btn-teal-default-border me-3" (click)="fileInput.click()">
+            <i class="bi bi-upload"></i> {{ leaveRequestForm.get('document')?.value.documentName &&
+            leaveRequestForm.get('document')?.value.documentID ? "Update" : "Upload" }}
+          </button>
+
+
+
+
+        </div>
+
+      </div>
+
+      <div class="row mb-1 ">
+        <label for="" class="col-sm-12 col-form-label"><span>Reason</span><span
+            class="text-danger ms-1 mad-f"></span></label>
+        <div class="col-sm-12">
+          <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
+            formControlName="comment">
+          <div
+            *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="btn-sec d-flex justify-content-center">
+
+        <button class="sub-btn" (click)="leaveRequestFormSubmit()"> <img class="me-2" src="assets/icons/tr-sub-icon.png"
+            alt="">Submit</button>
       </div>
     </form>
 

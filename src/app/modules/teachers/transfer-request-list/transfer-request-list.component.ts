@@ -388,6 +388,7 @@ export class TransferRequestListComponent implements OnInit {
         // Add the row styling based on the status
         this.gridOptions = {
           getRowStyle: (params: any) => {
+           
             if (params.data.status === 'Rejected') {
               return { backgroundColor: '#F8113A08', color: 'black' };
             }else if(params.data.status === 'Approved'){

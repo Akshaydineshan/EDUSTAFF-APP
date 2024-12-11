@@ -35,7 +35,7 @@
     <!-- table start -->
     <app-table [rowData]="transferTableRows" [colDefs]="transferTableColumns" [paginationConfig]="paginationConfig"
       (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-      (onCellClickedEvent)="onCellClicked($event)"></app-table>
+      (onCellClickedEvent)="onCellClicked($event)" [tableColorChange]="tableColorChange" [gridOptions]="gridOptions"></app-table>
     <!-- table end -->
 
   </div>
@@ -60,31 +60,61 @@
     <form action="" [formGroup]="transferRequestForm">
       <div class="row mb-1">
         <label for="" class="col-sm-12 col-form-label"><span>Transfer From</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
 
           <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
-          <div
-            *ngIf="transferRequestForm.get('fromSchool')?.invalid && (transferRequestForm.get('fromSchool')?.['dirty'] || transferRequestForm.get('fromSchool')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['required']"></small>
-            <small class="text-danger" *ngIf="transferRequestForm.get('fromSchool')?.errors?.['pattern']">Invalid
-              Pattern</small>
-          </div>
+
         </div>
       </div>
 
-      <div class="row mb-1">
+      <ng-container *ngIf="isRejectedClick">
+        <div class="row mb-1">
+          <label for="" class="col-sm-12 col-form-label"><span>Transfer To(Priority 1)</span><span
+              class="text-danger ms-1 mad-f">*</span></label>
+          <div class="col-sm-12">
+
+            <input type="text" class="form-control" [(ngModel)]="toSchoolPr1" [ngModelOptions]="{standalone: true}"
+              [readonly]="true">
+
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label for="" class="col-sm-12 col-form-label"><span>Transfer To(Priority 2)</span><span
+              class="text-danger ms-1 mad-f">*</span></label>
+          <div class="col-sm-12">
+
+            <input type="text" class="form-control" [(ngModel)]="toSchoolPr2" [ngModelOptions]="{standalone: true}"
+              [readonly]="true">
+
+          </div>
+        </div>
+        <div class="row mb-1">
+          <label for="" class="col-sm-12 col-form-label"><span>Transfer To(Priority 3)</span><span
+              class="text-danger ms-1 mad-f">*</span></label>
+          <div class="col-sm-12">
+
+            <input type="text" class="form-control" [(ngModel)]="toSchoolPr3" [ngModelOptions]="{standalone: true}"
+              [readonly]="true">
+
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="row mb-1" *ngIf="!showSecondDropdown && !isRejectedClick">
         <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
+          <ng-multiselect-dropdown [placeholder]="'Select Requested School'" [settings]="schoolDropdownSettings"
+            [data]="schoolDropDownListFilter" formControlName="toSchool" (onSelect)="onFirstDropdownChange($event)" />
           <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
               <option disabled>Select School</option>
               <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
               </option>
             </select> -->
-          <input type="text" class="form-control" formControlName="toSchool" [readonly]="true">
+          <!-- <input type="text" class="form-control" formControlName="toSchool" [readonly]="true"> -->
           <div
-            *ngIf="transferRequestForm.get('toSchool')?.invalid && (transferRequestForm.get('toSchool')?.['dirty'] || transferRequestForm.get('toSchool')?.['touched']  || submitted)">
+            *ngIf="transferRequestForm.get('toSchool')?.invalid && ( transferRequestForm.get('toSchool')?.['touched']  || submitted)">
             <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['required']">Field is
               required</small>
             <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['pattern']">Invalid
@@ -92,9 +122,33 @@
           </div>
         </div>
       </div>
+
+      <div class="row mb-1" *ngIf="showSecondDropdown && !isRejectedClick">
+        <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
+            class="text-danger ms-1 mad-f">*</span></label>
+        <div class="col-sm-12">
+          <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+            [data]="schoolDropDownList" formControlName="toSchool" />
+          <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
+              <option disabled>Select School</option>
+              <option *ngFor="let school of schoolDropDownList; let i=index;" [ngValue]="school">{{school.schoolName}}
+              </option>
+            </select> -->
+          <!-- <input type="text" class="form-control" formControlName="toSchool" [readonly]="true"> -->
+          <div
+            *ngIf="transferRequestForm.get('toSchool')?.invalid && ( transferRequestForm.get('toSchool')?.['touched']  || submitted)">
+            <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['required']">Field is
+              required</small>
+            <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['pattern']">Invalid
+              Pattern</small>
+          </div>
+        </div>
+      </div>
+
+
       <div class="row mb-1 ">
         <label for="" class="col-sm-12 col-form-label"><span>Document</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <input type="text" class="form-control" formControlName="documentUrl" [readonly]="true">
           <div
@@ -108,8 +162,8 @@
       </div>
 
       <div class="row mb-1" *ngIf="!isRejectedClick">
-        <label for="" class="col-sm-12 col-form-label"><span>Date</span><span
-          class="text-danger ms-1 mad-f">*</span></label>
+        <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
+            class="text-danger ms-1 mad-f">*</span></label>
         <div class="col-sm-12">
           <input type="date" [min]="minDate" class="form-control" formControlName="date">
           <div
@@ -123,6 +177,7 @@
           </div>
         </div>
       </div>
+
 
       <div class="row mb-1 ">
         <label class="col-sm-12 col-form-label">Comment (if any)</label>
@@ -153,3 +208,4 @@
   </div>
 
 </div>
+

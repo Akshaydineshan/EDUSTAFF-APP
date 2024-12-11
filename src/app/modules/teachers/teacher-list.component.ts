@@ -1026,8 +1026,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   }
   listClickFromMenuList(event: any) {
-    debugger
-    console.log("EVENT->", event)
+   
     this.showPopup = false;
     this.showSchoolPopup = false;
 
