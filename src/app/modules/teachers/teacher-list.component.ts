@@ -81,6 +81,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     idField: 'schoolId',
     textField: 'schoolName',
     selectAllText: 'Select All',
+    closeDropDownOnSelection: true,
     unSelectAllText: 'UnSelect All',
 
     itemsShowLimit: 3,
