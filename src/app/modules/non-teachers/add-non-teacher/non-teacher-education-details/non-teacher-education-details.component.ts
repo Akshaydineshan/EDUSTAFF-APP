@@ -65,7 +65,7 @@ export class NonTeacherEducationDetailsComponent {
       courseName: ['', Validators.required],
       courseNameOther: [''],
       schoolName: ['', Validators.required],
-      fromDate: ['', [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
+      fromDate: [''],
       toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
       certificate: ['']
     },
@@ -151,15 +151,34 @@ export class NonTeacherEducationDetailsComponent {
   }
 
 
-  // Triggered when education type is changed, and also when navigating back
-  onEducationTypeChange(event: any, index: number) {
-    this.educations.at(index).patchValue({ courseName: '' });
-    debugger
-    const selectedType = Number(event.educationTypeID);
-    if (selectedType) {
-      this.getCoursesByEducationType(selectedType, index);
+ 
+    // Triggered when education type is changed, and also when navigating back
+    onEducationTypeChange(event: any, index: number) {
+      this.educations.at(index).patchValue({ courseName: '' });
+      const educationGroup = this.educations.at(index) as FormGroup;
+  
+      if (educationGroup) {
+        educationGroup.get('fromDate')?.reset();
+        educationGroup.get('toDate')?.reset();
+      }
+     
+      const selectedType = Number(event.educationTypeID);
+      if (selectedType) {
+        this.getCoursesByEducationType(selectedType, index);
+      }
+      if(event.educationTypeID === 5){
+        const educationsFormArray = this.educationForm.get('educations') as FormArray;
+        const educationGroup = educationsFormArray.at(index) as FormGroup;
+        educationGroup.get('fromDate')?.clearValidators();
+        educationGroup.get('fromDate')?.updateValueAndValidity(); 
+      }else{
+        const educationsFormArray = this.educationForm.get('educations') as FormArray;
+        const educationGroup = educationsFormArray.at(index) as FormGroup;
+        educationGroup.get('fromDate')?. setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
+        educationGroup.get('fromDate')?.updateValueAndValidity(); 
+  
+      }
     }
-  }
 
   // Fetch the courses for the selected education type
   getCoursesByEducationType(educationTypeId: number, index: number): void {
@@ -186,6 +205,13 @@ export class NonTeacherEducationDetailsComponent {
     this.educations.controls.forEach((control:any, index:number) => {
       const selectedEducationType = control.get('educationType')?.value.educationTypeID;
       if (selectedEducationType) {
+        if(selectedEducationType !==5){
+          
+          control.get('fromDate')?.setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
+        }else{
+          control.get('fromDate')?.clearValidators();
+        }
+        control.get('fromDate')?.updateValueAndValidity()
         this.getCoursesByEducationType(selectedEducationType, index);
       }
     });

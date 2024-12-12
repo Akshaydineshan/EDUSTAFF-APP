@@ -68,14 +68,13 @@
         </div>
       </div>
 
-     
-      <div class="row mb-3">
+      <div class="row mb-3"  *ngIf=" course.get('educationType')?.value.educationTypeID && course.get('educationType')?.value.educationTypeID !== 5 ">
         <label for="dob" class="col-sm-3 col-form-label">From Date</label>
         <div class="col-sm-7">
-          <input type="date" class="form-control" id="fromDate" formControlName="fromDate" required  [min]="minDate" [max]="maxDate"
+          <input type="date" class="form-control" id="fromDate" formControlName="fromDate"  [min]="minDate" [max]="maxDate"
             (change)="dateChange(i)"
             [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || submitted) }">
-         
+           
           <div *ngIf="course.get('fromDate')?.invalid && (course.get('fromDate')?.touched || course.get('fromDate')?.dirty   || submitted)">
             <small class="text-danger" *ngIf="course.get('fromDate')?.errors?.['required']">
               From Date is required.
@@ -94,8 +93,8 @@
 
         </div>
       </div>
-      <div class="row mb-3">
-        <label for="dob" class="col-sm-3 col-form-label">To Date</label>
+      <div class="row mb-3" *ngIf="course.get('educationType')?.value.educationTypeID">
+        <label for="dob" class="col-sm-3 col-form-label">{{course.get('educationType')?.value.educationTypeID === 5 ? 'Passed Date' : 'To Date'}}</label>
         <div class="col-sm-7">
           <input type="date" class="form-control" id="toDate" formControlName="toDate" required  [min]="minDate" [max]="maxDate"
             (change)="dateChangeTo(i)"
@@ -122,18 +121,19 @@
         </div>
       </div>
 
-
       <!-- <div class="row mb-3">
-          <label class="col-sm-3 col-form-label">Upload Certificate</label>
-          <div class="col-sm-7 position-relative">
-            <input type="file" accept=".pdf" (change)="onCertificateUpload($event, i)" class="form-control pr-5">
-            
-         
-            <span *ngIf="course.get('certificate')?.value?.documentName || course.get('certificate')?.value?.documentID " class="pdf-icon">
-              <img [src]="'../../../../assets/icons/pdf.png'" alt="PDF Icon">
-            </span>
-          </div>
-        </div> -->
+        <label class="col-sm-3 col-form-label">Upload Certificate</label>
+        <div class="col-sm-7 position-relative">
+          <input type="file" accept=".pdf" (change)="onCertificateUpload($event, i)" class="form-control pr-5">
+          <span *ngIf="course.get('certificate')?.value?.documentName || course.get('certificate')?.value?.documentID "
+            class="pdf-icon">
+
+            <img (click)="pdfClick(course.get('certificate')?.value?.documentName)"
+              [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF Icon">
+
+          </span>
+        </div>
+      </div> -->
 
       <div class="row mb-3 align-items-center">
         <label class="col-sm-3 col-form-label">Upload Certificate</label>
@@ -166,6 +166,10 @@
           </small>
         </div>
       </div>
+
+      
+
+
       <div class="row mb-3">
         <div class="col-sm-10 offset-sm-3">
           <button type="button" class="btn btn-danger" (click)="removeCourse(i)" *ngIf="educations.length > 1">
