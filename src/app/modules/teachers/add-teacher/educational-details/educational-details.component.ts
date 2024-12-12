@@ -27,6 +27,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   profileImage: string | ArrayBuffer | null = null;
   educationValueChangesSubscription: any;
   apiBaseUrl: any=environment.imageBaseUrl
+  schoolUniversityNotification: boolean=false;
 
   constructor(
     private fb: FormBuilder,
@@ -66,7 +67,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
       courseNameOther: [''],
-      schoolName: ['', Validators.required],
+      schoolName: ['', ],
       fromDate: [''],
       toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
       certificate: ['']
@@ -172,29 +173,39 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
 
   // Triggered when education type is changed, and also when navigating back
   onEducationTypeChange(event: any, index: number) {
+    debugger
     this.educations.at(index).patchValue({ courseName: '' });
     const educationGroup = this.educations.at(index) as FormGroup;
 
     if (educationGroup) {
       educationGroup.get('fromDate')?.reset();
       educationGroup.get('toDate')?.reset();
+      educationGroup.get('schoolName')?.reset();
     }
    
     const selectedType = Number(event.educationTypeID);
     if (selectedType) {
       this.getCoursesByEducationType(selectedType, index);
+      console.log("EVT",event.educationTypeID)
     }
-    if(event.educationTypeID === 5){
+    if(event.educationTypeID !== 5){
+      this.schoolUniversityNotification=false;
+      const educationsFormArray = this.educationForm.get('educations') as FormArray;
+      const educationGroup = educationsFormArray.at(index) as FormGroup;
+      educationGroup.get('fromDate')?. setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required]);
+      educationGroup.get('schoolName')?. setValidators([Validators.required])
+      educationGroup.get('fromDate')?.updateValueAndValidity(); 
+      educationGroup.get('schoolName')?.updateValueAndValidity(); 
+     
+    }else if(event.educationTypeID === 5){
+      this.schoolUniversityNotification=true;
       const educationsFormArray = this.educationForm.get('educations') as FormArray;
       const educationGroup = educationsFormArray.at(index) as FormGroup;
       educationGroup.get('fromDate')?.clearValidators();
+      educationGroup.get('schoolName')?.clearValidators();
       educationGroup.get('fromDate')?.updateValueAndValidity(); 
-    }else{
-      const educationsFormArray = this.educationForm.get('educations') as FormArray;
-      const educationGroup = educationsFormArray.at(index) as FormGroup;
-      educationGroup.get('fromDate')?. setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
-      educationGroup.get('fromDate')?.updateValueAndValidity(); 
-
+      educationGroup.get('schoolName')?.updateValueAndValidity();
+      console.log(educationGroup)
     }
   }
 
@@ -218,18 +229,20 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
 
   // This function will be called when navigating back to ensure the courses are populated
   populateCoursesForSavedEducationTypes(): void {
-    debugger
-   
+
     this.educations.controls.forEach((control, index) => {
       const selectedEducationType = control.get('educationType')?.value.educationTypeID;
       if (selectedEducationType) {
         if(selectedEducationType !==5){
           
           control.get('fromDate')?.setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
+          control.get('schoolName')?.setValidators([Validators.required])
         }else{
           control.get('fromDate')?.clearValidators();
+          control.get('schoolName')?.clearValidators();
         }
-        control.get('fromDate')?.updateValueAndValidity()
+        control.get("schoolName")?.updateValueAndValidity()
+        control.get("fromDate")?.updateValueAndValidity()
         this.getCoursesByEducationType(selectedEducationType, index);
       }
     });

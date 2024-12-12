@@ -330,9 +330,15 @@ export class AddNonTeacherComponent {
           educationType: [this.allEducationTypes.find((item: any) => item.educationTypeID === education.educationTypeID)],
           courseName: [{ courseID: education.courseID, courseName: education.courseText }],
           courseNameOther: [education.courseName],
-          schoolName: [education.schoolName, Validators.required],
+          schoolName: [
+            education.schoolName,
+            education.educationTypeID === 5
+              ? []
+              : [Validators.required],
+          ],
+
           fromDate: [
-            education.fromDate?this.dataService.formatDateToLocal(education.fromDate):'',
+            education.fromDate ? this.dataService.formatDateToLocal(education.fromDate) : '',
             education.educationTypeID === 5
               ? []
               : [minAndMaxDateValidator('1900-01-01', true, true), Validators.required],
@@ -722,7 +728,7 @@ export class AddNonTeacherComponent {
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
       courseNameOther: [''],
-      schoolName: ['', Validators.required],
+      schoolName: ['',],
       fromDate: ['',],
       toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
       certificate: ['']

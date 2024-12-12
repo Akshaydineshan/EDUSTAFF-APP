@@ -28,6 +28,7 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
   minDate: any=new Date('1900-01-01');
 
   isUploadImage:boolean=false;
+  maxSizeExceeded: boolean=false;
 
   constructor(private fb: FormBuilder,private dataService:DataService,private teacherService:TeacherDataService) { }
 
@@ -57,19 +58,22 @@ export class PersonalDetailsComponent implements OnInit, OnChanges {
 
   onFileSelected(event: any): void {
     debugger
-    
     const file = event.target.files[0];
     if (file) {
+      const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+      if (file.size > maxSize) {
+        this.maxSizeExceeded = true; // Show the error message
+    
+        return;
+      }
+
+     
       this.file = file;
-      // const reader = new FileReader();
-      // reader.onload = () => {
-      //   this.profileImage = reader.result;
-      //   this.teacherService.setProfileImage(this.profileImage)
-      // };
-      // reader.readAsDataURL(file);
+
     }
     this.uploadFile()
   }
+
 
   uploadFile(): void {
     debugger

@@ -23,6 +23,8 @@ export class NonTeacherPersonalDetailsComponent {
   profileImage: string | ArrayBuffer | null = null;
   file!: File | null;
   apiImageBaseURL:any=environment.imageBaseUrl;
+  isUploadImage:boolean=false;
+  maxSizeExceeded: boolean=false;
 
   constructor(private fb: FormBuilder,private dataService:DataService,private teacherService:TeacherDataService) { }
 
@@ -55,19 +57,24 @@ export class NonTeacherPersonalDetailsComponent {
     debugger
     const file = event.target.files[0];
     if (file) {
+      const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+      if (file.size > maxSize) {
+        this.maxSizeExceeded = true; // Show the error message
+    
+        return;
+      }
+
+     
       this.file = file;
-      // const reader = new FileReader();
-      // reader.onload = () => {
-      //   this.profileImage = reader.result;
-      //   this.teacherService.setProfileImage(this.profileImage)
-      // };
-      // reader.readAsDataURL(file);
+
     }
     this.uploadFile()
   }
 
+ 
   uploadFile(): void {
     debugger
+    this.isUploadImage=true
     if (this.file) {
      
       let file=this.file
@@ -75,8 +82,12 @@ export class NonTeacherPersonalDetailsComponent {
         (response) => {
           console.log('File uploaded successfully', response);
           this.personalDetailsForm.get('photoId')?.setValue({photoId:response.photoID,photoImageName:response.photoImageName})
+        
+          this.isUploadImage=false
+      
         },
         (error) => {
+          this.isUploadImage=false;
           console.error('Error uploading file', error);
         }
       );
@@ -84,6 +95,7 @@ export class NonTeacherPersonalDetailsComponent {
       
     } else {
       console.error('No file selected');
+      this.isUploadImage=false
     }
   }
 
@@ -107,4 +119,6 @@ export class NonTeacherPersonalDetailsComponent {
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }
+
+
 }

@@ -389,7 +389,13 @@ export class DataService {
    
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
-    return this.http.post(this.apiUrl + 'FileUpload/AddPhoto', formData);
+    return this.http.post(this.apiUrl + 'FileUpload/AddPhoto', formData,
+      {
+        headers: new HttpHeaders({
+          'Skip-Spinner': 'true',
+        })
+      }
+    );
   }
   uploadDocument(documentFile: File): Observable<any> {
     const formData = new FormData();

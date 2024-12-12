@@ -25,6 +25,7 @@ export class NonTeacherEducationDetailsComponent {
   file: any;
   profileImage: string | ArrayBuffer | null = null;
   educationValueChangesSubscription: any;
+  schoolUniversityNotification: boolean=false;
 
   constructor(
     private fb: FormBuilder,
@@ -64,7 +65,7 @@ export class NonTeacherEducationDetailsComponent {
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
       courseNameOther: [''],
-      schoolName: ['', Validators.required],
+      schoolName: ['', ],
       fromDate: [''],
       toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
       certificate: ['']
@@ -152,33 +153,43 @@ export class NonTeacherEducationDetailsComponent {
 
 
  
-    // Triggered when education type is changed, and also when navigating back
-    onEducationTypeChange(event: any, index: number) {
-      this.educations.at(index).patchValue({ courseName: '' });
-      const educationGroup = this.educations.at(index) as FormGroup;
-  
-      if (educationGroup) {
-        educationGroup.get('fromDate')?.reset();
-        educationGroup.get('toDate')?.reset();
-      }
-     
-      const selectedType = Number(event.educationTypeID);
-      if (selectedType) {
-        this.getCoursesByEducationType(selectedType, index);
-      }
-      if(event.educationTypeID === 5){
-        const educationsFormArray = this.educationForm.get('educations') as FormArray;
-        const educationGroup = educationsFormArray.at(index) as FormGroup;
-        educationGroup.get('fromDate')?.clearValidators();
-        educationGroup.get('fromDate')?.updateValueAndValidity(); 
-      }else{
-        const educationsFormArray = this.educationForm.get('educations') as FormArray;
-        const educationGroup = educationsFormArray.at(index) as FormGroup;
-        educationGroup.get('fromDate')?. setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
-        educationGroup.get('fromDate')?.updateValueAndValidity(); 
-  
-      }
+      // Triggered when education type is changed, and also when navigating back
+  onEducationTypeChange(event: any, index: number) {
+    debugger
+    this.educations.at(index).patchValue({ courseName: '' });
+    const educationGroup = this.educations.at(index) as FormGroup;
+
+    if (educationGroup) {
+      educationGroup.get('fromDate')?.reset();
+      educationGroup.get('toDate')?.reset();
+      educationGroup.get('schoolName')?.reset();
     }
+   
+    const selectedType = Number(event.educationTypeID);
+    if (selectedType) {
+      this.getCoursesByEducationType(selectedType, index);
+      console.log("EVT",event.educationTypeID)
+    }
+    if(event.educationTypeID !== 5){
+      this.schoolUniversityNotification=false;
+      const educationsFormArray = this.educationForm.get('educations') as FormArray;
+      const educationGroup = educationsFormArray.at(index) as FormGroup;
+      educationGroup.get('fromDate')?. setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required]);
+      educationGroup.get('schoolName')?. setValidators([Validators.required])
+      educationGroup.get('fromDate')?.updateValueAndValidity(); 
+      educationGroup.get('schoolName')?.updateValueAndValidity(); 
+     
+    }else if(event.educationTypeID === 5){
+      this.schoolUniversityNotification=true;
+      const educationsFormArray = this.educationForm.get('educations') as FormArray;
+      const educationGroup = educationsFormArray.at(index) as FormGroup;
+      educationGroup.get('fromDate')?.clearValidators();
+      educationGroup.get('schoolName')?.clearValidators();
+      educationGroup.get('fromDate')?.updateValueAndValidity(); 
+      educationGroup.get('schoolName')?.updateValueAndValidity();
+      console.log(educationGroup)
+    }
+  }
 
   // Fetch the courses for the selected education type
   getCoursesByEducationType(educationTypeId: number, index: number): void {
@@ -200,21 +211,24 @@ export class NonTeacherEducationDetailsComponent {
 
   // This function will be called when navigating back to ensure the courses are populated
   populateCoursesForSavedEducationTypes(): void {
-    debugger
-    
-    this.educations.controls.forEach((control:any, index:number) => {
+
+    this.educations.controls.forEach((control, index) => {
       const selectedEducationType = control.get('educationType')?.value.educationTypeID;
       if (selectedEducationType) {
         if(selectedEducationType !==5){
           
           control.get('fromDate')?.setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
+          control.get('schoolName')?.setValidators([Validators.required])
         }else{
           control.get('fromDate')?.clearValidators();
+          control.get('schoolName')?.clearValidators();
         }
-        control.get('fromDate')?.updateValueAndValidity()
+        control.get("schoolName")?.updateValueAndValidity()
+        control.get("fromDate")?.updateValueAndValidity()
         this.getCoursesByEducationType(selectedEducationType, index);
       }
     });
+    console.log("educationsss->",this.educations)
   }
   compareCourses(course1: any, course2: any): boolean {
     debugger

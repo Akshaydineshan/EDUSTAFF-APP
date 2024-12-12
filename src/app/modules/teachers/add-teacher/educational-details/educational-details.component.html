@@ -142,7 +142,7 @@
         <label for="schoolName{{i}}" class="col-sm-3 col-form-label">School/University</label>
         <div class="col-sm-7">
           <input type="text" id="schoolName{{i}}" class="form-control" formControlName="schoolName"
-            [ngClass]="{'is-invalid': course.get('schoolName')?.invalid && (course.get('schoolName')?.touched ||submitted)}"
+            [ngClass]="{'is-invalid': course.get('schoolName')?.invalid && (course.get('schoolName')?.touched || course.get('schoolName')?.dirty ||submitted)}"
             placeholder="Enter School/University" />
           <div class="invalid-feedback"
             *ngIf="course.get('schoolName')?.invalid && course.get('schoolName')?.touched ||submitted">
@@ -150,6 +150,10 @@
               required.</small>
 
           </div>
+          <small *ngIf="course.get('educationType')?.value.educationTypeID && course.get('educationType')?.value.educationTypeID == 5 " class="text-muted">
+            <i class="bi bi-info-circle"></i> School/University is optional for your course.
+          </small>
+          
         </div>
       </div>
 
