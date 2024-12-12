@@ -20,7 +20,7 @@ export class PromotionEligiblePriorityComponent {
   isSidebarClosed = false;
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'Seniority', field: 'seniorityNumber' },{ headerName: 'name', field: 'name' }, { headerName: 'School Name', field: 'school' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Designation', field: 'designation' }, ];
+  displayColumns: any[] = [{ headerName: 'Seniority', field: 'seniorityNumber' },{ headerName: 'Name', field: 'name' }, { headerName: 'School Name', field: 'school' },{ headerName: 'Subject', field: 'subject' },{ headerName: 'Designation', field: 'designation' }, ];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
