@@ -111,6 +111,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   schoolId!: any;
   API_BASE_IMAGE: any = environment.imageBaseUrl
   minDate: any;
+  priorityOneSelectDropdown!: any[];
+  priorityTwoSelectDropdown!: any[];
+  priorityThreeSelectDropdown!: any[];
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
@@ -158,6 +161,21 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     // this.filterForm.valueChanges.subscribe(() => {
     //   this.updateSliderTrack();
     // });
+
+
+  // Update dropdowns dynamically
+  this.transferRequestForm.get('toSchoolPriority1')?.valueChanges.subscribe(() => {
+  
+    this.updateDropdowns();
+  });
+
+  this.transferRequestForm.get('toSchoolPriority2')?.valueChanges.subscribe(() => {
+    this.updateDropdowns();
+  });
+
+  this.transferRequestForm.get('toSchoolPriority3')?.valueChanges.subscribe(() => {
+    this.updateDropdowns();
+  });
 
 
 
@@ -678,6 +696,10 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         console.log("result", results)
 
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
+
+        this.priorityOneSelectDropdown=[...this.schoolDropDownList];
+        this.priorityTwoSelectDropdown=[...this.schoolDropDownList];
+        this.priorityThreeSelectDropdown=[...this.schoolDropDownList];
       },
       error: (error) => {
         console.error('Error loading dropdown data', error);
@@ -1098,6 +1120,34 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     } else {
       console.error('No file selected');
     }
+  }
+
+  updateDropdowns(): void {
+    debugger
+    const selectedPriority1 = this.transferRequestForm.get('toSchoolPriority1')?.value?.[0];
+    const selectedPriority2 = this.transferRequestForm.get('toSchoolPriority2')?.value?.[0];
+    const selectedPriority3 = this.transferRequestForm.get('toSchoolPriority3')?.value?.[0];
+ 
+    const selectedIds = [
+      selectedPriority1?.schoolId,
+      selectedPriority2?.schoolId,
+      selectedPriority3?.schoolId
+    ].filter((id) => id !== undefined); // Remove undefined values
+
+    console.log("array",selectedIds)
+  
+    // Update filtered lists dynamically
+    this.priorityOneSelectDropdown = this.schoolDropDownList.filter(
+      (school:any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority1?.schoolId
+    );
+  
+    this.priorityTwoSelectDropdown = this.schoolDropDownList.filter(
+      (school:any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority2?.schoolId
+    );
+  
+    this.priorityThreeSelectDropdown = this.schoolDropDownList.filter(
+      (school:any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority3?.schoolId
+    );
   }
 
 

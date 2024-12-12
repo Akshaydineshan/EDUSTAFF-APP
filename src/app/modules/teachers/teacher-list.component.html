@@ -394,7 +394,7 @@
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
               <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-                [data]="schoolDropDownList" formControlName="toSchoolPriority1"
+                [data]="priorityOneSelectDropdown" formControlName="toSchoolPriority1"
                 (onSelect)="onFirstDropdownChange($event)" />
 
               <div
@@ -415,7 +415,7 @@
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
               <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-                [data]="schoolDropDownList" formControlName="toSchoolPriority2" />
+                [data]="priorityTwoSelectDropdown" formControlName="toSchoolPriority2" />
 
               <div
                 *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
@@ -434,7 +434,7 @@
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
               <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
-                [data]="schoolDropDownList" formControlName="toSchoolPriority3" />
+                [data]="priorityThreeSelectDropdown" formControlName="toSchoolPriority3" />
 
               <div
                 *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
