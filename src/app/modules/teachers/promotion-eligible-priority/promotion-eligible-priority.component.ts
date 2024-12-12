@@ -155,6 +155,7 @@ export class PromotionEligiblePriorityComponent {
       },
       (error: any) => {
         console.error('Error fetching school data:', error);
+        this.tableRows=[]
       }
     );
 
