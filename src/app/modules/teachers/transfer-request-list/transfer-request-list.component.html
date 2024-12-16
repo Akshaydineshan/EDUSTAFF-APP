@@ -186,7 +186,7 @@
               <ng-multiselect-dropdown [placeholder]="'Select Requested School'" [settings]="schoolDropdownSettings"
                 [data]="schoolDropDownListFilter" formControlName="toSchool"
                 (onSelect)="onFirstDropdownChange($event)" />
-            
+
               <div
                 *ngIf="transferRequestForm.get('toSchool')?.invalid && !showSecondDropdown &&  ( transferRequestForm.get('toSchool')?.['touched']  || submitted)">
                 <small class="text-danger" *ngIf="transferRequestForm.get('toSchool')?.errors?.['required']">Field is
@@ -242,6 +242,24 @@
               </div>
             </div>
           </div>
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label">
+              <span>Document Url</span>
+              <span class="text-danger ms-1 mad-f">*</span>
+            </label>
+            <div class="col-sm-12">
+              <!-- <input type="text" class="form-control big-inp" placeholder="Past url here" formControlName="documentUrl"> -->
+              <textarea name="" id="" class="form-control big-inp " placeholder="Paste URL here"
+                formControlName="documentUrl" rows="2" cols="3"></textarea>
+              <div
+                *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
+                  required</small>
+                <small class="text-danger" *ngIf="transferRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+                  Pattern</small>
+              </div>
+            </div>
+          </div>
           <div class="row mb-1 ">
             <label class="col-sm-12 col-form-label">Comment (if any)</label>
             <div class="col-sm-12">
@@ -261,10 +279,10 @@
 
 
 
-          <div class="btn-sec ">
+          <div class="btn-sec " >
             <button class="reset" (click)="closeTransferPopup()">Cancel</button>
             <button (click)="transferRequestFormSubmit()" class="submit">{{isRejectedClick ? "Reject" :
-          "Approve"}}</button>
+              "Approve"}}</button>
           </div>
 
         </div>

@@ -64,6 +64,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
     idField: 'schoolId',
     textField: 'schoolName',
     selectAllText: 'Select All',
+    closeDropDownOnSelection: true,
     unSelectAllText: 'UnSelect All',
 
     itemsShowLimit: 1,
@@ -210,6 +211,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
   }
 
   onFirstDropdownChange(selectedItem: any): void {
+    console.log("selected ",selectedItem)
     if (selectedItem && selectedItem.schoolId === 0) {
       this.showSecondDropdown = true; // Show the second dropdown
       this.transferRequestForm.get('toSchool')?.setValue(null)
@@ -834,6 +836,8 @@ export class NonTeacherTransferlistComponent implements OnInit {
     })
   }
 
+  
+
 
 }
 
@@ -1060,16 +1064,6 @@ export class NonTeacherTransferlistComponent implements OnInit {
 //   }
 
 
-//   onFirstDropdownChange(selectedItem: any): void {
-//     if (selectedItem && selectedItem.schoolId === 0) {
-//       this.showSecondDropdown = true; // Show the second dropdown
-//       this.transferRequestForm.get('toSchool')?.setValue(null)
-
-//     } else {
-//       this.showSecondDropdown = false; // Hide the second dropdown
-//       // this.transferRequestForm.get('toSchool')?.setValue(null); // Reset the second dropdown value
-//     }
-//   }
 
 
 //   loadtransferRequestList() {

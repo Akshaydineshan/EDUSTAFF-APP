@@ -218,10 +218,12 @@ export class NonTeacherListComponent implements OnInit {
 
 
   }
-
   onFirstDropdownChange(selectedItem: any): void {
 
   }
+
+
+  
   getNonTeacherListData() {
 
     this.NonTeacherService.fetchNonTeachersData().subscribe({
