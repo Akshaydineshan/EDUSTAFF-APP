@@ -401,7 +401,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         "fromDate": this.dataService.formatDateToISO(formValue.fromDate),
         "toDate": this.dataService.formatDateToISO(formValue.toDate),
         "RequestorComment": formValue.comment,
-        "DocumentID": formValue.document.documentID
+        "DocumentID": formValue.document?.documentID
       }
 
 
@@ -1086,7 +1086,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.tableColorChange = false
   }
   closeLeavePopup() {
-    // this.leaveRequestForm.reset()
+    this.leaveRequestForm.reset()
     this.submitted = false
     this.isLeavePopup = false
     this.isMenuVisible = false
@@ -1205,7 +1205,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   get getDocument() {
     let result = '';
 
-    let image = this.leaveRequestForm.get('document')?.value.documentName;
+    let image = this.leaveRequestForm.get('document')?.value?.documentName;
     console.log("image", image)
     if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
 

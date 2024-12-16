@@ -229,7 +229,7 @@
             <label for="" class="col-sm-12 col-form-label b-label"><span>Start Date</span><span
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
-              <input type="date" [min]="minDate" class="form-control" formControlName="fromDate">
+              <input type="date" [min]="minDate" class="form-control disabled-input" formControlName="fromDate">
               <div
                 *ngIf="leaveRequestForm.get('fromDate')?.invalid && (leaveRequestForm.get('fromDate')?.['dirty'] || leaveRequestForm.get('fromDate')?.['touched']  || submitted)">
                 <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['required']">Field is
@@ -250,7 +250,7 @@
             <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
-              <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
+              <input type="date" [min]="minDate" class="form-control disabled-input" formControlName="toDate">
               <div
                 *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
                 <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
@@ -321,6 +321,26 @@
         <div class="row ">
           <label for="" class="col-sm-12 col-form-label b-label">
             <span>Reason</span>
+            <span class="text-danger ms-1 mad-f"></span>
+          </label>
+          <div class="col-sm-12">
+
+            <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp disabled-input "
+              placeholder="" formControlName="reason" rows="3" cols="3"></textarea>
+
+            <div
+              *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
+              <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is
+                required</small>
+              <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                Pattern</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row ">
+          <label for="" class="col-sm-12 col-form-label b-label">
+            <span>Comment</span>
             <span class="text-danger ms-1 mad-f"></span>
           </label>
           <div class="col-sm-12">
