@@ -113,6 +113,7 @@ export class StaffLeaveApplicationsComponent {
       fromDate: ['', [ Validators.required]],
       toDate: ['', [ Validators.required]],
       comment: [''],
+      reason: [''],
     
     })
 
@@ -545,12 +546,10 @@ export class StaffLeaveApplicationsComponent {
 
   approveClick(event: any, params: any){
     this.selectMenuRowData = params.node.data
-    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
-    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
-    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+  
     this.tableColorChange = true;
     this.leaveRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.documentpath)
-
+    this.leaveRequestForm.get("reason")?.setValue(this.selectMenuRowData.requestorComment)
     this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
     this.leaveRequestForm.get("toDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.toDate))
     this.isRejectedClick = false;
@@ -560,12 +559,10 @@ export class StaffLeaveApplicationsComponent {
 
   rejectClick(event: any, params: any){
     this.selectMenuRowData = params.node.data
-    this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
-    this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
-    this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
+
     this.tableColorChange = true;
     this.leaveRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.documentpath)
-
+    this.leaveRequestForm.get("reason")?.setValue(this.selectMenuRowData.requestorComment)
     this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
     this.leaveRequestForm.get("toDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.toDate))
     this.isRejectedClick = true;
