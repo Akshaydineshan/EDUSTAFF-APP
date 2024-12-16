@@ -52,6 +52,8 @@ export class NonTeacherListComponent implements OnInit {
   ]
   isTransferPopup: boolean = false;
   minDate: any;
+  
+  apiUrl = environment.imageBaseUrl;
 
 
   
@@ -73,6 +75,8 @@ export class NonTeacherListComponent implements OnInit {
   tableColorChange: boolean=false;
   isLeavePopup: boolean = false;
   file: any;
+  fileName: any;
+  fileSize: any;
 
   constructor(private NonTeacherService: NonTeacherService, private router: Router, private dataService: DataService, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone) { }
 
@@ -767,10 +771,39 @@ export class NonTeacherListComponent implements OnInit {
   }
 
 
+
+    onDragOver(event: any) {
+      event.preventDefault();
+    }
+  
+    
     // UploadFile Related funs
     onCertificateUpload(event: any): void {
-      debugger
+  
+      this.fileName = event.target.files[0]?.name;
+      let totalBytes = event.target.files[0]?.size;
+      if (totalBytes < 1000000) {
+        this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+      } else {
+        this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+      }
+  
       const file = event.target.files[0];
+      if (file) {
+        this.file = file;
+      }
+      this.uploadFile()
+    }
+    onCertificateUploadDragAndDrop(event: any): void {
+      this.fileName = event.dataTransfer.files[0]?.name;
+      let totalBytes =event.dataTransfer.files[0]?.size;
+      if (totalBytes < 1000000) {
+        this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+      } else {
+        this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+      }
+    
+      const file = event.dataTransfer.files[0];
       if (file) {
         this.file = file;
       }
@@ -785,8 +818,8 @@ export class NonTeacherListComponent implements OnInit {
         this.dataService.uploadDocument(file).subscribe(
           (response) => {
             console.log('File uploaded successfully', response);
-            const educations = this.leaveRequestForm.get('document') as FormControl;
-            educations.patchValue(response)
+            const document = this.leaveRequestForm.get('document') as FormControl;
+            document.patchValue(response)
           },
           (error) => {
             console.error('Error uploading file', error);
@@ -798,4 +831,60 @@ export class NonTeacherListComponent implements OnInit {
         console.error('No file selected');
       }
     }
+  
+    // From drag and drop
+    onDropSuccess(event: any) {
+      event.preventDefault();
+      console.log("file", event)
+  
+      this.onCertificateUploadDragAndDrop(event);
+  
+    }
+  
+  
+    get getDocument() {
+      let result = '';
+  
+      let image = this.leaveRequestForm.get('document')?.value.documentName;
+      console.log("image", image)
+      if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
+  
+      if (this.apiUrl && image) {
+        result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
+      }
+      console.log("result", result)
+  
+      return result;
+    }
+  
+    transform(url: string): string {
+      const fileTypeIcons: { [key: string]: string } = {
+        pdf: "../../../../assets/icons/pdf-ic.png",
+        jpg: "../../../../assets/icons/img-ic.png",
+        jpeg: "../../../../assets/icons/img-ic.png",
+        png: "../../../../assets/icons/docs-ic.png",
+        doc: "../../../../assets/icons/docs-ic.png",
+        docx: "../../../../assets/icons/docs-ic.png",
+        default: "../../../../assets/icons/docs-ic.png",
+      };
+      const extension = url.split('.').pop()?.toLowerCase() || '';
+      let result: any = fileTypeIcons[extension] || fileTypeIcons['default'];
+  
+      return result;
+    }
+    removeLeaveApplicationDocument() {
+      this.leaveRequestForm.get("document")?.setValue("")
+    }
+
+    resetLeaveRequestFormSubmit() {
+      this.leaveRequestForm.reset({
+        fromDate: "",
+        toDate: "",
+        comment: "",
+        documentUrl: "",
+        document: ""
+        // })
+      });
+    }
+  
 }

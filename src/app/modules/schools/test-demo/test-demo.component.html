@@ -1,7 +1,7 @@
 <div class="request-popup-main">
 
   <div class="head-sec">
-    <p class="head-lab">Transfer Request</p>
+    <p class="head-lab">Leave Request</p>
 
     <div class="popup-close">
       <img src="../../../../assets/icons/popup-close.png" alt="">
@@ -17,73 +17,105 @@
 
         <div class="left-sec">
           <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer From</span><span
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Start Date</span><span
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
-              <input type="text" class="form-control" formControlName="" [readonly]="true">
+              <input type="date" class="form-control" formControlName="" [readonly]="true">
             </div>
           </div>
-
-          <div class="head-line a-tf"></div>
-
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 1)</span><span
-                class="text-danger ms-1 mad-f">*</span></label>
-            <div class="col-sm-12">
-              <input type="text" class="form-select" formControlName="" [readonly]="true">
-            </div>
-          </div>
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 2)</span><span
-                class="text-danger ms-1 mad-f">*</span></label>
-            <div class="col-sm-12">
-              <input type="text" class="form-select" formControlName="" [readonly]="true">
-            </div>
-          </div>
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority 3)</span><span
-                class="text-danger ms-1 mad-f">*</span></label>
-            <div class="col-sm-12">
-              <input type="text" class="form-select" formControlName="" [readonly]="true">
-            </div>
-          </div>
-
         </div>
 
-        <div class="center-line"></div>
+
 
         <div class="right-sec">
           <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
+            <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
               <input type="date" class="form-control" formControlName="" [readonly]="true">
             </div>
           </div>
 
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label">
-              <span>Document Url</span>
-              <span class="text-danger ms-1 mad-f">*</span>
-            </label>
-            <div class="col-sm-12">
-              <input type="text" class="form-control custom-input" formControlName="" [readonly]="true"
-                placeholder="Paste URL here">
-            </div>
-          </div>
-
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label">
-              <span>Comment</span>
-              <span class="text-danger ms-1 mad-f"></span>
-            </label>
-            <div class="col-sm-12">
-              <input type="text" class="form-control custom-input" formControlName="" [readonly]="true"
-                placeholder="Write Somthing ...">
-            </div>
-          </div>
-
         </div>
+      </div>
+
+      <div>
+
+        <div class="row mb-2 mt-2">
+          <label for="" class="col-sm-12 col-form-label b-label">
+            <span>Upload Document</span>
+            <span class="text-danger ms-1 mad-f">*</span>
+          </label>
+          <div class="col-sm-12">
+            <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
+              <div class="custom-file-upload">
+                <div class="content">
+                  <i class="bi bi-cloud-upload" style="font-size: 30px;color: #000000;
+"></i>
+                  <p class="lab">Drag File To Upload</p>
+                  <p class="or">or</p>
+                  <input (change)="onChange($event)" #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg"
+                    style="display: none;">
+                  <button class="btn btn-primary" (click)="fileInput.click()">Browse
+                    File</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-2 mt-3">
+          <div class="col-sm-12">
+            <div>
+              <div class="uploaded-file">
+                <div style="display: flex; align-items: center; gap: 9px; padding:10 0px; ">
+                  <!-- <i class="bi bi-filetype-pdf" style="height:30px; font-size: 24px;"></i> -->
+                  <img src="../../../../assets/icons/pdf-ic.png" alt="" style="width:32px; height:40px;">
+
+                  <div class="r-l " style="margin-top:16px;">
+                    <p class="f-n">file.pdf</p>
+                    <p class="f-s">200kb - 100% uploaded</p>
+                  </div>
+                </div>
+
+                <div class="right">
+                  <i class="fa-regular fa-trash-can"></i>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="row ">
+          <label for="" class="col-sm-12 col-form-label b-label">
+            <span>Reason</span>
+            <span class="text-danger ms-1 mad-f"></span>
+          </label>
+          <div class="col-sm-12">
+
+            <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
+              placeholder="Write something.." formControlName="comment" rows="3" cols="3"></textarea>
+            <!-- <div
+              *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
+              <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
+                required</small>
+              <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                Pattern</small>
+            </div> -->
+          </div>
+        </div>
+
+        <div class="btn-sec">
+          <button class="reset">Reset</button>
+          <button class="submit">Submit</button>
+        </div>
+
+
+
       </div>
     </form>
     <div>

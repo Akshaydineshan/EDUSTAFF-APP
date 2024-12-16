@@ -261,111 +261,159 @@
   </div> -->
 </div>
 
-<div class="l-request-popup-main" *ngIf="isLeavePopup">
 
-  <div class="header d-flex justify-content-between">
-    <p>Leave Request-{{selectMenuRowData.name}}</p>
-    <div>
-      <a (click)="closeLeavePopup()"> <img src="assets/icons/close.jpg" alt=""></a>
+
+
+
+
+<div class="leaveRequest-popup-main" *ngIf="isLeavePopup">
+
+  <div class="head-sec">
+    <p class="head-lab">Leave Request - {{selectMenuRowData.name}}</p>
+    <div class="popup-close">
+      <img (click)="closeLeavePopup()" src="../../../../assets/icons/popup-close.png" alt="">
     </div>
   </div>
 
-  <hr>
-  <div class="body">
+  <div class="head-line"></div>
 
-    <form action="" [formGroup]="leaveRequestForm">
-
-
-      <div class="row mb-1">
-
-        <label for="" class="col-sm-12 col-form-label"><span>Start Date</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
-          <input type="date" [min]="minDate" class="form-control" formControlName="fromDate">
-          <div
-            *ngIf="leaveRequestForm.get('fromDate')?.invalid && (leaveRequestForm.get('fromDate')?.['dirty'] || leaveRequestForm.get('fromDate')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['invalidDate']">Invalid Date
-              .</small>
-            <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['minDate']">Past dates are not
-              allowed .</small>
+  <div class="main-body">
+    <form [formGroup]="leaveRequestForm">
+      <div class="main-sec">
+        <div class="left-sec">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label b-label"><span>Start Date</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="date" [min]="minDate" class="form-control" formControlName="fromDate">
+              <div
+                *ngIf="leaveRequestForm.get('fromDate')?.invalid && (leaveRequestForm.get('fromDate')?.['dirty'] || leaveRequestForm.get('fromDate')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['required']">Field is
+                  required</small>
+                <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['invalidDate']">Invalid
+                  Date
+                  .</small>
+                <small class="text-danger" *ngIf="leaveRequestForm.get('fromDate')?.errors?.['minDate']">Past dates are
+                  not
+                  allowed .</small>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row mb-1">
 
-        <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
-            class="text-danger ms-1 mad-f">*</span></label>
-        <div class="col-sm-12">
-          <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
-          <div
-            *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
-              required</small>
-            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['invalidDate']">Invalid Date
-              .</small>
-            <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['minDate']">Past dates are not
-              allowed .</small>
-          </div>
-        </div>
-      </div>
-
-
-      <div class="row mb-3 align-items-center">
-        <label class="col-sm-12 col-form-label">Document</label>
-        <div class="col-sm-12 d-flex align-items-center">
-
-          <input #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg" style="display: none;"
-            (change)="onCertificateUpload($event)" />
-
-
-          <button type="button" class="btn btn-md btn-teal-default-border me-3" (click)="fileInput.click()">
-            <i class="bi bi-upload"></i> {{ leaveRequestForm.get('document')?.value.documentName &&
-            leaveRequestForm.get('document')?.value.documentID ? "Update" : "Upload" }}
-          </button>
-
-
-
-
-        </div>
-
-      </div>
-
-      <div class="row mb-1 ">
-        <label for="" class="col-sm-12 col-form-label"><span>Reason</span><span
-            class="text-danger ms-1 mad-f"></span></label>
-        <div class="col-sm-12">
-          <input type="text" placeholder="Comment ..." class="form-control" style="height: 70px;"
-            formControlName="comment">
-          <div
-            *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
-            <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is
-              required</small>
-            <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['pattern']">Invalid
-              Pattern</small>
+        <div class="right-sec">
+          <div class="row mb-1">
+            <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
+                class="text-danger ms-1 mad-f">*</span></label>
+            <div class="col-sm-12">
+              <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
+              <div
+                *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
+                <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
+                  required</small>
+                <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['invalidDate']">Invalid Date
+                  .</small>
+                <small class="text-danger" *ngIf="leaveRequestForm.get('toDate')?.errors?.['minDate']">Past dates are
+                  not
+                  allowed .</small>
+              </div>
+            </div>
           </div>
 
         </div>
       </div>
 
-      <div class="btn-sec d-flex justify-content-center">
+      <div>
 
-        <button class="sub-btn" (click)="leaveRequestFormSubmit()"> <img class="me-2" src="assets/icons/tr-sub-icon.png"
-            alt="">Submit</button>
+        <div class="row mb-2 mt-2">
+          <label for="" class="col-sm-12 col-form-label b-label">
+            <span>Upload Document</span>
+            <span class="text-danger ms-1 mad-f">*</span>
+          </label>
+          <div class="col-sm-12">
+            <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
+              <div class="custom-file-upload">
+                <div class="content">
+                  <i class="bi bi-cloud-upload" style="font-size: 30px;color: #000000;
+"></i>
+                  <p class="lab">Drag File To Upload</p>
+                  <p class="or">or</p>
+                  <input (change)="onCertificateUpload($event)" #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg"
+                    style="display: none;">
+                  <button class="btn btn-primary" (click)="fileInput.click()">Browse
+                    File</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-2 mt-3" *ngIf="getDocument">
+          <div class="col-sm-12">
+            <div>
+              <div class="uploaded-file">
+                <div style="display: flex; align-items: center; gap: 9px; padding:0 0px; ">
+                  <!-- <i class="bi bi-filetype-pdf" style="height:30px; font-size: 24px;"></i> -->
+                  <img  [src]="transform(getDocument)" alt="" style="width:28px; height:30px;">
+
+                  <div class="r-l " style="display: flex; flex-direction: column; align-items: start; ">
+                    <p class="f-n"  style="margin:0;" >{{fileName}}</p>
+                    <p class="f-s" style="margin:0;" >{{fileSize}} - 100% uploaded</p>
+                  </div>
+                </div>
+
+                <div class="right me-3">
+                  <i  (click)="removeLeaveApplicationDocument()"  class="fa-regular fa-trash-can"></i>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+
+        <div class="row ">
+          <label for="" class="col-sm-12 col-form-label b-label">
+            <span>Reason</span>
+            <span class="text-danger ms-1 mad-f"></span>
+          </label>
+          <div class="col-sm-12">
+
+            <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
+              placeholder="Write something.." formControlName="comment" rows="3" cols="3"></textarea>
+
+            <div
+              *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
+              <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is
+                required</small>
+              <small class="text-danger" *ngIf="leaveRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                Pattern</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-sec">
+          <button class="reset" (click)="resetLeaveRequestFormSubmit()">Reset</button>
+          <button class="submit" (click)="leaveRequestFormSubmit()">Submit</button>
+        </div>
+
+
+
       </div>
     </form>
+    <div>
 
-
+    </div>
   </div>
-
 </div>
 
 
 
 <div class="request-popup-main" *ngIf="isTransferPopup">
-   <div class="head-sec">
-    <p class="head-lab">Transfer Request</p>
+  <div class="head-sec">
+    <p class="head-lab">Transfer Request - {{selectMenuRowData.name}}</p>
 
     <div class="popup-close">
       <img (click)="closeTransferPopup()" src="../../../../assets/icons/popup-close.png" alt="">
@@ -374,7 +422,7 @@
   </div>
 
   <div class="head-line"></div>
-   <div class="main-body">
+  <div class="main-body">
     <form [formGroup]="transferRequestForm">
       <div class="main-sec">
 

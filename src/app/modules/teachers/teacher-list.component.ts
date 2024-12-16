@@ -50,8 +50,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   mouseMenuX: number = 0;
   mouseMenuY: number = 0;
   menuListItems: any[] = [
-    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest',icons:'fa-solid fa-arrow-right-arrow-left' },
-    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest',icons:'bi bi-hourglass-split' }
+    { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest', icons: 'fa-solid fa-arrow-right-arrow-left' },
+    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest', icons: 'bi bi-hourglass-split' }
   ]
   isTransferPopup: boolean = false;
   isLeavePopup: boolean = false;
@@ -114,6 +114,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   priorityOneSelectDropdown!: any[];
   priorityTwoSelectDropdown!: any[];
   priorityThreeSelectDropdown!: any[];
+  fileSize: any;
+  fileName: any;
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
@@ -163,19 +165,19 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     // });
 
 
-  // Update dropdowns dynamically
-  this.transferRequestForm.get('toSchoolPriority1')?.valueChanges.subscribe(() => {
-  
-    this.updateDropdowns();
-  });
+    // Update dropdowns dynamically
+    this.transferRequestForm.get('toSchoolPriority1')?.valueChanges.subscribe(() => {
 
-  this.transferRequestForm.get('toSchoolPriority2')?.valueChanges.subscribe(() => {
-    this.updateDropdowns();
-  });
+      this.updateDropdowns();
+    });
 
-  this.transferRequestForm.get('toSchoolPriority3')?.valueChanges.subscribe(() => {
-    this.updateDropdowns();
-  });
+    this.transferRequestForm.get('toSchoolPriority2')?.valueChanges.subscribe(() => {
+      this.updateDropdowns();
+    });
+
+    this.transferRequestForm.get('toSchoolPriority3')?.valueChanges.subscribe(() => {
+      this.updateDropdowns();
+    });
 
 
 
@@ -363,15 +365,25 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   }
-  resetTransferRequest(){
+  resetTransferRequest() {
     this.transferRequestForm.reset({
-      fromSchool:this.selectMenuRowData.schoolName,
+      fromSchool: this.selectMenuRowData.schoolName,
       toSchoolPriority1: "",
       toSchoolPriority2: "",
       toSchoolPriority3: "",
       documentUrl: "",
       date: "",
       comment: ""
+    });
+  }
+  resetLeaveRequestFormSubmit() {
+    this.leaveRequestForm.reset({
+      fromDate: "",
+      toDate: "",
+      comment: "",
+      documentUrl: "",
+      document: ""
+      // })
     });
   }
 
@@ -636,7 +648,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           { field: "subject", filter: true, floatingFilter: false },
 
           { field: "experienceYear", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner' : `${params.value}`, },
-          { field: "age", filter: true, floatingFilter: false,valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` },
+          { field: "age", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` },
           {
             field: "phoneNumber", filter: true, floatingFilter: false,
             valueFormatter: (params: any) => `+91 ${params.value}`,
@@ -697,9 +709,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
 
-        this.priorityOneSelectDropdown=[...this.schoolDropDownList];
-        this.priorityTwoSelectDropdown=[...this.schoolDropDownList];
-        this.priorityThreeSelectDropdown=[...this.schoolDropDownList];
+        this.priorityOneSelectDropdown = [...this.schoolDropDownList];
+        this.priorityTwoSelectDropdown = [...this.schoolDropDownList];
+        this.priorityThreeSelectDropdown = [...this.schoolDropDownList];
       },
       error: (error) => {
         console.error('Error loading dropdown data', error);
@@ -849,7 +861,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   // Table Column Hover Retaed Funs
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-  
+
     this.selectedTeacher = null
     this.teacherId = teacherId;
     if (this.hoverTimeout) {
@@ -857,7 +869,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
     this.hoveredTeacherId = teacherId;
     if (teacherId && teacherData) {
-     
+
       this.hoverTimeout = setTimeout(() => {
         this.selectedTeacher = teacherData.teacherPopUpDTO;
         this.showPopup = true;
@@ -1048,7 +1060,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   }
   listClickFromMenuList(event: any) {
-   
+
     this.showPopup = false;
     this.showSchoolPopup = false;
 
@@ -1060,8 +1072,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
       this.isMenuVisible = false
     } else if (event.value === 'leaveRequest') {
-      this.isLeavePopup = event.clicked
       this.isMenuVisible = false
+      this.isLeavePopup = event.clicked
+
     }
 
   }
@@ -1090,10 +1103,67 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
 
 
+
+  updateDropdowns(): void {
+    debugger
+    const selectedPriority1 = this.transferRequestForm.get('toSchoolPriority1')?.value?.[0];
+    const selectedPriority2 = this.transferRequestForm.get('toSchoolPriority2')?.value?.[0];
+    const selectedPriority3 = this.transferRequestForm.get('toSchoolPriority3')?.value?.[0];
+
+    const selectedIds = [
+      selectedPriority1?.schoolId,
+      selectedPriority2?.schoolId,
+      selectedPriority3?.schoolId
+    ].filter((id) => id !== undefined); // Remove undefined values
+
+    console.log("array", selectedIds)
+
+    // Update filtered lists dynamically
+    this.priorityOneSelectDropdown = this.schoolDropDownList.filter(
+      (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority1?.schoolId
+    );
+
+    this.priorityTwoSelectDropdown = this.schoolDropDownList.filter(
+      (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority2?.schoolId
+    );
+
+    this.priorityThreeSelectDropdown = this.schoolDropDownList.filter(
+      (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority3?.schoolId
+    );
+  }
+
+  onDragOver(event: any) {
+    event.preventDefault();
+  }
+
+  
   // UploadFile Related funs
   onCertificateUpload(event: any): void {
-    debugger
+
+    this.fileName = event.target.files[0]?.name;
+    let totalBytes = event.target.files[0]?.size;
+    if (totalBytes < 1000000) {
+      this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+    } else {
+      this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+    }
+
     const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+    }
+    this.uploadFile()
+  }
+  onCertificateUploadDragAndDrop(event: any): void {
+    this.fileName = event.dataTransfer.files[0]?.name;
+    let totalBytes =event.dataTransfer.files[0]?.size;
+    if (totalBytes < 1000000) {
+      this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+    } else {
+      this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+    }
+  
+    const file = event.dataTransfer.files[0];
     if (file) {
       this.file = file;
     }
@@ -1108,8 +1178,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       this.dataService.uploadDocument(file).subscribe(
         (response) => {
           console.log('File uploaded successfully', response);
-          const educations = this.leaveRequestForm.get('document') as FormControl;
-          educations.patchValue(response)
+          const document = this.leaveRequestForm.get('document') as FormControl;
+          document.patchValue(response)
         },
         (error) => {
           console.error('Error uploading file', error);
@@ -1122,33 +1192,50 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateDropdowns(): void {
-    debugger
-    const selectedPriority1 = this.transferRequestForm.get('toSchoolPriority1')?.value?.[0];
-    const selectedPriority2 = this.transferRequestForm.get('toSchoolPriority2')?.value?.[0];
-    const selectedPriority3 = this.transferRequestForm.get('toSchoolPriority3')?.value?.[0];
- 
-    const selectedIds = [
-      selectedPriority1?.schoolId,
-      selectedPriority2?.schoolId,
-      selectedPriority3?.schoolId
-    ].filter((id) => id !== undefined); // Remove undefined values
+  // From drag and drop
+  onDropSuccess(event: any) {
+    event.preventDefault();
+    console.log("file", event)
 
-    console.log("array",selectedIds)
-  
-    // Update filtered lists dynamically
-    this.priorityOneSelectDropdown = this.schoolDropDownList.filter(
-      (school:any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority1?.schoolId
-    );
-  
-    this.priorityTwoSelectDropdown = this.schoolDropDownList.filter(
-      (school:any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority2?.schoolId
-    );
-  
-    this.priorityThreeSelectDropdown = this.schoolDropDownList.filter(
-      (school:any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority3?.schoolId
-    );
+    this.onCertificateUploadDragAndDrop(event);
+
   }
+
+
+  get getDocument() {
+    let result = '';
+
+    let image = this.leaveRequestForm.get('document')?.value.documentName;
+    console.log("image", image)
+    if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
+
+    if (this.apiUrl && image) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
+    }
+    console.log("result", result)
+
+    return result;
+  }
+
+  transform(url: string): string {
+    const fileTypeIcons: { [key: string]: string } = {
+      pdf: "../../../../assets/icons/pdf-ic.png",
+      jpg: "../../../../assets/icons/img-ic.png",
+      jpeg: "../../../../assets/icons/img-ic.png",
+      png: "../../../../assets/icons/docs-ic.png",
+      doc: "../../../../assets/icons/docs-ic.png",
+      docx: "../../../../assets/icons/docs-ic.png",
+      default: "../../../../assets/icons/docs-ic.png",
+    };
+    const extension = url.split('.').pop()?.toLowerCase() || '';
+    let result: any = fileTypeIcons[extension] || fileTypeIcons['default'];
+
+    return result;
+  }
+  removeLeaveApplicationDocument() {
+    this.leaveRequestForm.get("document")?.setValue("")
+  }
+
 
 
 }
