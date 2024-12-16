@@ -803,7 +803,7 @@ export class NonTeacherListComponent implements OnInit {
     this.tableColorChange = false
   }
   closeLeavePopup() {
-    // this.leaveRequestForm.reset()
+    this.leaveRequestForm.reset()
     this.submitted = false
     this.isLeavePopup = false
     this.isMenuVisible = false
