@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, HostListener, NgZone } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
@@ -86,6 +86,9 @@ export class LeaveRequestListComponent {
     designationList: any = [];
     schoolList: any = []
   gridOptions: any;
+  file: any;
+  fileName: any;
+  fileSize: any;
 
   constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router) {
     this.filterForm = this.fb.group({
@@ -173,6 +176,7 @@ export class LeaveRequestListComponent {
     let result = '';
 
      let image=this.leaveRequestForm.get('documentUrl')?.value;
+   
     if(this.leaveRequestForm.get('documentUrl')?.value =='No Photo assigned' || null || '') image=""
 
     if (this.apiUrl && image ) {
@@ -888,5 +892,96 @@ resetFilter() {
     this.showFilterModal = false
   })
 }
+
+onDragOver(event: any) {
+  event.preventDefault();
+}
+
+
+// UploadFile Related funs
+onCertificateUpload(event: any): void {
+
+  this.fileName = event.target.files[0]?.name;
+  let totalBytes = event.target.files[0]?.size;
+  if (totalBytes < 1000000) {
+    this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+  } else {
+    this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+  }
+
+  const file = event.target.files[0];
+  if (file) {
+    this.file = file;
+  }
+  this.uploadFile()
+}
+onCertificateUploadDragAndDrop(event: any): void {
+  this.fileName = event.dataTransfer.files[0]?.name;
+  let totalBytes =event.dataTransfer.files[0]?.size;
+  if (totalBytes < 1000000) {
+    this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+  } else {
+    this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+  }
+
+  const file = event.dataTransfer.files[0];
+  if (file) {
+    this.file = file;
+  }
+  this.uploadFile()
+}
+
+uploadFile(): void {
+  debugger
+  if (this.file) {
+
+    let file = this.file
+    this.dataService.uploadDocument(file).subscribe(
+      (response) => {
+        console.log('File uploaded successfully', response);
+        const document = this.leaveRequestForm.get('document') as FormControl;
+        document.patchValue(response)
+      },
+      (error) => {
+        console.error('Error uploading file', error);
+      }
+    );
+
+
+  } else {
+    console.error('No file selected');
+  }
+}
+
+// From drag and drop
+onDropSuccess(event: any) {
+  event.preventDefault();
+  console.log("file", event)
+
+  this.onCertificateUploadDragAndDrop(event);
+
+}
+
+
+// get getDocument() {
+//   let result = '';
+
+//   let image = this.leaveRequestForm.get('document')?.value.documentName;
+//   console.log("image", image)
+//   if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
+
+//   if (this.apiUrl && image) {
+//     result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
+//   }
+//   console.log("result", result)
+
+//   return result;
+// }
+
+
+removeLeaveApplicationDocument() {
+  this.leaveRequestForm.get("document")?.setValue("")
+}
+
 }
 
