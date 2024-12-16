@@ -62,6 +62,7 @@ export class TransferRequestListComponent implements OnInit {
     idField: 'schoolId',
     textField: 'schoolName',
     selectAllText: 'Select All',
+    closeDropDownOnSelection: true,
     unSelectAllText: 'UnSelect All',
 
     itemsShowLimit: 1,
@@ -472,6 +473,7 @@ export class TransferRequestListComponent implements OnInit {
 
   rejectClick(event: any, params: any) {
     this.selectMenuRowData = params.node.data
+    console.log("Show",this.selectMenuRowData)
     this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
     this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
     this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;

@@ -77,6 +77,9 @@ export class NonTeacherListComponent implements OnInit {
   file: any;
   fileName: any;
   fileSize: any;
+  priorityOneSelectDropdown!: any[];
+  priorityTwoSelectDropdown!: any[];
+  priorityThreeSelectDropdown!: any[];
 
   constructor(private NonTeacherService: NonTeacherService, private router: Router, private dataService: DataService, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone) { }
 
@@ -104,6 +107,20 @@ export class NonTeacherListComponent implements OnInit {
       documentUrl: ['',],
       document: ['',]
     })
+
+        // Update dropdowns dynamically
+        this.transferRequestForm.get('toSchoolPriority1')?.valueChanges.subscribe(() => {
+
+          this.updateDropdowns();
+        });
+    
+        this.transferRequestForm.get('toSchoolPriority2')?.valueChanges.subscribe(() => {
+          this.updateDropdowns();
+        });
+    
+        this.transferRequestForm.get('toSchoolPriority3')?.valueChanges.subscribe(() => {
+          this.updateDropdowns();
+        });
 
 
   }
@@ -150,6 +167,34 @@ export class NonTeacherListComponent implements OnInit {
     // if (!target.closest('.dropdown') && this.showFilterModal) {
     //   this.showFilterModal = false; 
     // }
+  }
+
+  updateDropdowns(): void {
+    debugger
+    const selectedPriority1 = this.transferRequestForm.get('toSchoolPriority1')?.value?.[0];
+    const selectedPriority2 = this.transferRequestForm.get('toSchoolPriority2')?.value?.[0];
+    const selectedPriority3 = this.transferRequestForm.get('toSchoolPriority3')?.value?.[0];
+
+    const selectedIds = [
+      selectedPriority1?.schoolId,
+      selectedPriority2?.schoolId,
+      selectedPriority3?.schoolId
+    ].filter((id) => id !== undefined); // Remove undefined values
+
+  
+
+    // Update filtered lists dynamically
+    this.priorityOneSelectDropdown = this.schoolDropDownList.filter(
+      (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority1?.schoolId
+    );
+
+    this.priorityTwoSelectDropdown = this.schoolDropDownList.filter(
+      (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority2?.schoolId
+    );
+
+    this.priorityThreeSelectDropdown = this.schoolDropDownList.filter(
+      (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority3?.schoolId
+    );
   }
 
   @HostListener('mousemove', ['$event'])
@@ -356,6 +401,9 @@ export class NonTeacherListComponent implements OnInit {
         console.log("result", results)
 
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
+        this.priorityOneSelectDropdown = [...this.schoolDropDownList];
+        this.priorityTwoSelectDropdown = [...this.schoolDropDownList];
+        this.priorityThreeSelectDropdown = [...this.schoolDropDownList];
       },
       error: (error) => {
         console.error('Error loading dropdown data', error);
@@ -459,6 +507,7 @@ export class NonTeacherListComponent implements OnInit {
 
   rowMouseHover(event: any) {
     debugger
+    this.isMenuVisible = false;
     const rowNode: any = event.node;
     const rowData = rowNode.data;
 
@@ -521,7 +570,7 @@ export class NonTeacherListComponent implements OnInit {
 
   }
   nameColumnHover(event: any) {
-
+    this.isMenuVisible = false;
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "name") {
@@ -886,5 +935,6 @@ export class NonTeacherListComponent implements OnInit {
         // })
       });
     }
+
   
 }
