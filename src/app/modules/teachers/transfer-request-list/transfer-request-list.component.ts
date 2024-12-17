@@ -23,7 +23,7 @@ export class TransferRequestListComponent implements OnInit {
 
   isSidebarClosed = false;
   // { headerName: 'Requested School', field: 'toSchoolOneName' },
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' },{ headerName: 'Requested School', field: 'toSchoolOneName' },  { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'Requested School', field: 'toSchoolOneName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;
@@ -267,7 +267,7 @@ export class TransferRequestListComponent implements OnInit {
           ...(column.field === "toSchoolOneName" ? {
             cellRenderer: (params: any) => {
               // Combine fields styled as inline-block elements
-              if (params.data.status === 'Pending' ||true) {
+              if (params.data.status === 'Pending' || true) {
                 const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
                 return `
                <div style="display: block; margin: 0; padding: 0;">
@@ -317,7 +317,7 @@ export class TransferRequestListComponent implements OnInit {
                     approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
                     approveBtn.style.width = '86px';
                     approveBtn.style.paddingRight = "10px"
-                    approveBtn.setAttribute('title','Approve Transfer Request')
+                    approveBtn.setAttribute('title', 'Approve Transfer Request')
 
 
 
@@ -325,7 +325,7 @@ export class TransferRequestListComponent implements OnInit {
                     rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
                     rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
                     rejectBtn.style.width = '80px';
-                    rejectBtn.setAttribute('title','Reject Transfer Request')
+                    rejectBtn.setAttribute('title', 'Reject Transfer Request')
 
                     divSub.appendChild(approveBtn);
                     divSub.appendChild(rejectBtn)
@@ -389,10 +389,10 @@ export class TransferRequestListComponent implements OnInit {
         // Add the row styling based on the status
         this.gridOptions = {
           getRowStyle: (params: any) => {
-           
+
             if (params.data.status === 'Rejected') {
               return { backgroundColor: '#F8113A08', color: 'black' };
-            }else if(params.data.status === 'Approved'){
+            } else if (params.data.status === 'Approved') {
               return { backgroundColor: '#17F65A08', color: 'black' };
             }
             return null; // No styling for other statuses
@@ -473,7 +473,7 @@ export class TransferRequestListComponent implements OnInit {
 
   rejectClick(event: any, params: any) {
     this.selectMenuRowData = params.node.data
-    console.log("Show",this.selectMenuRowData)
+    console.log("Show", this.selectMenuRowData)
     this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
     this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
     this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
@@ -618,86 +618,89 @@ export class TransferRequestListComponent implements OnInit {
   }
 
   transferRequestFormSubmit() {
-    this.submitted = true
-
-    if (this.transferRequestForm.valid) {
-      console.log("transfer form", this.transferRequestForm.value)
-      let formValue: any = this.transferRequestForm.value;
-      let employee: any = this.selectMenuRowData
-      if (!this.isRejectedClick) {
-        let payload: any = {
-          "toSchoolIDApproved": formValue.toSchool[0].schoolId,
-          "transferDate": formValue.date,
-          "ApproverComment": formValue.comment,
-          "filePath": formValue.documentUrl
-        }
-        this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
-          next: (response: any) => {
-            if (response.status == 200) {
-              this.submitted = false
+   
+    if (this.dataService.confirmationPopup("Are you sure you want to proceed ?")) {
+      this.submitted = true
+      if (this.transferRequestForm.valid) {
+        console.log("transfer form", this.transferRequestForm.value)
+        let formValue: any = this.transferRequestForm.value;
+        let employee: any = this.selectMenuRowData
+        if (!this.isRejectedClick) {
+          let payload: any = {
+            "toSchoolIDApproved": formValue.toSchool[0].schoolId,
+            "transferDate": formValue.date,
+            "ApproverComment": formValue.comment,
+            "filePath": formValue.documentUrl
+          }
+          this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+            next: (response: any) => {
+              if (response.status == 200) {
+                this.submitted = false
+                this.isTransferPopup = false;
+                this.tableColorChange = false;
+                this.toastr.success('Transfer Approved !', 'Success', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+                this.transferRequestForm.reset()
+                this.loadtransferRequestList()
+  
+              }
+  
+            },
+            error: (error: any) => {
+  
+            },
+            complete: () => {
               this.isTransferPopup = false;
               this.tableColorChange = false;
-              this.toastr.success('Transfer Approved !', 'Success', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.transferRequestForm.reset()
-              this.loadtransferRequestList()
-
+  
             }
-
-          },
-          error: (error: any) => {
-
-          },
-          complete: () => {
-            this.isTransferPopup = false;
-            this.tableColorChange = false;
-
+          })
+  
+        } else {
+          let payload: any = {
+            "ApproverComment": formValue.comment,
           }
-        })
-
+  
+          this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+            next: (response: any) => {
+              if (response.status == 200) {
+                this.submitted = false
+                this.isTransferPopup = false;
+                this.tableColorChange = false;
+                this.toastr.success('Transfer Rejected !', 'Success', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+                this.transferRequestForm.reset()
+                this.loadtransferRequestList()
+  
+              }
+  
+            },
+            error: (error: any) => {
+  
+            },
+            complete: () => {
+              this.isTransferPopup = false;
+              this.tableColorChange = false;
+  
+            }
+          })
+  
+        }
+  
       } else {
-        let payload: any = {
-          "ApproverComment": formValue.comment,
-        }
-
-        this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
-          next: (response: any) => {
-            if (response.status == 200) {
-              this.submitted = false
-              this.isTransferPopup = false;
-              this.tableColorChange = false;
-              this.toastr.success('Transfer Rejected !', 'Success', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.transferRequestForm.reset()
-              this.loadtransferRequestList()
-
-            }
-
-          },
-          error: (error: any) => {
-
-          },
-          complete: () => {
-            this.isTransferPopup = false;
-            this.tableColorChange = false;
-
-          }
-        })
-
+  
+        console.log("invalid form", this.transferRequestForm)
       }
-
-    } else {
-
-      console.log("invalid form", this.transferRequestForm)
     }
+
   }
 
   onCellClicked(event: any) {

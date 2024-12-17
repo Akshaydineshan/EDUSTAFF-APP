@@ -620,86 +620,88 @@ export class NonTeacherTransferlistComponent implements OnInit {
   }
 
   transferRequestFormSubmit() {
-    this.submitted = true
-
-    if (this.transferRequestForm.valid) {
-      console.log("transfer form", this.transferRequestForm.value)
-      let formValue: any = this.transferRequestForm.value;
-      let employee: any = this.selectMenuRowData
-      if (!this.isRejectedClick) {
-        let payload: any = {
-          "toSchoolIDApproved": formValue.toSchool[0].schoolId,
-          "transferDate": formValue.date,
-          "ApproverComment": formValue.comment,
-          "filePath": formValue.documentUrl
-        }
-        this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
-          next: (response: any) => {
-            if (response.status == 200) {
-              this.submitted = false
-              this.isTransferPopup = false;
-              this.tableColorChange = false;
-              this.toastr.success('Transfer Approved !', 'Success', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.transferRequestForm.reset()
-              this.loadtransferRequestList()
-
-            }
-
-          },
-          error: (error: any) => {
-
-          },
-          complete: () => {
-            this.isTransferPopup = false;
-            this.tableColorChange = false;
-
-          }
-        })
-
-      } else {
-        let payload: any = {
-          "ApproverComment": formValue.comment,
-        }
-
-        this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
-          next: (response: any) => {
-            if (response.status == 200) {
-              this.submitted = false
-              this.isTransferPopup = false;
-              this.tableColorChange = false;
-              this.toastr.success('Transfer Rejected !', 'Success', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.transferRequestForm.reset()
-              this.loadtransferRequestList()
-
-            }
-
-          },
-          error: (error: any) => {
-
-          },
-          complete: () => {
-            this.isTransferPopup = false;
-            this.tableColorChange = false;
-
-          }
-        })
-
-      }
-
-    } else {
-
-      console.log("invalid form", this.transferRequestForm)
+    if (this.dataService.confirmationPopup("Are you sure you want to proceed ?")) {
+      this.submitted = true
+      if (this.transferRequestForm.valid) {
+           console.log("transfer form", this.transferRequestForm.value)
+           let formValue: any = this.transferRequestForm.value;
+           let employee: any = this.selectMenuRowData
+           if (!this.isRejectedClick) {
+             let payload: any = {
+               "toSchoolIDApproved": formValue.toSchool[0].schoolId,
+               "transferDate": formValue.date,
+               "ApproverComment": formValue.comment,
+               "filePath": formValue.documentUrl
+             }
+             this.dataService.approveTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+               next: (response: any) => {
+                 if (response.status == 200) {
+                   this.submitted = false
+                   this.isTransferPopup = false;
+                   this.tableColorChange = false;
+                   this.toastr.success('Transfer Approved !', 'Success', {
+                     closeButton: true,
+                     progressBar: true,
+                     positionClass: 'toast-top-left',
+                     timeOut: 4500,
+                   });
+                   this.transferRequestForm.reset()
+                   this.loadtransferRequestList()
+     
+                 }
+     
+               },
+               error: (error: any) => {
+     
+               },
+               complete: () => {
+                 this.isTransferPopup = false;
+                 this.tableColorChange = false;
+     
+               }
+             })
+     
+           } else {
+             let payload: any = {
+               "ApproverComment": formValue.comment,
+             }
+     
+             this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
+               next: (response: any) => {
+                 if (response.status == 200) {
+                   this.submitted = false
+                   this.isTransferPopup = false;
+                   this.tableColorChange = false;
+                   this.toastr.success('Transfer Rejected !', 'Success', {
+                     closeButton: true,
+                     progressBar: true,
+                     positionClass: 'toast-top-left',
+                     timeOut: 4500,
+                   });
+                   this.transferRequestForm.reset()
+                   this.loadtransferRequestList()
+     
+                 }
+     
+               },
+               error: (error: any) => {
+     
+               },
+               complete: () => {
+                 this.isTransferPopup = false;
+                 this.tableColorChange = false;
+     
+               }
+             })
+     
+           }
+     
+         } else {
+     
+           console.log("invalid form", this.transferRequestForm)
+         }
     }
+
   }
 
   onCellClicked(event: any) {

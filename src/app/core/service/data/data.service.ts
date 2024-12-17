@@ -84,7 +84,7 @@ export class DataService {
   private fetchLeaveRequestData(): Observable<any[]> {
     debugger
     return this.http.get<any[]>(this.apiUrl + 'LeaveRequest/GetAllTeacherLeaveRequests', { headers: { accept: '*/*' } }).pipe(
-     
+
       catchError((error) => {
         console.error('Error fetching teachers data:', error);
         return throwError(error);
@@ -101,7 +101,7 @@ export class DataService {
   private fetchStaffLeaveRequestData(): Observable<any[]> {
     debugger
     return this.http.get<any[]>(this.apiUrl + 'LeaveRequest/GetAllNonTeacherLeaveRequests', { headers: { accept: '*/*' } }).pipe(
-     
+
       catchError((error) => {
         console.error('Error fetching teachers data:', error);
         return throwError(error);
@@ -116,7 +116,7 @@ export class DataService {
     // return this.teachersDataCache.asObservable();
   }
 
-  
+
   // Promotion/GetAllTeacherPromotionRequests
   getPromotionRequestData(): Observable<any[]> {
     debugger
@@ -174,11 +174,11 @@ export class DataService {
     );
   }
 
-  
-   getTableListData(url:string): Observable<any[]> {
+
+  getTableListData(url: string): Observable<any[]> {
     debugger
     return this.http.get<any[]>(this.apiUrl + url, { headers: { accept: '*/*' } }).pipe(
-     
+
       catchError((error) => {
         console.error('Error fetching teachers data:', error);
         return throwError(error);
@@ -187,7 +187,7 @@ export class DataService {
   }
   getPromotionEligiblePriorityListData(data: any): Observable<any[]> {
     let params = new HttpParams();
-  
+
     // Append parameters only if data exists
     if (data) {
       if (data.designationId) {
@@ -197,7 +197,7 @@ export class DataService {
         params = params.append('subjectId', data.subjectId);
       }
     }
-  
+
     // Make the HTTP POST request with an empty body
     return this.http.get<any[]>(`${this.apiUrl}Promotion/promotion-list`, {
       params,
@@ -209,7 +209,7 @@ export class DataService {
       })
     );
   }
-  
+
 
 
   getTeachersData(): Observable<any[]> {
@@ -218,6 +218,15 @@ export class DataService {
     return this.fetchTeachersData();
     // }
     // return this.teachersDataCache.asObservable();
+  }
+
+
+  confirmationPopup(message: any) {
+    if (window.confirm(message)) {
+     return true
+    }else{
+      return false
+    }
   }
 
   private fetchTeachersData(): Observable<any[]> {
@@ -303,29 +312,29 @@ export class DataService {
     }
   }
 
-  filterInTeacherList(url:any,filters: any): any {
+  filterInTeacherList(url: any, filters: any): any {
     debugger
 
     let params = new HttpParams();
-      // Iterate over the filter keys dynamically
-  for (const key in filters) {
-    if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
-      // Append only non-empty values to HttpParams
-     
-      if(['uniqueID'].includes(key)){
-        params = params.append(key, filters[key].trim());
-      }else{
-        params = params.append(key, filters[key]);
+    // Iterate over the filter keys dynamically
+    for (const key in filters) {
+      if (filters[key] !== null && filters[key] !== undefined && filters[key] !== '') {
+        // Append only non-empty values to HttpParams
+
+        if (['uniqueID'].includes(key)) {
+          params = params.append(key, filters[key].trim());
+        } else {
+          params = params.append(key, filters[key]);
+        }
       }
     }
-  }
-   
+
     // if (filters.schoolName) params = params.append('schoolName', filters.schoolName);
     // if (filters.designation) params = params.append('designation', filters.designation );
     // if (filters.uniqueID) params = params.append('uniqueId', filters.uniqueID?.trim());
     // if (filters.fromPromotionDate) params = params.append('fromPromotionDate', filters.fromPromotionDate);
     // if (filters.toPromotionDate) params = params.append('toPromotionDate', filters.toPromotionDate);
-    console.log("params",params)
+    console.log("params", params)
 
     if (params) {
       return filters ? this.http.get<any[]>(`${this.apiUrl}${url}`, { params }).pipe(
@@ -386,7 +395,7 @@ export class DataService {
     return this.http.put(this.apiUrl + `Promotion/RejectPromotionRequest/${id}`, data);
   }
   uploadProfilePhoto(photoFile: File): Observable<any> {
-   
+
     const formData = new FormData();
     formData.append('PhotoFile', photoFile);
     return this.http.post(this.apiUrl + 'FileUpload/AddPhoto', formData,
