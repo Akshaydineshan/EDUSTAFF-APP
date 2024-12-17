@@ -270,17 +270,17 @@ export class TransferRequestListComponent implements OnInit {
               if (params.data.status === 'Pending' || true) {
                 const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
                 return `
-               <div style="display: block; margin: 0; padding: 0;">
-              <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
-                <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
-              </span>
-              <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
-                <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
-              </span>
-              <span style="display: block; padding: 0; margin: 0;">
-                <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
-              </span>
-            </div>
+               <div style="display: block; margin: 0; padding: 0; padding-left: 10px; width: 100%;">
+  <span style="display: block; border-bottom: 1px solid #b8b1b1; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+    <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
+  </span>
+  <span style="display: block; border-bottom: 1px solid #b8b1b1; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+    <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
+  </span>
+  <span style="display: block; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+    <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
+  </span>
+</div>
   
                     `;
               } else {
@@ -618,7 +618,7 @@ export class TransferRequestListComponent implements OnInit {
   }
 
   transferRequestFormSubmit() {
-   
+
     if (this.dataService.confirmationPopup("Are you sure you want to proceed ?")) {
       this.submitted = true
       if (this.transferRequestForm.valid) {
@@ -646,25 +646,25 @@ export class TransferRequestListComponent implements OnInit {
                 });
                 this.transferRequestForm.reset()
                 this.loadtransferRequestList()
-  
+
               }
-  
+
             },
             error: (error: any) => {
-  
+
             },
             complete: () => {
               this.isTransferPopup = false;
               this.tableColorChange = false;
-  
+
             }
           })
-  
+
         } else {
           let payload: any = {
             "ApproverComment": formValue.comment,
           }
-  
+
           this.dataService.rejectTransferRequest(payload, this.selectMenuRowData.transferRequestID).subscribe({
             next: (response: any) => {
               if (response.status == 200) {
@@ -679,24 +679,24 @@ export class TransferRequestListComponent implements OnInit {
                 });
                 this.transferRequestForm.reset()
                 this.loadtransferRequestList()
-  
+
               }
-  
+
             },
             error: (error: any) => {
-  
+
             },
             complete: () => {
               this.isTransferPopup = false;
               this.tableColorChange = false;
-  
+
             }
           })
-  
+
         }
-  
+
       } else {
-  
+
         console.log("invalid form", this.transferRequestForm)
       }
     }

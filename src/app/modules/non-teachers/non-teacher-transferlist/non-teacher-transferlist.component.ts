@@ -273,17 +273,17 @@ export class NonTeacherTransferlistComponent implements OnInit {
               if (params.data.status === 'Pending' || true) {
                 const { toSchoolOneName, toSchoolTwoName, toSchoolThreeName } = params.data;
                 return `
-               <div style="display: block; margin: 0; padding: 0;">
-              <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;" >
-                <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
-              </span>
-              <span style="display: block; border-bottom: 1px solid  #b8b1b1; padding: 0; margin: 0;">
-                <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
-              </span>
-              <span style="display: block; padding: 0; margin: 0;">
-                <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
-              </span>
-            </div>
+                      <div style="display: block; margin: 0; padding: 0; padding-left: 10px; width: 100%;">
+  <span style="display: block; border-bottom: 1px solid #b8b1b1; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+    <span style="margin-right: 5px;">1)</span>${toSchoolOneName}
+  </span>
+  <span style="display: block; border-bottom: 1px solid #b8b1b1; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+    <span style="margin-right: 5px;">2)</span>${toSchoolTwoName}
+  </span>
+  <span style="display: block; padding: 0; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+    <span style="margin-right: 5px;">3)</span>${toSchoolThreeName}
+  </span>
+</div>
   
                     `;
               } else {
