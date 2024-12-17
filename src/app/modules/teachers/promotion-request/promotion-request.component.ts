@@ -505,6 +505,7 @@ export class PromotionRequestComponent {
     this.isRejectedClick = true;
     this.promotionRequestForm.get('promotionDate')?.clearValidators();
     this.promotionRequestForm.get('toSchool')?.clearValidators()
+    this.promotionRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.filePath)
     this.isPromotionPopup = true
     this.isMenuVisible = false
     
