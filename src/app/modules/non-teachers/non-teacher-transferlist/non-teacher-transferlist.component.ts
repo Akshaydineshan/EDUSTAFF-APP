@@ -198,7 +198,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
             });
           }
         })
-        updatedList.push({ schoolId: 0, schoolName: "Choose Other school" });
+        updatedList.push({ schoolId: 0, schoolName: "Select New School" });
         this.schoolDropDownListFilter = updatedList;
 
 

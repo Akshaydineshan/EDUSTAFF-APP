@@ -178,7 +178,7 @@
           </ng-container>
 
           <div class="row mb-1" *ngIf=" !isRejectedClick">
-            <label for="" class="col-sm-12 col-form-label"><span>Transfer To </span><span
+            <label for="" class="col-sm-12 col-form-label"><span>Transfer To  </span><span
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
               <ng-multiselect-dropdown [placeholder]="'Select Requested School'" [settings]="schoolDropdownSettings"
@@ -196,10 +196,10 @@
           </div>
 
           <div class="row mb-1" *ngIf="showSecondDropdown && !isRejectedClick">
-            <label for="" class="col-sm-12 col-form-label"><span>Transfer To</span><span
+            <label for="" class="col-sm-12 col-form-label"><span>Transfer To (Assign New School)</span><span
                 class="text-danger ms-1 mad-f">*</span></label>
             <div class="col-sm-12">
-              <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+              <ng-multiselect-dropdown [placeholder]="'Select New School'" [settings]="schoolDropdownSettings"
                 [data]="schoolDropDownList" formControlName="toSchool" />
               <!-- <select class="form-control" placeholder="select" formControlName="toSchool">
                   <option disabled>Select School</option>
