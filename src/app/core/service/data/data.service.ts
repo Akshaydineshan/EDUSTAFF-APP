@@ -418,6 +418,7 @@ export class DataService {
   
     formData.append('DocumentName', documentType)
     formData.append('DocumentFile', documentFile);
+   
     return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
   }
 
