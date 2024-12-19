@@ -413,6 +413,14 @@ export class DataService {
     formData.append('DocumentFile', documentFile);
     return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
   }
+  uploadDocumentByDocumentType(documentFile: File,documentType:any): Observable<any> {
+    const formData = new FormData();
+  
+    formData.append('DocumentName', documentType)
+    formData.append('DocumentFile', documentFile);
+    return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
+  }
+
 
   addTeacher(teachersData: any): Observable<any> {
     return this.http.post(this.apiUrl + 'Teacher/AddEmployee', teachersData).pipe(

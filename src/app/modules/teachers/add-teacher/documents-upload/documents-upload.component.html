@@ -1,1 +1,180 @@
-<p>documents-upload works!</p>
+<div [formGroup]="documentForm">
+  <div formArrayName="documents">
+    <div *ngFor="let document of documents.controls; let i = index" [formGroupName]="i" class="document-entry">
+
+      <div class="row g-0">
+        <label for="" class="col-sm-10 col-form-label b-label ">
+          <span>Document Type</span>
+          <span class="text-danger ms-1 mad-f">*</span>
+        </label>
+
+        <div class="col-sm-6">
+          <input formControlName="documentType" placeholder="Enter document type" class="form-control" />
+        </div>
+        <div
+          *ngIf="document.get('documentType')?.invalid && !showValidations[i] && (document.get('documentType')?.touched || submitted)">
+          <small class="text-danger" *ngIf="document.get('documentType')?.errors?.['required']">
+            Document Type is required.
+          </small>
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-2">
+          <button 
+          type="button" 
+          class="btn btn-danger btn-sm d-flex align-items-center gap-1" 
+          (click)="removeDocument(i)" *ngIf="documents.length > 1"
+         
+          aria-label="Remove document" 
+          data-bs-toggle="tooltip" 
+          title="Remove this document">
+          <i class="bi bi-x-circle"></i>
+         
+        </button>
+        </div>
+
+        <!-- Validation message for missing document type -->
+        <small class="text-danger" *ngIf="showValidations[i] && !document.get('documentType')?.value">
+          Please enter the document type before uploading the file .
+        </small>
+      </div>
+
+      <div class="row mb-2 mt-2">
+        <label for="" class="col-sm-12 col-form-label b-label">
+          <span>Upload Document</span>
+          <span class="text-danger ms-1 mad-f">*</span>
+        </label>
+        <div class="col-sm-10">
+          <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event, i)" class="drag-drop-main">
+            <div class="custom-file-upload">
+              <div class="content">
+                <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
+                <p class="lab">Drag File To Upload</p>
+                <p class="or">or</p>
+                <input (change)="onCertificateUploadChange($event, i)" #fileInput type="file"
+                  accept=".pdf,.docx,.jpeg,.jpg" style="display: none;">
+                <button class="btn btn-primary" (click)="fileInput.click()">Browse File</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2 mt-3" *ngIf="getDocument(i)">
+        <div class="col-sm-10">
+          <div class="uploaded-file">
+            <div style="display: flex; align-items: center; gap: 9px; padding: 0 0px;">
+              <img [src]="transform(getDocument(i))" alt="" style="width:28px; height:30px;">
+              <div class="r-l" style="display: flex; flex-direction: column; align-items: start;">
+                <p class="f-n" style="margin: 0;">{{ getTruncatedFileName(fileName[i], 25) }}</p>
+                <p class="f-s" *ngIf="fileSize[i]" style="margin: 0;">{{ fileSize[i] }} - 100% uploaded</p>
+              </div>
+            </div>
+            <div class="right me-3">
+              <i (click)="removeLeaveApplicationDocument(i)" class="fa-regular fa-trash-can"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+      <!-- <div class="row">
+        <div class="add col-sm-10 ">
+          <div class="d-flex justify-content-between">
+           
+            <button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center py-1 px-2"
+              (click)="removeDocument(i)" *ngIf="documents.length > 1">
+              <i class="bi bi-trash me-1"></i> Remove
+            </button>
+          </div>
+
+        </div>
+      </div> -->
+
+      <hr>
+
+
+
+
+
+
+
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-md-10 d-flex justify-content-end">
+
+
+        <button type="button"
+          class="btn btn-primary btn-sm d-flex align-items-center justify-content-center py-1 px-2"
+          (click)="addDocument()">
+          <i class="bi bi-plus-circle me-1"></i> Add
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!-- 
+<div>
+    
+    <div class="row mb-2 mt-2">
+        <label for="" class="col-sm-12 col-form-label b-label">
+          <span>Upload Document</span>
+          <span class="text-danger ms-1 mad-f">*</span>
+        </label>
+        <div class="col-sm-12">
+          <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
+            <div class="custom-file-upload">
+              <div class="content">
+                <i class="bi bi-cloud-upload" style="font-size: 30px;color: #000000;
+"></i>
+                <p class="lab">Drag File To Upload</p>
+                <p class="or">or</p>
+                <input (change)="onCertificateUpload($event)" #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg"
+                  style="display: none;">
+                <button class="btn btn-primary" (click)="fileInput.click()">Browse
+                  File</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-2 mt-3" *ngIf="getDocument">
+        <div class="col-sm-12">
+          <div>
+            <div class="uploaded-file">
+              <div style="display: flex; align-items: center; gap: 9px; padding:0 0px; ">
+              
+                <img  [src]="transform(getDocument)" alt="" style="width:28px; height:30px;">
+
+                <div class="r-l " style="display: flex; flex-direction: column; align-items: start; ">
+                  <p class="f-n"  style="margin:0;" >{{fileName}}</p>
+                  <p class="f-s" style="margin:0;" >{{fileSize}} - 100% uploaded</p>
+                </div>
+              </div>
+
+              <div class="right me-3">
+                <i  (click)="removeLeaveApplicationDocument()"  class="fa-regular fa-trash-can"></i>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+</div> -->

@@ -47,6 +47,7 @@
       <app-personal-details [(personalDetailsForm)]="personalDetailsForm!" [religions]="religions"
         [casteCategories]="casteCategories" [bloodGroups]="bloodGroups" [genders]="genders"
         [maritalStatuses]="maritalStatuses" [submitted]="submitBtnStatus.personal"></app-personal-details>
+ 
     </div>
 
     <div *ngIf="currentStep === 2" class="step-page">
@@ -62,11 +63,16 @@
         [approvalTypes]="approvalTypes" [submitted]="submitBtnStatus.professional" [isEdited]="isEdited">
       </app-professional-details>
     </div>
+    <div *ngIf="currentStep === 4 "  class="step-page">
+      <app-documents-upload [(documentForm)]="documentForm" [submitted]="submitBtnStatus.documents"></app-documents-upload>
+    </div>
 
-    <div *ngIf="currentStep === 4 || currentStep === 5" class="step-page-summary">
+    <div *ngIf="currentStep === 5 || currentStep === 6" class="step-page-summary">
       <app-teacher-details [showTopbarAndSidebar]="false" [fullFormData]="fullFormData"
         (EditBtnClickPreview)="editBtnClickFromPreview()"></app-teacher-details>
     </div>
+
+    
 
 
     <div class="row mt-4">

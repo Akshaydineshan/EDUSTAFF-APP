@@ -357,7 +357,7 @@
                   <img  [src]="transform(getDocument)" alt="" style="width:28px; height:30px;">
 
                   <div class="r-l " style="display: flex; flex-direction: column; align-items: start; ">
-                    <p class="f-n"  style="margin:0;" >{{fileName}}</p>
+                 <p class="f-n" style="margin: 0;"   >{{ getTruncatedFileName(fileName, 25) }}</p>
                     <p class="f-s" style="margin:0;" >{{fileSize}} - 100% uploaded</p>
                   </div>
                 </div>

@@ -8,7 +8,10 @@ import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator, minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
 interface SubmitBtnStatus {
-  personal: boolean, education: boolean, professional: boolean
+  personal: boolean;
+  education: boolean;
+  professional: boolean;
+  documents: boolean;
 }
 
 @Component({
@@ -19,12 +22,13 @@ interface SubmitBtnStatus {
 export class AddTeacherComponent implements OnInit {
   isSidebarClosed = false;
   currentStep = 1;
-  steps = ['Personal Details', 'Educational Details', 'Professional Details', 'Preview & Submit'];
+  steps = ['Personal Details', 'Educational Details', 'Professional Details', 'Upload Documents', 'Preview & Submit'];
   teacherRegister: boolean = true;
   personalDetailsForm!: FormGroup;
   educationForm!: FormGroup;
   professionalForm!: FormGroup;
   detailViewForm!: FormGroup;
+  documentForm!: FormGroup;
   subjects!: any[];
   statuses!: any[];
   schools!: any[];
@@ -49,7 +53,7 @@ export class AddTeacherComponent implements OnInit {
   isEdited: boolean = false;
   employee: any;
   employeeId: any
-  submitBtnStatus: SubmitBtnStatus = { personal: false, education: false, professional: false }
+  submitBtnStatus: SubmitBtnStatus = { personal: false, education: false, professional: false, documents: false }
 
   constructor(
     private fb: FormBuilder,
@@ -122,6 +126,10 @@ export class AddTeacherComponent implements OnInit {
       educations: this.fb.array([]) // Initialize as empty array
 
     });
+    this.documentForm = this.fb.group({
+      documents: this.fb.array([])
+    })
+
 
     // this function invoke when change married field 
     this.onMaritalStatusChange()
@@ -188,6 +196,7 @@ export class AddTeacherComponent implements OnInit {
     this.patchPersonalFormData()
     this.patchEducationFormData()
     this.patchExpForm();
+    this.patchDocumentsFormData()
 
   }
 
@@ -348,6 +357,32 @@ export class AddTeacherComponent implements OnInit {
     //     documentID: [education.documentID, Validators.required]
     //   }));
     // });
+
+  }
+  patchDocumentsFormData() {
+    debugger
+
+    debugger
+    const documentData = this.employee.getEmployeeDocuments;
+ 
+
+    this.documentForm.setControl('documents', this.fb.array(
+      documentData.map((doc: any) => this.fb.group({
+
+        documentType: doc.documentName,
+        documentFile:{documentID:doc.documentID,documentName:doc.documentpath}
+
+      }
+      ))
+    ));
+    // this.educationForm = { ...this.educationForm };
+    this.documentForm = new FormGroup(this.documentForm.controls);
+    this.documentForm.enable()
+   
+
+
+
+
 
   }
 
@@ -647,77 +682,91 @@ export class AddTeacherComponent implements OnInit {
     }
   }
 
+
+
   // saveAndContinue() {
   //   debugger
   //   let currentForm: FormGroup;
+
   //   switch (this.currentStep) {
   //     case 1:
   //       currentForm = this.personalDetailsForm;
+  //       this.submitBtnStatus.personal = true
   //       break;
   //     case 2:
   //       currentForm = this.educationForm;
+  //       this.submitBtnStatus.education = true
   //       break;
   //     case 3:
   //       currentForm = this.professionalForm;
+  //       this.submitBtnStatus.professional = true
   //       break;
+  //       case 4:
+  //         currentForm = this.documentForm;
+  //         this.submitBtnStatus.documents = true
+  //         break;
   //     default:
-  //       currentForm = this.detailViewForm;
+  //       currentForm = this.professionalForm;
   //       break;
   //   }
-  //   if (currentForm) {
-  //     if (this.currentStep < this.steps.length) {
+
+
+
+  //   if (currentForm.valid || this.currentStep == 4) {
+  //     if (this.currentStep <= this.steps.length) {
   //       this.currentStep++;
-  //       this.onSubmit();
-  //     } else {
-  //       this.onSubmit();
-  //       console.log('step execute');
+
+  //       if (this.currentStep === this.steps.length) {
+  //         this.onSubmit(); // Collect form data for preview
+  //       }
+  //       if (this, this.currentStep === this.steps.length + 1) {
+  //         this.previewSubmit()
+  //       }
   //     }
+
   //   } else {
   //     console.log('Form is invalid. Please check your inputs.');
   //   }
+  //   console.log(this.currentStep)
+  //   debugger
+
   // }
-
   saveAndContinue() {
-    debugger
-    let currentForm: FormGroup;
-
-    switch (this.currentStep) {
-      case 1:
-        currentForm = this.personalDetailsForm;
-        this.submitBtnStatus.personal = true
-        break;
-      case 2:
-        currentForm = this.educationForm;
-        this.submitBtnStatus.education = true
-        break;
-      case 3:
-        currentForm = this.professionalForm;
-        this.submitBtnStatus.professional = true
-        break;
-      default:
-        currentForm = this.professionalForm;
-        break;
+    debugger;
+    const formMapping: { [key: number]: { form: FormGroup; statusKey: keyof SubmitBtnStatus } } = {
+      1: { form: this.personalDetailsForm, statusKey: 'personal' },
+      2: { form: this.educationForm, statusKey: 'education' },
+      3: { form: this.professionalForm, statusKey: 'professional' },
+      4: { form: this.documentForm, statusKey: 'documents' },
+      5: { form: this.professionalForm, statusKey: 'professional' },
+    };
+    const currentMapping = formMapping[this.currentStep];
+    if (!currentMapping) {
+      console.error('Invalid step');
+      return;
     }
 
-    if (currentForm.valid) {
-      if (this.currentStep <= this.steps.length) {
-        this.currentStep++;
+    const { form: currentForm, statusKey } = currentMapping;
 
-        if (this.currentStep === this.steps.length) {
-          this.onSubmit(); // Collect form data for preview
-        }
-        if (this, this.currentStep === this.steps.length + 1) {
-          this.previewSubmit()
-        }
+    // Update submit button status
+    this.submitBtnStatus[statusKey] = true;
+
+    // Check form validity or allow the final step
+    if (currentForm.valid || this.currentStep === 4) {
+      this.currentStep++;
+      if (this.currentStep === this.steps.length) {
+        this.onSubmit(); // Collect form data for preview
+      } else if (this.currentStep === this.steps.length + 1) {
+        this.previewSubmit(); // Final preview submission
       }
-
     } else {
-      console.log('Form is invalid. Please check your inputs.');
+      console.warn('Form is invalid. Please check your inputs.');
     }
-    console.log(this.currentStep)
-    debugger
 
+    console.log('Current Step:', this.currentStep);
+    debugger;
   }
+
 
   previewSubmit() {
     debugger
@@ -730,6 +779,14 @@ export class AddTeacherComponent implements OnInit {
       toDate: this.dataService.formatDateToISO(edu.toDate),
       DocumentID: parseInt(edu.certificate?.documentID) || null
     }));
+    console.log("doc", this.fullFormData)
+
+    let documentData = this.fullFormData.documents.map((doc: any) => ({
+      documentID: doc.documentFile.documentID
+    }));
+
+    console.log("docuemntDaty", documentData)
+
 
     let data: any = {
       pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
@@ -763,6 +820,7 @@ export class AddTeacherComponent implements OnInit {
       panID: this.fullFormData.pan,
       voterID: this.fullFormData.voterId ? this.fullFormData.voterId : "",
       educations: educationData,
+      employeeDocuments: documentData,
       departmentID: parseInt(this.fullFormData.department.employeeTypeID),
       districtID: parseInt(this.fullFormData.district.districtID),
       pfNummber: this.fullFormData.pfNumber,
@@ -929,6 +987,7 @@ export class AddTeacherComponent implements OnInit {
     if (this.personalDetailsForm.valid) {
       const personalDetails = this.personalDetailsForm.value;
       const educationDetails = this.educationForm.value;
+      const documentDetails = this.documentForm.value;
       const professionalDetails = this.professionalForm.value;
       if (personalDetails) {
         formData = {
@@ -939,6 +998,12 @@ export class AddTeacherComponent implements OnInit {
 
       if (this.educationForm.valid) {
         formData.educations = educationDetails.educations
+      }
+     
+      if (this.documentForm.valid  ) {
+        formData.documents = documentDetails.documents
+      }else{
+        formData.documents = []
       }
 
 

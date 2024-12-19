@@ -9,6 +9,7 @@ import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-vali
 import { environment } from 'src/environments/environment';
 import dayjs, { Dayjs } from 'dayjs';
 import { forkJoin } from 'rxjs';
+import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -28,7 +29,8 @@ export class LeaveRequestListComponent {
   leaveList: any[] = [];
   leaveTableRows: any;
   leaveTableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
-
+  getTruncatedFileName = getTruncatedFileName
+  getFileName=getFileName
   mouseX!: number
   mouseY!: number
   hoveredEmployee: any;
@@ -184,6 +186,7 @@ export class LeaveRequestListComponent {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
     }
     console.log("result",result)
+    this.fileName = this.getFileName(result); // Get the file name
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }

@@ -376,6 +376,34 @@
                         </div>
 
 
+                        <div class="card mt-3" *ngIf="currentTeacher.getEmployeeDocuments.length">
+                                <div class="card-header">Uploaded Documents</div>
+                                <div class="card-body">
+                                       
+                                        <ul class="info-list mt-2"
+                                                *ngFor="let item of currentTeacher.getEmployeeDocuments  ; let i = index;">
+                                                <p class="s-h">Document {{i+1}}</p>
+                                            
+                                              
+                                                <li *ngIf="item.documentName">
+                                                        <strong class="field">Document Type:</strong>
+                                                        <span class="field-val">{{ item.documentName
+                                                                }}</span>
+                                                </li>
+                                            
+                                                <li *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
+                                                        <strong class="field">Document File:</strong>
+                                                        <span class="field-val"><img (click)="pdfClick(item.documentpath)" class="pdf-icon" [src]="'../../../../assets/icons/pdf-file.png'" alt="">
+                                                                <span class="pdf-name ms-2" (click)="pdfClick(item.documentpath)">
+                                                                        {{ item.documentpath?.substring(item.documentpath.lastIndexOf('/') + 1) }}
+                                                                      </span></span>
+                                                       
+                                                </li>
+                                        </ul>
+                                </div>
+                        </div>
+
+
                         <div class="card mt-3">
                                 <div class="card-header">Professional Details</div>
                                 <div class="card-body">

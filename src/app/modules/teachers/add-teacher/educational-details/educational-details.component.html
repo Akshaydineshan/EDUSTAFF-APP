@@ -86,7 +86,7 @@
 <form [formGroup]="educationForm">
   <div formArrayName="educations">
     <div *ngFor="let course of educations.controls; let i = index; " [formGroupName]="i">
-      <div class="row mb-3">
+      <div class="row mb-3 g-3">
         <label for="educationType{{i}}" class="col-sm-3 col-form-label">Education Type</label>
         <div class="col-sm-7">
           <select id="educationType{{i}}" class="form-control" formControlName="educationType"
@@ -102,6 +102,19 @@
               required.</small>
 
           </div>
+        </div>
+        <div class="col-sm-2">
+          <button 
+          type="button" 
+          class="btn btn-danger btn-sm d-flex align-items-center gap-1" 
+          (click)="removeCourse(i)" 
+          *ngIf="educations.length > 1" 
+          aria-label="Remove Course" 
+          data-bs-toggle="tooltip" 
+          title="Remove this education">
+          <i class="bi bi-x-circle"></i>
+         
+        </button>
         </div>
       </div>
 
@@ -150,21 +163,25 @@
               required.</small>
 
           </div>
-          <small *ngIf="course.get('educationType')?.value.educationTypeID && course.get('educationType')?.value.educationTypeID == 5 " class="text-muted">
+          <small
+            *ngIf="course.get('educationType')?.value.educationTypeID && course.get('educationType')?.value.educationTypeID == 5 "
+            class="text-muted">
             <i class="bi bi-info-circle"></i> School/University is optional for your course.
           </small>
-          
+
         </div>
       </div>
 
-      <div class="row mb-3"  *ngIf=" course.get('educationType')?.value.educationTypeID && course.get('educationType')?.value.educationTypeID !== 5 ">
+      <div class="row mb-3"
+        *ngIf=" course.get('educationType')?.value.educationTypeID && course.get('educationType')?.value.educationTypeID !== 5 ">
         <label for="dob" class="col-sm-3 col-form-label">From Date</label>
         <div class="col-sm-7">
-          <input type="date" class="form-control" id="fromDate" formControlName="fromDate"  [min]="minDate" [max]="maxDate"
-            (change)="dateChange(i)"
+          <input type="date" class="form-control" id="fromDate" formControlName="fromDate" [min]="minDate"
+            [max]="maxDate" (change)="dateChange(i)"
             [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || submitted) }">
-           
-          <div *ngIf="course.get('fromDate')?.invalid && (course.get('fromDate')?.touched || course.get('fromDate')?.dirty   || submitted)">
+
+          <div
+            *ngIf="course.get('fromDate')?.invalid && (course.get('fromDate')?.touched || course.get('fromDate')?.dirty   || submitted)">
             <small class="text-danger" *ngIf="course.get('fromDate')?.errors?.['required']">
               From Date is required.
             </small>
@@ -176,19 +193,21 @@
             </small>
             <small class="text-danger" *ngIf="course.get('fromDate')?.hasError('invalidDate')">
               Invalid Date.
-          </small>
+            </small>
 
           </div>
 
         </div>
       </div>
       <div class="row mb-3" *ngIf="course.get('educationType')?.value.educationTypeID">
-        <label for="dob" class="col-sm-3 col-form-label">{{course.get('educationType')?.value.educationTypeID === 5 ? 'Passed Date' : 'To Date'}}</label>
+        <label for="dob" class="col-sm-3 col-form-label">{{course.get('educationType')?.value.educationTypeID === 5 ?
+          'Passed Date' : 'To Date'}}</label>
         <div class="col-sm-7">
-          <input type="date" class="form-control" id="toDate" formControlName="toDate" required  [min]="minDate" [max]="maxDate"
-            (change)="dateChangeTo(i)"
+          <input type="date" class="form-control" id="toDate" formControlName="toDate" required [min]="minDate"
+            [max]="maxDate" (change)="dateChangeTo(i)"
             [ngClass]="{'is-invalid': course.errors?.['invalidDateRange'] && (course.get('toDate')?.touched ||submitted)}">
-          <div *ngIf="course.get('toDate')?.invalid &&( course.get('toDate')?.touched || course.get('toDate')?.dirty ||submitted)">
+          <div
+            *ngIf="course.get('toDate')?.invalid &&( course.get('toDate')?.touched || course.get('toDate')?.dirty ||submitted)">
             <small class="text-danger" *ngIf="course.get('toDate')?.errors?.['required']">
               To Date is required.
             </small>
@@ -200,7 +219,7 @@
             </small>
             <small class="text-danger" *ngIf="course.get('toDate')?.hasError('invalidDate')">
               Invalid Date.
-          </small>
+            </small>
           </div>
           <div
             *ngIf="course.errors?.['invalidDateRange'] && (course.get('fromDate')?.touched || course.get('toDate')?.touched || submitted)">
@@ -224,8 +243,8 @@
         </div>
       </div> -->
 
-      <div class="row mb-3 align-items-center">
-        <label class="col-sm-3 col-form-label">Upload Certificate</label>
+      <div class="row mb-3 ">
+        <!-- <label class="col-sm-3 col-form-label">Upload Certificate</label>
         <div class="col-sm-7 d-flex align-items-center">
 
           <input #fileInput type="file" accept=".pdf" style="display: none;"
@@ -253,27 +272,101 @@
           <small class="text-muted">
             <i class="bi bi-info-circle "></i> Only PDF files are allowed for upload.
           </small>
+        </div> -->
+
+        <label for="" class="col-sm-3 col-form-label b-label">
+          <span>Upload Document</span>
+          <span class="text-danger ms-1 mad-f">*</span>
+        </label>
+        <div class="col-sm-7">
+          <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event,i)" class="drag-drop-main">
+            <div class="custom-file-upload">
+              <div class="content">
+                <i class="bi bi-cloud-upload" style="font-size: 30px;color: #000000;
+"></i>
+                <p class="lab">Drag File To Upload</p>
+                <p class="or">or</p>
+                <input (change)="onCertificateUploadChange($event,i)" #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg"
+                  style="display: none;">
+                <button class="btn btn-primary" (click)="fileInput.click()">Browse
+                  File</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       
+      <div class="row mb-2 mt-3" *ngIf="getDocument(i)">
+        <div class="col-sm-3">
 
+        </div>
+        <div class="col-sm-7">
+          <div>
+            <div class="uploaded-file">
+              <div style="display: flex; align-items: center; gap: 9px; padding:0 0px; ">
+                <!-- <i class="bi bi-filetype-pdf" style="height:30px; font-size: 24px;"></i> -->
+                <img  [src]="transform(getDocument(i))" alt="" style="width:28px; height:30px;">
 
-      <div class="row mb-3">
-        <div class="col-sm-10 offset-sm-3">
-          <button type="button" class="btn btn-danger" (click)="removeCourse(i)" *ngIf="educations.length > 1">
-            Remove Course
-          </button>
+                <div class="r-l " style="display: flex; flex-direction: column; align-items: start; ">
+                  <p class="f-n" style="margin: 0;"   >{{ getTruncatedFileName(fileName[i], 25) }}</p>
+              
+                  <p class="f-s" *ngIf="fileSize[i]" style="margin:0;" >{{fileSize[i]}} - 100% uploaded</p>
+                </div>
+              </div>
+
+              <div class="right me-3">
+                <i  (click)="removeLeaveApplicationDocument(i)"  class="fa-regular fa-trash-can"></i>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </div>
+
+
+
+
+      <!-- <div class="row mb-3 "  >
+        <div class="col-sm-10 offset-sm-3">
+          <button 
+          type="button" 
+          class="btn btn-outline-danger d-flex align-items-center" 
+          (click)="removeCourse(i)" 
+          *ngIf="educations.length > 1"
+        >
+          <i class="bi bi-trash me-2"></i> Remove Course
+        </button>
+        </div>
+      </div> -->
+      
+      <!-- <div class="row mb-3 ">
+        <div class="col-sm-2 offset-sm-3">
+          <button 
+            type="button" 
+            class="btn btn-outline-danger btn-sm d-flex align-items-center py-1 px-2" 
+            (click)="removeCourse(i)" 
+            *ngIf="educations.length > 1"
+          >
+            <i class="bi bi-trash me-1"></i> Remove
+          </button>
+        </div>
+      </div> -->
 
       <hr>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-sm-12 text-right">
-      <button type="button" class="btn btn-outline-primary" (click)="addCourse()">Add New Course</button>
+  <div class="row mb-4">
+    <div class="col-sm-3 text-end offset-sm-9">
+      <button 
+        type="button" 
+        class="btn btn-primary btn-sm d-flex align-items-center justify-content-center py-1 px-2" 
+        (click)="addCourse()"
+      >
+        <i class="bi bi-plus-circle me-1"></i> Add Course
+      </button>
     </div>
   </div>
 </form>

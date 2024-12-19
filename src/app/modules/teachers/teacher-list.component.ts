@@ -10,6 +10,7 @@ import { TeacherTableNameSectionComponent } from 'src/app/shared/components/teac
 import { forkJoin } from 'rxjs';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -62,7 +63,8 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
 
-
+  getTruncatedFileName = getTruncatedFileName
+  getFileName=getFileName
 
   // Filter Range Picker 
   minValue: any = 0;
