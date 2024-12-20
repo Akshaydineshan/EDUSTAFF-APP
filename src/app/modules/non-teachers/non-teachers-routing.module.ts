@@ -8,6 +8,7 @@ import { TransferRequestListComponent } from '../teachers/transfer-request-list/
 import { NonTeacherTransferlistComponent } from './non-teacher-transferlist/non-teacher-transferlist.component';
 import { StaffLeaveApplicationsComponent } from './staff-leave-applications/staff-leave-applications.component';
 import { StaffTransferCompletedListComponent } from './staff-transfer-completed-list/staff-transfer-completed-list.component';
+import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 
 const routes: Routes = [
   { path: '', component: NonTeacherListComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'transfer-request', component:NonTeacherTransferlistComponent },
   { path: 'leave', component:StaffLeaveApplicationsComponent },
   { path: 'transfer-completed', component:StaffTransferCompletedListComponent },
+  { path: 'retired-staff', component:RetiredStaffComponent },
   
   { 
     path: '**',
