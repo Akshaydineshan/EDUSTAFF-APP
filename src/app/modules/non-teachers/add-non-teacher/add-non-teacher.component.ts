@@ -177,7 +177,13 @@ export class AddNonTeacherComponent {
         if (response) {
         
           this.employee = response
-          this.setValuesForEdit()
+          if(this.employee.department.employeeTypeID ==2){
+            this.setValuesForEdit()
+          }else{
+            this.router.navigate([`/non-teachers/view/${id}`])
+          }
+         
+         
         }
 
       },

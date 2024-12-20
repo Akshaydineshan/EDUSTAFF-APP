@@ -242,9 +242,9 @@
                 <option value="" [disabled]="true">Select Category</option>
                 <option *ngFor="let category of employeeCategories" [ngValue]="category">{{ category.employeeCategoryName }}</option>
             </select>
-            <div *ngIf="professionalForm.get('category')?.invalid && (professionalForm.get('category')?.touched || professionalForm.get('category')?.dirty ||submitted)"
+            <div *ngIf="professionalForm.get('pCategory')?.invalid && (professionalForm.get('pCategory')?.touched || professionalForm.get('pCategory')?.dirty ||submitted)"
                 class="text-danger">
-                <small *ngIf="professionalForm.get('category')?.errors?.['required']">Category is required.</small>
+                <small *ngIf="professionalForm.get('pCategory')?.errors?.['required']">Category is required.</small>
             </div>
         </div>
     </div>
