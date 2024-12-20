@@ -180,7 +180,7 @@ export class AddNonTeacherComponent {
           if(this.employee.department.employeeTypeID ==2){
             this.setValuesForEdit()
           }else{
-            this.router.navigate([`/non-teachers/view/${id}`])
+            this.router.navigate([`non-teachers/non-teacher-list`])
           }
          
          

@@ -179,7 +179,7 @@ export class AddTeacherComponent implements OnInit {
           if(this.employee.department.employeeTypeID === 1){
             this.setValuesForEdit()
           }else{
-            this.router.navigate([`/non-teachers/view/${id}`])
+            this.router.navigate([`teachers/teacher-list`])
           }
         }
 
