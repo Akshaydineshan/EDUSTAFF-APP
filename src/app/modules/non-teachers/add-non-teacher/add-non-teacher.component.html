@@ -68,9 +68,21 @@
       </app-non-teacher-professional-details>
     </div>
 
-        <div *ngIf="currentStep === 4 || currentStep === 5" class="step-page-summary">
+    <div *ngIf="currentStep === 4 "  class="step-page">
+      <app-documents-upload [(documentForm)]="documentForm" [submitted]="submitBtnStatus.documents"></app-documents-upload>
+    </div>
+
+        <div *ngIf="currentStep === 5 || currentStep === 6" class="step-page-summary">
       <app-add-non-teacher-preview  [showTopbarAndSidebar]="false" [fullFormData]="fullFormData" (EditBtnClickPreview)="editBtnClickFromPreview()"></app-add-non-teacher-preview>
     </div>
+
+
+
+   
+
+  
+
+    
 
 
         <div class="row mt-4">

@@ -50,6 +50,7 @@ import { DocumentsUploadComponent } from './add-teacher/documents-upload/documen
     NgxDaterangepickerBootstrapModule.forRoot()
    
   ],
+  exports:[DocumentsUploadComponent],
   providers: [NgxDaterangepickerLocaleService],
 })
 export class TeachersModule { }

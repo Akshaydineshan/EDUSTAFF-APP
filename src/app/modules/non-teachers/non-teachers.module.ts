@@ -15,6 +15,7 @@ import { NonTeacherTransferlistComponent } from './non-teacher-transferlist/non-
 import { StaffLeaveApplicationsComponent } from './staff-leave-applications/staff-leave-applications.component';
 import { StaffTransferCompletedListComponent } from './staff-transfer-completed-list/staff-transfer-completed-list.component';
 import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
+import { TeachersModule } from '../teachers/teachers.module';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap
   imports: [
     CommonModule,
     NonTeachersRoutingModule,
+    TeachersModule,
     SharedModule,
     FormsModule,
     ReactiveFormsModule,

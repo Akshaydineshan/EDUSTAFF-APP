@@ -360,30 +360,20 @@ export class AddTeacherComponent implements OnInit {
 
   }
   patchDocumentsFormData() {
-    debugger
 
-    debugger
     const documentData = this.employee.getEmployeeDocuments;
- 
-
     this.documentForm.setControl('documents', this.fb.array(
       documentData.map((doc: any) => this.fb.group({
 
         documentType: doc.documentName,
-        documentFile:{documentID:doc.documentID,documentName:doc.documentpath}
+        documentFile: { documentID: doc.documentID, documentName: doc.documentpath }
 
       }
       ))
     ));
-    // this.educationForm = { ...this.educationForm };
+
     this.documentForm = new FormGroup(this.documentForm.controls);
     this.documentForm.enable()
-   
-
-
-
-
-
   }
 
   patchExpForm() {
@@ -785,8 +775,6 @@ export class AddTeacherComponent implements OnInit {
       documentID: doc.documentFile.documentID
     }));
 
-    console.log("docuemntDaty", documentData)
-
 
     let data: any = {
       pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
@@ -999,10 +987,10 @@ export class AddTeacherComponent implements OnInit {
       if (this.educationForm.valid) {
         formData.educations = educationDetails.educations
       }
-     
-      if (this.documentForm.valid  ) {
+
+      if (this.documentForm.valid) {
         formData.documents = documentDetails.documents
-      }else{
+      } else {
         formData.documents = []
       }
 
