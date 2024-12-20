@@ -52,10 +52,10 @@ export class TestDemoComponent {
 
   
   onItemSelect(item: any) {
-    console.log(item);
+
   }
   onSelectAll(items: any) {
-    console.log(items);
+ 
   }
 
   onDragOver(event:any) {
@@ -65,9 +65,7 @@ export class TestDemoComponent {
 // From drag and drop
 onDropSuccess(event:any) {
     event.preventDefault();
-   console.log("file",event.dataTransfer.files)
-
-    // this.onFileChange(event.dataTransfer.files);    // notice the "dataTransfer" used instead of "target"
+ 
 }
 onChange(event:any) {
 

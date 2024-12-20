@@ -147,7 +147,7 @@ export class StaffTransferCompletedListComponent {
       (data: any) => {
         debugger
         this.tableDataList = data;
-        console.log("school list data", this.tableDataList);
+
         this.tableRows = this.tableDataList
         this.tableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -282,7 +282,7 @@ export class StaffTransferCompletedListComponent {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data: any) => {
             this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
+           
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -306,8 +306,7 @@ export class StaffTransferCompletedListComponent {
 
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    console.log("teacherId", teacherId, teacherData)
-
+  
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
     }
@@ -401,7 +400,7 @@ export class StaffTransferCompletedListComponent {
 
   // Filter related funtions
   toggleFilterDropdown() {
-    console.log("filter click")
+
     this.ngZone.run(() => {
 
       this.showFilterModal = !this.showFilterModal;
@@ -411,8 +410,7 @@ export class StaffTransferCompletedListComponent {
   applyFilters() {
 
     this.ngZone.run(() => {
-      debugger
-      console.log("isSelected", this.selected)
+
       const filters = this.filterForm.value;
 
       let filter: any = {
@@ -426,9 +424,7 @@ export class StaffTransferCompletedListComponent {
 
 
       }
-      console.log("payload", filter)
-
-
+    
       let url:string='TransferRequest/NonTeacherTransferCompletedfilter'
       this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {
         this.tableDataList = data.map((teacher: any) => ({
@@ -465,7 +461,7 @@ export class StaffTransferCompletedListComponent {
       // this.selected={startDate:null,endDate:null}
       this.selected=null
       this.selectedWithEffectFrom=null
-      console.log("after reset",this.selected)
+
       this.filterForm.reset({
         designationFilter: "",
         schoolNameFilter: "",

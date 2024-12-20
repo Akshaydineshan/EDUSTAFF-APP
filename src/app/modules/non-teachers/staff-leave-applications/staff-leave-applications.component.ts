@@ -120,7 +120,7 @@ export class StaffLeaveApplicationsComponent {
   }
   dateChange() {
     const dateControl = this.leaveRequestForm.get('date');
-    console.log("control", dateControl)
+  
 
     dateControl?.updateValueAndValidity();  // Manually trigger validation
   }
@@ -136,7 +136,7 @@ export class StaffLeaveApplicationsComponent {
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
     const menuPops = document.getElementsByClassName('menuPop');
-    console.log("menubn", menuButtons)
+
     let clickedInsidePopup = false;
     let clickedOnButton = false
     //  let clickedOnButtonI = false;
@@ -181,8 +181,7 @@ export class StaffLeaveApplicationsComponent {
     if (this.apiUrl && image ) {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
     }
-    console.log("result",result)
-    // If the result is an empty string, it will fallback to emptyImage in the template
+   
     return result;
   }
 
@@ -282,7 +281,7 @@ export class StaffLeaveApplicationsComponent {
       (data: any) => {
         debugger
         this.leaveList = data;
-        console.log("leave list data", this.leaveList);
+
         this.leaveTableRows = this.leaveList
         this.leaveTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -486,8 +485,7 @@ export class StaffLeaveApplicationsComponent {
 
 
   updateMenuMousePosition(event: MouseEvent): void {
-    debugger;
-    console.log("eventRR", event.clientX, event.clientY)
+  
     const offset = 13; // Offset for positioning
     this.mouseMenuX = event.clientX + offset - 226;
     this.mouseMenuY = event.clientY;
@@ -516,9 +514,7 @@ export class StaffLeaveApplicationsComponent {
     this.toSchoolPr1 = this.selectMenuRowData.toSchoolOneName;
     this.toSchoolPr2 = this.selectMenuRowData.toSchoolTwoName;
     this.toSchoolPr3 = this.selectMenuRowData.toSchoolThreeName;
-    console.log("selectMenuRowData", this.selectMenuRowData)
-
-
+    
     this.updateMenuMousePosition(event)
 
   }
@@ -527,7 +523,6 @@ export class StaffLeaveApplicationsComponent {
     // this.loadDropdownData()
     this.tableColorChange = true;
     this.leaveRequestForm.get("documentUrl")?.setValue(this.selectMenuRowData.documentpath)
-    console.log("trans",this.leaveRequestForm.value,this.selectMenuRowData.documentpath)
 
     if (event.value === 'approve') {
       this.leaveRequestForm.get("fromDate")?.setValue(this.dataService.formatDateToLocal(this.selectMenuRowData.fromDate))
@@ -586,7 +581,7 @@ export class StaffLeaveApplicationsComponent {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
+
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -610,7 +605,7 @@ export class StaffLeaveApplicationsComponent {
 
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    console.log("teacherId", teacherId, teacherData)
+   
 
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
@@ -673,7 +668,7 @@ export class StaffLeaveApplicationsComponent {
     this.submitted = true
 
     if (this.leaveRequestForm.valid) {
-      console.log("transfer form", this.leaveRequestForm.value)
+
       let formValue: any = this.leaveRequestForm.value;
       let employee: any = this.selectMenuRowData
       if (!this.isRejectedClick) {
@@ -834,7 +829,7 @@ export class StaffLeaveApplicationsComponent {
     // })
   }
 toggleFilterDropdown() {
-  console.log("filter click")
+
   this.ngZone.run(() => {
 
     this.showFilterModal = !this.showFilterModal;
@@ -845,7 +840,7 @@ applyFilters() {
 
   this.ngZone.run(() => {
     debugger
-    console.log("isSelected", this.selected)
+
     const filters = this.filterForm.value;
 
     let filter: any = {
@@ -857,7 +852,7 @@ applyFilters() {
 
 
     }
-    console.log("payload", filter)
+  
 
     let url:string='LeaveRequest/NonTeacherLeaveRequestedfilter'
     this.dataService.filterInTeacherList(url,filter).subscribe((data: any) => {

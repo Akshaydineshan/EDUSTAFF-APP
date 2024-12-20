@@ -38,8 +38,7 @@ export class NonTeacherEducationDetailsComponent {
     this.educations = this.educationForm.get('educations') as FormArray;
     const today = new Date();
     this.maxDate = today.toISOString().split('T')[0];
-    console.log(this.allEducationTypes);
-    console.log(this.coursesByEducation);
+
     this.educationForm.disable();
     this.populateCoursesForSavedEducationTypes()
     this.educationForm.enable()
@@ -81,7 +80,7 @@ export class NonTeacherEducationDetailsComponent {
   dateChange(index:number){
     const toDateArray = this.educationForm.get('educations') as FormArray;
     const dobControl = toDateArray.at(index).get("fromDate");
-    console.log("controolll",index,dobControl)
+
     dobControl?.updateValueAndValidity();  // Manually trigger validation
   }
   dateChangeTo(index:number){
@@ -136,7 +135,7 @@ export class NonTeacherEducationDetailsComponent {
       let file = this.file
       this.dataService.uploadDocument(file).subscribe(
         (response:any) => {
-          console.log('File uploaded successfully', response);
+  
           const educations = this.educationForm.get('educations') as FormArray;
           educations.at(index).get('certificate')?.patchValue(response)
         },
@@ -168,7 +167,7 @@ export class NonTeacherEducationDetailsComponent {
     const selectedType = Number(event.educationTypeID);
     if (selectedType) {
       this.getCoursesByEducationType(selectedType, index);
-      console.log("EVT",event.educationTypeID)
+
     }
     if(event.educationTypeID !== 5){
       this.schoolUniversityNotification=false;
@@ -187,7 +186,7 @@ export class NonTeacherEducationDetailsComponent {
       educationGroup.get('schoolName')?.clearValidators();
       educationGroup.get('fromDate')?.updateValueAndValidity(); 
       educationGroup.get('schoolName')?.updateValueAndValidity();
-      console.log(educationGroup)
+
     }
   }
 
@@ -228,7 +227,7 @@ export class NonTeacherEducationDetailsComponent {
         this.getCoursesByEducationType(selectedEducationType, index);
       }
     });
-    console.log("educationsss->",this.educations)
+
   }
   compareCourses(course1: any, course2: any): boolean {
     debugger

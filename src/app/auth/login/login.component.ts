@@ -62,10 +62,9 @@ export class LoginComponent {
   }
 
   onResetSubmit() {
-    console.log(this.resetEmail);
+   
 
-    console.log(this.newPassword);
-    console.log(this.confirmPassword);
+   
   }
 
   onLogin() {
@@ -73,7 +72,7 @@ export class LoginComponent {
       this.authService.login(this.email, this.password, this.rememberMe).subscribe(
         response => {
           if (response) {
-            console.log('Login successful!');
+           
             this.errorMessage = '';
             this.router.navigate(['/dashboard']);
           }
@@ -109,11 +108,11 @@ export class LoginComponent {
       this.roleID
     ).subscribe({
       next: (response) => {
-        console.log('Registration successful:', response);
+
         this.router.navigate(['/auth/login']);
       },
       error: (error) => {
-        console.error('Registration failed', error);
+       
         this.errorMessage = 'Registration failed. Please check your input and try again.';  // More general error message
       }
     });

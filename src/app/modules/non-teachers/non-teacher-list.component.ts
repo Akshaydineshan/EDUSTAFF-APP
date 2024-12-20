@@ -156,7 +156,7 @@ export class NonTeacherListComponent implements OnInit {
     //     break;
     //   }
     // }
-    // console.log(clickedOnButtonI)
+    
 
     if (!clickedOnButton && !clickedInsidePopup) {
       this.isMenuVisible = false; // Hide the popup if clicked outside
@@ -233,7 +233,7 @@ export class NonTeacherListComponent implements OnInit {
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
         }));
         this.nonTeacherTableRows = this.nonTeacherList
-        console.log("Non teacher data list", this.nonTeacherList)
+       
 
         this.nonTeacherTableColumns = this.displayColumns.map((column: any) => {
           return {
@@ -400,8 +400,6 @@ export class NonTeacherListComponent implements OnInit {
 
     }).subscribe({
       next: (results: any) => {
-        console.log("result", results)
-
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
         this.priorityOneSelectDropdown = [...this.schoolDropDownList];
         this.priorityTwoSelectDropdown = [...this.schoolDropDownList];
@@ -444,8 +442,7 @@ export class NonTeacherListComponent implements OnInit {
         this.dataService.getTeacherDetailPopUp(teacherId).subscribe(
           (data: any) => {
             this.selectedTeacher = data; // Store the detailed info
-            console.log("teachres", data)
-            if (this.selectedTeacher && teacherId) {
+             if (this.selectedTeacher && teacherId) {
               this.showPopup = true;
               this.updateMousePosition(event);
             }
@@ -472,7 +469,7 @@ export class NonTeacherListComponent implements OnInit {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
+           
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -515,7 +512,7 @@ export class NonTeacherListComponent implements OnInit {
 
 
     if (event.colDef.field === "name") {
-      console.log("teacher", event)
+     
       this.onTeacherHover(rowData.teacherId, rowData, event.event)
     } else if (event.colDef.field === "schoolName") {
       this.onSchoolHover(rowData.schoolId, rowData, event.event)
@@ -623,13 +620,12 @@ export class NonTeacherListComponent implements OnInit {
   //     this.transferRequestForm.get("fromSchool")?.patchValue(this.selectMenuRowData.schoolName)
   //     this.isTransferPopup = event.clicked
   //     this.isMenuVisible = false;
-  //     console.log("afert")
+
   //   }
 
   // }
   listClickFromMenuList(event: any) {
-    debugger
-    console.log("EVENT->", event)
+
     this.showPopup = false;
     this.showSchoolPopup = false;
 
@@ -648,11 +644,9 @@ export class NonTeacherListComponent implements OnInit {
     // Transfer Request Submit
     transferRequestFormSubmit() {
       this.submitted = true
-      console.log("transferForm", this.transferRequestForm)
-  
+     
       if (this.transferRequestForm.valid) {
-        console.log("transfer form", this.transferRequestForm.value)
-        let formValue: any = this.transferRequestForm.value;
+         let formValue: any = this.transferRequestForm.value;
         let employee: any = this.selectMenuRowData
         let payload: any = {
           "employeeID": employee.teacherId,
@@ -667,12 +661,9 @@ export class NonTeacherListComponent implements OnInit {
           "filePath": formValue.documentUrl
         }
 
-        console.log("payload",payload)
-  
-  
         this.dataService.createTransferRequest(payload).subscribe({
           next: (response: any) => {
-            console.log(response, response)
+    
             if (response.status == 200) {
               this.submitted = false
               this.isTransferPopup = false;
@@ -732,8 +723,7 @@ export class NonTeacherListComponent implements OnInit {
     leaveRequestFormSubmit() {
   
       this.submitted = true
-      console.log("leaveForm", this.leaveRequestForm)
-  
+     
       if (this.leaveRequestForm.valid) {
   
         let formValue: any = this.leaveRequestForm.value;
@@ -750,7 +740,7 @@ export class NonTeacherListComponent implements OnInit {
   
         this.dataService.createLeaveRequest(payload).subscribe({
           next: (response: any) => {
-            console.log(response, response)
+
             if (response.status == 200) {
               this.submitted = false
               this.isLeavePopup = false;
@@ -868,7 +858,7 @@ export class NonTeacherListComponent implements OnInit {
         let file = this.file
         this.dataService.uploadDocument(file).subscribe(
           (response) => {
-            console.log('File uploaded successfully', response);
+           
             const document = this.leaveRequestForm.get('document') as FormControl;
             document.patchValue(response)
           },
@@ -886,8 +876,7 @@ export class NonTeacherListComponent implements OnInit {
     // From drag and drop
     onDropSuccess(event: any) {
       event.preventDefault();
-      console.log("file", event)
-  
+
       this.onCertificateUploadDragAndDrop(event);
   
     }
@@ -897,14 +886,13 @@ export class NonTeacherListComponent implements OnInit {
       let result = '';
   
       let image = this.leaveRequestForm.get('document')?.value?.documentName;
-      console.log("image", image)
+
       if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
   
       if (this.apiUrl && image) {
         result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
       }
-      console.log("result", result)
-  
+
       return result;
     }
   

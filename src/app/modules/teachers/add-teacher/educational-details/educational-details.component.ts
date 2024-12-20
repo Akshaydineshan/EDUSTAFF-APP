@@ -48,8 +48,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     this.maxDate = today.toISOString().split('T')[0];
 
     this.educations = this.educationForm.get('educations') as FormArray;
-    console.log(this.allEducationTypes);
-    console.log(this.coursesByEducation);
+
     this.populateCoursesForSavedEducationTypes()
     this.educationForm.enable()
 
@@ -193,7 +192,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     const selectedType = Number(event.educationTypeID);
     if (selectedType) {
       this.getCoursesByEducationType(selectedType, index);
-      console.log("EVT", event.educationTypeID)
+      
     }
     if (event.educationTypeID !== 5) {
       this.schoolUniversityNotification = false;
@@ -212,7 +211,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       educationGroup.get('schoolName')?.clearValidators();
       educationGroup.get('fromDate')?.updateValueAndValidity();
       educationGroup.get('schoolName')?.updateValueAndValidity();
-      console.log(educationGroup)
+      
     }
   }
 
@@ -253,7 +252,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
         this.getCoursesByEducationType(selectedEducationType, index);
       }
     });
-    console.log("educationsss->", this.educations)
+
   }
   compareCourses(course1: any, course2: any): boolean {
     debugger
@@ -271,7 +270,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   dateChange(index: number) {
     const toDateArray = this.educationForm.get('educations') as FormArray;
     const dobControl = toDateArray.at(index).get("fromDate");
-    console.log("controolll", index, dobControl)
+
     dobControl?.updateValueAndValidity();  // Manually trigger validation
   }
   dateChangeTo(index: number) {
@@ -284,8 +283,6 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
 
 
   EducationTypeChange(event: any, index: number) {
-    debugger
-    console.log("ebenr", event)
 
     // const selectedType = Number(event.courseID); 
     // if (selectedType) {

@@ -51,7 +51,7 @@ export class SchoolVacantPositionsComponent implements OnInit {
       (data: any) => {
         debugger
         this.vacantPositionList = data;
-        console.log("school vacant position list", this.vacantPositionList);
+
         this.vacantPositionRows = this.vacantPositionList
         this.vacantPositionColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -135,7 +135,7 @@ export class SchoolVacantPositionsComponent implements OnInit {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data: any) => {
             this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
+
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -150,7 +150,7 @@ export class SchoolVacantPositionsComponent implements OnInit {
 
 
   rowMouseHover(event: any) {
- console.log("eventss",event)
+
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "schoolName") {

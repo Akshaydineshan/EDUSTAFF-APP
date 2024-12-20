@@ -69,7 +69,7 @@ export class SchoolListComponent implements OnInit {
       (data) => {
         debugger
         this.schoolList = data;
-        console.log("school list data", this.schoolList);
+
         this.schoolTableRows = this.schoolList
         this.schoolTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -104,7 +104,7 @@ export class SchoolListComponent implements OnInit {
   }
 
   onSchoolHover(schoolId: number, schoolData: any, event: MouseEvent): void {
-    console.log("ush", schoolData, schoolId)
+
     // this.schoolId = schoolId
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
@@ -179,7 +179,7 @@ export class SchoolListComponent implements OnInit {
 
 
   rowMouseHover(event: any) {
-    console.log("EVENT", event)
+    
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "principal") {
@@ -201,8 +201,6 @@ export class SchoolListComponent implements OnInit {
 
 
   onCellClicked(event: any) {
-    console.log("event", event)
-    debugger
 
     const rowNode: any = event.node;
     const rowData = rowNode.data;

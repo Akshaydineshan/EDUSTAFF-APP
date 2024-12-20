@@ -122,7 +122,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const authToken = this.authService.getToken();
-    console.log("req---->", req.url)
+
     const authReq = authToken
       ? req.clone({
         setHeaders: {

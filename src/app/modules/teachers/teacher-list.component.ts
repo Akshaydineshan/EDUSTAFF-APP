@@ -289,7 +289,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   submitTransfer(): void {
     if (this.transferRequest.school && this.transferRequest.position && this.transferRequest.date) {
-      console.log(this.transferRequest);
+     
       this.resetForm(this.transferRequest);
     } else {
       console.log('Form is invalid');
@@ -300,10 +300,10 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   // Transfer Request Submit
   transferRequestFormSubmit() {
     this.submitted = true
-    console.log("transferForm", this.transferRequestForm)
+
 
     if (this.transferRequestForm.valid) {
-      console.log("transfer form", this.transferRequestForm.value)
+    
       let formValue: any = this.transferRequestForm.value;
       let employee: any = this.selectMenuRowData
       let payload: any = {
@@ -322,7 +322,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
       this.dataService.createTransferRequest(payload).subscribe({
         next: (response: any) => {
-          console.log(response, response)
+
           if (response.status == 200) {
             this.submitted = false
             this.isTransferPopup = false;
@@ -392,7 +392,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   leaveRequestFormSubmit() {
 
     this.submitted = true
-    console.log("leaveForm", this.leaveRequestForm)
+
 
     if (this.leaveRequestForm.valid) {
 
@@ -410,7 +410,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
       this.dataService.createLeaveRequest(payload).subscribe({
         next: (response: any) => {
-          console.log(response, response)
+
           if (response.status == 200) {
             this.submitted = false
             this.isLeavePopup = false;
@@ -519,7 +519,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           {
             field: "name", filter: true, floatingFilter: true, width: 180,
             cellRenderer: (params: any) => {
-              console.log("params-", params)
+
               const div = document.createElement('div');
               div.style.display = "flex"
               div.style.justifyContent = "space-between"
@@ -684,7 +684,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
           },
         ];
-        console.log(this.teacherList, this.teacherTableColumns);
+ 
         this.updatePaginatedData();
 
 
@@ -707,7 +707,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     }).subscribe({
       next: (results: any) => {
-        console.log("result", results)
+       
 
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
 
@@ -909,7 +909,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
+          
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -1024,8 +1024,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   // CEll Menu Btn Related Funs
   updateMenuMousePosition(event: MouseEvent): void {
-    debugger;
-    console.log("eventRR", event.clientX, event.clientY)
+   
     const offset = 13; // Offset for positioning
     this.mouseMenuX = event.clientX + offset;
     this.mouseMenuY = event.clientY;
@@ -1118,8 +1117,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       selectedPriority3?.schoolId
     ].filter((id) => id !== undefined); // Remove undefined values
 
-    console.log("array", selectedIds)
-
+ 
     // Update filtered lists dynamically
     this.priorityOneSelectDropdown = this.schoolDropDownList.filter(
       (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority1?.schoolId
@@ -1197,7 +1195,6 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   // From drag and drop
   onDropSuccess(event: any) {
     event.preventDefault();
-    console.log("file", event)
 
     this.onCertificateUploadDragAndDrop(event);
 
@@ -1208,13 +1205,12 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     let result = '';
 
     let image = this.leaveRequestForm.get('document')?.value?.documentName;
-    console.log("image", image)
+   
     if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
 
     if (this.apiUrl && image) {
       result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
     }
-    console.log("result", result)
 
     return result;
   }

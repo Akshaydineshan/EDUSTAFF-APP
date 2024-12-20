@@ -175,7 +175,6 @@ export class AddTeacherComponent implements OnInit {
     this.dataService.getTeacherById(id).subscribe({
       next: (response) => {
         if (response) {
-          console.log(response)
           this.employee = response
           this.setValuesForEdit()
         }
@@ -398,7 +397,7 @@ export class AddTeacherComponent implements OnInit {
 
       // coursesByEducation: this.educationTypeId ? this.dataService.getCoursesByEducationType(this.educationTypeId) : []
     }).subscribe((results) => {
-      console.log(results)
+     
       // Assign the results to your component variables
       this.subjects = results.subjects;
       this.statuses = results.statuses;
@@ -438,9 +437,6 @@ export class AddTeacherComponent implements OnInit {
 
 
       };
-
-      console.log(professionalData)
-      debugger
 
       this.professionalForm.patchValue({
         department: this.employeeTypes.find((dep: any) => dep.employeeTypeID === professionalData.departmentID),
@@ -524,9 +520,7 @@ export class AddTeacherComponent implements OnInit {
     debugger
 
     this.educationForm.get('educations')?.valueChanges.pipe(distinctUntilChanged()).subscribe(educationArray => {
-      debugger
-      console.log(educationArray)
-
+    
       const educations = this.educationForm.get('educations') as FormArray;
 
       educationArray.forEach((education: any, index: number) => {
@@ -753,7 +747,7 @@ export class AddTeacherComponent implements OnInit {
       console.warn('Form is invalid. Please check your inputs.');
     }
 
-    console.log('Current Step:', this.currentStep);
+
     debugger;
   }
 
@@ -769,7 +763,7 @@ export class AddTeacherComponent implements OnInit {
       toDate: this.dataService.formatDateToISO(edu.toDate),
       DocumentID: parseInt(edu.certificate?.documentID) || null
     }));
-    console.log("doc", this.fullFormData)
+
 
     let documentData = this.fullFormData.documents.map((doc: any) => ({
       documentID: doc.documentFile.documentID
@@ -847,7 +841,7 @@ export class AddTeacherComponent implements OnInit {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
-            console.log(response.employeeID);
+   
 
             this.toastr.success('Teacher Updated !', 'Success', {
               closeButton: true,
@@ -858,7 +852,7 @@ export class AddTeacherComponent implements OnInit {
             this.router.navigate(['/teachers/teacher-list'])
 
           } else {
-            console.log("else")
+           
             this.toastr.error('Teacher Update !', 'Failed', {
               closeButton: true,
               progressBar: true,
@@ -882,7 +876,6 @@ export class AddTeacherComponent implements OnInit {
             return;
           }
 
-          console.log("ERR", error)
           this.toastr.error('Somthing Went Wrong !', 'Failed', {
             closeButton: true,
             progressBar: true,
@@ -904,8 +897,7 @@ export class AddTeacherComponent implements OnInit {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
             this.submitBtnStatus.professional = false;
-            console.log(response.employeeID);
-
+       
             this.toastr.success('Teacher Added !', 'Success', {
               closeButton: true,
               progressBar: true,
@@ -916,7 +908,7 @@ export class AddTeacherComponent implements OnInit {
             this.router.navigate(['/teachers/teacher-list'])
 
           } else {
-            console.log("er-", response)
+          
 
             if (response.message) {
               let message: string = response.message

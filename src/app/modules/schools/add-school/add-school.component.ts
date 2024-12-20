@@ -61,7 +61,7 @@ export class AddSchoolComponent implements OnInit {
     this.schoolService.getSchoolById(id).subscribe({
       next: (response) => {
         if (response) {
-          console.log(response)
+        
           this.school = response
           this.setValuesForEdit()
         }
@@ -87,8 +87,7 @@ export class AddSchoolComponent implements OnInit {
       debugger
       this.schoolTypes = this.schoolTypes
       this.cities = this.cities
-      console.log(this.divisionsFormArray)
-
+    
       const schoolData = {
 
         schoolName: this.school.schoolName,
@@ -125,12 +124,6 @@ export class AddSchoolComponent implements OnInit {
           });
         })
       ));
-
-
-      console.log(this.schoolDetailsForm)
-
-      debugger
-
 
 
     });
@@ -225,7 +218,7 @@ export class AddSchoolComponent implements OnInit {
             complete: () => {
               this.submitted=false
               this.submitting=false
-              console.log('Request complete');
+
             }
           });
 
@@ -233,7 +226,7 @@ export class AddSchoolComponent implements OnInit {
         this.schoolService.addSchool(data)
           .subscribe({
             next: (response) => {
-              console.log('School added successfully', response);
+             
               // Reset form and submitted flag if needed
               this.schoolDetailsForm.reset();
               this.submitted=false
@@ -259,7 +252,7 @@ export class AddSchoolComponent implements OnInit {
               });
             },
             complete: () => {
-              console.log('Request complete');
+            
               this.submitted=false
               this.submitting=false
             }
@@ -285,7 +278,7 @@ export class AddSchoolComponent implements OnInit {
       this.dataService.uploadProfilePhoto(file).subscribe({
         next: (response: any) => {
           this.schoolDetailsForm.patchValue({ photoID: response });
-          console.log("form->",this.schoolDetailsForm)
+
 
         },
         error: (error: any) => {
@@ -323,7 +316,7 @@ export class AddSchoolComponent implements OnInit {
       cities: this.schoolService.getCities(),
     }).subscribe({
       next: (results) => {
-        console.log("result",results)
+
         this.schoolTypes = results.schoolTypes;
         this.cities = results.cities;
 
@@ -344,11 +337,10 @@ export class AddSchoolComponent implements OnInit {
     let schoolTypeId: number = event.schoolTypeID
     this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
       next: (response: any) => {
-        debugger
-        console.log("response", response)
+       
 
         let divisions: any[] = response[0].divisions
-        console.log("divisions", divisions)
+
         this.divisions = divisions
 
         this.divisions.forEach((item: any) => {

@@ -122,7 +122,7 @@ export class DocumentsUploadComponent implements OnInit {
   // From drag and drop
   onDropSuccess(event: any, index: number) {
     event.preventDefault();
-    console.log("file", event)
+
 
     this.onCertificateUploadDragAndDrop(event, index);
 

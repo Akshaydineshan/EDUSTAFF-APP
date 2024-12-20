@@ -32,7 +32,7 @@ export class DashboardComponent implements OnInit {
   loadDashboardStats(): void {
     this.dataService.getDashboardStats().subscribe({
       next: (stats) => {
-        console.log("status",stats)
+       
         // this.dashboardStats = stats;
         this.animateStats(stats)
        

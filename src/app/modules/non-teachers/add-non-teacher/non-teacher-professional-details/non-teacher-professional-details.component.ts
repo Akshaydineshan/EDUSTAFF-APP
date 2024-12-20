@@ -29,8 +29,7 @@ export class NonTeacherProfessionalDetailsComponent {
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
-    
-    console.log("pro",this.professionalForm.value)
+
 
   }
 

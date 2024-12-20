@@ -334,7 +334,7 @@ export class DataService {
     // if (filters.uniqueID) params = params.append('uniqueId', filters.uniqueID?.trim());
     // if (filters.fromPromotionDate) params = params.append('fromPromotionDate', filters.fromPromotionDate);
     // if (filters.toPromotionDate) params = params.append('toPromotionDate', filters.toPromotionDate);
-    console.log("params", params)
+ 
 
     if (params) {
       return filters ? this.http.get<any[]>(`${this.apiUrl}${url}`, { params }).pipe(

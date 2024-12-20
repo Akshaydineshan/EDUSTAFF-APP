@@ -31,7 +31,7 @@ export class ViewNonTeacherDetailsComponent {
   loadItemDetails(teacherId: any) {
     this.dataService.getTeacherById(teacherId).subscribe({
       next: (response:any) => {
-        console.log(response)
+      
         this.currentTeacher = response
 
       },

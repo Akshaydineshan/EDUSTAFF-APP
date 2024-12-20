@@ -175,7 +175,7 @@ export class AddNonTeacherComponent {
     this.dataService.getTeacherById(id).subscribe({
       next: (response: any) => {
         if (response) {
-          console.log(response)
+        
           this.employee = response
           this.setValuesForEdit()
         }
@@ -409,7 +409,7 @@ export class AddNonTeacherComponent {
 
       // coursesByEducation: this.educationTypeId ? this.dataService.getCoursesByEducationType(this.educationTypeId) : []
     }).subscribe((results) => {
-      console.log(results)
+
       // Assign the results to your component variables
       this.subjects = results.subjects;
       this.statuses = results.statuses;
@@ -475,8 +475,7 @@ export class AddNonTeacherComponent {
 
 
       };
-      console.log(professionalData)
-      debugger
+    
 
       // this.professionalForm.patchValue({
       //   department: this.employeeTypes.find((dep: any) => dep.employeeTypeID === professionalData.departmentID),
@@ -598,8 +597,7 @@ export class AddNonTeacherComponent {
 
     this.educationForm.get('educations')?.valueChanges.pipe(distinctUntilChanged()).subscribe(educationArray => {
       debugger
-      console.log(educationArray)
-
+  
       const educations = this.educationForm.get('educations') as FormArray;
 
       educationArray.forEach((education: any, index: number) => {
@@ -738,7 +736,7 @@ export class AddNonTeacherComponent {
         this.bloodGroups = data.bloodGroups;
         this.approvalTypes = data.approvalTypes;
 
-        console.log('Data loaded successfully:', data, this.employeeTypes);
+
       },
       error: (err: any) => {
         console.error('Failed to load dropdown data:', err);
@@ -866,8 +864,7 @@ export class AddNonTeacherComponent {
       console.warn('Form is invalid. Please check your inputs.');
     }
 
-    console.log('Current Step:', this.currentStep);
-    debugger;
+
   }
   previewSubmit() {
     debugger
@@ -950,7 +947,7 @@ export class AddNonTeacherComponent {
       this.nonTeacherService.updateTeacher(data, employeeId).subscribe(
         (response: any) => {
           debugger
-          console.log('Employee Updated successfully:', response);
+
           if (response.status === 200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;
@@ -1005,7 +1002,7 @@ export class AddNonTeacherComponent {
       this.nonTeacherService.addTeacher(data).subscribe(
         (response: any) => {
           debugger
-          console.log('Employee added successfully:', response);
+        
           if (response.status === 200) {
             this.submitBtnStatus.personal = false;
             this.submitBtnStatus.education = false;

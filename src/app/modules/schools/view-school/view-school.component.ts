@@ -30,7 +30,7 @@ apiUrl = environment.imageBaseUrl;
     debugger
     this.schoolService.getSchoolById(schoolId).subscribe({
       next: (response) => {
-        console.log(response)
+      
         this.currentSchool = response
 
       },

@@ -118,8 +118,6 @@ export class NonTeacherTransferlistComponent implements OnInit {
   }
   dateChange() {
     const dateControl = this.transferRequestForm.get('date');
-    console.log("control", dateControl)
-
     dateControl?.updateValueAndValidity();  // Manually trigger validation
   }
 
@@ -132,7 +130,6 @@ export class NonTeacherTransferlistComponent implements OnInit {
     const menuButtons = document.getElementsByClassName('menuButton');
     //  const menuButtonIs = document.getElementsByClassName('menuI');
     const menuPops = document.getElementsByClassName('menuPop');
-    console.log("menubn", menuButtons)
 
     let clickedInsidePopup = false;
     let clickedOnButton = false
@@ -180,13 +177,13 @@ export class NonTeacherTransferlistComponent implements OnInit {
 
     }).subscribe({
       next: (results: any) => {
-        console.log("school list", results)
+
         this.schoolDropDownList = results.schools.filter((school: any) =>
           !filterSchool.some((filter) => filter.id === school.schoolId)
         ).filter((item: any) => item.schoolId !== this.selectMenuRowData.fromSchoolID
         )
 
-        console.log("filt", this.schoolDropDownList)
+      
 
         const updatedList = [];
         filterSchool.forEach((item: any) => {
@@ -211,7 +208,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
   }
 
   onFirstDropdownChange(selectedItem: any): void {
-    console.log("selected ",selectedItem)
+
     if (selectedItem && selectedItem.schoolId === 0) {
       this.showSecondDropdown = true; // Show the second dropdown
       this.transferRequestForm.get('toSchool')?.setValue(null)
@@ -252,7 +249,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
       (data: any) => {
         debugger
         this.transferList = data;
-        console.log("school list data", this.transferList);
+       
         this.transferTableRows = this.transferList
         this.transferTableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
@@ -413,7 +410,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
 
   updateMenuMousePosition(event: MouseEvent): void {
     debugger;
-    console.log("eventRR", event.clientX, event.clientY)
+  
     const offset = 13; // Offset for positioning
     this.mouseMenuX = event.clientX + offset - 226;
     this.mouseMenuY = event.clientY;
@@ -538,7 +535,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
-            console.log("school", this.selectedSchool)
+
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -562,8 +559,6 @@ export class NonTeacherTransferlistComponent implements OnInit {
 
 
   onTeacherHover(teacherId: number, teacherData: any, event: MouseEvent): void {
-    console.log("teacherId", teacherId, teacherData)
-
     if (this.hoverTimeout) {
       clearTimeout(this.hoverTimeout);
     }
@@ -623,7 +618,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
     if (this.dataService.confirmationPopup("Are you sure you want to proceed ?")) {
       this.submitted = true
       if (this.transferRequestForm.valid) {
-           console.log("transfer form", this.transferRequestForm.value)
+
            let formValue: any = this.transferRequestForm.value;
            let employee: any = this.selectMenuRowData
            if (!this.isRejectedClick) {
@@ -698,7 +693,6 @@ export class NonTeacherTransferlistComponent implements OnInit {
      
          } else {
      
-           console.log("invalid form", this.transferRequestForm)
          }
     }
 
@@ -781,7 +775,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
   }
 
   toggleFilterDropdown() {
-    console.log("filter click")
+
     this.ngZone.run(() => {
 
       this.showFilterModal = !this.showFilterModal;
@@ -792,7 +786,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
 
     this.ngZone.run(() => {
       debugger
-      console.log("isSelected", this.selected)
+
       const filters = this.filterForm.value;
 
       let filter: any = {
@@ -806,7 +800,6 @@ export class NonTeacherTransferlistComponent implements OnInit {
 
 
       }
-      console.log("payload", filter)
 
       let url: string = 'TransferRequest/NonTeacherTransferRequestfilter'
       this.dataService.filterInTeacherList(url, filter).subscribe((data: any) => {
