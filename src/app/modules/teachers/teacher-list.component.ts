@@ -52,7 +52,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   mouseMenuY: number = 0;
   menuListItems: any[] = [
     { name: 'Transfer Request', icon: "assets/icons/transfer-request.jpg", value: 'transferRequest', icons: 'fa-solid fa-arrow-right-arrow-left' },
-    { name: 'Leave request', icon: "assets/icons/leave.png", value: 'leaveRequest', icons: 'bi bi-hourglass-split' }
+    { name: 'Leave Request', icon: "assets/icons/leave.png", value: 'leaveRequest', icons: 'bi bi-hourglass-split' }
   ]
   isTransferPopup: boolean = false;
   isLeavePopup: boolean = false;
