@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 import { dateRangeValidator, minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-non-teacher-education-details',
@@ -16,44 +18,49 @@ export class NonTeacherEducationDetailsComponent {
   @Input() submitted: boolean = false;
   @Output() educationFormChange = new EventEmitter<any>();
 
-  selectedEducationType!: string;
-
   maxDate!: string;
-  minDate: any=new Date('1900-01-01');
+  minDate: any = new Date('1900-01-01');
+  selectedEducationType!: string;
+  getTruncatedFileName = getTruncatedFileName
+  getFileName=getFileName
 
   filteredCoursesByEducation: any[] = []; // this is for courseName select list value storing index wice by education type
   file: any;
   profileImage: string | ArrayBuffer | null = null;
   educationValueChangesSubscription: any;
-  schoolUniversityNotification: boolean=false;
+  apiBaseUrl: any = environment.imageBaseUrl
+  schoolUniversityNotification: boolean = false;
+  fileName: any = [];
+  fileSize: any = [];
+  apiUrl: any = environment.imageBaseUrl;
 
   constructor(
     private fb: FormBuilder,
-    private dataService: DataService) { 
-     
-    }
+    private dataService: DataService) {
+
+  }
 
   ngOnInit(): void {
-
-    this.educations = this.educationForm.get('educations') as FormArray;
+    this.educationForm.disable()
     const today = new Date();
     this.maxDate = today.toISOString().split('T')[0];
 
-    this.educationForm.disable();
+    this.educations = this.educationForm.get('educations') as FormArray;
+
     this.populateCoursesForSavedEducationTypes()
     this.educationForm.enable()
-  
+
   }
- 
+
 
   ngOnChanges(changes: SimpleChanges): void {
- 
+
     debugger
     if (changes['educationForm']) {
       debugger
       this.educations = this.educationForm.get('educations') as FormArray;
-         this.populateCoursesForSavedEducationTypes()
-     
+      this.populateCoursesForSavedEducationTypes()
+
     }
   }
 
@@ -64,32 +71,49 @@ export class NonTeacherEducationDetailsComponent {
       educationType: ['', Validators.required],
       courseName: ['', Validators.required],
       courseNameOther: [''],
-      schoolName: ['', ],
+      schoolName: ['',],
       fromDate: [''],
-      toDate: ['',[minAndMaxDateValidator('1900-01-01',true,true), Validators.required]],
+      toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
       certificate: ['']
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
     );
 
     this.educations.push(courseGroup);
-  
+
   }
 
+  // onCourseNameSelectOtherToAddValidation(): void {
+  //   debugger
 
-  dateChange(index:number){
-    const toDateArray = this.educationForm.get('educations') as FormArray;
-    const dobControl = toDateArray.at(index).get("fromDate");
+  //   this.educationForm.get('educations')?.valueChanges.pipe(distinctUntilChanged()).subscribe((educationArray:any) => {
+  //     debugger
+  //     console.log(educationArray)
 
-    dobControl?.updateValueAndValidity();  // Manually trigger validation
-  }
-  dateChangeTo(index:number){
-   
-    const toDateArray = this.educationForm.get('educations') as FormArray;
-    const dobControl = toDateArray.at(index).get("toDate")
-    dobControl?.updateValueAndValidity();  // Manually trigger validation
-  }
+  //     const educations = this.educationForm.get('educations') as FormArray;
 
+  //     educationArray.forEach((education: any, index: number) => {
+
+  //       const educationGroup = educations.at(index) as FormGroup;
+  //       const courseNameControl = educationGroup.get('courseName');
+  //       const courseNameOtherControl = educationGroup.get('courseNameOther');
+
+  //       if (courseNameControl?.value.courseName === 'Others') {
+  //         // Add 'required' validator to courseNameOther if courseName is 'Others'
+  //         courseNameOtherControl?.setValidators([Validators.required]);
+  //       } else {
+  //         // Remove 'required' validator from courseNameOther
+  //         courseNameOtherControl?.clearValidators();
+  //       }
+  //       debugger
+
+  //       // Recalculate validation status
+  //       courseNameOtherControl?.updateValueAndValidity();
+  //     });
+
+  //     debugger
+  //   });
+  // }
 
 
 
@@ -134,12 +158,12 @@ export class NonTeacherEducationDetailsComponent {
 
       let file = this.file
       this.dataService.uploadDocument(file).subscribe(
-        (response:any) => {
-  
+        (response) => {
+          console.log('File uploaded successfully', response);
           const educations = this.educationForm.get('educations') as FormArray;
           educations.at(index).get('certificate')?.patchValue(response)
         },
-        (error:any) => {
+        (error) => {
           console.error('Error uploading file', error);
         }
       );
@@ -151,8 +175,7 @@ export class NonTeacherEducationDetailsComponent {
   }
 
 
- 
-      // Triggered when education type is changed, and also when navigating back
+  // Triggered when education type is changed, and also when navigating back
   onEducationTypeChange(event: any, index: number) {
     debugger
     this.educations.at(index).patchValue({ courseName: '' });
@@ -163,30 +186,30 @@ export class NonTeacherEducationDetailsComponent {
       educationGroup.get('toDate')?.reset();
       educationGroup.get('schoolName')?.reset();
     }
-   
+
     const selectedType = Number(event.educationTypeID);
     if (selectedType) {
       this.getCoursesByEducationType(selectedType, index);
-
+      
     }
-    if(event.educationTypeID !== 5){
-      this.schoolUniversityNotification=false;
+    if (event.educationTypeID !== 5) {
+      this.schoolUniversityNotification = false;
       const educationsFormArray = this.educationForm.get('educations') as FormArray;
       const educationGroup = educationsFormArray.at(index) as FormGroup;
-      educationGroup.get('fromDate')?. setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required]);
-      educationGroup.get('schoolName')?. setValidators([Validators.required])
-      educationGroup.get('fromDate')?.updateValueAndValidity(); 
-      educationGroup.get('schoolName')?.updateValueAndValidity(); 
-     
-    }else if(event.educationTypeID === 5){
-      this.schoolUniversityNotification=true;
+      educationGroup.get('fromDate')?.setValidators([minAndMaxDateValidator('1900-01-01', true, true), Validators.required]);
+      educationGroup.get('schoolName')?.setValidators([Validators.required])
+      educationGroup.get('fromDate')?.updateValueAndValidity();
+      educationGroup.get('schoolName')?.updateValueAndValidity();
+
+    } else if (event.educationTypeID === 5) {
+      this.schoolUniversityNotification = true;
       const educationsFormArray = this.educationForm.get('educations') as FormArray;
       const educationGroup = educationsFormArray.at(index) as FormGroup;
       educationGroup.get('fromDate')?.clearValidators();
       educationGroup.get('schoolName')?.clearValidators();
-      educationGroup.get('fromDate')?.updateValueAndValidity(); 
+      educationGroup.get('fromDate')?.updateValueAndValidity();
       educationGroup.get('schoolName')?.updateValueAndValidity();
-
+      
     }
   }
 
@@ -195,10 +218,10 @@ export class NonTeacherEducationDetailsComponent {
     debugger
     this.dataService.getCoursesByEducationType(educationTypeId).subscribe((data: any) => {
       this.filteredCoursesByEducation[index] = data;
-    
 
 
-    }, (error:any) => {
+
+    }, (error) => {
       this.filteredCoursesByEducation[index] = [];
       console.error('Error fetching courses:', error);
     });
@@ -214,11 +237,11 @@ export class NonTeacherEducationDetailsComponent {
     this.educations.controls.forEach((control, index) => {
       const selectedEducationType = control.get('educationType')?.value.educationTypeID;
       if (selectedEducationType) {
-        if(selectedEducationType !==5){
-          
-          control.get('fromDate')?.setValidators([minAndMaxDateValidator('1900-01-01',true,true),Validators.required])
+        if (selectedEducationType !== 5) {
+
+          control.get('fromDate')?.setValidators([minAndMaxDateValidator('1900-01-01', true, true), Validators.required])
           control.get('schoolName')?.setValidators([Validators.required])
-        }else{
+        } else {
           control.get('fromDate')?.clearValidators();
           control.get('schoolName')?.clearValidators();
         }
@@ -233,9 +256,164 @@ export class NonTeacherEducationDetailsComponent {
     debugger
     return course1 && course2 ? course1.courseID === course2.courseID : course1 === course2;
   }
+  getCertificate(certificate: any) {
+    let result = this.apiBaseUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, '');
+    return result;
+  }
+
+  pdfClick(url: any) {
+    window.open(this.getCertificate(url), "_blank")
+    //  window.location.href= this.getCertificate(url)
+  }
+  dateChange(index: number) {
+    const toDateArray = this.educationForm.get('educations') as FormArray;
+    const dobControl = toDateArray.at(index).get("fromDate");
+
+    dobControl?.updateValueAndValidity();  // Manually trigger validation
+  }
+  dateChangeTo(index: number) {
+
+    const toDateArray = this.educationForm.get('educations') as FormArray;
+    const dobControl = toDateArray.at(index).get("toDate")
+    dobControl?.updateValueAndValidity();  // Manually trigger validation
+  }
 
 
 
+  EducationTypeChange(event: any, index: number) {
+
+    // const selectedType = Number(event.courseID); 
+    // if (selectedType) {
+    //   this.dataService.getCoursesByEducationType(selectedType).subscribe((data: any) => {
+    //     this.coursesByEducation = data.courses; 
+    //     console.log(this.coursesByEducation);
+
+    //     this.educations.at(index).patchValue({ courseName: '' });
+    //   }, (error) => {
+    //     this.coursesByEducation = [];
+    //     console.error('Error fetching courses:', error);
+    //   });
+    // }
+  }
+
+
+
+  onDragOver(event: any) {
+    event.preventDefault();
+  }
+
+
+  // UploadFile Related funs
+  onCertificateUploadChange(event: any, index: number): void {
+
+    this.fileName[index] = event.target.files[0]?.name;
+    let totalBytes = event.target.files[0]?.size;
+    if (totalBytes < 1000000) {
+      this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
+    } else {
+      this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
+    }
+
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+      // this.educations.at(index).get('documentFile')?.setValue(file);
+    }
+    this.uploadCertificate(index)
+  }
+  onCertificateUploadDragAndDrop(event: any, index: number): void {
+    this.fileName[index] = event.dataTransfer.files[0]?.name;
+    let totalBytes = event.dataTransfer.files[0]?.size;
+    if (totalBytes < 1000000) {
+      this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
+    } else {
+      this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
+    }
+
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      this.file = file;
+    }
+    this.uploadCertificate(index)
+  }
+
+  uploadCertificate(index: any): void {
+    debugger
+    if (this.file) {
+
+      let file = this.file
+      this.dataService.uploadDocument(file).subscribe(
+        (response: any) => {
+          console.log('File uploaded successfully', response);
+          const educations = this.educationForm.get('educations') as FormArray;
+          educations.at(index).get('certificate')?.patchValue(response)
+        },
+        (error: any) => {
+          console.error('Error uploading file', error);
+        }
+      );
+
+
+    } else {
+      console.error('No file selected');
+    }
+  }
+
+  // From drag and drop
+  onDropSuccess(event: any, index: number) {
+    event.preventDefault();
+    this.onCertificateUploadDragAndDrop(event, index);
+
+  }
+
+
+
+
+
+
+
+
+  getDocument(index: any) {
+    let result = '';
+
+    let image = this.educations.at(index)?.get('certificate')?.value?.documentName;
+    if (
+      this.educations.at(index)?.get('certificate')?.value?.documentName === 'No Document' ||
+      this.educations.at(index)?.get('certificate')?.value?.documentName === null ||
+      this.educations.at(index)?.get('certificate')?.value?.documentName === ''
+    ) {
+      image = '';
+    }
+
+    if (this.apiUrl && image) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
+    }
+
+
+    this.fileName[index] = this.getFileName(result); // Get the file name
+    return result;
+  }
+
+  transform(url: any): string {
+
+    const fileTypeIcons: { [key: string]: string } = {
+      pdf: "../../../../assets/icons/pdf-ic.png",
+      jpg: "../../../../assets/icons/img-ic.png",
+      jpeg: "../../../../assets/icons/img-ic.png",
+      png: "../../../../assets/icons/docs-ic.png",
+      doc: "../../../../assets/icons/docs-ic.png",
+      docx: "../../../../assets/icons/docs-ic.png",
+      default: "../../../../assets/icons/docs-ic.png",
+    };
+    const extension = url.split('.').pop()?.toLowerCase() || '';
+    let result: any = fileTypeIcons[extension] || fileTypeIcons['default'];
+
+    return result;
+  }
+  removeLeaveApplicationDocument(index: number) {
+
+    this.educations.at(index)?.get('certificate')?.setValue("")
+  }
 
  
 }
