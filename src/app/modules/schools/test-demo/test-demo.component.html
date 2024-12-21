@@ -1,125 +1,183 @@
-<div class="request-popup-main">
-
-  <div class="head-sec">
-    <p class="head-lab">Leave Request</p>
-
-    <div class="popup-close">
-      <img src="../../../../assets/icons/popup-close.png" alt="">
-    </div>
-
+<div class="body-sec">
+  <div class="body-sec-head">
+    <p>School Details</p>
   </div>
 
-  <div class="head-line"></div>
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="sec basic-detils">
+        <p class="head">Basic Profile</p>
+        <div class="tbl">
+          <table class="basic-det">
+         
+            <tr>
+              <td >School Name</td>
+              <td>THSLC </td>
+            </tr>
+            <tr>
+              <td >Address</td>
+              <td >Kannur</td>
+            </tr>
+            <tr>
+              <td >School Type</td>
+              <td >Lp</td>
+            </tr>
+            <tr>
+              <td >State</td>
+              <td >Kerala</td>
+            </tr>
+            <tr>
+              <td >District</td>
+              <td >Kannur</td>
+            </tr>
+            
 
-  <div class="main-body">
-    <form>
-      <div class="main-sec">
-
-        <div class="left-sec">
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label b-label"><span>Start Date</span><span
-                class="text-danger ms-1 mad-f">*</span></label>
-            <div class="col-sm-12">
-              <input type="date" class="form-control" formControlName="" [readonly]="true">
-            </div>
-          </div>
+          </table>
         </div>
 
 
-
-        <div class="right-sec">
-          <div class="row mb-1">
-            <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
-                class="text-danger ms-1 mad-f">*</span></label>
-            <div class="col-sm-12">
-              <input type="date" class="form-control" formControlName="" [readonly]="true">
-            </div>
-          </div>
-
-        </div>
       </div>
 
-      <div>
-
-        <div class="row mb-2 mt-2">
-          <label for="" class="col-sm-12 col-form-label b-label">
-            <span>Upload Document</span>
-            <span class="text-danger ms-1 mad-f">*</span>
-          </label>
-          <div class="col-sm-12">
-            <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
-              <div class="custom-file-upload">
-                <div class="content">
-                  <i class="bi bi-cloud-upload" style="font-size: 30px;color: #000000;
-"></i>
-                  <p class="lab">Drag File To Upload</p>
-                  <p class="or">or</p>
-                  <input (change)="onChange($event)" #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg"
-                    style="display: none;">
-                  <button class="btn btn-primary" (click)="fileInput.click()">Browse
-                    File</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row mb-2 mt-3">
-          <div class="col-sm-12">
-            <div>
-              <div class="uploaded-file">
-                <div style="display: flex; align-items: center; gap: 9px; padding:10 0px; ">
-                  <!-- <i class="bi bi-filetype-pdf" style="height:30px; font-size: 24px;"></i> -->
-                  <img src="../../../../assets/icons/pdf-ic.png" alt="" style="width:32px; height:40px;">
-
-                  <div class="r-l " style="margin-top:16px;">
-                    <p class="f-n">file.pdf</p>
-                    <p class="f-s">200kb - 100% uploaded</p>
-                  </div>
-                </div>
-
-                <div class="right">
-                  <i class="fa-regular fa-trash-can"></i>
-                </div>
-
-              </div>
-            </div>
-
-          </div>
-        </div>
+    </div>
 
 
+    <div class="col-sm-8">
 
-        <div class="row ">
-          <label for="" class="col-sm-12 col-form-label b-label">
-            <span>Reason</span>
-            <span class="text-danger ms-1 mad-f"></span>
-          </label>
-          <div class="col-sm-12">
+      <div class="sec">
 
-            <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
-              placeholder="Write something.." formControlName="comment" rows="3" cols="3"></textarea>
-            <!-- <div
-              *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
-              <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
-                required</small>
-              <small class="text-danger" *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
-                Pattern</small>
-            </div> -->
-          </div>
-        </div>
+        <p class="head">Authorities</p>
+        <div class="tbl">
+          <table>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+              <th>Contact Number</th>
 
-        <div class="btn-sec">
-          <button class="reset">Reset</button>
-          <button class="submit">Submit</button>
+            </tr>
+
+            <tr>
+              <td>1</td>
+              <td>A</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>A</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>A</td>
+              <td>20</td>
+            </tr>
+          </table>
         </div>
 
 
 
       </div>
-    </form>
-    <div>
 
     </div>
   </div>
+
+
+
+  <div class="row">
+    <div class="col-sm-7">
+      <div class="teacher-sec">
+        <p class="head">Teacher List</p>
+        <div class="tbl">
+          <table>
+
+            <tr>
+              <th>name</th>
+              <th>Designation</th>
+              <th>Subject</th>
+              <th>Phone Number</th>
+
+            </tr>
+
+            <tr>
+              <td>Akshay</td>
+              <td>developer</td>
+              <td>bsc</td>
+              <td>7994685006</td>
+            </tr>
+            <tr>
+              <td>Akshay</td>
+              <td>developer</td>
+              <td>bsc</td>
+              <td>7994685006</td>
+            </tr>
+            <tr>
+              <td>Akshay</td>
+              <td>developer</td>
+              <td>bsc</td>
+              <td>7994685006</td>
+            </tr>
+          </table>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div class="col-sm-5">
+
+      <div class="std-sec">
+
+        <p class="head">School Class</p>
+        <div class="tbl">
+          <div class="std-head-sec">
+            <div class="left d-flex align-items-center">
+              <button class="btn btn-sm  btn-light d-flex align-items-center justify-content-center">
+                <i class="fas fa-less-than" style="font-size: 9px;color: #444444;"></i>
+              </button>
+            </div>
+            <div class="center d-flex align-items-center">
+              1st Standard
+            </div>
+
+            <div class="right d-flex align-items-center">
+              <button class="btn btn-sm btn-light d-flex align-items-center justify-content-center">
+                <i class="fas fa-greater-than" style="font-size: 9px;color: #444444;
+ "></i>
+              </button>
+            </div>
+          </div>
+          <table>
+
+
+
+            <tr>
+
+              <th style="width:50%">Division</th>
+              <th  style="width:50%">Student Count</th>
+
+            </tr>
+
+            <tr>
+              <td>A</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>A</td>
+              <td>20</td>
+            </tr>
+            <tr>
+              <td>A</td>
+              <td>20</td>
+            </tr>
+          </table>
+        </div>
+
+
+
+      </div>
+
+    </div>
+  </div>
+
 </div>

@@ -9,12 +9,46 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./view-school.component.scss']
 })
 export class ViewSchoolComponent implements OnInit {
-isSidebarClosed: boolean = false;
-currentSchool!: any
-apiUrl = environment.imageBaseUrl;
+  isSidebarClosed: boolean = false;
+  currentSchool!: any
+  apiUrl = environment.imageBaseUrl;
   itemId: any;
 
- constructor(private route:ActivatedRoute,private schoolService:SchoolService,private router:Router){}
+  standards:any[] = [
+    {
+      standard: '1st Standard',
+      divisions: [
+        { name: 'A', count: 20 },
+        { name: 'B', count: 18 },
+        { name: 'C', count: 22 },
+        { name: 'D', count: 22 }
+      ]
+    },
+    {
+      standard: '2nd Standard',
+      divisions: [
+        { name: 'A', count: 25 },
+        { name: 'B', count: 24 },
+        { name: 'C', count: 23 },
+        { name: 'D', count: 25 },
+        { name: 'E', count: 24 },
+        { name: 'F', count: 23 }
+      ]
+    },
+    {
+      standard: '3rd Standard',
+      divisions: [
+        { name: 'A', count: 30 },
+        { name: 'B', count: 28 },
+        { name: 'C', count: 29 }
+      ]
+    }
+  ];
+  currentIndex:number=0;
+
+
+
+  constructor(private route: ActivatedRoute, private schoolService: SchoolService, private router: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -22,7 +56,7 @@ apiUrl = environment.imageBaseUrl;
       let itemId = params['id'];
       this.itemId = itemId;
       this.loadItemDetails(itemId);
-     
+
     });
   }
 
@@ -30,12 +64,12 @@ apiUrl = environment.imageBaseUrl;
     debugger
     this.schoolService.getSchoolById(schoolId).subscribe({
       next: (response) => {
-      
+
         this.currentSchool = response
 
       },
       error: (error) => {
-       
+
 
       },
       complete: () => {
@@ -45,9 +79,25 @@ apiUrl = environment.imageBaseUrl;
 
   }
 
-
-
   
+
+  // Show the previous standard
+  showPrevious() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  // Show the next standard
+  showNext() {
+    if (this.currentIndex < this.standards.length - 1) {
+      this.currentIndex++;
+    }
+  }
+
+
+
+
   get getImage() {
     let result = '';
     if (this.apiUrl && this.currentSchool?.photo) {
@@ -66,7 +116,7 @@ apiUrl = environment.imageBaseUrl;
     return this.isSidebarClosed;
   }
 
-  print(){
+  print() {
     window.print()
   }
 }
