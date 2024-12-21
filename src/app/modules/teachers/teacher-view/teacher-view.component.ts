@@ -90,5 +90,7 @@ pdfClick(url:any){
   get getSidebarToggle() {
     return this.isSidebarClosed;
   }
-
+  print(){
+    window.print()
+  }
 }

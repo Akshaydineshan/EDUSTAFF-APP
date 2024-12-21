@@ -65,4 +65,8 @@ apiUrl = environment.imageBaseUrl;
   get getSidebarToggle() {
     return this.isSidebarClosed;
   }
+
+  print(){
+    window.print()
+  }
 }

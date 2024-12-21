@@ -1,107 +1,3 @@
-// body {
-//   background-color: #f7f7f7;
-//   font-family: 'Arial', sans-serif;
-// }
-
-// .container {
-//   // width: 100vw;
-//   // height: 100vh;
-//   max-width: 100%;
-//   padding-left: 0;
-//   padding-top: 70x;
-// }
-
-// .content {
-//   background-color: #fff;
-//   border: none;
-//   width:100%;
-//   padding-top: 0;
-// }
-
-// .prof-img {
-//   width: 112px;
-//   height: 112px;
-//   position: relative;
-//     bottom: 69px;
-//     right:15px;
-// }
-
-// // h5 {
-// //   font-weight: bold;
-// // }
-// .det-header{
-//   font-size: 16px;
-//   font-weight: 600;
-// }
-
-// p {
-//   margin-bottom: 5px;
-// }
-
-// h5 {
-//   font-weight: bold;
-//   // margin-bottom: 15px;
-// }
-
-// ul {
-//   padding-left: 0;
-// }
-
-// ul li {
-//   margin-bottom: 10px;
-// }
-
-// .btn-outline-secondary {
-//   color: #6c757d;
-//   border-color: #6c757d;
-// }
-
-// .btn-outline-secondary:hover {
-//   background-color: #6c757d;
-//   color: #fff;
-// }
-
-// .btn-success {
-//   background-color: #28a745;
-//   border-color: #28a745;
-// }
-
-// .btn-success:hover {
-//   background-color: #218838;
-//   border-color: #1e7e34;
-// }
-
-// .bi {
-//   margin-right: 5px;
-// }
-
-// .badge.bg-danger {
-//   background-color: #dc3545;
-// }
-
-// hr {
-//   margin-top: 0;
-//   margin-bottom: 1rem;
-// }
-
-// .bg-light {
-//   background: #f7f7f7;
-// }
-
-// .gradient-bg {
-//   background: linear-gradient(to right, #b87cf8, #7eadff);
-//   color: white;
-//   padding: 20px;
-//   border-radius: 8px 8px 0 0;
-// }
-
-// .padding-top-70 {
-//   padding-top: 70px !important;
-// }
-
-// .padding-top-0 {
-//   padding-top: 0px !important;
-// }
 
 
 .key-value-item {
@@ -285,7 +181,7 @@
 
 li {
   display: flex;
-   align-items: start;
+   align-items: flex-start;
   margin-bottom: 8px;
   line-height: 30px;
 
