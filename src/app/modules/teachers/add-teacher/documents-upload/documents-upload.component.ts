@@ -169,5 +169,6 @@ export class DocumentsUploadComponent implements OnInit {
   removeLeaveApplicationDocument(index: number) {
 
     // this.educations.at(index)?.get('certificate')?.setValue("")
+    this.documents.at(index)?.get('documentFile')?.setValue('')
   }
 }

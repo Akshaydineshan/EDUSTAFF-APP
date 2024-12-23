@@ -7,6 +7,7 @@ import { DataService } from 'src/app/core/service/data/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
+import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 
 @Component({
   selector: 'app-add-school',
@@ -17,9 +18,10 @@ export class AddSchoolComponent implements OnInit {
   isSidebarClosed: boolean = false;
   schoolDetailsForm!: FormGroup;
   submitted: boolean = false; //  form submit flag in your component
-  apiImageBaseURL:any=environment.imageBaseUrl;
-  submitting: boolean = false; 
-  
+  apiImageBaseURL: any = environment.imageBaseUrl;
+  submitting: boolean = false;
+  getTruncatedFileName = getTruncatedFileName;
+  getFileName = getFileName;
 
   schoolTypes: any[] = []
   cities: any[] = [
@@ -30,6 +32,10 @@ export class AddSchoolComponent implements OnInit {
   schoolId: any;
   school: any;
   flag: boolean = false
+  apiUrl: any = environment.imageBaseUrl
+  fileName: any;
+  fileSize!: any;
+  file: any;
 
   constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
 
@@ -61,7 +67,7 @@ export class AddSchoolComponent implements OnInit {
     this.schoolService.getSchoolById(id).subscribe({
       next: (response) => {
         if (response) {
-        
+
           this.school = response
           this.setValuesForEdit()
         }
@@ -87,7 +93,7 @@ export class AddSchoolComponent implements OnInit {
       debugger
       this.schoolTypes = this.schoolTypes
       this.cities = this.cities
-    
+
       const schoolData = {
 
         schoolName: this.school.schoolName,
@@ -98,7 +104,7 @@ export class AddSchoolComponent implements OnInit {
         cityID: this.cities.find((item: any) => item.cityID === this.school.cityID),
         state: this.school.state,
         pincode: this.school.pincode,
-        photoID:{photoID:this.school.photoID, photoImageName:this.school.photo}
+        photoID: { photoID: this.school.photoID, photoImageName: this.school.photo }
 
       };
 
@@ -112,7 +118,7 @@ export class AddSchoolComponent implements OnInit {
         pincode: schoolData.pincode,
         email: schoolData.email,
         phone: schoolData.phone,
-        photoID:schoolData.photoID
+        photoID: schoolData.photoID
 
 
       });
@@ -134,13 +140,13 @@ export class AddSchoolComponent implements OnInit {
   // Method to initialize School Details Form
   private initSchoolDetailsForm(): void {
     this.schoolDetailsForm = this.fb.group({
-      schoolName: ['', [Validators.required, Validators.maxLength(100),Validators.pattern(/^[a-zA-Z\s]+(?:[.,'-]?[a-zA-Z\s]+)*$/)]],  // School name is required and limited to 100 characters
+      schoolName: ['', [Validators.required, Validators.maxLength(100), Validators.pattern(/^[a-zA-Z\s]+(?:[.,'-]?[a-zA-Z\s]+)*$/)]],  // School name is required and limited to 100 characters
       schoolTypeID: ['', Validators.required], // School type is required
       address: ['', [Validators.required, Validators.maxLength(255)]],
       cityID: ['', Validators.required],  // City ID is required
-      state: ['', [Validators.required,Validators.pattern('^[a-zA-Z ]+$')]],  // State is required
+      state: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],  // State is required
       pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
-      email: ['', [Validators.required,Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
+      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       photoID: [null],
 
@@ -159,7 +165,7 @@ export class AddSchoolComponent implements OnInit {
   onSubmit(): void {
     debugger
     this.submitted = true;  // Set submitted to true when the form is submitted
-    this.submitting=true
+    this.submitting = true
 
     if (this.schoolDetailsForm.valid) {
       debugger
@@ -175,8 +181,8 @@ export class AddSchoolComponent implements OnInit {
         email: formDataValue.email,
         phone: formDataValue.phone,
         photoID: formDataValue.photoID?.photoID,
-        principalID: this.isEdited ? this.school.principalID :null,
-        vicePrincipalID:  this.isEdited ? this.school.vicePrincipalID:null,
+        principalID: this.isEdited ? this.school.principalID : null,
+        vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
         [this.isEdited ? "updateDivisions" : "addDivisions"]: formDataValue.divisions.map((item: any, index: number) => {
           return { division: index + 1, studentCount: parseInt(item.studentCount) }
         }),
@@ -185,16 +191,16 @@ export class AddSchoolComponent implements OnInit {
       debugger;
 
       if (this.isEdited) {
-        data.photoID=formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
+        data.photoID = formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
 
         this.schoolService.updateSchool(data, this.school.schoolID)
           .subscribe({
             next: (response) => {
-             
+
               // Reset form and submitted flag if needed
               this.schoolDetailsForm.reset();
               this.submitted = false;
-              this.submitting=false;
+              this.submitting = false;
               this.toastr.success('School Updated !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -205,8 +211,8 @@ export class AddSchoolComponent implements OnInit {
               this.router.navigate(['/schools/school-list'])
             },
             error: (err) => {
-              this.submitted=false
-              this.submitting=false
+              this.submitted = false
+              this.submitting = false
               console.error('Error adding school:', err);
               this.toastr.error('Teacher Update', 'Failed', {
                 closeButton: true,
@@ -216,8 +222,8 @@ export class AddSchoolComponent implements OnInit {
               });
             },
             complete: () => {
-              this.submitted=false
-              this.submitting=false
+              this.submitted = false
+              this.submitting = false
 
             }
           });
@@ -226,11 +232,11 @@ export class AddSchoolComponent implements OnInit {
         this.schoolService.addSchool(data)
           .subscribe({
             next: (response) => {
-             
+
               // Reset form and submitted flag if needed
               this.schoolDetailsForm.reset();
-              this.submitted=false
-              this.submitting=false
+              this.submitted = false
+              this.submitting = false
               this.toastr.success('School Added !', 'Success', {
                 closeButton: true,
                 progressBar: true,
@@ -241,8 +247,8 @@ export class AddSchoolComponent implements OnInit {
               this.router.navigate(['/schools/school-list'])
             },
             error: (err) => {
-              this.submitted=false
-              this.submitting=false
+              this.submitted = false
+              this.submitting = false
               console.error('Error adding school:', err);
               this.toastr.error('Teacher Add', 'Failed', {
                 closeButton: true,
@@ -252,16 +258,16 @@ export class AddSchoolComponent implements OnInit {
               });
             },
             complete: () => {
-            
-              this.submitted=false
-              this.submitting=false
+
+              this.submitted = false
+              this.submitting = false
             }
           });
 
       }
 
     } else {
-      this.submitting=false
+      this.submitting = false
       console.log('Form is invalid');
     }
   }
@@ -296,11 +302,11 @@ export class AddSchoolComponent implements OnInit {
 
 
 
-  get getSchoolImage(){
+  get getSchoolImage() {
     let result = '';
-    let image=this.schoolDetailsForm.get('photoID')?.value?.photoImageName;
-    if(this.schoolDetailsForm.get('photoID')?.value?.photoImageName=='No Photo assigned' || null || '') image=""
-    
+    let image = this.schoolDetailsForm.get('photoID')?.value?.photoImageName;
+    if (this.schoolDetailsForm.get('photoID')?.value?.photoImageName == 'No Photo assigned' || null || '') image = ""
+
     if (this.apiImageBaseURL && image) {
       result = this.apiImageBaseURL.replace(/\/+$/, '') + '/' + this.schoolDetailsForm.get('photoID')?.value?.photoImageName?.replace(/^\/+/, '');
     }
@@ -337,7 +343,7 @@ export class AddSchoolComponent implements OnInit {
     let schoolTypeId: number = event.schoolTypeID
     this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
       next: (response: any) => {
-       
+
 
         let divisions: any[] = response[0].divisions
 
@@ -378,7 +384,7 @@ export class AddSchoolComponent implements OnInit {
     this.divisionsFormArray.push(
       this.fb.group({
         // division: [''],
-        studentCount: ['',[Validators.required]]
+        studentCount: ['', [Validators.required]]
       })
     );
   }
@@ -388,6 +394,121 @@ export class AddSchoolComponent implements OnInit {
   }
   get getSidebarToggle() {
     return this.isSidebarClosed;
+  }
+
+
+
+
+  onCertificateUploadChange(event: any): void {
+    event.preventDefault();
+    event.preventDefault()
+    this.fileName = event.target.files[0]?.name;
+    let totalBytes = event.target.files[0]?.size;
+    if (totalBytes < 1000000) {
+      this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+    } else {
+      this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+    }
+
+    const file = event.target.files[0];
+    if (file) {
+      this.file = file;
+      // this.educations.at(index).get('documentFile')?.setValue(file);
+    }
+    this.uploadCertificate()
+  }
+  onCertificateUploadDragAndDrop(event: any): void {
+    this.fileName = event.dataTransfer.files[0]?.name;
+    let totalBytes = event.dataTransfer.files[0]?.size;
+    if (totalBytes < 1000000) {
+      this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+    } else {
+      this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+    }
+
+    const file = event.dataTransfer.files[0];
+    if (file) {
+      this.file = file;
+    }
+    this.uploadCertificate()
+  }
+
+  uploadCertificate(): void {
+    debugger
+    if (this.file) {
+
+      let file = this.file
+      this.dataService.uploadProfilePhoto(file).subscribe(
+        (response: any) => {
+          console.log('File uploaded successfully', response);
+          this.schoolDetailsForm.patchValue({ photoID: response });
+        },
+        (error: any) => {
+          console.error('Error uploading file', error);
+        }
+      );
+
+
+    } else {
+      console.error('No file selected');
+    }
+  }
+
+
+  onDragOver(event: any) {
+    event.preventDefault();
+  }
+
+
+  onDropSuccess(event: any) {
+    event.preventDefault();
+
+
+    this.onCertificateUploadDragAndDrop(event);
+
+  }
+
+  getDocument() {
+    let result = '';
+
+    let image = this.schoolDetailsForm.get('photoID')?.value?.photoImageName;
+    if (
+      this.schoolDetailsForm.get('photoID')?.value?.photoImageName === 'No Document' ||
+      this.schoolDetailsForm.get('photoID')?.value?.photoImageName === null ||
+      this.schoolDetailsForm.get('photoID')?.value?.photoImageName === ''
+    ) {
+      image = '';
+    }
+
+    if (this.apiUrl && image) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + image.replace(/^\/+/, '');
+    }
+
+
+    this.fileName = this.getFileName(result); // Get the file name
+    console.log("result", result, this.fileName)
+    return result;
+  }
+
+  transform(url: any): string {
+
+    const fileTypeIcons: { [key: string]: string } = {
+      pdf: "../../../../assets/icons/pdf-ic.png",
+      jpg: "../../../../assets/icons/img-ic.png",
+      jpeg: "../../../../assets/icons/img-ic.png",
+      png: "../../../../assets/icons/docs-ic.png",
+      doc: "../../../../assets/icons/docs-ic.png",
+      docx: "../../../../assets/icons/docs-ic.png",
+      default: "../../../../assets/icons/docs-ic.png",
+    };
+    const extension = url.split('.').pop()?.toLowerCase() || '';
+    let result: any = fileTypeIcons[extension] || fileTypeIcons['default'];
+
+    return result;
+  }
+  removeLeaveApplicationDocument() {
+
+    this.schoolDetailsForm.get('photoID')?.setValue('')
   }
 
 
