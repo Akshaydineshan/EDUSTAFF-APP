@@ -28,13 +28,12 @@
                                         <p class="uq-id">{{currentTeacher.uniqueID}}</p>
                                 </span>
                                 <div class="dropdown me-2 ">
-                                        <button class="btn btn-light" type="button"
-                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-light" type="button" id="dropdownMenuButton"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="">
-                                                <li><a class="dropdown-item" (click)="editClick()"
-                                                              >Edit</a>
+                                                <li><a class="dropdown-item" (click)="editClick()">Edit</a>
                                                 </li>
 
 
@@ -284,14 +283,18 @@
                                                 </li>
                                                 <li *ngIf="currentTeacher.interReligion">
                                                         <strong class="field">Inter Religion:</strong>
-                                                        <span class="field-val">{{ currentTeacher.interReligion ? "YES" : "NO"
+                                                        <span class="field-val">{{ currentTeacher.interReligion ? "YES"
+                                                                : "NO"
                                                                 }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.maritalStatusDTO.maritalStatusName">
                                                         <strong class="field">Marital Status:</strong>
-                                                        <span class="field-val">{{ currentTeacher.maritalStatusDTO.maritalStatusName }}</span>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.maritalStatusDTO.maritalStatusName
+                                                                }}</span>
                                                 </li>
-                                                <ng-container *ngIf="currentTeacher.maritalStatusDTO.maritalStatusID == '2'">
+                                                <ng-container
+                                                        *ngIf="currentTeacher.maritalStatusDTO.maritalStatusID == '2'">
                                                         <li *ngIf="currentTeacher.spouseName">
                                                                 <strong class="field">Spouse's Name:</strong>
                                                                 <span class="field-val">{{ currentTeacher.spouseName
@@ -300,7 +303,8 @@
                                                         <li *ngIf="currentTeacher.spouseReligionDTO.religionName">
                                                                 <strong class="field">Spouse's Religion:</strong>
                                                                 <span class="field-val">{{
-                                                                        currentTeacher.spouseReligionDTO.religionName }}</span>
+                                                                        currentTeacher.spouseReligionDTO.religionName
+                                                                        }}</span>
                                                         </li>
                                                         <li *ngIf="currentTeacher.spouseCaste">
                                                                 <strong class="field">Spouse's Caste:</strong>
@@ -366,41 +370,57 @@
                                                         <span class="field-val">{{ item.toDate | date: 'MMMM d, y'
                                                                 }}</span>
                                                 </li>
-                                                <li *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
+                                                <li
+                                                        *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
                                                         <strong class="field">Certificate:</strong>
-                                                        <span class="field-val"><img (click)="pdfClick(item.documentpath)" class="pdf-icon" [src]="'../../../../assets/icons/pdf-file.png'" alt="">
-                                                                <span class="pdf-name ms-2" (click)="pdfClick(item.documentpath)">
-                                                                        {{ item.documentpath?.substring(item.documentpath.lastIndexOf('/') + 1) }}
-                                                                      </span></span>
-                                                       
+                                                        <span class="field-val"><img
+                                                                        (click)="pdfClick(item.documentpath)"
+                                                                        class="pdf-icon"
+                                                                        [src]="'../../../../assets/icons/pdf-file.png'"
+                                                                        alt="">
+                                                                <span class="pdf-name ms-2"
+                                                                        (click)="pdfClick(item.documentpath)">
+                                                                        {{
+                                                                        item.documentpath?.substring(item.documentpath.lastIndexOf('/')
+                                                                        + 1) }}
+                                                                </span></span>
+
                                                 </li>
                                         </ul>
                                 </div>
                         </div>
 
 
-                        <div class="card mt-3" *ngIf="currentTeacher.getEmployeeDocuments.length">
+                        <div class="card mt-3 upload-doc" *ngIf="currentTeacher.getEmployeeDocuments.length">
                                 <div class="card-header">Uploaded Documents</div>
                                 <div class="card-body">
-                                       
+
                                         <ul class="info-list mt-2"
                                                 *ngFor="let item of currentTeacher.getEmployeeDocuments  ; let i = index;">
                                                 <p class="s-h">Document {{i+1}}</p>
-                                            
-                                              
+
+
                                                 <li *ngIf="item.documentName">
                                                         <strong class="field">Document Type:</strong>
                                                         <span class="field-val">{{ item.documentName
                                                                 }}</span>
                                                 </li>
-                                            
-                                                <li *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
+
+                                                <li
+                                                        *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
                                                         <strong class="field">Document File:</strong>
-                                                        <span class="field-val"><img (click)="pdfClick(item.documentpath)" class="pdf-icon" [src]="'../../../../assets/icons/pdf-file.png'" alt="">
-                                                                <span class="pdf-name ms-2" (click)="pdfClick(item.documentpath)">
-                                                                        {{ item.documentpath?.substring(item.documentpath.lastIndexOf('/') + 1) }}
-                                                                      </span></span>
-                                                       
+                                                        <span class="field-val"><img
+                                                                        (click)="pdfClick(item.documentpath)"
+                                                                        class="pdf-icon"
+                                                                        [src]="'../../../../assets/icons/pdf-file.png'"
+                                                                        alt="">
+                                                                <span class="pdf-name ms-2"
+                                                                        (click)="pdfClick(item.documentpath)">
+                                                                        {{
+                                                                        item.documentpath?.substring(item.documentpath.lastIndexOf('/')
+                                                                        + 1) }}
+                                                                </span></span>
+
                                                 </li>
                                         </ul>
                                 </div>
@@ -506,8 +526,7 @@
                                                                 class="field-val">{{currentTeacher.getEmployeeCategoryDTO?.employeeCategoryName}}</span>
                                                 </li>
 
-                                                <li ><strong
-                                                                class="field">Eligible Test Qualified <span
+                                                <li><strong class="field">Eligible Test Qualified <span
                                                                         class="ms-3">:</span></strong> <span
                                                                 class="field-val">{{currentTeacher.eligibilityTestQualified
                                                                 ? "YES" : "NO"}}</span></li>
@@ -519,4 +538,170 @@
 
 
                 </div>
-        </div>
+
+
+
+                <!-- <div class="body-sec">
+                        <div class="body-sec-head">
+                                <p>Teacher Details</p>
+                        </div>
+                        <div class="row">
+                                <div class="col-sm-6">
+                                        <div class="sec basic-detils">
+                                                <p class="head">Personal Details</p>
+                                                <div class="tbl">
+                                                        <table class="basic-det">
+
+                                                                <tr>
+                                                                        <td>Permanent Employee Number (PEN)</td>
+                                                                        <td>{{ currentTeacher.pen }} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Identification Marks1</td>
+                                                                        <td>{{ currentTeacher.identificationMark1
+                                                                                }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Identification Marks2</td>
+                                                                        <td>{{ currentTeacher.identificationMark2
+                                                                                }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Height (in cm)</td>
+                                                                        <td>{{ currentTeacher.height }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Ex-Servicemen</td>
+                                                                        <td>{{ currentTeacher.exServiceMen ? "YES" :
+                                                                                "NO" }}</td>
+                                                                </tr>
+
+
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+                             
+
+                        
+                        </div>
+
+                        <div class="row">
+                                <div class="col-sm-6">
+
+                                        <div class="sec edu-details">
+                                                <p class="head">Education Details</p>
+                                                <div class="tbl" *ngFor="let item of currentTeacher.getEducations; let i = index;">
+                                                      
+                                                        <table class="basic-det">
+                                                               <tr>
+                                                                <td>
+                                                                        <p class="s-h">Education {{i+1}}</p>
+                                                                </td></tr>
+                                                                
+
+
+
+                                                                <tr *ngIf="item.courseText !='Others'; else otherName">
+                                                                        <td>Course Name</td>
+                                                                        <td>{{ item.courseText }} </td>
+                                                                </tr>
+
+                                                                <ng-template #otherName>
+                                                                        <li *ngIf="item.courseName">
+                                                                                <strong class="field">Course
+                                                                                        Name:</strong>
+                                                                                <span class="field-val">{{
+                                                                                        item.courseName }}</span>
+                                                                        </li>
+                                                                        <tr>
+                                                                                <td>Course Name</td>
+                                                                                <td>{{ item.courseName }}</td>
+                                                                        </tr>
+                                                                </ng-template>
+                                                                <tr *ngIf="item.schoolName">
+                                                                        <td>School/University</td>
+                                                                        <td>{{item.schoolName }}</td>
+                                                                </tr>
+                                                                <tr *ngIf="item.fromDate">
+                                                                        <td>From Date </td>
+                                                                        <td>{{ item.fromDate | date: 'MMMM d, y'}}</td>
+                                                                </tr>
+                                                                <tr *ngIf="item.toDate">
+                                                                        <td>To Date</td>
+                                                                        <td>{{ item.toDate | date: 'MMMM d, y'}}</td>
+                                                                </tr>
+                                                                <tr
+                                                                        *ngIf="item.documentpath != 'No Document' &&  item.documentpath != '' && item.documentpath != null">
+                                                                        <td>Certificate</td>
+                                                                        <td>
+                                                                                <img (click)="pdfClick(item.documentpath)"
+                                                                                        class="pdf-icon"
+                                                                                        [src]="'../../../../assets/icons/pdf-file.png'"
+                                                                                        alt="">
+                                                                                <span class="pdf-name ms-2"
+                                                                                        (click)="pdfClick(item.documentpath)">
+                                                                                        {{
+                                                                                        item.documentpath?.substring(item.documentpath.lastIndexOf('/')
+                                                                                        + 1) }}
+                                                                                </span>
+                                                                        </td>
+                                                                </tr>
+
+
+
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+                        </div>
+
+
+                        <div class="row">
+                                <div class="col-sm-6">
+                                        <div class="sec basic-detils">
+                                                <p class="head">Professional Details</p>
+                                                <div class="tbl">
+                                                        <table class="basic-det">
+
+                                                                <tr>
+                                                                        <td>Permanent Employee Number (PEN)</td>
+                                                                        <td>{{ currentTeacher.pen }} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Identification Marks1</td>
+                                                                        <td>{{ currentTeacher.identificationMark1
+                                                                                }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Identification Marks2</td>
+                                                                        <td>{{ currentTeacher.identificationMark2
+                                                                                }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Height (in cm)</td>
+                                                                        <td>{{ currentTeacher.height }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Ex-Servicemen</td>
+                                                                        <td>{{ currentTeacher.exServiceMen ? "YES" :
+                                                                                "NO" }}</td>
+                                                                </tr>
+
+
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+                        </div>
+
+                </div> -->

@@ -45,6 +45,7 @@ export class ViewSchoolComponent implements OnInit {
     }
   ];
   currentIndex:number=0;
+  printMode: boolean=false;
 
 
 
@@ -117,6 +118,11 @@ export class ViewSchoolComponent implements OnInit {
   }
 
   print() {
-    window.print()
+    this.printMode = true; // Enable print mode
+    setTimeout(() => window.print(), 100); // Print the page
+    setTimeout(() => (this.printMode = false), 1000); // Reset after printing
+    
+    // window.print()
+    
   }
 }

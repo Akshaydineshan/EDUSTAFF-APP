@@ -5,7 +5,7 @@
         <div class="container-fluid top-banner"></div>
 
         <div *ngIf="currentSchool" class="content-main pb-3">
-                <div class="prof-img-btns-sec d-flex justify-content-between   ">
+                <div class="prof-img-btns-sec d-flex justify-content-between">
                         <div class="d-flex flex-column   ">
                                 <img [src]="getImage ||'assets/icons/Group 1640.png' "
                                         class="prof-img img-fluid rounded-circle " alt="Profile Image" />
@@ -64,7 +64,288 @@
                 <hr class="styled-hr">
 
 
-                <!-- <div class="data-container">
+
+
+
+
+                <div class="body-sec">
+                        <div class="body-sec-head">
+                                <p>School Details</p>
+                        </div>
+
+                        <div class="row g-0">
+                                <div class="col-sm-6">
+                                        <div class="sec basic-detils">
+                                                <p class="head">Basic Profile</p>
+                                                <div class="tbl">
+                                                        <table class="basic-det">
+
+                                                                <tr>
+                                                                        <td>School Name</td>
+                                                                        <td>{{currentSchool.schoolName}},
+                                                                                {{currentSchool.cityName}} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Address</td>
+                                                                        <td>{{currentSchool.address}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>School Type</td>
+                                                                        <td>{{currentSchool.schoolTypeName}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>State</td>
+                                                                        <td>{{currentSchool.state}}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>District</td>
+                                                                        <td>{{currentSchool.cityName}}</td>
+                                                                </tr>
+
+
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+
+
+                                <div class="col-sm-6">
+
+                                        <div class="sec">
+
+                                                <p class="head">Authorities</p>
+                                                <div class="tbl">
+                                                        <table>
+                                                                <tr>
+                                                                        <th>Name</th>
+                                                                        <th>Position</th>
+                                                                        <th>Contact Number</th>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                        <td>{{currentSchool.principalName}}</td>
+                                                                        <td>Principal</td>
+                                                                        <td>Not Available</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>{{currentSchool.vicePrincipalName}}</td>
+                                                                        <td>Vice Principal</td>
+                                                                        <td>Not Available</td>
+                                                                </tr>
+
+                                                        </table>
+                                                </div>
+
+
+
+                                        </div>
+
+                                </div>
+                        </div>
+
+
+
+                        <div class="row g-0">
+                                <div class="col-sm-8">
+                                        <div class="teacher-sec">
+                                                <p class="head">Teacher List
+                                                        <span class="text-danger ms-3">(Dummy Data for Development
+                                                                Purpose)</span>
+
+                                                </p>
+                                                <div class="tbl">
+                                                        <table>
+
+                                                                <tr>
+                                                                        <th>name</th>
+                                                                        <th>Designation</th>
+                                                                        <th>Subject</th>
+                                                                        <th>Phone Number</th>
+
+                                                                </tr>
+
+                                                                <tr>
+                                                                        <td>Akshay</td>
+                                                                        <td>developer</td>
+                                                                        <td>bsc</td>
+                                                                        <td>7994685006</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Akshay</td>
+                                                                        <td>developer</td>
+                                                                        <td>bsc</td>
+                                                                        <td>7994685006</td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td>Akshay</td>
+                                                                        <td>developer</td>
+                                                                        <td>bsc</td>
+                                                                        <td>7994685006</td>
+                                                                </tr>
+                                                             
+                                                              
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+
+
+                                <div class="col-sm-4">
+
+                                        <div class="std-sec">
+                                                <p class="head">School Standards <span class="text-danger ms-3">(Dummy Data
+                                                                for Development Purpose)</span>
+                                                </p>
+
+                                                <div class="tbl" *ngIf="!printMode">
+                                                        <!-- Header Section -->
+                                                        <div class="std-head-sec">
+                                                                <!-- Previous Button -->
+                                                                <div class="left d-flex align-items-center">
+                                                                        <button title="Previous"
+                                                                                class="btn btn-sm btn-light d-flex align-items-center justify-content-center"
+                                                                                (click)="showPrevious()"
+                                                                                [disabled]="currentIndex === 0">
+                                                                                <i class="bi bi-chevron-left"
+                                                                                        style="font-size: 10px;  color: #000000;"></i>
+                                                                        </button>
+                                                                </div>
+                                                                <!-- Current Standard -->
+                                                                <div class="center d-flex align-items-center">
+                                                                        {{ standards[currentIndex].standard }}
+                                                                </div>
+                                                                <!-- Next Button -->
+                                                                <div class="right d-flex align-items-center">
+                                                                        <button title="Next"
+                                                                                class="btn btn-sm btn-light d-flex align-items-center justify-content-center"
+                                                                                (click)="showNext()"
+                                                                                [disabled]="currentIndex === standards.length - 1">
+                                                                                <i class="bi bi-chevron-right"
+                                                                                        style="font-size: 10px; color: #000000;"></i>
+                                                                        </button>
+                                                                </div>
+                                                        </div>
+                                                        <!-- Table Section -->
+                                                        <table>
+                                                                <tr>
+                                                                        <th style="width: 50%">Division</th>
+                                                                        <th style="width: 50%">Student Count</th>
+                                                                </tr>
+                                                                <tr
+                                                                        *ngFor="let division of standards[currentIndex].divisions">
+                                                                        <td>{{ division.name }}</td>
+                                                                        <td>{{ division.count }}</td>
+                                                                </tr>
+                                                        </table>
+
+
+
+
+                                                </div>
+
+                                                <ng-container *ngIf="printMode">
+                                                        <ng-container *ngFor="let std of standards; ">
+                                                                <div class="tbl">
+                                                                        <!-- Header Section -->
+                                                                        <div class="std-head-sec d-flex justify-content-center">
+                                                                              
+                                                                                <!-- Current Standard -->
+                                                                                <div
+                                                                                        class="center d-flex align-items-center justify-content-center">
+                                                                                        {{ std.standard }}
+                                                                                </div>
+                                                                                
+                                                                        </div>
+                                                                        <!-- Table Section -->
+                                                                        <table>
+                                                                                <tr>
+                                                                                        <th style="width: 50%">Division
+                                                                                        </th>
+                                                                                        <th style="width: 50%">Student
+                                                                                                Count</th>
+                                                                                </tr>
+                                                                                <tr
+                                                                                        *ngFor="let division of standards[currentIndex].divisions">
+                                                                                        <td>{{ division.name }}</td>
+                                                                                        <td>{{ division.count }}</td>
+                                                                                </tr>
+                                                                        </table>
+
+
+
+                                                                </div>
+                                                        </ng-container>
+                                                </ng-container>
+
+
+
+
+<!-- 
+                                                <ng-container *ngIf="printMode">
+                                                       
+                                                        <div class="tbl">
+                                                  
+
+                                                                <table>
+                                                                        <tr>
+                                                                                <th>Class</th>
+                                                                                <th>Division</th>
+                                                                                <th>Student Count</th>
+                                                                        </tr>
+
+                                                                        <ng-container *ngFor="let std of standards">
+                                                                                <ng-container
+                                                                                        *ngFor="let division of std.divisions">
+                                                                                     
+                                                                                        <tr>
+                                                                                                <td
+                                                                                                        *ngIf="division === std.divisions[0]">
+                                                                                                        {{ std.standard
+                                                                                                        }}</td>
+                                                                                                        <td
+                                                                                                        *ngIf="division !== std.divisions[0]">
+                                                                                                    </td>
+                                                                                                <td>{{ division.name }}
+                                                                                                </td>
+                                                                                                <td>{{ division.count }}
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                </ng-container>
+                                                                        </ng-container>
+                                                                </table>
+
+
+
+
+                                                        
+                                                        </div>
+                                                   
+                                                </ng-container> -->
+
+
+
+                                        </div>
+
+
+                                </div>
+                        </div>
+
+                </div>
+
+
+        </div>
+</div>
+
+
+
+<!-- <div class="data-container">
 
                         <div class="card mt-3">
                                 <div class="card-header">School Details</div>
@@ -133,186 +414,3 @@
 
 
                 </div> -->
-
-
-
-
-                <div class="body-sec">
-                        <div class="body-sec-head">
-                                <p>School Details</p>
-                        </div>
-
-                        <div class="row">
-                                <div class="col-sm-5">
-                                        <div class="sec basic-detils">
-                                                <p class="head">Basic Profile</p>
-                                                <div class="tbl">
-                                                        <table class="basic-det">
-
-                                                                <tr>
-                                                                        <td>School Name</td>
-                                                                        <td>{{currentSchool.schoolName}}, {{currentSchool.cityName}} </td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>Address</td>
-                                                                        <td>{{currentSchool.address}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>School Type</td>
-                                                                        <td>{{currentSchool.schoolTypeName}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>State</td>
-                                                                        <td>{{currentSchool.state}}</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>District</td>
-                                                                        <td>{{currentSchool.cityName}}</td>
-                                                                </tr>
-
-
-                                                        </table>
-                                                </div>
-
-
-                                        </div>
-
-                                </div>
-
-
-                                <div class="col-sm-7">
-
-                                        <div class="sec">
-
-                                                <p class="head">Authorities</p>
-                                                <div class="tbl">
-                                                        <table>
-                                                                <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Position</th>
-                                                                        <th>Contact Number</th>
-
-                                                                </tr>
-
-                                                                <tr>
-                                                                        <td>{{currentSchool.principalName}}</td>
-                                                                        <td>Principal</td>
-                                                                        <td>Not Available</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>{{currentSchool.vicePrincipalName}}</td>
-                                                                        <td>Vice Principal</td>
-                                                                        <td>Not Available</td>
-                                                                </tr>
-                                                             
-                                                        </table>
-                                                </div>
-
-
-
-                                        </div>
-
-                                </div>
-                        </div>
-
-
-
-                        <div class="row">
-                                <div class="col-sm-7">
-                                        <div class="teacher-sec">
-                                                <p class="head">Teacher List
-                                                        <span class="text-danger ms-3">(Dummy Data for Development Purpose)</span>
-
-                                                </p> 
-                                                <div class="tbl">
-                                                        <table>
-
-                                                                <tr>
-                                                                        <th>name</th>
-                                                                        <th>Designation</th>
-                                                                        <th>Subject</th>
-                                                                        <th>Phone Number</th>
-
-                                                                </tr>
-
-                                                                <tr>
-                                                                        <td>Akshay</td>
-                                                                        <td>developer</td>
-                                                                        <td>bsc</td>
-                                                                        <td>7994685006</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>Akshay</td>
-                                                                        <td>developer</td>
-                                                                        <td>bsc</td>
-                                                                        <td>7994685006</td>
-                                                                </tr>
-                                                                <tr>
-                                                                        <td>Akshay</td>
-                                                                        <td>developer</td>
-                                                                        <td>bsc</td>
-                                                                        <td>7994685006</td>
-                                                                </tr>
-                                                        </table>
-                                                </div>
-
-
-                                        </div>
-
-                                </div>
-
-
-                                <div class="col-sm-5">
-
-                                        <div class="std-sec">
-                                                <p class="head">School Class <span class="text-danger ms-3">(Dummy Data for Development Purpose)</span>
-                                                </p>
-                                                <div class="tbl">
-                                                  <!-- Header Section -->
-                                                  <div class="std-head-sec">
-                                                    <!-- Previous Button -->
-                                                    <div class="left d-flex align-items-center">
-                                                      <button title="Previous"
-                                                        class="btn btn-sm btn-light d-flex align-items-center justify-content-center"
-                                                        (click)="showPrevious()"
-                                                        [disabled]="currentIndex === 0">
-                                                        <i class="bi bi-chevron-left" style="font-size: 10px;  color: #000000;"></i>
-                                                      </button>
-                                                    </div>
-                                                    <!-- Current Standard -->
-                                                    <div class="center d-flex align-items-center">
-                                                      {{ standards[currentIndex].standard }}
-                                                    </div>
-                                                    <!-- Next Button -->
-                                                    <div class="right d-flex align-items-center">
-                                                      <button title="Next"
-                                                        class="btn btn-sm btn-light d-flex align-items-center justify-content-center"
-                                                        (click)="showNext()"
-                                                        [disabled]="currentIndex === standards.length - 1">
-                                                        <i class="bi bi-chevron-right" style="font-size: 10px; color: #000000;"></i>
-                                                      </button>
-                                                    </div>
-                                                  </div>
-                                                  <!-- Table Section -->
-                                                  <table>
-                                                    <tr>
-                                                      <th style="width: 50%">Division</th>
-                                                      <th style="width: 50%">Student Count</th>
-                                                    </tr>
-                                                    <tr *ngFor="let division of standards[currentIndex].divisions">
-                                                      <td>{{ division.name }}</td>
-                                                      <td>{{ division.count }}</td>
-                                                    </tr>
-                                                  </table>
-                                                </div>
-                                              </div>
-                                              
-
-                                </div>
-                        </div>
-
-                </div>
-
-
-        </div>
-</div>

@@ -29,7 +29,8 @@
     object-fit: cover;
     transition: 0.5s ease;
 }
-.prof-img:hover{
+
+.prof-img:hover {
     transform: scale(1.1);
 }
 
@@ -142,7 +143,7 @@ li {
     color: #555;
     font-weight: 400;
     font-size: 14px;
-    width:450px;
+    width: 450px;
 
 }
 
@@ -186,22 +187,27 @@ li {
 
 }
 
-@media screen and (max-width:576px){
-    .card{
-      overflow: hidden;
+@media screen and (max-width:576px) {
+    .card {
+        overflow: hidden;
 
     }
-    .card-body{
-      
-    min-width: 200x; /* Minimum width to trigger horizontal scrolling */
-   text-overflow: no;
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: noWrap;
+
+    .card-body {
+
+        min-width: 200x;
+        /* Minimum width to trigger horizontal scrolling */
+        text-overflow: no;
+        overflow-x: auto;
+        /* Enable horizontal scrolling */
+        white-space: noWrap;
     }
-    .main-container{
+
+    .main-container {
         overflow: hidden;
     }
-   }
+}
+
 img.pdf-icon {
     width: 45px;
     transition: transform 0.3s ease;
@@ -230,4 +236,311 @@ span.pdf-name {
 .pdf-name:hover {
     color: #0056b3;
     /* Darker blue on hover */
+}
+
+
+
+// .body-sec {
+//     background-color: #f9f9f9;
+//     font-family: 'Roboto';
+//     padding: 0px 0px 10px 0px;
+
+//     .body-sec-head {
+//         background-color: #D9D9D9;
+//         height: 30px;
+
+//         padding: 4px;
+
+//         p {
+//             font-family: Roboto;
+//             font-size: 16px;
+//             font-weight: 500;
+//             text-align: left;
+
+
+//         }
+
+
+//     }
+
+//     .sec {
+//         padding: 17px;
+
+//         p.head {
+//             font-family: Roboto;
+//             font-size: 14px;
+//             font-weight: 400;
+//         }
+//     }
+
+//     .teacher-sec {
+//         padding: 17px;
+
+//         p.head {
+//             font-family: Roboto;
+//             font-size: 14px;
+//             font-weight: 400;
+//         }
+//     }
+
+//     .std-sec {
+//         padding: 17px;
+
+
+//         p.head {
+//             font-family: Roboto;
+//             font-size: 14px;
+//             font-weight: 400;
+//         }
+
+//         .std-head-sec {
+//             width: 100%;
+//             display: flex;
+//             justify-content: space-between;
+//             align-items: center;
+//             padding: 0px 20px;
+//             height: 37px;
+//             background-color: #FFFFFF;
+
+//             .left,
+//             .right {
+//                 button {
+//                     padding: 8px 12px;
+//                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+//                     transition: all 0.3s ease;
+//                 }
+//             }
+//         }
+//     }
+
+//     .tbl {
+//         overflow: auto;
+
+//         table {
+//             background-color: #FFFFFF;
+//             border-collapse: collapse;
+//             border-spacing: 5 1em;
+//             width: 100%
+//         }
+
+//         td {
+//             padding: 8px;
+
+//             border: 2px solid #f9f9f9;
+//             text-align: left;
+//             font-size: 14px;
+
+//             font-family: Roboto;
+
+//             font-weight: 400;
+
+//             text-align: center;
+
+
+//         }
+
+//         th {
+//             padding: 8px;
+//             border: 2px solid #f9f9f9;
+//             ;
+//             text-align: left;
+//             font-size: 14px;
+//             color: #666666;
+
+//             font-family: Roboto;
+
+//             font-weight: 500;
+
+//             text-align: center;
+//         }
+
+//     }
+
+
+
+
+
+
+//     // tr:nth-of-type(odd) {
+//     //   background: #eee;
+//     // }
+
+
+
+
+
+//     // @media only screen and (max-width: 760px),
+//     // (min-device-width: 768px) and (max-device-width: 1024px) {
+
+//     //   table {
+//     //     width: 100%;
+//     //   }
+
+//     //   /* Force table to not be like tables anymore */
+//     //   table,
+//     //   thead,
+//     //   tbody,
+//     //   th,
+//     //   td,
+//     //   tr {
+//     //     display: block;
+//     //   }
+
+//     //   /* Hide table headers (but not display: none;, for accessibility) */
+//     //   thead tr {
+//     //     position: absolute;
+//     //     top: -9999px;
+//     //     left: -9999px;
+//     //   }
+
+//     //   tr {
+//     //     border: 1px solid #ccc;
+//     //   }
+
+//     //   td {
+//     //     /* Behave  like a "row" */
+//     //     border: none;
+//     //     border-bottom: 1px solid #eee;
+//     //     position: relative;
+//     //     padding-left: 50%;
+//     //   }
+
+//     //   td:before {
+//     //     /* Now like a table header */
+//     //     position: absolute;
+//     //     /* Top/left values mimic padding */
+//     //     top: 6px;
+//     //     left: 6px;
+//     //     width: 45%;
+//     //     padding-right: 10px;
+//     //     white-space: nowrap;
+//     //     /* Label the data */
+//     //     content: attr(data-column);
+
+//     //     color: #000;
+//     //     font-weight: bold;
+//     //   }
+
+//     // }
+
+//     .basic-detils {
+
+
+//         table {
+//             background-color: #FFFFFF;
+//             border-collapse: collapse;
+
+//             width: 100%
+//         }
+
+//         td {
+//             padding: 8px;
+
+//             border: none;
+//             text-align: left;
+//             font-size: 14px;
+
+//             font-family: Roboto;
+
+//             font-weight: 400;
+
+
+
+
+//         }
+
+//         th {
+//             padding: 8px;
+
+//             border: none;
+//             text-align: left;
+//             font-size: 14px;
+//             color: #666666;
+
+//             font-family: Roboto;
+
+//             font-weight: 500;
+
+
+//         }
+//     }
+
+//     .edu-details {
+//         table {
+//             background-color: #FFFFFF;
+//             border-collapse: collapse;
+
+//             width: 100%
+//         }
+
+//         td {
+//             padding: 8px;
+//             width: 50%;
+//             border: none;
+//             text-align: left;
+//             font-size: 14px;
+
+//             font-family: Roboto;
+
+//             font-weight: 400;
+
+
+
+
+//         }
+
+//         th {
+//             padding: 8px;
+
+//             border: none;
+//             text-align: left;
+//             font-size: 14px;
+//             color: #666666;
+
+//             font-family: Roboto;
+
+//             font-weight: 500;
+
+
+//         }
+//     }
+
+
+
+
+
+// }
+
+
+@media print {
+
+    app-topbar,
+    app-sidebar {
+        display: none;
+        /* Hide these elements during print */
+    }
+
+    .main-container {
+
+       margin-top:0px;
+        margin: 0px;
+        padding: 0px;
+
+
+    }
+
+    button {
+        display: none;
+    }
+
+    .li,
+    .upload-doc {
+        page-break-inside: avoid;
+
+    }
+   
+
+
+
+
 }
