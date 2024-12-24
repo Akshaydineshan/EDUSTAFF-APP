@@ -271,10 +271,10 @@
                 </div>
             </div>
 
-            <div class="row mt-3" *ngIf="standardData.length && !isEdited">
+            <div class="row mt-3" *ngIf="standardData.length">
 
 
-                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions</span><span
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions( Design 1)</span><span
                         class="text-danger ms-1 mad-f">*</span></label>
 
                 <div class="col-sm-12">
@@ -287,7 +287,7 @@
                                 <table>
 
                                     <tr class="table-header-sec">
-                                        <th>Class {{i+1}}</th>
+                                        <th>Standard {{i+1}}</th>
                                         <th>Division</th>
                                         <th>Student Count</th>
                                     </tr>
@@ -334,11 +334,80 @@
                 </div>
             </div>
 
+            <div class="row mt-5" *ngIf="standardData.length ">
 
-            <div class="row mt-3" *ngIf="standardData.length && isEdited">
+
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions ( design 2)</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
+
+                <div class="col-sm-12">
+
+                    <div class="add-std-details-sec">
+
+                        <!-- <ng-container *ngFor="let std of standardData;let i=index;"> -->
+                            <div class="std-add-tbl mt-2">
+
+                                <table>
+
+                                    <tr class="table-header-sec">
+                                        <th>Classes </th>
+                                        <th>Division</th>
+                                        <th>Student Count</th>
+                                    </tr>
+
+                                    <ng-container *ngFor="let std of standardData;let i=index;">
+                                        <tr class="table-header">
+
+                                          
+                                            <td style="border:none" >Standard {{i+1}}</td>
+                                            <th
+                                                style="border-left:0.8px solid #D9D9D9;">
+                                                <input class="text-box" type="number" placeholder="Enter number of division"
+                                                    [(ngModel)]="divisionCount[i]" [ngModelOptions]="{standalone: true}"
+                                                    (input)="updateDivisions(i)" />
+                                                <!-- <i 
+                                                    class="bi bi-plus-circle add-ic"></i> -->
+                                                    <img (click)="addDivisionInClass(i)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                            </th>
+    
+    
+                                            <th>
+                                                <p class="status-msg ms-4">{{std.divisionData?.length}} Division Created</p>
+                                            </th>
+    
+                                        </tr>
+    
+                                        <tr class="table-row" *ngFor="let item of std.divisionData;let j=index;">
+                                            <td style="border:none"  *ngIf="j!== std.divisionData.length-1"></td>
+                                            <td style="border-top:none"  *ngIf="j== std.divisionData.length-1 "></td>
+    
+                                            <td>Division {{item.division}}</td>
+                                            <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
+                                                    [ngModelOptions]="{standalone: true}" (input)="change()"
+                                                    placeholder="Enter count" /></td>
+                                        </tr>
+                                    </ng-container>
+                                  
+
+                                </table>
 
 
-                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions</span><span
+                            </div>
+                        <!-- </ng-container> -->
+
+
+
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row mt-5" *ngIf="standardData.length ">
+
+
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions (Design 3)</span><span
                         class="text-danger ms-1 mad-f">*</span></label>
 
                 <div class="col-sm-12">
