@@ -1,6 +1,211 @@
-.schoolImg{
-    width:30px;
-    height:30px;
+.schoolImg {
+    width: 30px;
+    height: 30px;
     display: inline-block;
+
+}
+
+
+.add-std-details-sec {
+
+    .std-add-tbl {
+        overflow: auto;
+
+        table {
+            background-color: #FFFFFF;
+            border-collapse: collapse;
+            width: 100%;
+            border: 0.8px solid #D9D9D9;
+            font-family: Roboto, sans-serif;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            color: #666666;
+            font-weight: 500;
+            // background-color: #f2f2f2; /* Light gray background for headers */
+        }
+
+        td {
+            font-weight: 400;
+        }
+
+        /* Add vertical borders only */
+        //   th, td {
+        //     border-left: 2px solid #f9f9f9;
+        //     border-right: 2px solid #f9f9f9;
+        //   }
+
+        /* Remove horizontal borders for rows */
+        .table-row td {
+            border-top: none;
+            border-bottom: none;
+            text-align: left;
+            padding-left: 18px;
+
+            font-family: Roboto;
+            font-size: 14px;
+            font-weight: 400;
+            border: 0.8px solid #D9D9D9;
+
+
+        }
+
+        /* Header rows styling */
+        .table-header {
+
+            // border-top: 2px solid #f9f9f9;
+            th {
+                border: 0.8px solid #D9D9D9;
+                border-right: none;
+                text-align: center;
+
+                border: none;
+            }
+
+        }
+
+        .table-header-sec {
+
+            // border: 2px solid #f9f9f9;
+            th {
+                text-align: center;
+                border: 0.8px solid #D9D9D9;
+            }
+
+
+        }
+
+        .text-box {
+
+            height: 24px;
+            padding-left: 10px;
+            border: none !important;
+            gap: 0px;
+            border-radius: 9px;
+            opacity: 0px;
+            background: #D9D9D933;
+            font-family: "Mulish";
+            font-size: 12px;
+            font-weight: 400;
+
+
+            color: #999999;
+
+
+        }
+        .text-box:focus {
+            border: none; /* Ensure no border on focus */
+            outline: none; /* Ensure no focus outline */
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        // table {
+        //   background-color: #FFFFFF;
+        //   border-collapse: collapse;
+        //   border-spacing: 5 1em;
+        //   border: 2px solid #f9f9f9;
+        //   width: 100%
+        // }
+
+        // td {
+        //   padding: 8px;
+
+        // //   border: 2px solid #f9f9f9;
+        //   text-align: left;
+        //   font-size: 14px;
+
+        //   font-family: Roboto;
+
+        //   font-weight: 400;
+
+        //   text-align: center;
+
+
+        // }
+
+        // th {
+        //   padding: 8px;
+        // //   border: 2px solid #f9f9f9;
+        //   ;
+        //   text-align: left;
+        //   font-size: 14px;
+        //   color: #666666;
+
+        //   font-family: Roboto;
+
+        //   font-weight: 500;
+
+        //   text-align: center;
+        // }
+        // tr:nth-child(1) {
+        //     border: 2px solid #f9f9f9;
+        // }
+        // tr:nth-child(2) {
+        //     border: 2px solid #f9f9f9;
+        //     th{
+        //         border: 2px solid #f9f9f9
+        //     }
+        // }
+
+    }
+
+    .status-msg {
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 400;
+
+        text-align: left;
+
+        color: #8F0000;
+
+    }
+
+    .std-head-sec {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        // padding: 0px 0px;
+        height: 35px;
+        border: 0.8px solid #D9D9D9;
+        background-color: #FFFFFF;
+        border-bottom: none;
+        padding: 10px;
+
+        .left,
+        .right {
+
+            button {
+                padding: 5px 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
+            }
+        }
+    }
+
+    .add-ic {
+        float: right;
+        width: 18px;
+        height: 18px;
+        position: relative;
+        left: 15px;
+        transition: transform 0.2s ease-in-out;
+    }
+
+    .add-ic:hover {
+        transform: scale(1.1)
+    }
 
 }

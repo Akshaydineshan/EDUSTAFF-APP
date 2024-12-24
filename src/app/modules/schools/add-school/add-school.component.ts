@@ -36,7 +36,10 @@ export class AddSchoolComponent implements OnInit {
   fileName: any;
   fileSize!: any;
   file: any;
-
+  divisionCount: any[] = []
+  divisionArray: { division: any; studentCount: any; }[] = [];
+  standardData: any = []
+  currentIndex: number=0;
   constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
 
   }
@@ -344,8 +347,17 @@ export class AddSchoolComponent implements OnInit {
     this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
       next: (response: any) => {
 
+        let divisions: any[] = response[0].classes ? response[0].classes : [
+          1,
+          2,
+          3,
+          4
+        ]
 
-        let divisions: any[] = response[0].divisions
+        divisions.map((item: any) => {
+          this.standardData.push({ standard: item, divisionData: [] })
+        })
+
 
         this.divisions = divisions
 
@@ -512,7 +524,57 @@ export class AddSchoolComponent implements OnInit {
   }
 
 
+  updateDivisions(index: number) {
+    
+    if (this.divisionCount[index] > 26) {
+      alert('You can only have up to 26 divisions (A to Z).');
+      this.divisionArray = []
+      this.standardData[index].divisionData=[]
+      this.divisionCount[index]=null
+      return;
+    }
 
+    let divisionArray = []
+
+    for (let i = 0; i < this.divisionCount[index]; i++) {
+      divisionArray.push(
+        {
+          division: String.fromCharCode(65 + i),
+          studentCount: ""
+        }
+      )
+    }
+    console.log('array', divisionArray)
+    this.divisionArray = divisionArray
+    this.standardData[index].divisionData = divisionArray
+    console.log("arrayyyyyyyyyyyyy1", this.standardData)
+  }
+
+  change() {
+    console.log("arrayyyyyyyyyyyyy", this.divisionArray, this.standardData)
+  }
+
+    // Show the previous standard
+    showPrevious() {
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
+      }
+    }
+  
+    // Show the next standard
+    showNext() {
+      if (this.currentIndex < this.standardData.length - 1) {
+        this.currentIndex++;
+      }
+    }
+
+    addDivisionInClass(index:number){
+      this.standardData[index].divisionData.push( {
+        division: String.fromCharCode(65 + this.standardData[index].divisionData.length),
+        studentCount: ""
+      })
+
+    }
 
 }
 

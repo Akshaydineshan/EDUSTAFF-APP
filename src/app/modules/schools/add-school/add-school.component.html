@@ -7,7 +7,7 @@
     <div style="padding:15px 10px">
         <app-back-button [url]="'/dashboard'" class=""></app-back-button>
     </div>
-   
+
     <div class="container-fluid d-flex flex-column  ">
 
 
@@ -17,11 +17,11 @@
 
             <!-- School Name -->
             <div class="row mb-3">
-               
-                <label for="schoolName" class="col-sm-3 col-form-label"><span>School Name</span><span class="text-danger ms-1 mad-f">*</span></label>
+
+                <label for="schoolName" class="col-sm-3 col-form-label"><span>School Name</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
-                    <input type="text" class="form-control" id="schoolName" formControlName="schoolName"
-                        required>
+                    <input type="text" class="form-control" id="schoolName" formControlName="schoolName" required>
                     <div
                         *ngIf="schoolDetailsForm.get('schoolName')?.invalid && (schoolDetailsForm.get('schoolName')?.touched || submitted)">
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolName')?.errors?.['required']">
@@ -39,8 +39,9 @@
 
             <!-- School Type -->
             <div class="row mb-3">
-                
-                <label for="schoolType" class="col-sm-3 col-form-label"><span>School Type</span><span class="text-danger ms-1 mad-f">*</span></label>
+
+                <label for="schoolType" class="col-sm-3 col-form-label"><span>School Type</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <select class="form-control" id="schoolType" formControlName="schoolTypeID" required
                         (ngModelChange)="changeSchoolType($event)">
@@ -58,7 +59,8 @@
 
             <!-- Address -->
             <div class="row mb-3">
-                <label for="address" class="col-sm-3 col-form-label"><span>Address</span><span class="text-danger ms-1 mad-f">*</span></label>
+                <label for="address" class="col-sm-3 col-form-label"><span>Address</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <textarea class="form-control" id="address" rows="3" formControlName="address" required></textarea>
                     <div
@@ -75,7 +77,8 @@
 
             <!-- City ID -->
             <div class="row mb-3">
-                <label for="cityId" class="col-sm-3 col-form-label"><span>City</span><span class="text-danger ms-1 mad-f">*</span></label>
+                <label for="cityId" class="col-sm-3 col-form-label"><span>City</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <select class="form-control" id="schoolType" formControlName="cityID" required>
                         <option value="" disabled>Select City</option>
@@ -92,7 +95,8 @@
 
             <!-- State -->
             <div class="row mb-3">
-                <label for="state" class="col-sm-3 col-form-label"><span>State</span><span class="text-danger ms-1 mad-f">*</span></label>
+                <label for="state" class="col-sm-3 col-form-label"><span>State</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="state" formControlName="state" required>
                     <div
@@ -109,7 +113,8 @@
 
             <!-- Pincode -->
             <div class="row mb-3">
-                <label for="pincode" class="col-sm-3 col-form-label"><span>Pincode</span><span class="text-danger ms-1 mad-f">*</span></label>
+                <label for="pincode" class="col-sm-3 col-form-label"><span>Pincode</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" id="pincode" formControlName="pincode" required>
                     <div
@@ -126,7 +131,8 @@
 
             <!-- Email -->
             <div class="row mb-3">
-                <label for="email" class="col-sm-3 col-form-label"><span>Email</span><span class="text-danger ms-1 mad-f">*</span></label>
+                <label for="email" class="col-sm-3 col-form-label"><span>Email</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <input type="email" class="form-control" id="email" formControlName="email" required>
                     <div
@@ -134,15 +140,17 @@
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['required']">
                             Email is required.
                         </small>
-                       
-                        <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['pattern']">Invalid email format.</small>
+
+                        <small class="text-danger" *ngIf="schoolDetailsForm.get('email')?.errors?.['pattern']">Invalid
+                            email format.</small>
                     </div>
                 </div>
             </div>
 
             <!-- Phone -->
             <div class="row mb-3">
-                <label for="phone" class="col-sm-3 col-form-label"><span>Phone</span><span class="text-danger ms-1 mad-f">*</span></label>
+                <label for="phone" class="col-sm-3 col-form-label"><span>Phone</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
 
                     <div class="input-group">
@@ -223,49 +231,198 @@
             </div> -->
 
 
-   <div class="row mb-2 mt-2">
-        <label for="" class="col-sm-3 col-form-label b-label">
-          <span>Photo</span>
-          <span class="text-danger ms-1 mad-f">*</span>
-        </label>
-        <div class="col-sm-7">
-          <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
-            <div class="custom-file-upload">
-              <div class="content">
-                <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
-                <p class="lab">Drag File To Upload</p>
-                <p class="or">or</p>
-                <input (change)="onCertificateUploadChange($event)" #fileInput type="file"
-                  accept=".jpeg,.jpg" style="display: none;">
-                <button   type="button"  class="btn btn-primary" (click)=" fileInput.click()">Browse File</button>
-              </div>
+            <div class="row mb-2 mt-2">
+                <label for="" class="col-sm-3 col-form-label b-label">
+                    <span>Photo</span>
+                    <span class="text-danger ms-1 mad-f">*</span>
+                </label>
+                <div class="col-sm-7">
+                    <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
+                        <div class="custom-file-upload">
+                            <div class="content">
+                                <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
+                                <p class="lab">Drag File To Upload</p>
+                                <p class="or">or</p>
+                                <input (change)="onCertificateUploadChange($event)" #fileInput type="file"
+                                    accept=".jpeg,.jpg" style="display: none;">
+                                <button type="button" class="btn btn-primary" (click)=" fileInput.click()">Browse
+                                    File</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="row mb-2 mt-3" *ngIf="getDocument()">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-7">
-          <div class="uploaded-file">
-            <div style="display: flex; align-items: center; gap: 9px; padding: 0 0px;">
-              <img [src]="transform(getDocument())" alt="" style="width:28px; height:30px;">
-              <div class="r-l" style="display: flex; flex-direction: column; align-items: start;">
-                <p class="f-n" style="margin: 0;">{{ getTruncatedFileName(fileName, 25) }}</p>
-                <p class="f-s" *ngIf="fileSize" style="margin: 0;">{{ fileSize }} - 100% uploaded</p>
-              </div>
+            <div class="row mb-2 mt-3" *ngIf="getDocument()">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-7">
+                    <div class="uploaded-file">
+                        <div style="display: flex; align-items: center; gap: 9px; padding: 0 0px;">
+                            <img [src]="transform(getDocument())" alt="" style="width:28px; height:30px;">
+                            <div class="r-l" style="display: flex; flex-direction: column; align-items: start;">
+                                <p class="f-n" style="margin: 0;">{{ getTruncatedFileName(fileName, 25) }}</p>
+                                <p class="f-s" *ngIf="fileSize" style="margin: 0;">{{ fileSize }} - 100% uploaded</p>
+                            </div>
+                        </div>
+                        <div class="right me-3">
+                            <i (click)="removeLeaveApplicationDocument()" class="fa-regular fa-trash-can"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="right me-3">
-              <i (click)="removeLeaveApplicationDocument()" class="fa-regular fa-trash-can"></i>
+
+            <div class="row mt-3" *ngIf="standardData.length && !isEdited">
+
+
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
+
+                <div class="col-sm-12">
+
+                    <div class="add-std-details-sec">
+
+                        <ng-container *ngFor="let std of standardData;let i=index;">
+                            <div class="std-add-tbl mt-2">
+
+                                <table>
+
+                                    <tr class="table-header-sec">
+                                        <th>Class {{i+1}}</th>
+                                        <th>Division</th>
+                                        <th>Student Count</th>
+                                    </tr>
+                                    <tr class="table-header">
+
+                                        <th></th>
+                                        <th
+                                            style="border-left:0.8px solid #D9D9D9;">
+                                            <input class="text-box" type="number" placeholder="Enter number of division"
+                                                [(ngModel)]="divisionCount[i]" [ngModelOptions]="{standalone: true}"
+                                                (input)="updateDivisions(i)" />
+                                            <!-- <i 
+                                                class="bi bi-plus-circle add-ic"></i> -->
+                                                <img (click)="addDivisionInClass(i)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                        </th>
+
+
+                                        <th>
+                                            <p class="status-msg ms-4">{{std.divisionData?.length}} Division Created</p>
+                                        </th>
+
+                                    </tr>
+
+                                    <tr class="table-row" *ngFor="let item of std.divisionData;let j=index;">
+                                        <td style="border:none"></td>
+
+                                        <td>Division {{item.division}}</td>
+                                        <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
+                                                [ngModelOptions]="{standalone: true}" (input)="change()"
+                                                placeholder="Enter count" /></td>
+                                    </tr>
+
+                                </table>
+
+
+                            </div>
+                        </ng-container>
+
+
+
+
+                    </div>
+
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
+
+
+            <div class="row mt-3" *ngIf="standardData.length && isEdited">
+
+
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions</span><span
+                        class="text-danger ms-1 mad-f">*</span></label>
+
+                <div class="col-sm-12">
+
+                    <div class="add-std-details-sec">
+                        <div class="std-head-sec">
+                            <!-- Previous Button -->
+                            <div class="left d-flex align-items-center">
+                                <button type="button" title="Previous"
+                                    class="btn btn-sm btn-light d-flex align-items-center justify-content-center"
+                                    (click)="showPrevious()" [disabled]="currentIndex === 0">
+                                    <i class="bi bi-chevron-left" style="font-size: 10px;  color: #000000;"></i>
+                                </button>
+                            </div>
+                            <div class="center d-flex align-items-center">
+                                Standard {{ standardData[currentIndex].standard }}
+                            </div>
+                            <!-- Next Button -->
+                            <div class="right d-flex align-items-center">
+                                <button type="button" title="Next"
+                                    class="btn btn-sm btn-light d-flex align-items-center justify-content-center"
+                                    (click)="showNext()" [disabled]="currentIndex === standardData.length - 1">
+                                    <i class="bi bi-chevron-right" style="font-size: 10px; color: #000000;"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <ng-container>
+                            <div class="std-add-tbl ">
+
+                                <table>
+
+                                    <tr class="table-header-sec">
+
+                                        <th>Division</th>
+                                        <th>Student Count</th>
+                                    </tr>
+                                    <tr class="table-header">
+
+
+                                        <th
+                                            style="border-left:0.8px solid #D9D9D9;display: flex;justify-content: space-between;">
+                                            <input class="text-box" type="number" placeholder="Enter number of division"
+                                                [(ngModel)]="divisionCount[currentIndex]"
+                                                [ngModelOptions]="{standalone: true}"
+                                                (input)="updateDivisions(currentIndex)" />
+                                            <!-- <i style="float:right; color: #8F0000;position: relative;left:15px;"
+                                                class="bi bi-plus-circle"></i> -->
+                                                <img (click)="addDivisionInClass(currentIndex)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                        </th>
+                                        <th>
+                                            <p class="status-msg ms-4">
+                                                {{standardData[currentIndex].divisionData?.length}} Division Created</p>
+                                        </th>
+
+                                    </tr>
+
+                                    <tr class="table-row"
+                                        *ngFor="let item of standardData[currentIndex].divisionData;let j=index;">
+
+
+                                        <td>Division {{item.division}}</td>
+                                        <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
+                                                [ngModelOptions]="{standalone: true}" (input)="change()"
+                                                placeholder="Enter count" /></td>
+                                    </tr>
+
+                                </table>
+
+
+                            </div>
+                        </ng-container>
 
 
 
 
-            <div *ngIf="divisionsFormArray.controls.length !==0">
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <!-- <div *ngIf="divisionsFormArray.controls.length !==0">
                 <div class="row">
                     <label for="photoID" class="col-sm-3 col-form-label">Divisions</label>
                 </div>
@@ -278,18 +435,18 @@
                         <div class="input-group">
                             <input type="number" placeholder="Enter Student Count" class="form-control" id="phone"
                                 formControlName="studentCount" required>
-                        
+
                         </div>
                         <div
-                        *ngIf="division.get('studentCount')?.invalid && (division.get('studentCount')?.touched || submitted)">
-                        <small class="text-danger" *ngIf="division.get('studentCount')?.errors?.['required']">
-                            Student Count is required.
-                        </small>
+                            *ngIf="division.get('studentCount')?.invalid && (division.get('studentCount')?.touched || submitted)">
+                            <small class="text-danger" *ngIf="division.get('studentCount')?.errors?.['required']">
+                                Student Count is required.
+                            </small>
 
-                    </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
 
@@ -304,8 +461,7 @@
                 <!-- <span >
                 <button type="button" class="btn btn-secondary me-2">Previous</button>
               </span> -->
-                <button type="button" class="btn btn-secondary me-2"
-                    [routerLink]="['/dashboard']">Cancel</button>
+                <button type="button" class="btn btn-secondary me-2" [routerLink]="['/dashboard']">Cancel</button>
 
                 <button type="submit" [disabled]="submitting" class="btn btn-success" (click)="onSubmit()">
                     {{submitting ? 'Submitting...' : 'Submit'}}
