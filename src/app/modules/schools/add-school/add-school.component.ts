@@ -8,6 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-add-school',
@@ -39,7 +40,19 @@ export class AddSchoolComponent implements OnInit {
   divisionCount: any[] = []
   divisionArray: { division: any; studentCount: any; }[] = [];
   standardData: any = []
-  currentIndex: number=0;
+  currentIndex: number = 0;
+
+  schoolTypeDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'schoolTypeID',
+    textField: 'schoolTypeName',
+    selectAllText: 'Select All',
+    closeDropDownOnSelection: true,
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 2,
+    allowSearchFilter: true,
+
+  };
   constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
 
   }
@@ -61,6 +74,11 @@ export class AddSchoolComponent implements OnInit {
       }
     });
 
+    this.schoolDetailsForm.get("schoolTypeID")?.valueChanges.subscribe((data:any)=>{
+    console.log("changess",data)
+    this.changeSchoolType(data)
+    })
+
     // this.divisions.forEach((item: any) => this.addDivision())
 
   }
@@ -70,9 +88,12 @@ export class AddSchoolComponent implements OnInit {
     this.schoolService.getSchoolById(id).subscribe({
       next: (response) => {
         if (response) {
+          if (response) {
+            console.log("response", response)
+            this.school = response
+            this.setValuesForEdit()
+          }
 
-          this.school = response
-          this.setValuesForEdit()
         }
 
       },
@@ -100,7 +121,7 @@ export class AddSchoolComponent implements OnInit {
       const schoolData = {
 
         schoolName: this.school.schoolName,
-        schoolTypeID: this.schoolTypes.find((item: any) => item.schoolTypeID === this.school.schoolTypeID),
+        schoolTypeID: [this.schoolTypes.find((item: any) => item.schoolTypeID === this.school.schoolTypeID)],
         address: this.school.address,
         email: this.school.email,
         phone: this.school.phone,
@@ -126,13 +147,22 @@ export class AddSchoolComponent implements OnInit {
 
       });
 
-      this.schoolDetailsForm.setControl("divisions", this.fb.array(
-        this.school.getDivisions.map((item: any) => {
-          return this.fb.group({
-            studentCount: item.studentCount
-          });
+      let data:any = []
+      this.school.getClasses.map((item: any) => {
+        data.push({
+          "standard": item.class,
+          "divisionData": item.getDivisions
         })
-      ));
+      })
+      this.standardData=data
+
+      // this.schoolDetailsForm.setControl("divisions", this.fb.array(
+      //   this.school.getDivisions.map((item: any) => {
+      //     return this.fb.group({
+      //       studentCount: item.studentCount
+      //     });
+      //   })
+      // ));
 
 
     });
@@ -153,7 +183,7 @@ export class AddSchoolComponent implements OnInit {
       phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       photoID: [null],
 
-      divisions: this.fb.array([])
+      // divisions: this.fb.array([])
       // statusID: ['', Validators.required],
       // principalID: ['', Validators.required],
       // vicePrincipalID: ['', Validators.required]
@@ -169,26 +199,37 @@ export class AddSchoolComponent implements OnInit {
     debugger
     this.submitted = true;  // Set submitted to true when the form is submitted
     this.submitting = true
-
+    console.log("standered", this.standardData)
+    let classDivisionData: any = this.standardData.map((item: any) => {
+      return {
+        "class": item.standard,
+        [this.isEdited?"updateDivisions":"addDivisions"]: item.divisionData
+      }
+    })
+    console.log("data", classDivisionData)
     if (this.schoolDetailsForm.valid) {
       debugger
       let formDataValue: any = this.schoolDetailsForm.value;
 
       const data: SchoolData = {
         schoolName: formDataValue.schoolName,
-        schoolTypeID: formDataValue.schoolTypeID.schoolTypeID,
+        schoolTypeID: formDataValue.schoolTypeID[0].schoolTypeID,
         address: formDataValue.address,
         cityID: formDataValue.cityID.cityID,
         state: formDataValue.state,
         pincode: formDataValue.pincode,
         email: formDataValue.email,
         phone: formDataValue.phone,
-        photoID: formDataValue.photoID?.photoID,
+        photoID: formDataValue.photoID?.photoID ? formDataValue.photoID?.photoID : null,
         principalID: this.isEdited ? this.school.principalID : null,
         vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
-        [this.isEdited ? "updateDivisions" : "addDivisions"]: formDataValue.divisions.map((item: any, index: number) => {
-          return { division: index + 1, studentCount: parseInt(item.studentCount) }
-        }),
+        // [this.isEdited ? "updateDivisions" : "addClasses"]: formDataValue.divisions.map((item: any, index: number) => {
+        //   return { division: index + 1, studentCount: parseInt(item.studentCount) }
+        // }),
+
+        [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
+
+
 
       }
       debugger;
@@ -339,40 +380,34 @@ export class AddSchoolComponent implements OnInit {
 
 
   changeSchoolType(event: any) {
+      this.currentIndex=0
+      this.standardData=[]
     this.flag = false;
-    (this.schoolDetailsForm.get("divisions") as FormArray).clear()
+    // (this.schoolDetailsForm.get("divisions") as FormArray).clear()
     debugger
 
-    let schoolTypeId: number = event.schoolTypeID
+    let schoolTypeId: any[] = this.schoolDetailsForm.get('schoolTypeID')?.value
     this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
       next: (response: any) => {
 
-        let divisions: any[] = response[0].classes ? response[0].classes : [
-          1,
-          2,
-          3,
-          4
-        ]
+        if (response) {
+        
+          console.log("response--",response)
+          let divisions: any[] = response.classes;
 
-        divisions.map((item: any) => {
-          this.standardData.push({ standard: item, divisionData: [] })
-        })
+          divisions.map((item: any) => {
+            this.standardData.push({ standard: item, divisionData: [] })
+          })
 
 
-        this.divisions = divisions
+          this.divisions = divisions
 
-        this.divisions.forEach((item: any) => {
-          debugger
-          let len = (this.schoolDetailsForm.get("divisions") as FormArray).length
-          if (len < this.divisions.length) this.addDivision()
-        })
-
-
-
-
-
-
-
+          // this.divisions.forEach((item: any) => {
+          //   debugger
+          //   let len = (this.schoolDetailsForm.get("divisions") as FormArray).length
+          //   if (len < this.divisions.length) this.addDivision()
+          // })
+        }
 
       },
       error: (error: any) => {
@@ -525,12 +560,12 @@ export class AddSchoolComponent implements OnInit {
 
 
   updateDivisions(index: number) {
-    
+
     if (this.divisionCount[index] > 26) {
       alert('You can only have up to 26 divisions (A to Z).');
       this.divisionArray = []
-      this.standardData[index].divisionData=[]
-      this.divisionCount[index]=null
+      this.standardData[index].divisionData = []
+      this.divisionCount[index] = null
       return;
     }
 
@@ -554,27 +589,27 @@ export class AddSchoolComponent implements OnInit {
     console.log("arrayyyyyyyyyyyyy", this.divisionArray, this.standardData)
   }
 
-    // Show the previous standard
-    showPrevious() {
-      if (this.currentIndex > 0) {
-        this.currentIndex--;
-      }
+  // Show the previous standard
+  showPrevious() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
     }
-  
-    // Show the next standard
-    showNext() {
-      if (this.currentIndex < this.standardData.length - 1) {
-        this.currentIndex++;
-      }
-    }
+  }
 
-    addDivisionInClass(index:number){
-      this.standardData[index].divisionData.push( {
-        division: String.fromCharCode(65 + this.standardData[index].divisionData.length),
-        studentCount: ""
-      })
-
+  // Show the next standard
+  showNext() {
+    if (this.currentIndex < this.standardData.length - 1) {
+      this.currentIndex++;
     }
+  }
+
+  addDivisionInClass(index: number) {
+    this.standardData[index].divisionData.push({
+      division: String.fromCharCode(65 + this.standardData[index].divisionData.length),
+      studentCount: ""
+    })
+
+  }
 
 }
 

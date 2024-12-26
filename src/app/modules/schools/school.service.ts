@@ -1,5 +1,5 @@
 import { NumberFormatStyle } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -33,14 +33,50 @@ export class SchoolService {
     return this.http.get(url);
   }
 
-  getDivisionDetailsBySchoolType(schoolType:number): Observable<any> {
-    const url = `${this.baseUrl}SchoolType/GetDivisionsBySchoolType/${schoolType}`;
-    return this.http.get(url);
-  }
+  // getDivisionDetailsBySchoolType(schoolTypes: any): Observable<any> {
+  //   let params = new HttpParams()
+  //   console.log("school types",schoolTypes)
+  //   schoolTypes.forEach((element:any) => {
+  //     console.log("elem",element.schoolTypeID.toString())
+  //     params.append('schooltypeIDs', element.schoolTypeID.toString());
+  //   });
+ 
+  //   console.log("params", params.toString());
+    
+  //   const url = `${this.baseUrl}SchoolType/GetClassesBySchoolType`;
+  //   return this.http.get(url, { params });
+  // }
 
+  getDivisionDetailsBySchoolType(schoolTypes: any): Observable<any> {
+    let params = new HttpParams();
+    
+    console.log("school types", schoolTypes);
+  
+    schoolTypes.forEach((element: any) => {
+      console.log("elem", element.schoolTypeID.toString());
+      params = params.append('schooltypeIDs', element.schoolTypeID.toString());
+    });
+  
+    console.log("params", params.toString());
+  
+    const url = `${this.baseUrl}SchoolType/GetClassesBySchoolType`;
+    return this.http.get(url, { params });
+  }
+  
   getCities(): Observable<any> {
     const url = `${this.baseUrl}ProfileDetails/GetAllCities`;
     return this.http.get(url);
+  }
+
+  getTableListData(url: string): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.baseUrl + url, { headers: { accept: '*/*' } }).pipe(
+
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
   }
  
 

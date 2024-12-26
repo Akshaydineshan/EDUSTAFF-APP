@@ -76,7 +76,7 @@ export class RetiredStaffComponent {
   }
 
   loadTableDataList() {
-    let tableDataListApiEndPoint: string = 'nonTeacher/GetAllRetiredTeacher'
+    let tableDataListApiEndPoint: string = 'NonTeacher/GetAllRetiredNonTeacher'
     this.dataService.getTableListData(tableDataListApiEndPoint).subscribe(
       (data: any) => {
         debugger

@@ -43,11 +43,9 @@
                 <label for="schoolType" class="col-sm-3 col-form-label"><span>School Type</span><span
                         class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
-                    <select class="form-control" id="schoolType" formControlName="schoolTypeID" required
-                        (ngModelChange)="changeSchoolType($event)">
-                        <option value="" [disabled]="true">Select School Type</option>
-                        <option *ngFor="let type of schoolTypes" [ngValue]="type">{{type.schoolTypeName}}</option>
-                    </select>
+                    <ng-multiselect-dropdown [placeholder]="'Select school type'"
+                        [settings]="schoolTypeDropdownSettings" [data]="schoolTypes" formControlName="schoolTypeID"
+                        (onSelect)="changeSchoolType($event)" />
                     <div
                         *ngIf="schoolDetailsForm.get('schoolTypeID')?.invalid && (schoolDetailsForm.get('schoolTypeID')?.touched || submitted)">
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolTypeID')?.errors?.['required']">

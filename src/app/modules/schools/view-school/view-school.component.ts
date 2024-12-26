@@ -1,3 +1,5 @@
+import { Subject } from 'rxjs';
+import { DataService } from './../../../core/service/data/data.service';
 import { SchoolService } from './../school.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,38 +16,10 @@ export class ViewSchoolComponent implements OnInit {
   apiUrl = environment.imageBaseUrl;
   itemId: any;
 
-  standards:any[] = [
-    {
-      standard: '1st Standard',
-      divisions: [
-        { name: 'A', count: 20 },
-        { name: 'B', count: 18 },
-        { name: 'C', count: 22 },
-        { name: 'D', count: 22 }
-      ]
-    },
-    {
-      standard: '2nd Standard',
-      divisions: [
-        { name: 'A', count: 25 },
-        { name: 'B', count: 24 },
-        { name: 'C', count: 23 },
-        { name: 'D', count: 25 },
-        { name: 'E', count: 24 },
-        { name: 'F', count: 23 }
-      ]
-    },
-    {
-      standard: '3rd Standard',
-      divisions: [
-        { name: 'A', count: 30 },
-        { name: 'B', count: 28 },
-        { name: 'C', count: 29 }
-      ]
-    }
-  ];
+  standards:any[] =[]
   currentIndex:number=0;
   printMode: boolean=false;
+  tableData: any[]=[];
 
 
 
@@ -65,9 +39,27 @@ export class ViewSchoolComponent implements OnInit {
     debugger
     this.schoolService.getSchoolById(schoolId).subscribe({
       next: (response) => {
+        if(response){
+          this.loadTeacherDataBySchool(schoolId)
 
-        this.currentSchool = response
+          console.log("response",response)
+          this.currentSchool = response
 
+         if( this.currentSchool.getClasses.length){
+          let data:any = []
+          this.currentSchool.getClasses.map((item: any) => {
+            data.push({
+              "standard": item.class,
+              "divisionData": item.getDivisions
+            })
+          })
+          this.standards=data
+         }
+        
+
+        }
+
+    
       },
       error: (error) => {
 
@@ -78,6 +70,24 @@ export class ViewSchoolComponent implements OnInit {
       }
     })
 
+  }
+
+  loadTeacherDataBySchool(id:number){
+    let url=`Teacher/GetAllTeacherBySchoolID/${id}`
+    this.schoolService.getTableListData(url).subscribe({
+      next:(response:any)=>{
+        if(response){
+          this.tableData=response
+        }
+
+      },
+      error:()=>{
+
+      },
+      complete:()=>{
+
+      }
+    })
   }
 
   
