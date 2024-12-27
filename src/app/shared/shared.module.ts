@@ -22,6 +22,7 @@ import { EmployeeMenuClickListMenuComponent } from './components/employee-menu-c
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { NoDataFoundComponent } from './components/no-data-found/no-data-found.component';
+import { RomanPipe } from './pipes/roman.pipe';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { NoDataFoundComponent } from './components/no-data-found/no-data-found.c
     TeacherTableNameSectionComponent,
     EmployeeMenuClickListMenuComponent,
     BackButtonComponent,
-    NoDataFoundComponent
+    NoDataFoundComponent,
+    RomanPipe
     
   ],
   imports: [
@@ -67,7 +69,8 @@ import { NoDataFoundComponent } from './components/no-data-found/no-data-found.c
     AgGridModule,
     NgMultiSelectDropDownModule,
     BackButtonComponent,
-    NoDataFoundComponent
+    NoDataFoundComponent,
+    RomanPipe
   ]
 })
 export class SharedModule { }

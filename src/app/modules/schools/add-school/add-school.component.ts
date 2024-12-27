@@ -7,13 +7,17 @@ import { DataService } from 'src/app/core/service/data/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
-import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
+import { getFileName, getOrdinalSuffix, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { RomanPipe } from 'src/app/shared/pipes/roman.pipe';
 
 @Component({
   selector: 'app-add-school',
   templateUrl: './add-school.component.html',
-  styleUrls: ['./add-school.component.scss']
+  styleUrls: ['./add-school.component.scss'],
+  providers: [
+    RomanPipe, 
+  ],
 })
 export class AddSchoolComponent implements OnInit {
   isSidebarClosed: boolean = false;
@@ -23,6 +27,7 @@ export class AddSchoolComponent implements OnInit {
   submitting: boolean = false;
   getTruncatedFileName = getTruncatedFileName;
   getFileName = getFileName;
+  getOrdinalSuffix=getOrdinalSuffix;
 
   schoolTypes: any[] = []
   cities: any[] = [
@@ -55,7 +60,7 @@ export class AddSchoolComponent implements OnInit {
   };
   errorMsgForEmptyDivision: any[] = [];
   errorMsgForInvalidDivision: any[] = [];
-  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute,private romanPipe:RomanPipe) {
 
   }
 
@@ -224,10 +229,10 @@ export class AddSchoolComponent implements OnInit {
       debugger
 
       if (!item.divisionData.length) {
-        this.errorMsgForEmptyDivision.push(` ${item.standard} `);
+       this.errorMsgForEmptyDivision.push(`${getOrdinalSuffix(item.standard)} `);
         return
       } else if (!item.divisionData.every((div: any) => div.division && div.studentCount)) {
-        this.errorMsgForInvalidDivision.push(` ${item.standard} `);
+         this.errorMsgForInvalidDivision.push(`${getOrdinalSuffix(item.standard)} `);
         return
       }
 

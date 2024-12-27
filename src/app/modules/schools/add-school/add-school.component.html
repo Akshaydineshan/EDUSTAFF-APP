@@ -494,7 +494,7 @@
                                 </button>
                             </div>
                             <div class="center d-flex align-items-center">
-                                Standard {{ standardData[currentIndex].standard }}
+                                Standard {{ standardData[currentIndex].standard  | roman}}
                             </div>
                             <!-- Next Button -->
                             <div class="right d-flex align-items-center">
@@ -565,14 +565,14 @@
                     <small  *ngIf="errorMsgForEmptyDivision.length > 0 && errorMsgForInvalidDivision.length === 0"
                         class="text-danger">
                         <i class="fas fa-exclamation-circle"></i> <!-- Error icon -->
-                        Standard {{ errorMsgForEmptyDivision.join(", ") }} are missing divisions. Please add at least
+                        Standard ({{ errorMsgForEmptyDivision.join(",") }})  are missing divisions. Please add at least
                         one division.
                     </small>
 
                     <!-- Display invalid divisions error message only if there are no missing divisions -->
                     <small  *ngIf="errorMsgForInvalidDivision.length > 0" class="text-danger">
                         <i class="fas fa-exclamation-triangle"></i> <!-- Warning icon -->
-                        Please ensure that each division in standards {{ errorMsgForInvalidDivision.join(", ") }} has a
+                        Please ensure that each division in standards ({{ errorMsgForInvalidDivision.join(",") }})  has a
                         valid name and student count.
                     </small>
                 </div>
