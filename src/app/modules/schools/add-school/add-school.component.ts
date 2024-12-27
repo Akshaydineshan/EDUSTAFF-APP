@@ -531,7 +531,7 @@ export class AddSchoolComponent implements OnInit {
 
             // Merge existing data with fetched classes
             this.standardData = classes.map((cls: any) =>
-              dataMap.has(cls) ? dataMap.get(cls) : { standard: cls, divisionData: [] }
+              dataMap.has(cls) ? dataMap.get(cls) : { standard: cls, divisionData: [{division:'A',studentCount:''}] }
             );
           } else {
             // Initialize new standardData with empty divisionData
@@ -539,7 +539,7 @@ export class AddSchoolComponent implements OnInit {
             this.standardData = [];
             this.standardData = classes.map((item: any) => ({
               standard: item,
-              divisionData: []
+              divisionData: [{division:'A',studentCount:''}]
             }));
 
             // Update the `divisions` property
