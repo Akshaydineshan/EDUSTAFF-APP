@@ -44,8 +44,8 @@
                         class="text-danger ms-1 mad-f">*</span></label>
                 <div class="col-sm-9">
                     <ng-multiselect-dropdown [placeholder]="'Select school type'"
-                        [settings]="schoolTypeDropdownSettings" [data]="schoolTypes" formControlName="schoolTypeID"
-                        (onSelect)="changeSchoolType($event)" />
+                        [settings]="schoolTypeDropdownSettings" [data]="schoolTypes" formControlName="schoolTypeID" />
+                    <!-- (onSelect)="changeSchoolType($event)" -->
                     <div
                         *ngIf="schoolDetailsForm.get('schoolTypeID')?.invalid && (schoolDetailsForm.get('schoolTypeID')?.touched || submitted)">
                         <small class="text-danger" *ngIf="schoolDetailsForm.get('schoolTypeID')?.errors?.['required']">
@@ -274,22 +274,22 @@
             <div class="row mt-3" *ngIf="standardData.length && false ">
 
 
-                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions( Design 1)</span><span
-                        class="text-danger ms-1 mad-f">*</span></label>
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions( Design
+                        1)</span><span class="text-danger ms-1 mad-f">*</span></label>
 
                 <div class="col-sm-12">
 
                     <div class="add-std-details-sec">
-                      
+
 
                         <ng-container *ngFor="let std of standardData;let i=index;">
                             <div class="std-add-tbl mt-2">
                                 <div class="std-head-sec2">
-                         
+
                                     <div class="center d-flex align-items-center">
                                         Standard {{ standardData[i].standard }}
                                     </div>
-                                  
+
                                 </div>
 
                                 <table>
@@ -302,14 +302,14 @@
                                     <tr class="table-header">
 
                                         <!-- <th></th> -->
-                                        <th
-                                            style="border-left:0.8px solid #D9D9D9;">
-                                            <input autofocus class="text-box" type="number" placeholder="Enter number of division"
-                                                [(ngModel)]="divisionCount[i]" [ngModelOptions]="{standalone: true}"
-                                                (input)="updateDivisions(i)" />
+                                        <th style="border-left:0.8px solid #D9D9D9;">
+                                            <input autofocus class="text-box" type="number"
+                                                placeholder="Enter number of division" [(ngModel)]="divisionCount[i]"
+                                                [ngModelOptions]="{standalone: true}" (input)="updateDivisions(i)" />
                                             <!-- <i 
                                                 class="bi bi-plus-circle add-ic"></i> -->
-                                                <img (click)="addDivisionInClass(i)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                            <img (click)="addDivisionInClass(i)" class="add-ic"
+                                                src="../../../../assets/icons/class-add.png" alt="">
                                         </th>
 
 
@@ -323,7 +323,7 @@
                                         <!-- <td style="border:none"></td> -->
 
                                         <td>Division {{item.division}}</td>
-                                        <td><input  type="number" class="text-box" [(ngModel)]="item.studentCount"
+                                        <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
                                                 [ngModelOptions]="{standalone: true}" (input)="change()"
                                                 placeholder="Enter count" /></td>
                                     </tr>
@@ -345,8 +345,8 @@
             <div class="row mt-3" *ngIf="standardData.length && false">
 
 
-                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions( Design 2)</span><span
-                        class="text-danger ms-1 mad-f">*</span></label>
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions( Design
+                        2)</span><span class="text-danger ms-1 mad-f">*</span></label>
 
                 <div class="col-sm-12">
 
@@ -365,14 +365,14 @@
                                     <tr class="table-header">
 
                                         <th></th>
-                                        <th
-                                            style="border-left:0.8px solid #D9D9D9;">
-                                            <input autofocus class="text-box" type="number" placeholder="Enter number of division"
-                                                [(ngModel)]="divisionCount[i]" [ngModelOptions]="{standalone: true}"
-                                                (input)="updateDivisions(i)" />
+                                        <th style="border-left:0.8px solid #D9D9D9;">
+                                            <input autofocus class="text-box" type="number"
+                                                placeholder="Enter number of division" [(ngModel)]="divisionCount[i]"
+                                                [ngModelOptions]="{standalone: true}" (input)="updateDivisions(i)" />
                                             <!-- <i 
                                                 class="bi bi-plus-circle add-ic"></i> -->
-                                                <img (click)="addDivisionInClass(i)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                            <img (click)="addDivisionInClass(i)" class="add-ic"
+                                                src="../../../../assets/icons/class-add.png" alt="">
                                         </th>
 
 
@@ -408,62 +408,62 @@
             <div class="row mt-5" *ngIf="standardData.length && false ">
 
 
-                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions ( design 3)</span><span
-                        class="text-danger ms-1 mad-f">*</span></label>
+                <label for="phone" class="col-sm-12 col-form-label"><span> Add Class And Divisions ( design
+                        3)</span><span class="text-danger ms-1 mad-f">*</span></label>
 
                 <div class="col-sm-12">
 
                     <div class="add-std-details-sec">
 
                         <!-- <ng-container *ngFor="let std of standardData;let i=index;"> -->
-                            <div class="std-add-tbl mt-2">
+                        <div class="std-add-tbl mt-2">
 
-                                <table>
+                            <table>
 
-                                    <tr class="table-header-sec">
-                                        <th>Classes </th>
-                                        <th>Division</th>
-                                        <th>Student Count</th>
+                                <tr class="table-header-sec">
+                                    <th>Classes </th>
+                                    <th>Division</th>
+                                    <th>Student Count</th>
+                                </tr>
+
+                                <ng-container *ngFor="let std of standardData;let i=index;">
+                                    <tr class="table-header">
+
+
+                                        <td style="border:none">Standard {{i+1}}</td>
+                                        <th style="border-left:0.8px solid #D9D9D9;">
+                                            <input class="text-box" type="number" placeholder="Enter number of division"
+                                                [(ngModel)]="divisionCount[i]" [ngModelOptions]="{standalone: true}"
+                                                (input)="updateDivisions(i)" />
+                                            <!-- <i 
+                                                    class="bi bi-plus-circle add-ic"></i> -->
+                                            <img (click)="addDivisionInClass(i)" class="add-ic"
+                                                src="../../../../assets/icons/class-add.png" alt="">
+                                        </th>
+
+
+                                        <th>
+                                            <p class="status-msg ms-4">{{std.divisionData?.length}} Division Created</p>
+                                        </th>
+
                                     </tr>
 
-                                    <ng-container *ngFor="let std of standardData;let i=index;">
-                                        <tr class="table-header">
+                                    <tr class="table-row" *ngFor="let item of std.divisionData;let j=index;">
+                                        <td style="border:none" *ngIf="j!== std.divisionData.length-1"></td>
+                                        <td style="border-top:none" *ngIf="j== std.divisionData.length-1 "></td>
 
-                                          
-                                            <td style="border:none" >Standard {{i+1}}</td>
-                                            <th
-                                                style="border-left:0.8px solid #D9D9D9;">
-                                                <input class="text-box" type="number" placeholder="Enter number of division"
-                                                    [(ngModel)]="divisionCount[i]" [ngModelOptions]="{standalone: true}"
-                                                    (input)="updateDivisions(i)" />
-                                                <!-- <i 
-                                                    class="bi bi-plus-circle add-ic"></i> -->
-                                                    <img (click)="addDivisionInClass(i)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
-                                            </th>
-    
-    
-                                            <th>
-                                                <p class="status-msg ms-4">{{std.divisionData?.length}} Division Created</p>
-                                            </th>
-    
-                                        </tr>
-    
-                                        <tr class="table-row" *ngFor="let item of std.divisionData;let j=index;">
-                                            <td style="border:none"  *ngIf="j!== std.divisionData.length-1"></td>
-                                            <td style="border-top:none"  *ngIf="j== std.divisionData.length-1 "></td>
-    
-                                            <td>Division {{item.division}}</td>
-                                            <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
-                                                    [ngModelOptions]="{standalone: true}" (input)="change()"
-                                                    placeholder="Enter count" /></td>
-                                        </tr>
-                                    </ng-container>
-                                  
-
-                                </table>
+                                        <td>Division {{item.division}}</td>
+                                        <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
+                                                [ngModelOptions]="{standalone: true}" (input)="change()"
+                                                placeholder="Enter count" /></td>
+                                    </tr>
+                                </ng-container>
 
 
-                            </div>
+                            </table>
+
+
+                        </div>
                         <!-- </ng-container> -->
 
 
@@ -527,7 +527,8 @@
                                                 (input)="updateDivisions(currentIndex)" />
                                             <!-- <i style="float:right; color: #8F0000;position: relative;left:15px;"
                                                 class="bi bi-plus-circle"></i> -->
-                                                <img (click)="addDivisionInClass(currentIndex)" class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                            <img (click)="addDivisionInClass(currentIndex)" class="add-ic"
+                                                src="../../../../assets/icons/class-add.png" alt="">
                                         </th>
                                         <th>
                                             <p class="status-msg ms-4">
@@ -558,6 +559,24 @@
                     </div>
 
                 </div>
+
+                <div class="ms-1" *ngIf="errorMsgForEmptyDivision.length > 0 || errorMsgForInvalidDivision.length > 0">
+                    <!-- Prioritize missing divisions error message -->
+                    <small  *ngIf="errorMsgForEmptyDivision.length > 0 && errorMsgForInvalidDivision.length === 0"
+                        class="text-danger">
+                        <i class="fas fa-exclamation-circle"></i> <!-- Error icon -->
+                        Standard {{ errorMsgForEmptyDivision.join(", ") }} are missing divisions. Please add at least
+                        one division.
+                    </small>
+
+                    <!-- Display invalid divisions error message only if there are no missing divisions -->
+                    <small  *ngIf="errorMsgForInvalidDivision.length > 0" class="text-danger">
+                        <i class="fas fa-exclamation-triangle"></i> <!-- Warning icon -->
+                        Please ensure that each division in standards {{ errorMsgForInvalidDivision.join(", ") }} has a
+                        valid name and student count.
+                    </small>
+                </div>
+
             </div>
 
 

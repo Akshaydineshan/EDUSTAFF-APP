@@ -53,6 +53,8 @@ export class AddSchoolComponent implements OnInit {
     allowSearchFilter: true,
 
   };
+  errorMsgForEmptyDivision: any[] = [];
+  errorMsgForInvalidDivision: any[] = [];
   constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute) {
 
   }
@@ -74,9 +76,9 @@ export class AddSchoolComponent implements OnInit {
       }
     });
 
-    this.schoolDetailsForm.get("schoolTypeID")?.valueChanges.subscribe((data:any)=>{
-    console.log("changess",data)
-    this.changeSchoolType(data)
+    this.schoolDetailsForm.get("schoolTypeID")?.valueChanges.subscribe((data: any) => {
+      this.changeSchoolType(data)
+      console.log("3333333333", data)
     })
 
     // this.divisions.forEach((item: any) => this.addDivision())
@@ -147,14 +149,15 @@ export class AddSchoolComponent implements OnInit {
 
       });
 
-      let data:any = []
+      let data: any = []
       this.school.getClasses.map((item: any) => {
         data.push({
           "standard": item.class,
           "divisionData": item.getDivisions
         })
       })
-      this.standardData=data
+      this.standardData = data
+      console.log("edit ")
 
       // this.schoolDetailsForm.setControl("divisions", this.fb.array(
       //   this.school.getDivisions.map((item: any) => {
@@ -196,21 +199,73 @@ export class AddSchoolComponent implements OnInit {
 
 
   onSubmit(): void {
+    this.errorMsgForEmptyDivision=[]
+      this.errorMsgForInvalidDivision=[]
+   
+    // let classDivisionData: any = this.standardData.map((item: any) => {
+
+    //   if (!item.divisionData.length) {
+    //     alert("Each standard must have at least one division. Please add a division.");
+    //     return;
+    //   } else if (!item.divisionData.division || !item.divisionData.studentCount) {
+    //     alert("Please ensure each division has a valid name and student count.");
+    //     return;
+    //   }
+
+    //   return {
+    //     "class": item.standard,
+    //     [this.isEdited ? "updateDivisions" : "addDivisions"]: item.divisionData
+    //   }
+    // })
+  
+   
+    
+    let classDivisionData: any = this.standardData.map((item: any, index: number) => {
+      debugger
+      
+      if (!item.divisionData.length) {
+        this.errorMsgForEmptyDivision.push(` ${item.standard} `);
+        return 
+      } else if (!item.divisionData.every((div: any) => div.division && div.studentCount)) {
+        this.errorMsgForInvalidDivision.push(` ${item.standard} `);
+        return 
+      }
+
+    
+      return {
+        class: item.standard,
+        [this.isEdited ? "updateDivisions" : "addDivisions"]: item.divisionData
+      };
+    });
+
+
+
+    if (this.errorMsgForInvalidDivision.length > 0) {
+      // alert(`Please ensure that each division in standards ${this.errorMsgForInvalidDivision.join(",")} has a valid name and student count`);
+      return
+    }
+    
+
+    if (this.errorMsgForEmptyDivision.length > 0) {
+      // alert(`Standard ${this.errorMsgForEmptyDivision.join(",")} are missing divisions. Please add at least one division`);
+      return;
+    }
+    
+
+
+    
+
     debugger
     this.submitted = true;  // Set submitted to true when the form is submitted
     this.submitting = true
-    console.log("standered", this.standardData)
-    let classDivisionData: any = this.standardData.map((item: any) => {
-      return {
-        "class": item.standard,
-        [this.isEdited?"updateDivisions":"addDivisions"]: item.divisionData
-      }
-    })
-    console.log("data", classDivisionData)
+
+
+
     if (this.schoolDetailsForm.valid) {
       debugger
       let formDataValue: any = this.schoolDetailsForm.value;
-
+      console.log("formDa", formDataValue)
+      let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => item.schoolTypeID)
       const data: SchoolData = {
         schoolName: formDataValue.schoolName,
         schoolTypeID: formDataValue.schoolTypeID[0].schoolTypeID,
@@ -379,48 +434,124 @@ export class AddSchoolComponent implements OnInit {
   }
 
 
-  changeSchoolType(event: any) {
-      this.currentIndex=0
-      this.standardData=[]
-    this.flag = false;
-    // (this.schoolDetailsForm.get("divisions") as FormArray).clear()
-    debugger
+  // changeSchoolType(event: any) {
+  //   this.flag = false;
+  //   this.currentIndex = 0
+  //   //  this.standardData = []
+  //   let divisions: any[] = []
+  //   let schoolTypeId: any[] = this.schoolDetailsForm.get('schoolTypeID')?.value
 
-    let schoolTypeId: any[] = this.schoolDetailsForm.get('schoolTypeID')?.value
+  //   this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
+  //     next: (response: any) => {
+
+  //       if (response) {
+
+
+  //         if (this.isEdited && this.standardData) {
+  //           let classes: any = response.classes;
+  //           let standardArray = this.standardData
+
+
+  //           const dataMap = new Map(standardArray.map((item: any) => [item.standard, item]));
+  //           const result = classes.map((cls: any) => {
+  //             return dataMap.has(cls)
+  //               ? dataMap.get(cls)
+  //               : { standard: cls, divisionData: [] };
+  //           });
+
+
+
+
+  //           this.standardData = result
+  //         } else {
+  //           this.currentIndex = 0
+  //           this.standardData = []
+  //           divisions = []
+
+
+  //           divisions = response.classes;
+
+  //           divisions.map((item: any, index: number) => {
+  //             this.standardData.push({ standard: item, divisionData: [] })
+  //             //  if(!this.standardData[index]?.divisionData.length) this.addDivisionInClass(index)
+  //           })
+
+
+  //           this.divisions = divisions
+  //         }
+
+
+  //         // this.divisions.forEach((item: any) => {
+  //         //   debugger
+  //         //   let len = (this.schoolDetailsForm.get("divisions") as FormArray).length
+  //         //   if (len < this.divisions.length) this.addDivision()
+  //         // })
+  //       }
+
+  //     },
+  //     error: (error: any) => {
+
+  //     },
+  //     complete: () => {
+
+  //     }
+
+  //   })
+
+
+  // }
+  changeSchoolType(event: any) {
+
+    this.flag = false;
+    this.currentIndex = 0;
+
+    const schoolTypeId = this.schoolDetailsForm.get('schoolTypeID')?.value;
+
+    // Ensure `schoolTypeId` is defined before making the service call
+    if (!schoolTypeId.length) {
+      this.standardData = []
+      console.error('School Type ID is required.');
+      return;
+    }
+
+
     this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
       next: (response: any) => {
-
         if (response) {
-        
-          console.log("response--",response)
-          let divisions: any[] = response.classes;
+          const classes = response.classes || [];
+          if (this.isEdited && this.standardData) {
+            // Map existing `standardData` by standard for efficient lookup
+            const dataMap = new Map(
+              this.standardData.map((item: any) => [item.standard, item])
+            );
 
-          divisions.map((item: any) => {
-            this.standardData.push({ standard: item, divisionData: [] })
-          })
+            // Merge existing data with fetched classes
+            this.standardData = classes.map((cls: any) =>
+              dataMap.has(cls) ? dataMap.get(cls) : { standard: cls, divisionData: [] }
+            );
+          } else {
+            // Initialize new standardData with empty divisionData
+            this.currentIndex = 0;
+            this.standardData = [];
+            this.standardData = classes.map((item: any) => ({
+              standard: item,
+              divisionData: []
+            }));
 
-
-          this.divisions = divisions
-
-          // this.divisions.forEach((item: any) => {
-          //   debugger
-          //   let len = (this.schoolDetailsForm.get("divisions") as FormArray).length
-          //   if (len < this.divisions.length) this.addDivision()
-          // })
+            // Update the `divisions` property
+            // this.divisions = [...classes];
+          }
         }
-
       },
       error: (error: any) => {
-
+        console.error('Error fetching division details:', error);
       },
       complete: () => {
-
+        console.log('Division details fetch completed.');
       }
-
-    })
-
-
+    });
   }
+
 
   get divisionsFormArray() {
     return this.schoolDetailsForm.get("divisions") as FormArray;
@@ -533,7 +664,7 @@ export class AddSchoolComponent implements OnInit {
 
 
     this.fileName = this.getFileName(result); // Get the file name
-    console.log("result", result, this.fileName)
+
     return result;
   }
 
@@ -579,10 +710,10 @@ export class AddSchoolComponent implements OnInit {
         }
       )
     }
-    console.log('array', divisionArray)
+
     this.divisionArray = divisionArray
     this.standardData[index].divisionData = divisionArray
-    console.log("arrayyyyyyyyyyyyy1", this.standardData)
+
   }
 
   change() {
