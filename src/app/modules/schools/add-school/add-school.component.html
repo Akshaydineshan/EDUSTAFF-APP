@@ -322,7 +322,9 @@
                                     <tr class="table-row" *ngFor="let item of std.divisionData;let j=index;">
                                         <!-- <td style="border:none"></td> -->
 
-                                        <td>Division {{item.division}}</td>
+                                        <td>Division {{item.division}}hh
+                                           
+                                        </td>
                                         <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
                                                 [ngModelOptions]="{standalone: true}" (input)="change()"
                                                 placeholder="Enter count" /></td>
@@ -527,7 +529,7 @@
                                                 (input)="updateDivisions(currentIndex)" />
                                             <!-- <i style="float:right; color: #8F0000;position: relative;left:15px;"
                                                 class="bi bi-plus-circle"></i> -->
-                                            <img (click)="addDivisionInClass(currentIndex)" class="add-ic"
+                                            <img  title="Add Division" (click)="addDivisionInClass(currentIndex)" class="add-ic"
                                                 src="../../../../assets/icons/class-add.png" alt="">
                                         </th>
                                         <th>
@@ -541,8 +543,14 @@
                                         *ngFor="let item of standardData[currentIndex].divisionData;let j=index;">
 
 
-                                        <td>Division {{item.division}}</td>
-                                        <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
+                                        <td >Division {{item.division}}
+                                             <i  title="Remove Division" style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"   *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
+                                                (click)="removeDivisionInClass(currentIndex,j)"
+                                                   class="bi bi-dash-circle"></i>
+                                                <!-- <img (click)="removeDivisionInClass(currentIndex,j)" class="add-ic"
+                                                src="../../../../assets/icons/class-add.png" alt=""> -->
+                                        </td>
+                                        <td style="border-left:none;"><input type="number" class="text-box" [(ngModel)]="item.studentCount"
                                                 [ngModelOptions]="{standalone: true}" (input)="change()"
                                                 placeholder="Enter count" /></td>
                                     </tr>

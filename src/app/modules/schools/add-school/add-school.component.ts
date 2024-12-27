@@ -746,6 +746,11 @@ export class AddSchoolComponent implements OnInit {
 
   }
 
+  removeDivisionInClass(index: number,index1:number) {
+    this.standardData[index].divisionData.splice(index1,1)
+
+  }
+
 }
 
 
