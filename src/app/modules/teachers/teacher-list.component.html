@@ -20,6 +20,14 @@
         <div id="filterDropdown" class="dropdown-menu p-3" [class.show]="showFilterModal">
           <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
             <h5>Filter</h5>
+
+            <div class="form-group">
+              <label for="school">School</label>
+              <!-- <input formControlName="schoolNameFilter" type="text" class="form-control" placeholder="School Name"> -->
+              <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+              [data]="schoolDropDownListForFilter" formControlName="schoolNameFilter"
+               />
+            </div>
             <div class="form-group">
               <label for="subject">Subject</label>
               <select formControlName="subjectFilter" class="form-control">
@@ -36,10 +44,7 @@
               <input formControlName="retiringInMonths" type="number" class="form-control" placeholder="Retiring In">
             </div>
 
-            <div class="form-group">
-              <label for="school">School</label>
-              <input formControlName="schoolNameFilter" type="text" class="form-control" placeholder="School Name">
-            </div>
+         
 
             <div class="form-group">
               <label for="school">Unique Id</label>

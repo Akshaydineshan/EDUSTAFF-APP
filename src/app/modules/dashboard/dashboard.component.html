@@ -102,6 +102,10 @@
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon">
                         <h6>Leave Application</h6>
                     </div>
+                    <div class="sub-card" title="Leave Applications" [routerLink]="['/teachers/leave']">
+                        <img src="../../../assets/icons/Group 1643.png" alt="Help Icon">
+                        <h6>On Leave</h6>
+                    </div>
                     <div class="sub-card" title="Promotion Application" [routerLink]="['/teachers/promotion-requests']">
                         <img  src="../../../assets/icons/promotion.png" alt="Help Icon">
                         <h6>Promotion Application</h6>
@@ -157,6 +161,11 @@
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
                         <h6>Leave Application</h6>
                     </div>
+
+                    <div class="sub-card" [routerLink]="['/non-teachers/leave']" title="Leave Application">
+                        <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
+                        <h6>On Leave</h6>
+                    </div>
                     <div class="sub-card" title="Retired Teachers" [routerLink]="['/non-teachers/retired-staff']" >
                         <img   src="../../../assets/icons/retired.png" alt="Help Icon">
                         <h6>Retired Staff</h6>
@@ -199,6 +208,10 @@
                     <div class="sub-card" [routerLink]="['/teachers/eligible-promotions']" title="Promotion Eligible List">
                         <img src="../../../assets/icons/promotion-com.png" alt="Help Icon" width="30" height="30">
                         <h6>Promotion Eligible List</h6>
+                    </div>
+                    <div class="sub-card" title="Teacher List" [routerLink]="['/teachers/teacher-list']">
+                        <img src="../../../assets/icons/teach.png" alt="Help Icon" >
+                        <h6>Teachers List</h6>
                     </div>
                 </div>
             </div>

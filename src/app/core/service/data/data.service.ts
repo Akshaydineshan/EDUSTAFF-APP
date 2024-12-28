@@ -295,7 +295,7 @@ export class DataService {
     let params = new HttpParams();
     if (filters.subjectFilter) params = params.append('subjectFilter', filters.subjectFilter);
     if (filters.retiringInMonths) params = params.append('retiringInMonths', filters.retiringInMonths);
-    if (filters.schoolNameFilter) params = params.append('schoolNameFilter', filters.schoolNameFilter);
+    if (filters.schoolNameFilter[0]) params = params.append('schoolNameFilter', filters.schoolNameFilter[0].schoolName);
     if (filters.uniqueIdFilter) params = params.append('uniqueId', filters.uniqueIdFilter?.trim());
     if (filters.documents) params = params.append('documents', filters.documents);
     if (filters.minExperienceYear) params = params.append('minExperienceYear', filters.minExperienceYear);

@@ -64,7 +64,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   getTruncatedFileName = getTruncatedFileName
-  getFileName=getFileName
+  getFileName = getFileName
 
   // Filter Range Picker 
   minValue: any = 0;
@@ -118,6 +118,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   priorityThreeSelectDropdown!: any[];
   fileSize: any;
   fileName: any;
+  schoolDropDownListForFilter!: any[];
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
@@ -289,7 +290,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   submitTransfer(): void {
     if (this.transferRequest.school && this.transferRequest.position && this.transferRequest.date) {
-     
+
       this.resetForm(this.transferRequest);
     } else {
       console.log('Form is invalid');
@@ -303,7 +304,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
     if (this.transferRequestForm.valid) {
-    
+
       let formValue: any = this.transferRequestForm.value;
       let employee: any = this.selectMenuRowData
       let payload: any = {
@@ -684,7 +685,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
           },
         ];
- 
+
         this.updatePaginatedData();
 
 
@@ -707,13 +708,30 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     }).subscribe({
       next: (results: any) => {
-       
+
 
         this.schoolDropDownList = results.schools.filter((item: any) => this.selectMenuRowData.schoolId !== item.schoolId);
 
         this.priorityOneSelectDropdown = [...this.schoolDropDownList];
         this.priorityTwoSelectDropdown = [...this.schoolDropDownList];
         this.priorityThreeSelectDropdown = [...this.schoolDropDownList];
+      },
+      error: (error) => {
+        console.error('Error loading dropdown data', error);
+
+      },
+    });
+  }
+
+  loadDropdownDataForFilterClick() {
+
+    forkJoin({
+      schools: this.dataService.getSchoolList()
+
+    }).subscribe({
+      next: (results: any) => {
+        this.schoolDropDownListForFilter = results.schools;
+
       },
       error: (error) => {
         console.error('Error loading dropdown data', error);
@@ -784,6 +802,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   toggleFilterDropdown() {
     console.log("filter click")
     this.ngZone.run(() => {
+      this.loadDropdownDataForFilterClick()
       // this.minSelected=0;
       // this.maxSelected=100;
       // this.filterForm.reset()
@@ -909,7 +928,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
         this.dataService.getSchoolDetailPopUp(schoolId).subscribe(
           (data) => {
             this.selectedSchool = data;
-          
+
             this.showSchoolPopup = true;
             this.updateMousePosition(event);
           },
@@ -1024,7 +1043,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   // CEll Menu Btn Related Funs
   updateMenuMousePosition(event: MouseEvent): void {
-   
+
     const offset = 13; // Offset for positioning
     this.mouseMenuX = event.clientX + offset;
     this.mouseMenuY = event.clientY;
@@ -1117,7 +1136,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
       selectedPriority3?.schoolId
     ].filter((id) => id !== undefined); // Remove undefined values
 
- 
+
     // Update filtered lists dynamically
     this.priorityOneSelectDropdown = this.schoolDropDownList.filter(
       (school: any) => !selectedIds.includes(school.schoolId) || school.schoolId === selectedPriority1?.schoolId
@@ -1136,7 +1155,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     event.preventDefault();
   }
 
-  
+
   // UploadFile Related funs
   onCertificateUpload(event: any): void {
 
@@ -1156,13 +1175,13 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   }
   onCertificateUploadDragAndDrop(event: any): void {
     this.fileName = event.dataTransfer.files[0]?.name;
-    let totalBytes =event.dataTransfer.files[0]?.size;
+    let totalBytes = event.dataTransfer.files[0]?.size;
     if (totalBytes < 1000000) {
       this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
     } else {
       this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
     }
-  
+
     const file = event.dataTransfer.files[0];
     if (file) {
       this.file = file;
@@ -1205,7 +1224,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     let result = '';
 
     let image = this.leaveRequestForm.get('document')?.value?.documentName;
-   
+
     if (this.leaveRequestForm.get('documentUrl')?.value == 'No Photo assigned' || null || '') image = ""
 
     if (this.apiUrl && image) {
