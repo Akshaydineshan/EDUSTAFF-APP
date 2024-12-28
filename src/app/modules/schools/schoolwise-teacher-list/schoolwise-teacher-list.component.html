@@ -1,0 +1,612 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+
+
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed"
+    [class.blur-content]="isTransferPopup || isLeavePopup" (click)="overlayClick()">
+
+    <app-back-button [url]="'/dashboard'" class=""></app-back-button>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4> Teachers List
+            <span class="badge badge-secondary ">{{ teacherList.length }}</span>
+        </h4>
+        <div class="d-flex justify-content-between align-items-end gap-3">
+            <div class="dropdown">
+                <button id="filterButton" class="btn btn-outline-secondary me-2" (click)="toggleFilterDropdown()">
+                    <i class="fas fa-filter"></i> Filter
+                </button>
+                <div id="filterDropdown" class="dropdown-menu p-3" [class.show]="showFilterModal">
+                    <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
+                        <h5>Filter</h5>
+
+                        <div class="form-group">
+                            <label for="school">School</label>
+                            <!-- <input formControlName="schoolNameFilter" type="text" class="form-control" placeholder="School Name"> -->
+                            <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                                [data]="schoolDropDownListForFilter" formControlName="schoolNameFilter" />
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <select formControlName="subjectFilter" class="form-control">
+                                <option value="">All Subjects</option>
+                                <option value="Mathematics">Mathematics</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Malayalam">Malayalam</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="retiringIn">Retiring In</label>
+                            <input formControlName="retiringInMonths" type="number" class="form-control"
+                                placeholder="Retiring In">
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label for="school">Unique Id</label>
+                            <input formControlName="uniqueIdFilter" type="text" class="form-control"
+                                placeholder="Unique Id">
+                        </div>
+
+                        <!-- <div class="form-group">
+              <label for="maxExperienceYear">Experience (Years)</label>
+              <input type="number" formControlName="ExperienceYear" id="maxExperienceYear" class="form-control"
+                placeholder="Enter experience">
+            </div> -->
+                        <div class="form-group">
+                            <div class="experience-range-container">
+                                <label for="experienceYearRange">Experience Year Range</label>
+                                <!-- <div class="slider-container">
+                  <input type="range" id="experienceYearRange" formControlName="minExperienceYear" [min]="0" [max]="100"
+                    class="range-slider min-slider" (input)="onSliderChange()">
+                  <input type="range" id="experienceYearRange" formControlName="maxExperienceYear" [min]="0" [max]="100"
+                    class="range-slider max-slider" (input)="onSliderChange()">
+                  <div class="slider-track"></div>
+                </div> -->
+
+
+                                <div class="range-slider">
+                                    <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="minSelected"
+                                        [ngModelOptions]="{standalone: true}" class="slider min-range"
+                                        (change)="validateRange($event,'min')" />
+
+                                    <input type="range" min="{{minValue}}" max="{{maxValue}}" [(ngModel)]="maxSelected"
+                                        [ngModelOptions]="{standalone: true}" class="slider max-range"
+                                        (change)="validateRange($event,'max')" />
+
+                                    <div class="slider-tracker"></div>
+                                    <div class="slider-range"
+                                        [style.left.%]="((minSelected ) - minValue) / (maxValue - minValue) * 100"
+                                        [style.right.%]="100 - ((maxSelected) - minValue) / (maxValue - minValue) * 100">
+                                    </div>
+                                    <div class="range-inputs" style="position: relative; top:30px;">
+                                        <input type="number" min="0" max="100" class="range-input"
+                                            [(ngModel)]="minSelected" (change)="validateRange($event,'min')"
+                                            [ngModelOptions]="{standalone: true}">
+                                        <input type="number" min="0" max="100" class="range-input"
+                                            [(ngModel)]="maxSelected" (change)="validateRange($event,'max')"
+                                            [ngModelOptions]="{standalone: true}">
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <!-- <div class="range-inputs">
+                  <input type="number" formControlName="minExperienceYear" class="range-input" min="0" max="100"
+                    (input)="onInputChange()">
+                  <input type="number" formControlName="maxExperienceYear" class="range-input" min="0" max="100"
+                    (input)="onInputChange()">
+                </div> -->
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" formControlName="newRecruit">
+                                Check if New Recruit
+                            </label>
+                        </div>
+
+                        <div class="form-group d-flex justify-content-between mt-3">
+                            <button type="button" class="btn btn-secondary" (click)="resetFilter()">Reset
+                                Filter</button>
+                            <button type="submit" class="btn btn-success">Apply</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <button class="btn btn-success" (click)="navigateToAddPage()">
+                <i class="fas fa-plus-circle"></i> Add Teacher Details
+            </button>
+        </div>
+    </div>
+
+    <!-- 
+  <div *ngIf="showPopup && selectedTeacher" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info p-5">
+    <div class="popup-header">
+      <img [src]="getTeacherImage || 'assets/icons/user.png'" alt="Teacher Photo" class="popup-photo">
+      <div class="popup-title ">
+
+        <p class="p-s">{{ selectedTeacher?.name }}</p>
+        <p class="p-a">{{ selectedTeacher?.subject }}</p>
+        <p class="p-sc">{{ selectedTeacher?.schoolName }}</p>
+        <p class="p-e"><a href="">{{ selectedTeacher?.email }}</a></p>
+        <p class="p-m">{{ selectedTeacher?.phoneNumber }}</p>
+      </div>
+
+    </div>
+    <hr class="line">
+    <div class="popup-body-t p-2">
+      <div class="d-flex justify-content-between pe-4">
+        <div>
+          <p class="p-h">Date Of Join</p>
+          <p class="p-v">{{ selectedTeacher?.dateofJoin|date: 'dd/MM/yyyy' }}</p>
+        </div>
+        <div>
+          <p class="p-h">Report To</p>
+          <p class="p-v">{{ selectedTeacher?.reportedTo }}</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div> -->
+    <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="selectedTeacher"
+        [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+
+    <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
+        [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+
+    <app-employee-menu-click-list-menu class="menuPop" [isMenuVisible]="isMenuVisible" [mouseY]="mouseMenuY"
+        [mouseX]="mouseMenuX" (clickListEvent)="listClickFromMenuList($event)"
+        [menuListItems]="menuListItems"></app-employee-menu-click-list-menu>
+
+    <div class="row g-4 mb-3">
+        <div class="col-6 col-sm-4 col-md-3">
+            <!-- <select name="" id="" class="form-select" [(ngModel)]="selectedSubject" (ngModelChange)="onFilterChange()">
+
+                <option value="" disabled selected>Select Subject</option>
+                <option *ngFor="let item of subjectList" [ngValue]="item">{{ item.subjectName }}</option>
+            </select> -->
+            <ng-multiselect-dropdown [placeholder]="'Select School'" [(ngModel)]="selectedSchoolFromDropdownList" [settings]="schoolDropdownSettings"
+                [data]="schoolDropDownListForFilter"
+                (onSelect)="onFilterChange()" />
+        </div>
+    </div>
+
+
+
+
+
+    <!-- <div *ngIf="showSchoolPopup && selectedSchool" [ngStyle]="{'top.px': mouseY, 'left.px': mouseX}"
+    class="popup-teacher-info">
+    <div class="popup-header p-3">
+      <img [src]="getschoolImage || 'assets/icons/Group 1640.png'" alt="School Photo" class="popup-photo">
+      <div class="popup-title">
+        <p class="p-s">{{ selectedSchool?.name }}</p>
+        <p class="p-a">{{ selectedSchool?.address }}</p>
+        <p class="p-e"><a href="">{{ selectedSchool?.email }}</a></p>
+        <p class="p-m">{{ selectedSchool?.phone }}</p>
+      </div>
+    </div>
+    <hr class="line">
+    <div class="popup-body p-2">
+      <div class="">
+        <p class="p-a">Authorities</p>
+        <div>
+          <p class="val">{{ selectedSchool?.principal }}</p>
+          <p class="p-p">Principal</p>
+        </div>
+        <div class="">
+          <p class="val">{{ selectedSchool?.vicePrincipal }}</p>
+          <p class="p-p">Vice Principal</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div> -->
+
+    <div class="table-responsive" *ngIf="teacherList.length">
+        <!-- <table class="table table-striped table-hover table-bordered">
+      <thead>
+        <tr>
+          <th *ngFor="let column of displayColumns" (click)="sortColumn(column)">
+            {{ column | titlecase }}
+            <ng-container *ngIf="sortedColumn === column">
+              <i class="fas" [ngClass]="sortDirection === 'asc' ? 'fa-arrow-up' : 'fa-arrow-down'"></i>
+            </ng-container>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teacher of paginatedData">
+          <td *ngFor="let column of displayColumns"
+            (mouseover)="column === 'name' ? onTeacherHover(teacher.teacherId, $event) : column === 'schoolName' ? onSchoolHover(teacher.schoolId, $event) : null"
+            (mouseleave)="column === 'name' ? onTeacherMouseOut() : column === 'schoolName' ? onSchoolMouseOut() : null">
+
+            <ng-container *ngIf="column === 'documentCount'; else defaultColumn">
+              <span [class]="teacher.documentStatus?.icon ? 'doc-count' : ''">
+                <i [class]="teacher.documentStatus?.icon"></i> {{ teacher.documentStatus?.text }}
+              </span>
+            </ng-container>
+
+            <ng-template #defaultColumn>
+              <span *ngIf="column === 'name' || column === 'schoolName'">
+                {{ teacher[column] }}
+              </span>
+              <span *ngIf="column !== 'name' && column !== 'schoolName'">
+                {{ teacher[column] }}
+              </span>
+            </ng-template>
+          </td>
+        </tr>
+      </tbody>
+
+
+
+    </table> -->
+        <app-table [rowData]="teacherTableRows" [colDefs]="teacherTableColumns" [paginationConfig]="paginationConfig"
+            (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+            (onCellClickedEvent)="onCellClick($event)" [tableColorChange]="tableColorChange"></app-table>
+        <!--  -->
+
+
+    </div>
+
+    <app-no-data-found *ngIf="!teacherList.length"></app-no-data-found>
+
+    <!-- <div class="pagination-controls d-flex justify-content-start align-items-center mt-3">
+    <button class="btn btn-outline-secondary" (click)="previousPage()" [disabled]="currentPage === 1">
+      <i class="fas fa-chevron-left"></i>
+    </button>
+
+    <ul class="pagination-list d-flex mx-3">
+      <li *ngFor="let page of totalPagesArray" class="page-item">
+        <button class="btn" [class.active]="currentPage === page" (click)="goToPage(page)">
+          {{ page }}
+        </button>
+      </li>
+    </ul>
+
+    <button class="btn btn-outline-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      <i class="fas fa-chevron-right"></i>
+    </button>
+  </div> -->
+</div>
+
+
+
+
+
+
+<div class="leaveRequest-popup-main" *ngIf="isLeavePopup">
+
+    <div class="head-sec">
+        <p class="head-lab">Leave Request - {{selectMenuRowData.name}}</p>
+        <div class="popup-close">
+            <img (click)="closeLeavePopup()" src="../../../../assets/icons/popup-close.png" alt="">
+        </div>
+    </div>
+
+    <div class="head-line"></div>
+
+    <div class="main-body">
+        <form [formGroup]="leaveRequestForm">
+            <div class="main-sec">
+                <div class="left-sec">
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label"><span>Start Date</span><span
+                                class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <input type="date" [min]="minDate" class="form-control" formControlName="fromDate">
+                            <div
+                                *ngIf="leaveRequestForm.get('fromDate')?.invalid && (leaveRequestForm.get('fromDate')?.['dirty'] || leaveRequestForm.get('fromDate')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="leaveRequestForm.get('fromDate')?.errors?.['required']">Field is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="leaveRequestForm.get('fromDate')?.errors?.['invalidDate']">Invalid
+                                    Date
+                                    .</small>
+                                <small class="text-danger"
+                                    *ngIf="leaveRequestForm.get('fromDate')?.errors?.['minDate']">Past dates are
+                                    not
+                                    allowed .</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="right-sec">
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label"><span>End Date</span><span
+                                class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <input type="date" [min]="minDate" class="form-control" formControlName="toDate">
+                            <div
+                                *ngIf="leaveRequestForm.get('toDate')?.invalid && (leaveRequestForm.get('toDate')?.['dirty'] || leaveRequestForm.get('toDate')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="leaveRequestForm.get('toDate')?.errors?.['required'] ">Field is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="leaveRequestForm.get('toDate')?.errors?.['invalidDate']">Invalid Date
+                                    .</small>
+                                <small class="text-danger"
+                                    *ngIf="leaveRequestForm.get('toDate')?.errors?.['minDate']">Past dates are
+                                    not
+                                    allowed .</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div>
+
+                <div class="row mb-2 mt-2">
+                    <label for="" class="col-sm-12 col-form-label b-label">
+                        <span>Upload Document</span>
+                        <span class="text-danger ms-1 mad-f">*</span>
+                    </label>
+                    <div class="col-sm-12">
+                        <div (dragover)="onDragOver($event)" (drop)="onDropSuccess($event)" class="drag-drop-main">
+                            <div class="custom-file-upload">
+                                <div class="content">
+                                    <i class="bi bi-cloud-upload" style="font-size: 30px;color: #000000;
+"></i>
+                                    <p class="lab">Drag File To Upload</p>
+                                    <p class="or">or</p>
+                                    <input (change)="onCertificateUpload($event)" #fileInput type="file"
+                                        accept=".pdf,.docx,.jpeg,.jpg" style="display: none;">
+                                    <button class="btn btn-primary" (click)="fileInput.click()">Browse
+                                        File</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2 mt-3" *ngIf="getDocument">
+                    <div class="col-sm-12">
+                        <div>
+                            <div class="uploaded-file">
+                                <div style="display: flex; align-items: center; gap: 9px; padding:0 0px; ">
+                                    <!-- <i class="bi bi-filetype-pdf" style="height:30px; font-size: 24px;"></i> -->
+                                    <img [src]="transform(getDocument)" alt="" style="width:28px; height:30px;">
+
+                                    <div class="r-l "
+                                        style="display: flex; flex-direction: column; align-items: start; ">
+                                        <p class="f-n" style="margin: 0;">{{ getTruncatedFileName(fileName, 25) }}</p>
+                                        <p class="f-s" style="margin:0;">{{fileSize}} - 100% uploaded</p>
+                                    </div>
+                                </div>
+
+                                <div class="right me-3">
+                                    <i (click)="removeLeaveApplicationDocument()" class="fa-regular fa-trash-can"></i>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="row ">
+                    <label for="" class="col-sm-12 col-form-label b-label">
+                        <span>Reason</span>
+                        <span class="text-danger ms-1 mad-f"></span>
+                    </label>
+                    <div class="col-sm-12">
+
+                        <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
+                            placeholder="Write something.." formControlName="comment" rows="3" cols="3"></textarea>
+
+                        <div
+                            *ngIf="leaveRequestForm.get('comment')?.invalid && (leaveRequestForm.get('comment')?.['dirty'] || leaveRequestForm.get('comment')?.['touched']  || submitted)">
+                            <small class="text-danger"
+                                *ngIf="leaveRequestForm.get('comment')?.errors?.['required']">Field is
+                                required</small>
+                            <small class="text-danger"
+                                *ngIf="leaveRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                                Pattern</small>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="btn-sec">
+                    <button class="reset" (click)="resetLeaveRequestFormSubmit()">Reset</button>
+                    <button class="submit" (click)="leaveRequestFormSubmit()">Submit</button>
+                </div>
+
+
+
+            </div>
+        </form>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div class="request-popup-main" *ngIf="isTransferPopup">
+    <div class="head-sec">
+        <p class="head-lab">Transfer Request - {{selectMenuRowData.name}}</p>
+
+        <div class="popup-close">
+            <img (click)="closeTransferPopup()" src="../../../../assets/icons/popup-close.png" alt="">
+        </div>
+
+    </div>
+
+    <div class="head-line"></div>
+    <div class="main-body">
+        <form [formGroup]="transferRequestForm">
+            <div class="main-sec">
+
+                <div class="left-sec">
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer From</span><span
+                                class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <input type="text" class="form-control" formControlName="fromSchool" [readonly]="true">
+                        </div>
+                    </div>
+
+                    <div class="head-line a-tf"></div>
+
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority
+                                1)</span><span class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                                [data]="priorityOneSelectDropdown" formControlName="toSchoolPriority1"
+                                (onSelect)="onFirstDropdownChange($event)" />
+
+                            <div
+                                *ngIf="transferRequestForm.get('toSchoolPriority1')?.invalid && ( transferRequestForm.get('toSchoolPriority1')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['required']">Field
+                                    is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('toSchoolPriority1')?.errors?.['pattern']">Invalid
+                                    Pattern</small>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority
+                                2)</span><span class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                                [data]="priorityTwoSelectDropdown" formControlName="toSchoolPriority2" />
+
+                            <div
+                                *ngIf="transferRequestForm.get('toSchoolPriority2')?.invalid && ( transferRequestForm.get('toSchoolPriority2')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['required']">Field
+                                    is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('toSchoolPriority2')?.errors?.['pattern']">Invalid
+                                    Pattern</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label"><span>Transfer To (Priority
+                                3)</span><span class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <ng-multiselect-dropdown [placeholder]="'Select School'" [settings]="schoolDropdownSettings"
+                                [data]="priorityThreeSelectDropdown" formControlName="toSchoolPriority3" />
+
+                            <div
+                                *ngIf="transferRequestForm.get('toSchoolPriority3')?.invalid && ( transferRequestForm.get('toSchoolPriority3')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['required']">Field
+                                    is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('toSchoolPriority3')?.errors?.['pattern']">Invalid
+                                    Pattern</small>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="center-line"></div>
+
+                <div class="right-sec">
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label"><span>With Effect From</span><span
+                                class="text-danger ms-1 mad-f">*</span></label>
+                        <div class="col-sm-12">
+                            <input type="date" [min]="minDate" class="form-control" formControlName="date">
+                            <div
+                                *ngIf="transferRequestForm.get('date')?.invalid && (transferRequestForm.get('date')?.['dirty'] || transferRequestForm.get('date')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('date')?.errors?.['required']">Field is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('date')?.errors?.['invalidDate']">Invalid Date
+                                    .</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('date')?.errors?.['minDate']">Past dates are
+                                    not
+                                    allowed .</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label">
+                            <span>Document Url</span>
+                            <span class="text-danger ms-1 mad-f">*</span>
+                        </label>
+                        <div class="col-sm-12">
+                            <!-- <input type="text" class="form-control big-inp" placeholder="Past url here" formControlName="documentUrl"> -->
+                            <textarea name="" id="" class="form-control big-inp " placeholder="Paste URL here"
+                                formControlName="documentUrl" rows="2" cols="3"></textarea>
+                            <div
+                                *ngIf="transferRequestForm.get('documentUrl')?.invalid && (transferRequestForm.get('documentUrl')?.['dirty'] || transferRequestForm.get('documentUrl')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('documentUrl')?.errors?.['required']">Field is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('documentUrl')?.errors?.['pattern']">Invalid
+                                    Pattern</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-1">
+                        <label for="" class="col-sm-12 col-form-label b-label">
+                            <span>Comment</span>
+                            <span class="text-danger ms-1 mad-f"></span>
+                        </label>
+                        <div class="col-sm-12">
+
+                            <textarea name="" id="" placeholder="Write Something..." class="form-control big-inp "
+                                placeholder="Write something.." formControlName="comment" rows="4" cols="3"></textarea>
+                            <div
+                                *ngIf="transferRequestForm.get('comment')?.invalid && (transferRequestForm.get('comment')?.['dirty'] || transferRequestForm.get('comment')?.['touched']  || submitted)">
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('comment')?.errors?.['required']">Field is
+                                    required</small>
+                                <small class="text-danger"
+                                    *ngIf="transferRequestForm.get('comment')?.errors?.['pattern']">Invalid
+                                    Pattern</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="btn-sec">
+                        <button (click)="resetTransferRequest()" class="reset">Reset</button>
+                        <button (click)="transferRequestFormSubmit()" class="submit">Submit</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <div>
+
+        </div>
+    </div>
+</div>

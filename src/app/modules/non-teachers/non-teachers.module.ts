@@ -17,6 +17,7 @@ import { StaffTransferCompletedListComponent } from './staff-transfer-completed-
 import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap';
 import { TeachersModule } from '../teachers/teachers.module';
 import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
+import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
     NonTeacherTransferlistComponent,
     StaffLeaveApplicationsComponent,
     StaffTransferCompletedListComponent,
-    RetiredStaffComponent
+    RetiredStaffComponent,
+    OnLeaveStaffComponent
   ],
   imports: [
     CommonModule,

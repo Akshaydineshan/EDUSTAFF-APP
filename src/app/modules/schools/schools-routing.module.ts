@@ -7,6 +7,7 @@ import { AddSchoolComponent } from './add-school/add-school.component';
 import { ViewSchoolComponent } from './view-school/view-school.component';
 import { SchoolVacantPositionsComponent } from './school-vacant-positions/school-vacant-positions.component';
 import { TestDemoComponent } from './test-demo/test-demo.component';
+import { SchoolwiseTeacherListComponent } from './schoolwise-teacher-list/schoolwise-teacher-list.component';
 
 const routes: Routes = [
   { path: '', component: SchoolListComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'add-school/:id', component: AddSchoolComponent },
   { path: 'view/:id', component: ViewSchoolComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
+  { path: 'teacher-list', component: SchoolwiseTeacherListComponent },
   {
     path: '**',
     component: PageNotFoundComponent

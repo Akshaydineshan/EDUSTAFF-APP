@@ -13,6 +13,7 @@ import { PromotionCompletedListComponent } from './promotion-completed-list/prom
 import { TransferCompletedListComponent } from './transfer-completed-list/transfer-completed-list.component';
 import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teacher-list.component';
 import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
+import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
 
 const routes: Routes = [
   { path: '', component: TeacherListComponent },
@@ -29,6 +30,7 @@ const routes: Routes = [
   { path: 'transfer-completed', component: TransferCompletedListComponent },
   { path: 'retired-teachers', component: RetiredTeacherListComponent },
   { path: 'promotion-priorities', component: PromotionEligiblePriorityComponent },
+  { path: 'onleave', component: OnLeaveTeacherComponent },
 
 
   

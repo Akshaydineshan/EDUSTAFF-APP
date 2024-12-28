@@ -547,8 +547,8 @@
                                              <i  title="Remove Division" style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"   *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
                                                 (click)="removeDivisionInClass(currentIndex,j)"
                                                    class="bi bi-dash-circle"></i>
-                                                <!-- <img (click)="removeDivisionInClass(currentIndex,j)" class="add-ic"
-                                                src="../../../../assets/icons/class-add.png" alt=""> -->
+                                                <!-- <img title="Remove Division"  (click)="removeDivisionInClass(currentIndex,j)" class="add-ic" *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
+                                                src="../../../../assets/icons/class-remove.png" alt=""> -->
                                         </td>
                                         <td style="border-left:none;"><input type="number" class="text-box" [(ngModel)]="item.studentCount"
                                                 [ngModelOptions]="{standalone: true}" (input)="change()"

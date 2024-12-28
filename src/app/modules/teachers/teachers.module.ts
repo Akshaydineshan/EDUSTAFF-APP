@@ -21,6 +21,7 @@ import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teac
 import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } from 'ngx-daterangepicker-bootstrap';
 import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
 import { DocumentsUploadComponent } from './add-teacher/documents-upload/documents-upload.component';
+import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { DocumentsUploadComponent } from './add-teacher/documents-upload/documen
     TransferCompletedListComponent,
     RetiredTeacherListComponent,
     PromotionEligiblePriorityComponent,
-    DocumentsUploadComponent
+    DocumentsUploadComponent,
+    OnLeaveTeacherComponent
   ],
   imports: [
     CommonModule,
