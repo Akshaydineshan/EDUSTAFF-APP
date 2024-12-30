@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { DataService } from './../../../core/service/data/data.service';
 import { SchoolService } from './../school.service';
 import { Component, OnInit } from '@angular/core';
@@ -19,7 +19,8 @@ export class ViewSchoolComponent implements OnInit {
   standards:any[] =[]
   currentIndex:number=0;
   printMode: boolean=false;
-  tableData: any[]=[];
+  teacherTableData: any[]=[];
+  nonTeacherTableData: any[]=[];
 
 
 
@@ -73,11 +74,17 @@ export class ViewSchoolComponent implements OnInit {
   }
 
   loadTeacherDataBySchool(id:number){
-    let url=`Teacher/GetAllTeacherBySchoolID/${id}`
-    this.schoolService.getTableListData(url).subscribe({
+     let teacherUrl=`Teacher/GetAllTeacherBySchoolID/${id}`;
+     let nonTeacherUrl=`NonTeacher/GetAllNonTeacherBySchoolID/${id}`;
+      forkJoin({
+        teachers:this.schoolService.getTableListData(teacherUrl),
+        nonTeachers:this.schoolService.getTableListData(nonTeacherUrl),
+      }).subscribe({
       next:(response:any)=>{
+        console.log("res",response)
         if(response){
-          this.tableData=response
+          this.teacherTableData=response.teachers;
+          this.nonTeacherTableData=response.nonTeachers;
         }
 
       },

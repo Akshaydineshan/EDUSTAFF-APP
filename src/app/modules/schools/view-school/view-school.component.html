@@ -150,8 +150,9 @@
 
 
 
-                        <div class="row g-0 mb-5">
-                                <div class="col-sm-8" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
+                        <div class="row g-0 ">
+                                <div  class="col-sm-8"
+                                        [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
                                         <div class="teacher-sec">
                                                 <p class="head">Teacher List
                                                         <span class="text-danger ms-3"></span>
@@ -168,15 +169,23 @@
                                                                         <th>Subject</th>
 
                                                                 </tr>
+                                                                <ng-container *ngIf="teacherTableData.length">
+                                                                        <tr
+                                                                                *ngFor="let item of teacherTableData;let i=index;">
+                                                                                <td>{{item.name}}</td>
+                                                                                <td>{{item.age}}</td>
+                                                                                <td>{{item.phoneNumber}}</td>
+                                                                                <td>{{item.designation}}</td>
+                                                                                <td>{{item.subject}}</td>
 
-                                                                <tr *ngFor="let item of tableData;let i=index;">
-                                                                        <td>{{item.name}}</td>
-                                                                        <td>{{item.age}}</td>
-                                                                        <td>{{item.phoneNumber}}</td>
-                                                                        <td>{{item.designation}}</td>
-                                                                        <td>{{item.subject}}</td>
-
+                                                                        </tr>
+                                                                </ng-container>
+                                                                
+                                                                <tr *ngIf="!teacherTableData.length"
+                                                                        style="text-align: center; vertical-align: middle; height: 40px;">
+                                                                        <td colspan="5">No Data Found</td>
                                                                 </tr>
+
 
 
 
@@ -210,7 +219,8 @@
                                                                 </div>
                                                                 <!-- Current Standard -->
                                                                 <div class="center d-flex align-items-center">
-                                                                        Standard {{ standards[currentIndex].standard | roman }}
+                                                                        Standard {{ standards[currentIndex].standard |
+                                                                        roman }}
                                                                 </div>
                                                                 <!-- Next Button -->
                                                                 <div class="right d-flex align-items-center">
@@ -251,7 +261,9 @@
                                                                                 <!-- Current Standard -->
                                                                                 <div
                                                                                         class="center d-flex align-items-center justify-content-center">
-                                                                                         Standard {{ standards[currentIndex].standard }}
+                                                                                        Standard {{
+                                                                                        standards[currentIndex].standard
+                                                                                        }}
                                                                                 </div>
 
                                                                         </div>
@@ -328,7 +340,60 @@
 
 
                                 </div>
+
+
                         </div>
+
+                        <div class="row g-0 mb-5">
+                                <div class="col-sm-8" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
+                                        <div class="teacher-sec">
+                                                <p class="head">Non Teacher List
+                                                        <span class="text-danger ms-3"></span>
+
+                                                </p>
+                                                <div class="tbl">
+                                                        <table>
+
+                                                                <tr>
+                                                                        <th>Name</th>
+                                                                        <th>Age</th>
+                                                                        <th>Phone Number</th>
+                                                                        <th>Designation</th>
+                                                                      
+
+                                                                </tr>
+                                                                <ng-container *ngIf="nonTeacherTableData.length">
+                                                                        <tr
+                                                                                *ngFor="let item of nonTeacherTableData;let i=index;">
+                                                                                <td>{{item.name}}</td>
+                                                                                <td>{{item.age}}</td>
+                                                                                <td>{{item.phoneNumber}}</td>
+                                                                                <td>{{item.designation}}</td>
+                                                                            
+                                                                        </tr>
+                                                                </ng-container>
+
+                                                                <tr *ngIf="!nonTeacherTableData.length"
+                                                                        style="text-align: center; vertical-align: middle; height: 40px;">
+                                                                        <td colspan="5">No Data Found</td>
+                                                                </tr>
+
+
+
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+                        </div>
+
+
+
+
+
+
 
                 </div>
 
