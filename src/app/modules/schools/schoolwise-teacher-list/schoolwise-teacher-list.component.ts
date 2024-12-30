@@ -606,7 +606,7 @@ export class SchoolwiseTeacherListComponent {
 
 
               // plusButton.style.float = 'right';
-              plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
+              plusButton.innerHTML = '<i  style="color:black;display:none;" class="bi bi-three-dots-vertical"></i>';
               this.ngZone.run(() => {
                 plusButton.addEventListener('click', (event) => {
                   if (params.onPlusButtonClick) {
