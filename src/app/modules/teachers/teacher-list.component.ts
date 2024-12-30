@@ -508,7 +508,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     this.dataService.getTeachersData().subscribe(
       (data) => {
-        debugger
+         console.log("teacher List->",data);
         this.teacherList = data.map((teacher: Teacher) => ({
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
