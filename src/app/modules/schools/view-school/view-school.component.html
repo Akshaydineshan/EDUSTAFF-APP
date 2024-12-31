@@ -130,12 +130,14 @@
                                                                 <tr>
                                                                         <td>{{currentSchool.principalName}}</td>
                                                                         <td>Principal</td>
-                                                                        <td>Not Available</td>
+                                                                        <td>{{currentSchool.principalPhone}}
+                                                                        </td>
                                                                 </tr>
                                                                 <tr>
                                                                         <td>{{currentSchool.vicePrincipalName}}</td>
                                                                         <td>Vice Principal</td>
-                                                                        <td>Not Available</td>
+                                                                        <td>{{currentSchool.vicePrincipalPhone}}
+                                                                        </td>
                                                                 </tr>
 
                                                         </table>
@@ -151,8 +153,7 @@
 
 
                         <div class="row g-0 ">
-                                <div  class="col-sm-8"
-                                        [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
+                                <div class="col-sm-8" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
                                         <div class="teacher-sec">
                                                 <p class="head">Teacher List
                                                         <span class="text-danger ms-3"></span>
@@ -180,7 +181,7 @@
 
                                                                         </tr>
                                                                 </ng-container>
-                                                                
+
                                                                 <tr *ngIf="!teacherTableData.length"
                                                                         style="text-align: center; vertical-align: middle; height: 40px;">
                                                                         <td colspan="5">No Data Found</td>
@@ -359,7 +360,7 @@
                                                                         <th>Age</th>
                                                                         <th>Phone Number</th>
                                                                         <th>Designation</th>
-                                                                      
+
 
                                                                 </tr>
                                                                 <ng-container *ngIf="nonTeacherTableData.length">
@@ -369,7 +370,7 @@
                                                                                 <td>{{item.age}}</td>
                                                                                 <td>{{item.phoneNumber}}</td>
                                                                                 <td>{{item.designation}}</td>
-                                                                            
+
                                                                         </tr>
                                                                 </ng-container>
 
