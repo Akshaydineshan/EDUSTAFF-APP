@@ -76,7 +76,7 @@ export class OnLeaveStaffComponent {
   }
 
   loadTableDataList() {
-    let tableDataListApiEndPoint: string = 'Teacher/leave'
+    let tableDataListApiEndPoint: string = 'NonTeacher/GetAllNonTeacherOnLeave'
     this.dataService.getTableListData(tableDataListApiEndPoint).subscribe(
       (data: any) => {
         debugger
