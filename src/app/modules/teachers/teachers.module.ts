@@ -22,6 +22,7 @@ import { NgxDaterangepickerBootstrapModule, NgxDaterangepickerLocaleService } fr
 import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
 import { DocumentsUploadComponent } from './add-teacher/documents-upload/documents-upload.component';
 import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
+import { TeacherSectionViewComponent } from './teacher-section-view/teacher-section-view.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.com
     RetiredTeacherListComponent,
     PromotionEligiblePriorityComponent,
     DocumentsUploadComponent,
-    OnLeaveTeacherComponent
+    OnLeaveTeacherComponent,
+    TeacherSectionViewComponent
   ],
   imports: [
     CommonModule,

@@ -10,9 +10,10 @@ import { StaffLeaveApplicationsComponent } from './staff-leave-applications/staf
 import { StaffTransferCompletedListComponent } from './staff-transfer-completed-list/staff-transfer-completed-list.component';
 import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
+import { StaffSectionViewComponent } from './staff-section-view/staff-section-view.component';
 
 const routes: Routes = [
-  { path: '', component: NonTeacherListComponent },
+  { path: '', component: StaffSectionViewComponent },
   { path: 'non-teacher-list', component: NonTeacherListComponent },
   { path: 'add', component: AddNonTeacherComponent },
   { path: 'add/:id', component: AddNonTeacherComponent },

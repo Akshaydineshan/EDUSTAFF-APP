@@ -14,9 +14,10 @@ import { TransferCompletedListComponent } from './transfer-completed-list/transf
 import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teacher-list.component';
 import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
 import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
+import { TeacherSectionViewComponent } from './teacher-section-view/teacher-section-view.component';
 
 const routes: Routes = [
-  { path: '', component: TeacherListComponent },
+  { path: '', component: TeacherSectionViewComponent },
   { path: 'teacher-list', component: TeacherListComponent },
   { path: 'transfer-request-list', component: TransferRequestListComponent },
   { path: 'leave', component: LeaveRequestListComponent },

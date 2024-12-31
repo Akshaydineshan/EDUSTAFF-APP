@@ -1,0 +1,256 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+
+}
+
+.cards-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    // transition: transform 0.3s ease-in-out;
+}
+
+.card:hover {
+    // transform: scale(1.05);
+    background-color: #8F000008;
+    transform: scale(1.03);
+  
+
+}
+
+.card-body {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+
+    i {
+
+        background-color: #8F000080;
+        /* Semi-transparent background */
+        color: white;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        font-size: 24px;
+
+    }
+}
+
+.icon-lg {
+    font-size: 22px;
+    color: #6c757d;
+    background-color: #f0f4f8;
+    padding: 12px;
+    border-radius: 25%;
+    margin-right: 16px;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    color: #5a5a5a;
+
+}
+
+.card-title {
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
+    color: #5a5a5a;
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #5a5a5a;
+}
+
+h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    // margin-bottom: 0.6rem;
+}
+
+h6 {
+    font-size: 0.9375rem;
+    text-align: center;
+}
+
+.d-flex {
+    justify-content: start;
+}
+
+.flex-wrap {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.gap-3 {
+    gap: 1rem;
+}
+
+.sub-card {
+    flex: 1;
+    // min-width: 100px;
+    max-width: 175px;
+    max-height: 175px;
+    text-align: center;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 0.9375rem;
+}
+
+.sub-card:hover {
+    background-color: #f8f9fa;
+}
+
+.sub-card i {
+    // font-size: 2rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .cards-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .card {
+        max-width: 100%;
+        min-width: 100%;
+        width: 100%;
+    }
+
+    .last-c {
+        margin-left: 0px;
+    }
+}
+
+.last-c {
+    margin-left: 14px;
+}
+
+@media (max-width: 768px) {
+
+    .last-c {
+        margin-left: 0px;
+    }
+}
+
+.stats-panel {
+    background-color: #8F000008;
+    // background-color: #f6f6f6;
+    max-width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    // align-items: center;
+    // justify-content: center;
+    padding: 1rem 0 3rem 0;
+}
+
+.main-panel {
+    padding: 2rem;
+    width: 100%;
+
+    .sub-head-container {
+        display: flex;
+        align-items: center;
+       
+    }
+
+    .sub-head {
+        font-family: Roboto;
+        font-size: 19px;
+        font-weight: 500;
+        line-height: 28.13px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+    }
+
+    .sub-head-line {
+        flex-grow: 1;
+      
+        position: relative;
+        bottom: 3.5px;
+        border: 0.4px solid #f9f5f5;
+        margin-left: 15px;
+       
+    }
+
+
+
+    // .sub-head::after {
+    //     content: "";
+    //     width: calc(100% - 170px);
+    //     position: absolute;
+    //     top: 14px;
+    //     left:170px;
+
+
+    // }
+}
+
+// .container.shifted {
+//     // max-width: 100%;
+//     margin-left: 0;
+//     padding-left: 0;
+// }
+
+// .container {
+//     padding-left: 0;
+//     padding: 0;
+//     margin-left: 60px;
+//     max-width: 100% !important;
+
+//     transition: margin-left 0.3s;
+
+
+// }
+
+.container {
+    padding: 0;
+    margin-left: 60px;
+    max-width: calc(100% - 60px);
+    /* Adjust container width to prevent overflow */
+    transition: margin-left 0.3s, max-width 0.3s;
+}
+
+.container.shifted {
+    margin-left: 0;
+    max-width: 100%;
+    /* Full width when sidebar is disabled */
+}
+
+.sub-card img {
+    width: 65px;
+    height: 63.5px;
+    // background-color: #FFFFFF;
+    // background-color: white;
+    transition: transform 0.3s ease;
+
+}
+.sub-card:hover{
+    transform: scale(1.03);
+}

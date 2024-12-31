@@ -18,6 +18,7 @@ import { NgxDaterangepickerBootstrapModule } from 'ngx-daterangepicker-bootstrap
 import { TeachersModule } from '../teachers/teachers.module';
 import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
+import { StaffSectionViewComponent } from './staff-section-view/staff-section-view.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component
     StaffLeaveApplicationsComponent,
     StaffTransferCompletedListComponent,
     RetiredStaffComponent,
-    OnLeaveStaffComponent
+    OnLeaveStaffComponent,
+    StaffSectionViewComponent
   ],
   imports: [
     CommonModule,

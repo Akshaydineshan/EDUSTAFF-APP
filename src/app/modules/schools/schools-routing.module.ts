@@ -8,9 +8,10 @@ import { ViewSchoolComponent } from './view-school/view-school.component';
 import { SchoolVacantPositionsComponent } from './school-vacant-positions/school-vacant-positions.component';
 import { TestDemoComponent } from './test-demo/test-demo.component';
 import { SchoolwiseTeacherListComponent } from './schoolwise-teacher-list/schoolwise-teacher-list.component';
+import { SchoolSectionViewComponent } from './school-section-view/school-section-view.component';
 
 const routes: Routes = [
-  { path: '', component: SchoolListComponent },
+  { path: '', component: SchoolSectionViewComponent },
   { path: 'school-list', component: SchoolListComponent },
   { path: 'demo', component: TestDemoComponent },
   { path: 'vacant-positions', component: SchoolVacantPositionsComponent },
