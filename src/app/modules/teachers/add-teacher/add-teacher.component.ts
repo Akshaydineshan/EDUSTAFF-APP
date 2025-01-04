@@ -1481,18 +1481,18 @@ export class AddTeacherComponent implements OnInit {
     // Process document details
     console.log("on submit",this.documentForm.value.documents)
     // if (this.documentForm.valid) {
-      const documentDetails = this.documentForm.value.documents
-        .map((doc: any, index: number) => {
-          if (doc.documentFile && doc.documentFile.documentID && doc.documentType) {
-            return { documentFile: doc.documentFile, documentType: doc.documentType };
-          } else if (this.files[index]) {
-            return { documentFile: this.files[index], documentType: doc.documentType };
-          }
-          return null;
-        })
-        .filter((item: any) => item !== null);
+      // const documentDetails = this.documentForm.value.documents
+      //   .map((doc: any, index: number) => {
+      //     if (doc.documentFile && doc.documentFile.documentID && doc.documentType) {
+      //       return { documentFile: doc.documentFile, documentType: doc.documentType };
+      //     } else if (this.files[index]) {
+      //       return { documentFile: this.files[index], documentType: doc.documentType };
+      //     }
+      //     return null;
+      //   })
+      //   .filter((item: any) => item !== null);
   
-      formData.documents = documentDetails;
+      formData.documents = this.documentForm.value.documents;
     // } else {
     //   formData.documents = [];
     // }
@@ -1651,11 +1651,11 @@ export class AddTeacherComponent implements OnInit {
   // }
 
   FileChanged(data: any) {
-    this.files = data.files
+    this.files= {...this.files,...data.files}
+    console.log("DAAT f",this.files,data)
     this.previewUrl = data.previewUrl
     console.log("fileeES", this.files)
   }
-
 
 
   onCancel() {
