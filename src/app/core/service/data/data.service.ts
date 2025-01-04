@@ -223,8 +223,8 @@ export class DataService {
 
   confirmationPopup(message: any) {
     if (window.confirm(message)) {
-     return true
-    }else{
+      return true
+    } else {
       return false
     }
   }
@@ -334,7 +334,7 @@ export class DataService {
     // if (filters.uniqueID) params = params.append('uniqueId', filters.uniqueID?.trim());
     // if (filters.fromPromotionDate) params = params.append('fromPromotionDate', filters.fromPromotionDate);
     // if (filters.toPromotionDate) params = params.append('toPromotionDate', filters.toPromotionDate);
- 
+
 
     if (params) {
       return filters ? this.http.get<any[]>(`${this.apiUrl}${url}`, { params }).pipe(
@@ -413,13 +413,21 @@ export class DataService {
     formData.append('DocumentFile', documentFile);
     return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
   }
-  uploadDocumentByDocumentType(documentFile: File,documentType:any): Observable<any> {
+  uploadDocumentByDocumentType(documentFile: File, documentType: any): Observable<any> {
     const formData = new FormData();
-  
+
     formData.append('DocumentName', documentType)
     formData.append('DocumentFile', documentFile);
-   
+
     return this.http.post(this.apiUrl + 'FileUpload/AddDocument', formData);
+  }
+  updateDocument(id: number, documentType: any,file?:File): Observable<any> {
+    const formData = new FormData();
+    if(file)formData.append('DocumentFile', file)
+    formData.append('DocumentText', documentType)
+
+    console.log("formData",formData ,id,documentType,file)
+    return this.http.patch(this.apiUrl + `FileUpload/UpdateDocument/${id}`, formData);
   }
 
 

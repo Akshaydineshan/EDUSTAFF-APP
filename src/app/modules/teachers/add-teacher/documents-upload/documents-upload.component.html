@@ -50,7 +50,7 @@
                 <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
                 <p class="lab">Drag File To Upload</p>
                 <p class="or">or</p>
-                <input (change)="onCertificateUploadChange($event, i)" #fileInput type="file"
+                <input (change)="onFileSelected($event, i)" #fileInput type="file"
                   accept=".pdf,.docx,.jpeg,.jpg" style="display: none;">
                 <button class="btn btn-primary" (click)="fileInput.click()">Browse File</button>
               </div>
@@ -59,7 +59,7 @@
         </div>
       </div>
 
-      <div class="row mb-2 mt-3" *ngIf="getDocument(i)">
+      <div class="row mb-2 mt-3" *ngIf="getDocument(i)  " >
         <div class="col-sm-10">
           <div class="uploaded-file">
             <div style="display: flex; align-items: center; gap: 9px; padding: 0 0px;">

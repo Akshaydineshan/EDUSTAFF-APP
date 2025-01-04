@@ -41,6 +41,7 @@ export class TeacherDetailsComponent {
    }
    
    pdfClick(url:any){
+    console.log("url",url)
     //  window.location.href= this.getCertificate(url)
      window.open(this.getCertificate(url),"_blank")
    }

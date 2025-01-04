@@ -1,6 +1,7 @@
 export interface SchoolData {
     schoolName: string
-    schoolTypeID: number
+    addSchoolTypes?: any;              
+    updateSchoolTypes?: any; 
     address: string
     cityID: number
     state: string

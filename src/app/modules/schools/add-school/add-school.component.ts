@@ -16,7 +16,7 @@ import { RomanPipe } from 'src/app/shared/pipes/roman.pipe';
   templateUrl: './add-school.component.html',
   styleUrls: ['./add-school.component.scss'],
   providers: [
-    RomanPipe, 
+    RomanPipe,
   ],
 })
 export class AddSchoolComponent implements OnInit {
@@ -27,7 +27,7 @@ export class AddSchoolComponent implements OnInit {
   submitting: boolean = false;
   getTruncatedFileName = getTruncatedFileName;
   getFileName = getFileName;
-  getOrdinalSuffix=getOrdinalSuffix;
+  getOrdinalSuffix = getOrdinalSuffix;
 
   schoolTypes: any[] = []
   cities: any[] = [
@@ -60,7 +60,7 @@ export class AddSchoolComponent implements OnInit {
   };
   errorMsgForEmptyDivision: any[] = [];
   errorMsgForInvalidDivision: any[] = [];
-  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute,private romanPipe:RomanPipe) {
+  constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute, private romanPipe: RomanPipe) {
 
   }
 
@@ -124,11 +124,14 @@ export class AddSchoolComponent implements OnInit {
       debugger
       this.schoolTypes = this.schoolTypes
       this.cities = this.cities
-
+     
       const schoolData = {
 
         schoolName: this.school.schoolName,
-        schoolTypeID: [this.schoolTypes.find((item: any) => item.schoolTypeID === this.school.schoolTypeID)],
+        getSchoolTypes: this.school.getSchoolTypes.map((item: any) => {
+          const matchedType = this.schoolTypes.find((type: any) => type.schoolTypeName === item.schoolTypeName);
+          return matchedType;
+        }),
         address: this.school.address,
         email: this.school.email,
         phone: this.school.phone,
@@ -138,11 +141,11 @@ export class AddSchoolComponent implements OnInit {
         photoID: { photoID: this.school.photoID, photoImageName: this.school.photo }
 
       };
-
+      console.log("school data", schoolData)
 
       this.schoolDetailsForm.patchValue({
         schoolName: schoolData.schoolName,
-        schoolTypeID: schoolData.schoolTypeID,
+        schoolTypeID: schoolData.getSchoolTypes,
         address: schoolData.address,
         cityID: schoolData.cityID,
         state: schoolData.state,
@@ -162,7 +165,7 @@ export class AddSchoolComponent implements OnInit {
         })
       })
       this.standardData = data
-      console.log("edit ")
+
 
       // this.schoolDetailsForm.setControl("divisions", this.fb.array(
       //   this.school.getDivisions.map((item: any) => {
@@ -229,10 +232,10 @@ export class AddSchoolComponent implements OnInit {
       debugger
 
       if (!item.divisionData.length) {
-       this.errorMsgForEmptyDivision.push(`${getOrdinalSuffix(item.standard)} `);
+        this.errorMsgForEmptyDivision.push(`${getOrdinalSuffix(item.standard)} `);
         return
       } else if (!item.divisionData.every((div: any) => div.division && div.studentCount)) {
-         this.errorMsgForInvalidDivision.push(`${getOrdinalSuffix(item.standard)} `);
+        this.errorMsgForInvalidDivision.push(`${getOrdinalSuffix(item.standard)} `);
         return
       }
 
@@ -266,10 +269,10 @@ export class AddSchoolComponent implements OnInit {
         debugger
         let formDataValue: any = this.schoolDetailsForm.value;
         console.log("formDa", formDataValue)
-        let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => item.schoolTypeID)
+        let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => ({ schoolTypeID: item.schoolTypeID }))
         const data: SchoolData = {
           schoolName: formDataValue.schoolName,
-          schoolTypeID: formDataValue.schoolTypeID[0].schoolTypeID,
+          [this.isEdited ? "updateSchoolTypes" : "addSchoolTypes"]: schoolTypeIds,
           address: formDataValue.address,
           cityID: formDataValue.cityID.cityID,
           state: formDataValue.state,
@@ -282,21 +285,21 @@ export class AddSchoolComponent implements OnInit {
           // [this.isEdited ? "updateDivisions" : "addClasses"]: formDataValue.divisions.map((item: any, index: number) => {
           //   return { division: index + 1, studentCount: parseInt(item.studentCount) }
           // }),
-  
+
           [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
-  
-  
-  
+
+
+
         }
         debugger;
-  
+
         if (this.isEdited) {
           data.photoID = formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
-  
+
           this.schoolService.updateSchool(data, this.school.schoolID)
             .subscribe({
               next: (response) => {
-  
+
                 // Reset form and submitted flag if needed
                 this.schoolDetailsForm.reset();
                 this.submitted = false;
@@ -307,7 +310,7 @@ export class AddSchoolComponent implements OnInit {
                   positionClass: 'toast-top-left',
                   timeOut: 4500,
                 });
-  
+
                 this.router.navigate(['/schools/school-list'])
               },
               error: (err) => {
@@ -324,15 +327,15 @@ export class AddSchoolComponent implements OnInit {
               complete: () => {
                 this.submitted = false
                 this.submitting = false
-  
+
               }
             });
-  
+
         } else {
           this.schoolService.addSchool(data)
             .subscribe({
               next: (response) => {
-  
+
                 // Reset form and submitted flag if needed
                 this.schoolDetailsForm.reset();
                 this.submitted = false
@@ -343,7 +346,7 @@ export class AddSchoolComponent implements OnInit {
                   positionClass: 'toast-top-left',
                   timeOut: 4500,
                 });
-  
+
                 this.router.navigate(['/schools/school-list'])
               },
               error: (err) => {
@@ -358,14 +361,14 @@ export class AddSchoolComponent implements OnInit {
                 });
               },
               complete: () => {
-  
+
                 this.submitted = false
                 this.submitting = false
               }
             });
-  
+
         }
-  
+
       } else {
         this.submitting = false
         console.log('Form is invalid');
@@ -531,7 +534,7 @@ export class AddSchoolComponent implements OnInit {
 
             // Merge existing data with fetched classes
             this.standardData = classes.map((cls: any) =>
-              dataMap.has(cls) ? dataMap.get(cls) : { standard: cls, divisionData: [{division:'A',studentCount:''}] }
+              dataMap.has(cls) ? dataMap.get(cls) : { standard: cls, divisionData: [{ division: 'A', studentCount: '' }] }
             );
           } else {
             // Initialize new standardData with empty divisionData
@@ -539,7 +542,7 @@ export class AddSchoolComponent implements OnInit {
             this.standardData = [];
             this.standardData = classes.map((item: any) => ({
               standard: item,
-              divisionData: [{division:'A',studentCount:''}]
+              divisionData: [{ division: 'A', studentCount: '' }]
             }));
 
             // Update the `divisions` property
@@ -746,8 +749,8 @@ export class AddSchoolComponent implements OnInit {
 
   }
 
-  removeDivisionInClass(index: number,index1:number) {
-    this.standardData[index].divisionData.splice(index1,1)
+  removeDivisionInClass(index: number, index1: number) {
+    this.standardData[index].divisionData.splice(index1, 1)
 
   }
 
