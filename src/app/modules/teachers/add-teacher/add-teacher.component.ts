@@ -370,14 +370,14 @@ export class AddTeacherComponent implements OnInit {
     console.log("patch doc",documentData)
     this.documentForm.setControl('documents', this.fb.array(
       documentData.map((doc: any) => {
-        // if (doc.documentID === null) {
-        //   return this.fb.group({
-        //     documentType: doc.documentName,
-        //     documentFile: { documentID: doc.documentID, documentName: doc.documentpath }
+        if (doc.documentID === null) {
+          return this.fb.group({
+            documentType: "",
+            documentFile: { documentID: "", documentName: "" }
 
-        //   }
-        //   )
-        // }
+          }
+          )
+        }
         return this.fb.group({
           documentType: doc.documentName,
           documentFile: { documentID: doc.documentID, documentName: doc.documentpath }
