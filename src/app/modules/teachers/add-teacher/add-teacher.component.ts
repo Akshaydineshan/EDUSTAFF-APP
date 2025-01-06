@@ -877,27 +877,34 @@ export class AddTeacherComponent implements OnInit {
 
 
   uploadCertificate(file: any) {
-    if (file.documentID && file.file) {
-      // Update existing document if documentId is present
-      return this.dataService.updateCertificate(file.documentID, file.file).pipe(
-        map((response) => ({
-          documentID: file.documentID,
-          documentName: "",
-        }))
-      );
-    } else if (!file.documentID && file.file) {
-      // Upload a fresh document if no documentId is present
-      return this.dataService.uploadDocument(file.file).pipe(
-        map((uploadResponse: any) => uploadResponse) // Extract documentId from upload response
-      );
+    if (file && file.file) {
+      // Check if the document already has a documentID
+      if (file.documentID) {
+        // Update existing document if documentId is present
+        return this.dataService.updateCertificate(file.documentID, file.file).pipe(
+          map((response: any) => ({
+            documentID: file.documentID,
+            documentName: response?.documentName || "", // Ensure documentName is set
+          }))
+        );
+      } else {
+        // Upload a fresh document if no documentId is present
+        return this.dataService.uploadDocument(file.file).pipe(
+          map((uploadResponse: any) => ({
+            documentID: uploadResponse?.documentID || null, // Ensure documentID is set from response
+            documentName: uploadResponse?.documentName || "", // Handle missing documentName gracefully
+          }))
+        );
+      }
     } else {
-      //  return a default object
+      // Return a default object if no file is provided
       return of({
-        documentID: file.documentID,
-        documentName: file.documentName,
+        documentID: file?.documentID || null,  // Ensure default value for documentID
+        documentName: file?.documentName || "", // Ensure default value for documentName
       });
     }
   }
+  
 
 
 
