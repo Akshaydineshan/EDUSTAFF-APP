@@ -429,6 +429,14 @@ export class DataService {
     console.log("formData",formData ,id,documentType,file)
     return this.http.patch(this.apiUrl + `FileUpload/UpdateDocument/${id}`, formData);
   }
+  updateCertificate(id: number,file?:File): Observable<any> {
+    const formData = new FormData();
+    if(file)formData.append('DocumentFile', file)
+   
+
+    console.log("formData",formData ,id,file)
+    return this.http.patch(this.apiUrl + `FileUpload/UpdateDocument/${id}`, formData);
+  }
 
 
   addTeacher(teachersData: any): Observable<any> {

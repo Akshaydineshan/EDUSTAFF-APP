@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges } from '@ang
 import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { distinctUntilChanged, forkJoin } from 'rxjs';
+import { distinctUntilChanged, forkJoin, map, of } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { dateRangeValidator, minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 
@@ -367,7 +367,7 @@ export class AddTeacherComponent implements OnInit {
   patchDocumentsFormData() {
 
     const documentData = this.employee.getEmployeeDocuments;
-    console.log("patch doc",documentData)
+    console.log("patch doc", documentData)
     this.documentForm.setControl('documents', this.fb.array(
       documentData.map((doc: any) => {
         if (doc.documentID === null) {
@@ -743,7 +743,7 @@ export class AddTeacherComponent implements OnInit {
     const currentMapping = formMapping[this.currentStep];
     if (!currentMapping) {
       console.error('Invalid step');
-      this.currentStep=1;
+      this.currentStep = 1;
       return;
     }
 
@@ -776,105 +776,18 @@ export class AddTeacherComponent implements OnInit {
 
 
 
-  // async uploadFiles(): Promise<void> {
-  //   debugger;
-  //   const uploadPromises = this.documents.controls.map((doc: any, index: number) => {
-  //     const file = this.files[index]; // File from input
-  //     const documentType = doc.get('documentType')?.value;
-  //     const existingDocument = doc.get('documentFile')?.value;
-  //     console.log("ext ", existingDocument)
 
-  //     if (file) {
-        
-
-  //       if (this.isEdited) {
-  //         debugger
-
-  //         if (existingDocument.documentID) {
-  //           return new Promise((resolve, reject) => {
-  //             this.dataService.updateDocument(existingDocument.documentID, documentType, file).subscribe(
-  //               (response: any) => {
-  //                 if(response){
-  //                   console.log('File edit successfully', response);
-  //                   const documents = this.documentForm.get('documents') as FormArray;
-  //                   documents.at(index).get('documentFile')?.patchValue({documentID:existingDocument.documentID, documentName:documentType});
-  //                   resolve(response);
-  //                 }
-              
-  //               },
-  //               (error: any) => {
-  //                 console.error('Error uploading file', error);
-  //                 reject(error);
-  //               }
-  //             );
-  //           });
-  //         }else{
-  //           // Case: New file is uploaded
-  //           return new Promise((resolve, reject) => {
-  //             this.dataService.uploadDocumentByDocumentType(file, documentType).subscribe(
-  //               (response: any) => {
-  //                 console.log('File uploaded successfully', response);
-  //                 const documents = this.documentForm.get('documents') as FormArray;
-  //                 documents.at(index).get('documentFile')?.patchValue(response);
-  //                 resolve(response);
-  //               },
-  //               (error: any) => {
-  //                 console.error('Error uploading file', error);
-  //                 reject(error);
-  //               }
-  //             );
-  //           });
-  //         }
-
-  //       } else if (!this.isEdited) {
-  //         return new Promise((resolve, reject) => {
-  //           this.dataService.uploadDocumentByDocumentType(file, documentType).subscribe(
-  //             (response: any) => {
-  //               console.log('File uploaded successfully', response);
-  //               const documents = this.documentForm.get('documents') as FormArray;
-  //               documents.at(index).get('documentFile')?.patchValue(response);
-  //               resolve(response);
-  //             },
-  //             (error: any) => {
-  //               console.error('Error uploading file', error);
-  //               reject(error);
-  //             }
-  //           );
-  //         });
-  //       }
-
-  //     } else if (existingDocument?.documentID) {
-  //       // Case: No new file, update the existing document's type
-  //       return new Promise((resolve, reject) => {
-  //         this.dataService.updateDocument(existingDocument.documentID, documentType).subscribe(
-  //           (response: any) => {
-  //             console.log('Document type updated successfully', response);
-  //             resolve(response);
-  //           },
-  //           (error: any) => {
-  //             console.error('Error updating document type', error);
-  //             reject(error);
-  //           }
-  //         );
-  //       });
-
-  //     }
-  //     return Promise.resolve(); // If neither file nor document exists, resolve immediately
-  //   });
-
-  //   await Promise.all(uploadPromises); // Wait for all uploads and updates to complete
-  // }
   async uploadFiles(): Promise<void> {
     debugger;
-  
+
     try {
       const uploadPromises = this.documents.controls.map((doc: any, index: number) => {
         const file = this.files[index]; // File from input
         const documentType = doc.get('documentType')?.value;
         const existingDocument = doc.get('documentFile')?.value;
-  
+
         console.log("Existing Document: ", existingDocument);
-  
+
         // Handle file upload or document update
         if (file) {
           if (this.isEdited && existingDocument?.documentID) {
@@ -886,14 +799,14 @@ export class AddTeacherComponent implements OnInit {
           }
         } else if (existingDocument?.documentID) {
           // Update document type without uploading a new file
-          console.log("type update",doc)
+          console.log("type update", doc)
           return this.handleDocumentTypeUpdate(existingDocument.documentID, documentType, index);
         }
-  
+
         // If no file and no existing document, resolve immediately
         return Promise.resolve();
       });
-  
+
       // Wait for all upload/update promises to complete
       await Promise.all(uploadPromises);
       console.log('All files processed successfully');
@@ -901,7 +814,7 @@ export class AddTeacherComponent implements OnInit {
       console.error('Error during file upload process:', error);
     }
   }
-  
+
   private handleDocumentUpdate(
     documentID: number,
     documentType: string,
@@ -922,7 +835,7 @@ export class AddTeacherComponent implements OnInit {
       );
     });
   }
-  
+
   private handleDocumentUpload(file: File, documentType: string, index: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.dataService.uploadDocumentByDocumentType(file, documentType).subscribe(
@@ -938,7 +851,7 @@ export class AddTeacherComponent implements OnInit {
       );
     });
   }
-  
+
   private handleDocumentTypeUpdate(documentID: number, documentType: string, index: number): Promise<any> {
     return new Promise((resolve, reject) => {
       this.dataService.updateDocument(documentID, documentType).subscribe(
@@ -954,12 +867,38 @@ export class AddTeacherComponent implements OnInit {
       );
     });
   }
-  
+
   private patchDocumentForm(index: number, value: any): void {
     const documents = this.documentForm.get('documents') as FormArray;
     documents.at(index).get('documentFile')?.patchValue(value);
   }
-  
+
+
+
+
+  uploadCertificate(file: any) {
+    if (file.documentID && file.file) {
+      // Update existing document if documentId is present
+      return this.dataService.updateCertificate(file.documentID, file.file).pipe(
+        map((response) => ({
+          documentID: file.documentID,
+          documentName: "",
+        }))
+      );
+    } else if (!file.documentID && file.file) {
+      // Upload a fresh document if no documentId is present
+      return this.dataService.uploadDocument(file.file).pipe(
+        map((uploadResponse: any) => uploadResponse) // Extract documentId from upload response
+      );
+    } else {
+      //  return a default object
+      return of({
+        documentID: file.documentID,
+        documentName: file.documentName,
+      });
+    }
+  }
+
 
 
 
@@ -968,221 +907,263 @@ export class AddTeacherComponent implements OnInit {
       debugger;
       await this.uploadFiles(); // Ensure this completes before moving forward
 
-      const documents = this.documentForm.get('documents') as FormArray;
-      let educationData = this.fullFormData.educations.map((edu: any) => ({
-        educationTypeID: parseInt(edu.educationType.educationTypeID),
-        courseID: parseInt(edu.courseName.courseID),
-        courseName: edu.courseNameOther,
-        schoolName: edu.schoolName,
-        fromDate: this.dataService.formatDateToISO(edu.fromDate),
-        toDate: this.dataService.formatDateToISO(edu.toDate),
-        DocumentID: parseInt(edu.certificate?.documentID) || null
-      }));
+      console.log("education", this.fullFormData.educations)
+      // const certificateUploadObservables = this.fullFormData.educations.map((edu: any) => {
+      //   // Check if the file already has a documentId
+      //   const file = edu.certificate
 
 
-      const documentData = documents.value.map((doc: any) => {
-        if (doc.documentFile && doc.documentFile.documentID) {
-          return { documentID: doc.documentFile.documentID }
-        } else {
-          return null
+      //   if (file.documentID && file.file) {
+      //     // Update existing document if documentId is present
+      //     return this.dataService.updateCertificate(file.documentID, file.file).pipe(
+      //       map((response) => ({
+      //         documentID: file.documentID,
+      //         documentName: "",
+      //       }))
+      //     )
+      //   } else if (!file.documentID && file.file) {
+      //     // Upload a fresh document if no documentId is present
+      //     return this.dataService.uploadDocument(file.file).pipe(
+      //       map((uploadResponse: any) => uploadResponse) // Extract documentId from upload response
+      //     );
+      //   } else {
+      //     return of({
+      //       documentID: file.documentID,
+      //       documentName: file.documentName,
+      //     })
+      //   }
+      // });
+      // Use the new method to handle the document upload
+      const certificateUploadObservables = this.fullFormData.educations.map((edu: any) => {
+        const file = edu.certificate;
+        return this.uploadCertificate(file);
+      });
+      forkJoin(certificateUploadObservables).subscribe((response: any) => {
+        console.log("uploadCerti", response)
+
+
+        const documents = this.documentForm.get('documents') as FormArray;
+        let educationData = this.fullFormData.educations.map((edu: any, index: number) => ({
+          educationTypeID: parseInt(edu.educationType.educationTypeID),
+          courseID: parseInt(edu.courseName.courseID),
+          courseName: edu.courseNameOther,
+          schoolName: edu.schoolName,
+          fromDate: this.dataService.formatDateToISO(edu.fromDate),
+          toDate: this.dataService.formatDateToISO(edu.toDate),
+          DocumentID: response[index]?.documentID || null,
+        }));
+
+        console.log("education data", educationData)
+
+
+        const documentData = documents.value.map((doc: any) => {
+          if (doc.documentFile && doc.documentFile.documentID) {
+            return { documentID: doc.documentFile.documentID }
+          } else {
+            return null
+          }
+
+        }).filter((item: any) => item != null)
+
+        console.log("DOCS", documentData, documents)
+
+
+
+
+
+
+        let data: any = {
+          pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
+          firstName: this.fullFormData.firstName ? this.fullFormData.firstName : "",
+          lastName: this.fullFormData.lastName ? this.fullFormData.lastName : "",
+          email: this.fullFormData.email ? this.fullFormData.email : "",
+          phone: this.fullFormData.phone ? this.fullFormData.phone : "",
+          presentAddress: this.fullFormData.currentAddress ? this.fullFormData.currentAddress : "",
+          permanentAddress: this.fullFormData.permanentAddress ? this.fullFormData.permanentAddress : "",
+          dateOfBirth: this.dataService.formatDateToISO(this.fullFormData.dob),
+          sexID: parseInt(this.fullFormData.sex.genderID),
+          religionID: parseInt(this.fullFormData.religion.religionID),
+          casteID: parseInt(this.fullFormData.category.casteCategoryID),
+          caste: this.fullFormData.caste ? this.fullFormData.caste : "",
+          bloodGroupID: parseInt(this.fullFormData.bloodGroup.bloodGroupID),
+          // rationID: this.fullFormData.rationCardNumber,
+          differentlyAbled: Boolean(this.fullFormData.whetherDifferentlyAbled),
+          exServiceMen: Boolean(this.fullFormData.exServicemen),
+          aadhaarID: this.fullFormData.aadharId ? this.fullFormData.aadharId : "",
+          identificationMark1: this.fullFormData.identificationMarksOne ? this.fullFormData.identificationMarksOne : "",
+          identificationMark2: this.fullFormData.identificationMarksTwo ? this.fullFormData.identificationMarksTwo : "",
+          height: this.fullFormData.height ? this.fullFormData.height : "",
+          fatherName: this.fullFormData.fathersName ? this.fullFormData.fathersName : "",
+          motherName: this.fullFormData.mothersName ? this.fullFormData.mothersName : "",
+          interReligion: Boolean(this.fullFormData.interReligion),
+          maritalStatusID: parseInt(this.fullFormData.maritalStatus.maritalStatusID),
+          spouseName: this.fullFormData.spousesName ? this.fullFormData.spousesName : "",
+          spouseReligionID: parseInt(this.fullFormData.spousesReligion.religionID),
+          // statusID: 1,
+          spouseCaste: this.fullFormData.spousesCaste ? this.fullFormData.spousesCaste : "",
+          panID: this.fullFormData.pan,
+          voterID: this.fullFormData.voterId ? this.fullFormData.voterId : "",
+          educations: educationData,
+          employeeDocuments: documentData,
+          departmentID: parseInt(this.fullFormData.department.employeeTypeID),
+          districtID: parseInt(this.fullFormData.district.districtID),
+          pfNummber: this.fullFormData.pfNumber,
+          pran: this.fullFormData.pran,
+          SchoolID: parseInt(this.fullFormData.schoolName.schoolID),
+          ApprovalTypeID: parseInt(this.fullFormData.approvalType.approvalTypeID),
+          // dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.dateOfJoin),
+          // dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.dateOfJoinDepartment),
+          categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),
+          // schoolTypeID: parseInt(this.fullFormData.schoolTypeID),
+          // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
+          // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
+          documentID: parseInt(this.fullFormData.documentID),
+          eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified
+          ),
+          ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
+          // trainingAttended: Boolean(this.fullFormData.trainingAttended),
+          designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
+          subjectID: parseInt(this.fullFormData.subject.subjectID),
+          // employeeTypeID: this.fullFormData.employeeType ? parseInt(this.fullFormData.employeeType.employeeTypeID) : null,
+          dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.fromDate),
+          dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
+          RetirementDate: this.dataService.formatDateToISO(this.fullFormData.retirement),
+          promotionEligible: Boolean(this.fullFormData.promotionEligible),
+          PhotoID: parseInt(this.fullFormData.photoId.photoId),
         }
 
-      }).filter((item: any) => item != null)
+        console.log("dataNEw", data)
 
-      console.log("DOCS", documentData,documents)
-
-
-
-
-
-
-      let data: any = {
-        pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
-        firstName: this.fullFormData.firstName ? this.fullFormData.firstName : "",
-        lastName: this.fullFormData.lastName ? this.fullFormData.lastName : "",
-        email: this.fullFormData.email ? this.fullFormData.email : "",
-        phone: this.fullFormData.phone ? this.fullFormData.phone : "",
-        presentAddress: this.fullFormData.currentAddress ? this.fullFormData.currentAddress : "",
-        permanentAddress: this.fullFormData.permanentAddress ? this.fullFormData.permanentAddress : "",
-        dateOfBirth: this.dataService.formatDateToISO(this.fullFormData.dob),
-        sexID: parseInt(this.fullFormData.sex.genderID),
-        religionID: parseInt(this.fullFormData.religion.religionID),
-        casteID: parseInt(this.fullFormData.category.casteCategoryID),
-        caste: this.fullFormData.caste ? this.fullFormData.caste : "",
-        bloodGroupID: parseInt(this.fullFormData.bloodGroup.bloodGroupID),
-        // rationID: this.fullFormData.rationCardNumber,
-        differentlyAbled: Boolean(this.fullFormData.whetherDifferentlyAbled),
-        exServiceMen: Boolean(this.fullFormData.exServicemen),
-        aadhaarID: this.fullFormData.aadharId ? this.fullFormData.aadharId : "",
-        identificationMark1: this.fullFormData.identificationMarksOne ? this.fullFormData.identificationMarksOne : "",
-        identificationMark2: this.fullFormData.identificationMarksTwo ? this.fullFormData.identificationMarksTwo : "",
-        height: this.fullFormData.height ? this.fullFormData.height : "",
-        fatherName: this.fullFormData.fathersName ? this.fullFormData.fathersName : "",
-        motherName: this.fullFormData.mothersName ? this.fullFormData.mothersName : "",
-        interReligion: Boolean(this.fullFormData.interReligion),
-        maritalStatusID: parseInt(this.fullFormData.maritalStatus.maritalStatusID),
-        spouseName: this.fullFormData.spousesName ? this.fullFormData.spousesName : "",
-        spouseReligionID: parseInt(this.fullFormData.spousesReligion.religionID),
-        // statusID: 1,
-        spouseCaste: this.fullFormData.spousesCaste ? this.fullFormData.spousesCaste : "",
-        panID: this.fullFormData.pan,
-        voterID: this.fullFormData.voterId ? this.fullFormData.voterId : "",
-        educations: educationData,
-        employeeDocuments: documentData,
-        departmentID: parseInt(this.fullFormData.department.employeeTypeID),
-        districtID: parseInt(this.fullFormData.district.districtID),
-        pfNummber: this.fullFormData.pfNumber,
-        pran: this.fullFormData.pran,
-        SchoolID: parseInt(this.fullFormData.schoolName.schoolID),
-        ApprovalTypeID: parseInt(this.fullFormData.approvalType.approvalTypeID),
-        // dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.dateOfJoin),
-        // dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.dateOfJoinDepartment),
-        categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),
-        // schoolTypeID: parseInt(this.fullFormData.schoolTypeID),
-        // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
-        // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
-        documentID: parseInt(this.fullFormData.documentID),
-        eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified
-        ),
-        ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
-        // trainingAttended: Boolean(this.fullFormData.trainingAttended),
-        designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
-        subjectID: parseInt(this.fullFormData.subject.subjectID),
-        // employeeTypeID: this.fullFormData.employeeType ? parseInt(this.fullFormData.employeeType.employeeTypeID) : null,
-        dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.fromDate),
-        dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
-        RetirementDate: this.dataService.formatDateToISO(this.fullFormData.retirement),
-        promotionEligible: Boolean(this.fullFormData.promotionEligible),
-        PhotoID: parseInt(this.fullFormData.photoId.photoId),
-      }
-
-      console.log("dataNEw", data)
-
-      if (this.isEdited) {
-        debugger
-        const employeeId: number = Number(this.employeeId)
-        this.dataService.updateTeacher(data, employeeId).subscribe(
-          (response) => {
-            debugger
-            console.log('Employee Updated successfully:', response);
-            if (response.status === 200) {
-              this.submitBtnStatus.personal = false;
-              this.submitBtnStatus.education = false;
-              this.submitBtnStatus.professional = false;
+        if (this.isEdited) {
+          debugger
+          const employeeId: number = Number(this.employeeId)
+          this.dataService.updateTeacher(data, employeeId).subscribe(
+            (response) => {
+              debugger
+              console.log('Employee Updated successfully:', response);
+              if (response.status === 200) {
+                this.submitBtnStatus.personal = false;
+                this.submitBtnStatus.education = false;
+                this.submitBtnStatus.professional = false;
 
 
-              this.toastr.success('Teacher Updated !', 'Success', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.router.navigate(['/teachers/teacher-list'])
+                this.toastr.success('Teacher Updated !', 'Success', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+                this.router.navigate(['/teachers/teacher-list'])
 
-            } else {
+              } else {
 
-              this.toastr.error('Teacher Update !', 'Failed', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.currentStep = 1
-            }
+                this.toastr.error('Teacher Update !', 'Failed', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+                this.currentStep = 1
+              }
 
-          },
-          (error) => {
-            if (error.status == 409) {
-              let message: string = error.error?.message
-              this.toastr.error(message + '!', 'Failed', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-              this.currentStep = 1
-              return;
-            }
-
-            this.toastr.error('Somthing Went Wrong !', 'Failed', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
-            console.error(error);
-            this.currentStep = 1
-          }
-        );
-
-      } else {
-        debugger
-        this.dataService.addTeacher(data).subscribe(
-          (response) => {
-            debugger
-            console.log('Employee added successfully:', response);
-            if (response.status === 200) {
-              this.submitBtnStatus.personal = false;
-              this.submitBtnStatus.education = false;
-              this.submitBtnStatus.professional = false;
-
-              this.toastr.success('Teacher Added !', 'Success', {
-                closeButton: true,
-                progressBar: true,
-                positionClass: 'toast-top-left',
-                timeOut: 4500,
-              });
-
-              this.router.navigate(['/teachers/teacher-list'])
-
-            } else {
-
-
-              if (response.message) {
-                let message: string = response.message
+            },
+            (error) => {
+              if (error.status == 409) {
+                let message: string = error.error?.message
                 this.toastr.error(message + '!', 'Failed', {
                   closeButton: true,
                   progressBar: true,
                   positionClass: 'toast-top-left',
                   timeOut: 4500,
                 });
+                this.currentStep = 1
                 return;
               }
 
-              this.toastr.error('Teacher Add !', 'Failed', {
+              this.toastr.error('Somthing Went Wrong !', 'Failed', {
                 closeButton: true,
                 progressBar: true,
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
+              console.error(error);
               this.currentStep = 1
             }
+          );
 
-          },
-          (error) => {
-            if (error.status == 409) {
-              let message: string = error.error?.message
-              this.toastr.error(message + '!', 'Failed', {
+        } else {
+          debugger
+          this.dataService.addTeacher(data).subscribe(
+            (response) => {
+              debugger
+              console.log('Employee added successfully:', response);
+              if (response.status === 200) {
+                this.submitBtnStatus.personal = false;
+                this.submitBtnStatus.education = false;
+                this.submitBtnStatus.professional = false;
+
+                this.toastr.success('Teacher Added !', 'Success', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+
+                this.router.navigate(['/teachers/teacher-list'])
+
+              } else {
+
+
+                if (response.message) {
+                  let message: string = response.message
+                  this.toastr.error(message + '!', 'Failed', {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: 'toast-top-left',
+                    timeOut: 4500,
+                  });
+                  return;
+                }
+
+                this.toastr.error('Teacher Add !', 'Failed', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+                this.currentStep = 1
+              }
+
+            },
+            (error) => {
+              if (error.status == 409) {
+                let message: string = error.error?.message
+                this.toastr.error(message + '!', 'Failed', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500,
+                });
+                this.currentStep = 1
+                return;
+              }
+              debugger
+              this.toastr.error('Somthing Went Wrong !', 'Failed', {
                 closeButton: true,
                 progressBar: true,
                 positionClass: 'toast-top-left',
                 timeOut: 4500,
               });
+              console.error(error);
               this.currentStep = 1
-              return;
             }
-            debugger
-            this.toastr.error('Somthing Went Wrong !', 'Failed', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
-            console.error(error);
-            this.currentStep = 1
-          }
-        );
-      }
+          );
+        }
+      })
+
+
+
+
 
 
     } catch (error) {
@@ -1465,49 +1446,49 @@ export class AddTeacherComponent implements OnInit {
   onSubmit(): void {
     let formData: any = {};
     debugger;
-  
+
     // Validate personal details
     if (this.personalDetailsForm.valid) {
       const personalDetails = this.personalDetailsForm.value;
       formData = { ...formData, ...personalDetails };
     }
-  
+
     // Validate education details
     if (this.educationForm.valid) {
       const educationDetails = this.educationForm.value;
       formData.educations = educationDetails.educations;
     }
-  
+
     // Process document details
-    console.log("on submit",this.documentForm.value.documents)
+    console.log("on submit", this.educationForm.value)
     // if (this.documentForm.valid) {
-      // const documentDetails = this.documentForm.value.documents
-      //   .map((doc: any, index: number) => {
-      //     if (doc.documentFile && doc.documentFile.documentID && doc.documentType) {
-      //       return { documentFile: doc.documentFile, documentType: doc.documentType };
-      //     } else if (this.files[index]) {
-      //       return { documentFile: this.files[index], documentType: doc.documentType };
-      //     }
-      //     return null;
-      //   })
-      //   .filter((item: any) => item !== null);
-  
-      formData.documents = this.documentForm.value.documents;
+    // const documentDetails = this.documentForm.value.documents
+    //   .map((doc: any, index: number) => {
+    //     if (doc.documentFile && doc.documentFile.documentID && doc.documentType) {
+    //       return { documentFile: doc.documentFile, documentType: doc.documentType };
+    //     } else if (this.files[index]) {
+    //       return { documentFile: this.files[index], documentType: doc.documentType };
+    //     }
+    //     return null;
+    //   })
+    //   .filter((item: any) => item !== null);
+
+    formData.documents = this.documentForm.value.documents;
     // } else {
     //   formData.documents = [];
     // }
-  
+
     // Validate professional details
     if (this.professionalForm.valid) {
       const professionalDetails = this.professionalForm.value;
       formData = { ...formData, ...professionalDetails };
     }
-  
+
     // Assign and log the final data
     this.fullFormData = formData;
     console.log("formData", formData);
   }
-  
+
 
 
   uploadPhoto(teacherId: number, photo: File) {
@@ -1651,8 +1632,8 @@ export class AddTeacherComponent implements OnInit {
   // }
 
   FileChanged(data: any) {
-    this.files= {...this.files,...data.files}
-    console.log("DAAT f",this.files,data)
+    this.files = { ...this.files, ...data.files }
+    console.log("DAAT f", this.files, data)
     this.previewUrl = data.previewUrl
     console.log("fileeES", this.files)
   }

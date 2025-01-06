@@ -24,7 +24,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   minDate: any = new Date('1900-01-01');
   selectedEducationType!: string;
   getTruncatedFileName = getTruncatedFileName
-  getFileName=getFileName
+  getFileName = getFileName
 
   filteredCoursesByEducation: any[] = []; // this is for courseName select list value storing index wice by education type
   file: any;
@@ -35,6 +35,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   fileName: any = [];
   fileSize: any = [];
   apiUrl: any = environment.imageBaseUrl;
+  files: { [index: number]: File } = {};
+  previewUrls: { [index: number]: string } = {};
 
   constructor(
     private fb: FormBuilder,
@@ -192,7 +194,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
     const selectedType = Number(event.educationTypeID);
     if (selectedType) {
       this.getCoursesByEducationType(selectedType, index);
-      
+
     }
     if (event.educationTypeID !== 5) {
       this.schoolUniversityNotification = false;
@@ -211,7 +213,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       educationGroup.get('schoolName')?.clearValidators();
       educationGroup.get('fromDate')?.updateValueAndValidity();
       educationGroup.get('schoolName')?.updateValueAndValidity();
-      
+
     }
   }
 
@@ -306,38 +308,82 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
 
 
   // UploadFile Related funs
-  onCertificateUploadChange(event: any, index: number): void {
+  // onCertificateUploadChange(event: any, index: number): void {
 
-    this.fileName[index] = event.target.files[0]?.name;
-    let totalBytes = event.target.files[0]?.size;
-    if (totalBytes < 1000000) {
-      this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
-    } else {
-      this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
-    }
+  //   this.fileName[index] = event.target.files[0]?.name;
+  //   let totalBytes = event.target.files[0]?.size;
+  //   if (totalBytes < 1000000) {
+  //     this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
+  //   } else {
+  //     this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
+  //   }
 
-    const file = event.target.files[0];
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.file = file;
+    
+  //   }
+  //   this.uploadCertificate(index)
+  // }
+
+  handleCertificateFileChange(file: File, index: number) {
+
     if (file) {
-      this.file = file;
-      // this.educations.at(index).get('documentFile')?.setValue(file);
-    }
-    this.uploadCertificate(index)
-  }
-  onCertificateUploadDragAndDrop(event: any, index: number): void {
-    this.fileName[index] = event.dataTransfer.files[0]?.name;
-    let totalBytes = event.dataTransfer.files[0]?.size;
-    if (totalBytes < 1000000) {
-      this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
-    } else {
-      this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
-    }
+      this.fileName[index] = file.name;
+      let totalBytes = file.size;
+      if (totalBytes < 1000000) {
+        this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
+      } else {
+        this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
+      }
 
+
+      this.files[index] = file;
+      // this.educations.at(index).get('certificate')?.patchValue({documentID:null,documentName:file.name});
+
+      const educations = this.educationForm.get('educations') as FormArray;
+      const certificateIdControl = educations.at(index).get('certificate');
+      const certificateID = certificateIdControl?.value?.documentID || null;
+      certificateIdControl?.patchValue({
+        documentName: file.name,
+        documentID: certificateID,
+        file: file
+      });
+      console.log("onFile changed", this.educations.at(index).get('certificate')?.value)
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrls[index] = reader.result as string;
+
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onFileChanged(event: any, index: number) {
+    const file: File = event.target.files[0];
+    this.handleCertificateFileChange(file, index)
+  }
+
+  onCertificateUploadDragAndDrop(event: any, index: number) {
     const file = event.dataTransfer.files[0];
-    if (file) {
-      this.file = file;
-    }
-    this.uploadCertificate(index)
+    this.handleCertificateFileChange(file, index)
+
   }
+  // onCertificateUploadDragAndDropee(event: any, index: number): void {
+  //   this.fileName[index] = event.dataTransfer.files[0]?.name;
+  //   let totalBytes = event.dataTransfer.files[0]?.size;
+  //   if (totalBytes < 1000000) {
+  //     this.fileSize[index] = Math.floor(totalBytes / 1000) + 'KB';
+  //   } else {
+  //     this.fileSize[index] = Math.floor(totalBytes / 1000000) + 'MB';
+  //   }
+
+  //   const file = event.dataTransfer.files[0];
+  //   if (file) {
+  //     this.file = file;
+  //   }
+  //   this.uploadCertificate(index)
+  // }
 
   uploadCertificate(index: any): void {
     debugger
