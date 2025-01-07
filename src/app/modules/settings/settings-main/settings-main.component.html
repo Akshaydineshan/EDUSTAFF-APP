@@ -1,0 +1,34 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+
+
+<div class="main-container"  [class.shifted]="isSidebarClosed">
+    <!-- <h3>Settings</h3> -->
+    <div class="tab-container">
+        <!-- Tab Header -->
+        <div class="tab-header">
+          <button
+            *ngFor="let tab of tabs; let i = index"
+            class="tab-button"
+            [class.active]="activeTabIndex === i"
+            (click)="onTabClick($event, i)"
+          >
+            {{ tab }}
+          </button>
+          <!-- Optional Tab Indicator -->
+          <div
+            class="tab-indicator"
+            [style.width.px]="indicatorWidth"
+            [style.left.px]="indicatorLeft"
+          ></div>
+        </div>
+      
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <div *ngIf="activeTabIndex === 0">Content for Tab 1</div>
+          <div *ngIf="activeTabIndex === 1">Content for Tab 2</div>
+          <div *ngIf="activeTabIndex === 2">Content for Tab 3</div>
+        </div>
+      </div>
+      
+</div>
