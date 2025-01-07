@@ -22,6 +22,15 @@ export class TopbarComponent {
   }
 
 
+  profileDropdownToggle(){
+    this.isMenuOpen=!this.isMenuOpen
+    window.scroll({
+      top: 0,
+    
+      behavior: "smooth",
+    });
+  }
+
   logout() {
     this.tokenStore.logout();
     this.router.navigate(['/auth']);

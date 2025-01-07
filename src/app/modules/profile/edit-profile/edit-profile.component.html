@@ -2,8 +2,88 @@
 <app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
 
 <div class="main-container " [class.shifted]="isSidebarClosed">
- <div class="content-main">
-    <h4>Edit User Profile</h4>
-    
- </div>
+   <div class="content-main">
+      <h4>Edit User Profile</h4>
+
+      <div class="profile-main mt-4">
+         <form>
+            <div class="row mb-3">
+               <label class="col-sm-3 col-form-label"><span>User Name</span><span
+                     class="text-danger ms-1 mad-f">*</span>
+               </label>
+               <div class="col-sm-7">
+                  <input type="text" class="form-control" id="pen"  required>
+
+               </div>
+            </div>
+            <div class="row mb-3">
+               <label class="col-sm-3 col-form-label"><span>First Name</span><span
+                     class="text-danger ms-1 mad-f">*</span>
+               </label>
+               <div class="col-sm-7">
+                  <input type="text" class="form-control" id="pen"  required>
+
+               </div>
+            </div>
+            <div class="row mb-3">
+               <label class="col-sm-3 col-form-label"><span>Last Name</span><span
+                     class="text-danger ms-1 mad-f">*</span>
+               </label>
+               <div class="col-sm-7">
+                  <input type="text" class="form-control" id="pen"  required>
+
+               </div>
+            </div>
+            <div class="row mb-3">
+               <label class="col-sm-3 col-form-label"><span>Email</span><span
+                     class="text-danger ms-1 mad-f">*</span>
+               </label>
+               <div class="col-sm-7">
+                  <input type="text" class="form-control" id="pen"  required>
+
+               </div>
+            </div>
+            <div class="row mb-3">
+               <label class="col-sm-3 col-form-label"><span>Date Of Birth</span><span
+                     class="text-danger ms-1 mad-f">*</span>
+               </label>
+               <div class="col-sm-7">
+                  <input type="text" class="form-control" id="pen"  required>
+
+               </div>
+            </div>
+            <div class="row mb-3">
+               <label class="col-sm-3 col-form-label"><span>Role</span><span
+                     class="text-danger ms-1 mad-f">*</span>
+               </label>
+               <div class="col-sm-7">
+                  <input type="text" class="form-control" id="pen"  required>
+
+               </div>
+            </div>
+
+            <div class="row mt-5 ">
+               <div class="col-12 d-flex justify-content-center">
+               
+                   <button type="button" class="btn btn-secondary me-2" [routerLink]="['/dashboard']">Cancel</button>
+   
+                   <button type="submit"  class="btn btn-success" >
+                     Submit
+                   </button>
+               </div>
+           </div>
+         </form>
+
+         <!-- <div
+                    *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.invalid && (personalDetailsForm.get('permanentEmployeeNumber')?.['dirty'] || personalDetailsForm.get('permanentEmployeeNumber')?.['touched']  || submitted)">
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.errors?.['required']">Employee ID is
+                        required.</small>
+                    <small class="text-danger"
+                        *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.errors?.['pattern']">Invalid
+                        Pattern</small>
+                </div> -->
+      </div>
+
+   </div>
 </div>
