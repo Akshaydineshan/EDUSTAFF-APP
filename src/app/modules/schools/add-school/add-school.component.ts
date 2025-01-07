@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SchoolService } from '../school.service';
 import { SchoolData } from '../models/add-school';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of, Subject } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -60,6 +60,8 @@ export class AddSchoolComponent implements OnInit {
   };
   errorMsgForEmptyDivision: any[] = [];
   errorMsgForInvalidDivision: any[] = [];
+
+  previewUrl: string = ''
   constructor(private fb: FormBuilder, private schoolService: SchoolService, private dataService: DataService, private router: Router, private toastr: ToastrService, private route: ActivatedRoute, private romanPipe: RomanPipe) {
 
   }
@@ -124,7 +126,7 @@ export class AddSchoolComponent implements OnInit {
       debugger
       this.schoolTypes = this.schoolTypes
       this.cities = this.cities
-     
+
       const schoolData = {
 
         schoolName: this.school.schoolName,
@@ -203,6 +205,22 @@ export class AddSchoolComponent implements OnInit {
   }
 
 
+  updateSchoolImage(schoolImage: any) {
+    let file = schoolImage.file
+    if (file) {
+      if (schoolImage.photoID) {
+        return this.dataService.updateImage(schoolImage?.photoID, file)
+      } else {
+        return this.dataService.uploadProfilePhoto(file);
+      }
+    } else {
+      return of({ photoID: schoolImage.photoID, photoImageName: schoolImage.photoImageName })
+    }
+
+
+  }
+
+
 
 
 
@@ -210,21 +228,6 @@ export class AddSchoolComponent implements OnInit {
     this.errorMsgForEmptyDivision = []
     this.errorMsgForInvalidDivision = []
 
-    // let classDivisionData: any = this.standardData.map((item: any) => {
-
-    //   if (!item.divisionData.length) {
-    //     alert("Each standard must have at least one division. Please add a division.");
-    //     return;
-    //   } else if (!item.divisionData.division || !item.divisionData.studentCount) {
-    //     alert("Please ensure each division has a valid name and student count.");
-    //     return;
-    //   }
-
-    //   return {
-    //     "class": item.standard,
-    //     [this.isEdited ? "updateDivisions" : "addDivisions"]: item.divisionData
-    //   }
-    // })
 
 
 
@@ -268,106 +271,138 @@ export class AddSchoolComponent implements OnInit {
       if (this.schoolDetailsForm.valid) {
         debugger
         let formDataValue: any = this.schoolDetailsForm.value;
-        console.log("formDa", formDataValue)
-        let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => ({ schoolTypeID: item.schoolTypeID }))
-        const data: SchoolData = {
-          schoolName: formDataValue.schoolName,
-          [this.isEdited ? "updateSchoolTypes" : "addSchoolTypes"]: schoolTypeIds,
-          address: formDataValue.address,
-          cityID: formDataValue.cityID.cityID,
-          state: formDataValue.state,
-          pincode: formDataValue.pincode,
-          email: formDataValue.email,
-          phone: formDataValue.phone,
-          photoID: formDataValue.photoID?.photoID ? formDataValue.photoID?.photoID : null,
-          principalID: this.isEdited ? this.school.principalID : null,
-          vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
-          // [this.isEdited ? "updateDivisions" : "addClasses"]: formDataValue.divisions.map((item: any, index: number) => {
-          //   return { division: index + 1, studentCount: parseInt(item.studentCount) }
-          // }),
+        console.log("FORM DAAT", formDataValue)
+        let photoObj = formDataValue.photoID
 
-          [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
+        this.updateSchoolImage(photoObj).subscribe((response: any) => {
+          if (response) {
+            console.log("formDa", formDataValue)
+
+            let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => ({ schoolTypeID: item.schoolTypeID }))
+            const data: SchoolData = {
+              schoolName: formDataValue.schoolName,
+              [this.isEdited ? "updateSchoolTypes" : "addSchoolTypes"]: schoolTypeIds,
+              address: formDataValue.address,
+              cityID: formDataValue.cityID.cityID,
+              state: formDataValue.state,
+              pincode: formDataValue.pincode,
+              email: formDataValue.email,
+              phone: formDataValue.phone,
+              photoID: response.photoID || null,
+              principalID: this.isEdited ? this.school.principalID : null,
+              vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
+              // [this.isEdited ? "updateDivisions" : "addClasses"]: formDataValue.divisions.map((item: any, index: number) => {
+              //   return { division: index + 1, studentCount: parseInt(item.studentCount) }
+              // }),
+
+              [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
 
 
 
-        }
-        debugger;
+            }
+            console.log("data", data)
+            debugger;
 
-        if (this.isEdited) {
-          data.photoID = formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
+            if (this.isEdited) {
+              // data.photoID = formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
 
-          this.schoolService.updateSchool(data, this.school.schoolID)
-            .subscribe({
-              next: (response) => {
+              this.schoolService.updateSchool(data, this.school.schoolID)
+                .subscribe({
+                  next: (response) => {
 
-                // Reset form and submitted flag if needed
-                this.schoolDetailsForm.reset();
-                this.submitted = false;
-                this.submitting = false;
-                this.toastr.success('School Updated !', 'Success', {
-                  closeButton: true,
-                  progressBar: true,
-                  positionClass: 'toast-top-left',
-                  timeOut: 4500,
+                    // Reset form and submitted flag if needed
+                    this.schoolDetailsForm.reset();
+                    this.submitted = false;
+                    this.submitting = false;
+                    this.toastr.success('School Updated !', 'Success', {
+                      closeButton: true,
+                      progressBar: true,
+                      positionClass: 'toast-top-left',
+                      timeOut: 4500,
+                    });
+
+                    this.router.navigate(['/schools/school-list'])
+                  },
+                  error: (err) => {
+                    this.submitted = false
+                    this.submitting = false
+                    console.error('Error adding school:', err);
+                    this.toastr.error('Teacher Update', 'Failed', {
+                      closeButton: true,
+                      progressBar: true,
+                      positionClass: 'toast-top-left',
+                      timeOut: 4500,
+                    });
+                  },
+                  complete: () => {
+                    this.submitted = false
+                    this.submitting = false
+
+                  }
                 });
 
-                this.router.navigate(['/schools/school-list'])
-              },
-              error: (err) => {
-                this.submitted = false
-                this.submitting = false
-                console.error('Error adding school:', err);
-                this.toastr.error('Teacher Update', 'Failed', {
-                  closeButton: true,
-                  progressBar: true,
-                  positionClass: 'toast-top-left',
-                  timeOut: 4500,
-                });
-              },
-              complete: () => {
-                this.submitted = false
-                this.submitting = false
+            } else {
+              this.schoolService.addSchool(data)
+                .subscribe({
+                  next: (response) => {
 
-              }
+                    // Reset form and submitted flag if needed
+                    this.schoolDetailsForm.reset();
+                    this.submitted = false
+                    this.submitting = false
+                    this.toastr.success('School Added !', 'Success', {
+                      closeButton: true,
+                      progressBar: true,
+                      positionClass: 'toast-top-left',
+                      timeOut: 4500,
+                    });
+
+                    this.router.navigate(['/schools/school-list'])
+                  },
+                  error: (err) => {
+                    this.submitted = false
+                    this.submitting = false
+                    console.error('Error adding school:', err);
+                    this.toastr.error('Teacher Add', 'Failed', {
+                      closeButton: true,
+                      progressBar: true,
+                      positionClass: 'toast-top-left',
+                      timeOut: 4500,
+                    });
+                  },
+                  complete: () => {
+
+                    this.submitted = false
+                    this.submitting = false
+                  }
+                });
+
+            }
+          }
+
+
+
+
+        },
+          (error: any) => {
+            this.toastr.error('File Upload', 'Failed', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
             });
+          })
 
-        } else {
-          this.schoolService.addSchool(data)
-            .subscribe({
-              next: (response) => {
 
-                // Reset form and submitted flag if needed
-                this.schoolDetailsForm.reset();
-                this.submitted = false
-                this.submitting = false
-                this.toastr.success('School Added !', 'Success', {
-                  closeButton: true,
-                  progressBar: true,
-                  positionClass: 'toast-top-left',
-                  timeOut: 4500,
-                });
 
-                this.router.navigate(['/schools/school-list'])
-              },
-              error: (err) => {
-                this.submitted = false
-                this.submitting = false
-                console.error('Error adding school:', err);
-                this.toastr.error('Teacher Add', 'Failed', {
-                  closeButton: true,
-                  progressBar: true,
-                  positionClass: 'toast-top-left',
-                  timeOut: 4500,
-                });
-              },
-              complete: () => {
 
-                this.submitted = false
-                this.submitting = false
-              }
-            });
 
-        }
+
+
+
+
+
+
 
       } else {
         this.submitting = false
@@ -618,6 +653,50 @@ export class AddSchoolComponent implements OnInit {
     this.uploadCertificate()
   }
 
+
+  handleCertificateFileChange(file: File) {
+
+    if (file) {
+
+      this.fileName = file.name;
+      console.log("FILE", this.fileName)
+      let totalBytes = file.size;
+      if (totalBytes < 1000000) {
+        this.fileSize = Math.floor(totalBytes / 1000) + 'KB';
+      } else {
+        this.fileSize = Math.floor(totalBytes / 1000000) + 'MB';
+      }
+
+
+      this.file = file;
+      // this.educations.at(index).get('certificate')?.patchValue({documentID:null,documentName:file.name});
+      const reader = new FileReader();
+      reader.onload = () => {
+        console.log("open");
+
+        this.previewUrl = reader.result as string;
+
+        let photoIdControl = this.schoolDetailsForm.get('photoID');
+        console.log("photoIdControl", photoIdControl)
+        let photoId = photoIdControl?.value?.photoID || null;
+        photoIdControl?.patchValue({
+          photoID: photoId, photoImageName: file.name, file: file,
+        })
+
+
+      };
+      reader.readAsDataURL(file);
+
+
+
+    }
+  }
+
+  onSchoolImageChange(event: any) {
+    const file: File = event.target.files[0];
+    this.handleCertificateFileChange(file)
+  }
+
   uploadCertificate(): void {
     debugger
     if (this.file) {
@@ -671,7 +750,7 @@ export class AddSchoolComponent implements OnInit {
 
 
     this.fileName = this.getFileName(result); // Get the file name
-
+    console.log("resiult", this.fileName)
     return result;
   }
 

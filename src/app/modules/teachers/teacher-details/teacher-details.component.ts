@@ -26,13 +26,15 @@ export class TeacherDetailsComponent {
   }
   get getImage() {
     let result = '';
-      let image=this.fullFormData?.photoId?.photoImageName;
-    if(this.fullFormData?.photoId?.photoImageName=='No Photo assigned' || null || '') image=""
+    result=this.fullFormData.photoId.profilePreview;
+    
+    //   let image=this.fullFormData?.photoId?.photoImageName;
+    // if(this.fullFormData?.photoId?.photoImageName=='No Photo assigned' || null || '') image=""
 
-    if (this.apiUrl && image) {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName.replace(/^\/+/, '');
-    }
-    // If the result is an empty string, it will fallback to emptyImage in the template
+    // if (this.apiUrl && image) {
+    //   result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName.replace(/^\/+/, '');
+    // }
+  
     return result;
   }
   getCertificate(certificate:any){

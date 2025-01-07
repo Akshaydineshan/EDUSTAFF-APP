@@ -6,7 +6,7 @@
             <div class="d-flex flex-wrap align-items-center">
                 <img [src]="getprofileImage || '../../../../../assets/icons/user.png'" alt="Profile Image"
                     class="rounded-circle" style="width: 80px; height: 80px;">
-                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none;"
+                <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/jpg image/jpeg" style="display: none;"
                     id="profileImageUpload">
 
                 <div class="d-flex " style="flex-direction: column;">

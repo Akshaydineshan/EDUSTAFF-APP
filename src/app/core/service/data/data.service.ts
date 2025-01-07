@@ -438,6 +438,14 @@ export class DataService {
     return this.http.patch(this.apiUrl + `FileUpload/UpdateDocument/${id}`, formData);
   }
 
+  updateImage(id: number,file?:File): Observable<any> {
+    const formData = new FormData();
+    if(file)formData.append('PhotoFile', file)
+   
+
+  
+    return this.http.patch(this.apiUrl + `FileUpload/UpdatePhoto/${id}`, formData);
+  }
 
   addTeacher(teachersData: any): Observable<any> {
     return this.http.post(this.apiUrl + 'Teacher/AddEmployee', teachersData).pipe(

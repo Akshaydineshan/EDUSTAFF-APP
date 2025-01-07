@@ -432,10 +432,10 @@
 
             </li>
           </ng-template>
-          <li class="key-value-item">
+          <li class="key-value-item" *ngIf="item.schoolName">
             <strong>School/University :</strong> <span>{{item.schoolName}}</span>
           </li>
-          <li class="key-value-item">
+          <li class="key-value-item" *ngIf="item.fromDate"> 
             <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM d, y' }}</span>
           </li>
           <li class="key-value-item">
