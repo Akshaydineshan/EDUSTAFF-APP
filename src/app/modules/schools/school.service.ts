@@ -19,6 +19,11 @@ export class SchoolService {
     return this.http.post(url, schoolData);
   }
 
+  addVacantPosition(data: any): Observable<any> {
+    const url = `${this.baseUrl}/Position/AddNewSchoolPosition`;
+    return this.http.post(url, data);
+  }
+
   updateSchool(schoolData: any,id:NumberFormatStyle): Observable<any> {
     const url = `${this.baseUrl}/School/UpdateSchool/${id}`;
     return this.http.put(url, schoolData);

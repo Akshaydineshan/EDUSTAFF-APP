@@ -1,0 +1,73 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+<div class="main-container " [class.shifted]="isSidebarClosed">
+    <div class="content-main">
+        <h4>Vacant Position Add</h4>
+
+        <div class="main mt-4">
+            <form [formGroup]="vacantAddForm">
+                <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label"><span>Designation</span><span
+                            class="text-danger ms-1 mad-f">*</span>
+                    </label>
+                    <div class="col-sm-7">
+                        <select class="form-select" id="" formControlName="designation">
+                            <option value="" [disabled]="true">Select designation</option>
+                            <option *ngFor="let designation of designations" [ngValue]="designation">{{ designation.designationName }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label"><span>School</span><span
+                            class="text-danger ms-1 mad-f">*</span>
+                    </label>
+                    <div class="col-sm-7">
+                        <select class="form-select" id="" formControlName="school">
+                            <option value="" [disabled]="true">Select School</option>
+                            <option *ngFor="let school of schools" [ngValue]="school">{{ school.schoolName }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-3 col-form-label"><span>Subject</span><span
+                            class="text-danger ms-1 mad-f">*</span>
+                    </label>
+                    <div class="col-sm-7">
+                        <select class="form-select" id="" formControlName="subject">
+                            <option value="" [disabled]="true">Select Subject</option>
+                            <option *ngFor="let subject of subjects" [ngValue]="subject">{{ subject.subjectName }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="row mt-5 ">
+                    <div class="col-12 d-flex justify-content-center">
+
+                        <button type="button" class="btn btn-secondary me-2"
+                            [routerLink]="['/dashboard']">Cancel</button>
+
+                        <button type="submit" class="btn btn-success" (click)="onSubmit()">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- <div
+                     *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.invalid && (personalDetailsForm.get('permanentEmployeeNumber')?.['dirty'] || personalDetailsForm.get('permanentEmployeeNumber')?.['touched']  || submitted)">
+                     <small class="text-danger"
+                         *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.errors?.['required']">Employee ID is
+                         required.</small>
+                     <small class="text-danger"
+                         *ngIf="personalDetailsForm.get('permanentEmployeeNumber')?.errors?.['pattern']">Invalid
+                         Pattern</small>
+                 </div> -->
+        </div>
+
+    </div>
+</div>

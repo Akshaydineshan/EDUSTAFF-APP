@@ -13,6 +13,7 @@ import { TestDemoComponent } from './test-demo/test-demo.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SchoolwiseTeacherListComponent } from './schoolwise-teacher-list/schoolwise-teacher-list.component';
 import { SchoolSectionViewComponent } from './school-section-view/school-section-view.component';
+import { VacantPositionAddComponent } from './vacant-position-add/vacant-position-add.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { SchoolSectionViewComponent } from './school-section-view/school-section
     SchoolVacantPositionsComponent,
     TestDemoComponent,
     SchoolwiseTeacherListComponent,
-    SchoolSectionViewComponent
+    SchoolSectionViewComponent,
+    VacantPositionAddComponent
   ],
   imports: [
     CommonModule,
