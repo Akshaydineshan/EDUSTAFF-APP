@@ -1,3 +1,4 @@
+import { TopbarService } from './topbar.service';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
@@ -14,8 +15,12 @@ export class TopbarComponent {
 
   constructor(
     private tokenStore: TokenStoreService,
-    private router: Router
-  ) { }
+    private router: Router,public topbarService:TopbarService
+  ) {
+    this.topbarService.getPopupToggle().subscribe((res:any)=>{
+      this.isMenuOpen=res
+    })
+   }
   toggleSidebar() {
     debugger
     this.toggleSidebarEvent.emit();
@@ -23,7 +28,15 @@ export class TopbarComponent {
 
 
   profileDropdownToggle(){
-    this.isMenuOpen=!this.isMenuOpen
+    // this.topbarService.getPopupToggle().subscribe((res:any)=>{
+    //   console.log("reee",res)
+      this.topbarService.setPopupValue(!this.isMenuOpen)
+    
+    // })
+
+   
+    // this.isMenuOpen=!this.isMenuOpen
+
     window.scroll({
       top: 0,
     
@@ -35,4 +48,5 @@ export class TopbarComponent {
     this.tokenStore.logout();
     this.router.navigate(['/auth']);
   }
+ 
 }

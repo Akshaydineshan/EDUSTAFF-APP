@@ -5,7 +5,7 @@
             <span><b>Edu</b>Staff</span>
         </div>
         <div class="user-info">
-            <span> <i class="bi bi-person-circle ms-2 profile-ic" title="Profile" aria-hidden="true" (click)="profileDropdownToggle()"></i></span>
+            <span> <i class="bi bi-person-circle ms-2 profile-ic popup-trigger" title="Profile"  aria-hidden="true" (click)="profileDropdownToggle()"></i></span>
             <i class="fas fa-bell"></i>
          <i class="fas fa-sign-out-alt" matTooltip="Logout" (click)="logout()"></i>
         </div>
@@ -27,33 +27,33 @@
       
 
         <hr style=" margin-right: -16px;margin-left: -19px;">
-        <a class="sub-menu-link" routerLink="/profile/view">
+        <a class="sub-menu-link" routerLink="/profile/view" (click)="this.topbarService.setPopupValue(false)">
             <img src="../../../assets/icons/account.png" alt="">
             <p class="para"> Profile</p>
             <span>></span>
         </a>
 
-        <a  class="sub-menu-link" routerLink="/profile/edit">
+        <a  class="sub-menu-link" routerLink="/profile/edit"  (click)="this.topbarService.setPopupValue(false)">
             <img src="../../../assets/icons/user-avatar.png" alt="">
             <p class="para">Edit Profile</p>
             <span>></span>
         </a>
         
-        <a  class="sub-menu-link">
+        <a  class="sub-menu-link"  >
             
             <img src="../../../assets/icons/setting.png" alt="">
             <p class="para">Settings & Privacy</p>
             <span>></span>
         </a>
         
-        <a  class="sub-menu-link">
+        <a  class="sub-menu-link"  >
             <img src="../../../assets/icons/question.png" alt="">
 
             <p class="para">Help & Support</p>
             <span>></span>
         </a>
         
-        <a  class="sub-menu-link" (click)="logout()">
+        <a  class="sub-menu-link" (click)="logout();topbarService.setPopupValue(false)">
             <img src="../../../assets/icons/exit.png" alt="">
             <p class="para">Sign Out</p>
             <span>></span>
