@@ -10,6 +10,7 @@ import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.s
 export class TopbarComponent {
 
   @Output() toggleSidebarEvent = new EventEmitter<void>();
+  isMenuOpen:boolean=false;
 
   constructor(
     private tokenStore: TokenStoreService,

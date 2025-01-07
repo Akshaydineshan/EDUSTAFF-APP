@@ -1,0 +1,9 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+
+<div class="main-container " [class.shifted]="isSidebarClosed">
+ <div class="content-main">
+    <h4>Edit User Profile</h4>
+    
+ </div>
+</div>

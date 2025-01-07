@@ -1,0 +1,83 @@
+<app-topbar (toggleSidebarEvent)="toggleSidebar()"></app-topbar>
+<app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
+
+<div class="main-container " [class.shifted]="isSidebarClosed">
+    <div class="container-fluid top-banner"></div>
+
+    <div class="content-main pb-3">
+        <div class="prof-img-btns-sec d-flex justify-content-between   ">
+            <div class="d-flex flex-column   ">
+                <img [src]="getImage || 'assets/icons/user.png' " class="prof-img img-fluid rounded-circle "
+                    alt="Profile Image" />
+                <div class=" prof-sec-text ms-2 ">
+                    <p class="mb-0 p-n ">James thomas</p>
+                    <p class="text-muted mb-0 p-d mt-1">Department</p>
+                    <p class="text-muted mb-0 p-a">
+                        THSN Neruvambram ,Kannur
+                    </p>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center  " style="flex-wrap: wrap;">
+                <!-- <span class="mt-2 me-2">
+                                        <p class="uq-f">Unique ID:</p>
+                                </span> -->
+                <!-- <span class="me-5 mt-2">
+                                        <p class="uq-id">@23343434</p>
+                                </span> -->
+                <div class="dropdown me-2 ">
+                    <button class="btn btn-light" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="">
+                        <li><a class="dropdown-item" (click)="editClick()">Edit</a>
+                        </li>
+
+
+                    </ul>
+                </div>
+                <!-- <button class="btn btn-success" (click)="print()">
+                                        <i class="bi bi-printer"></i> Print
+                                </button> -->
+
+
+                <!-- <button class="btn btn-outline-secondary me-2">
+                                        <i class="bi bi-printer"></i> Message
+                                </button>
+
+                                <button class="btn btn-success">
+                                        <i class="bi bi-telephone-fill"></i> Call
+                                </button> -->
+            </div>
+        </div>
+
+        <hr class="styled-hr">
+
+
+
+        <div class="data-container" >
+            <!-- Personal Details Card -->
+            <div class="card">
+                <div class="card-header">Profile Details</div>
+                <div class="card-body">
+                 
+                    <ul class="info-list">
+                        <li >
+                            <strong class="field"> Name:</strong>
+                            <span class="field-val">James Thomas </span>
+                        </li>
+                        <li >
+                            <strong class="field">Phone Number</strong>
+                            <span class="field-val">+91 7876564577 </span>
+                        </li>
+                        <li >
+                            <strong class="field">Address</strong>
+                            <span class="field-val">Kakkanad,kochi,kerala </span>
+                        </li>
+                    
+                       
+                    </ul>
+                </div>
+            </div>
+        </div>
