@@ -39,14 +39,14 @@
             <span>></span>
         </a>
         
-        <a  class="sub-menu-link" routerLink="/settings"  >
+        <a  class="sub-menu-link" routerLink="/settings" (click)="this.topbarService.setPopupValue(false)"  >
             
             <img src="../../../assets/icons/setting.png" alt="">
             <p class="para">Settings & Privacy</p>
             <span>></span>
         </a>
         
-        <a  class="sub-menu-link"  >
+        <a  class="sub-menu-link" (click)="this.topbarService.setPopupValue(false)"  >
             <img src="../../../assets/icons/question.png" alt="">
 
             <p class="para">Help & Support</p>

@@ -5,6 +5,8 @@ import { SettingsRoutingModule } from './settings-routing.module';
 import { SettingsMainComponent } from './settings-main/settings-main.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ProfileModule } from '../profile/profile.module';
+
 
 
 @NgModule({
@@ -16,7 +18,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SettingsRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+     ReactiveFormsModule,
+     ProfileModule
   ]
 })
 export class SettingsModule { }
