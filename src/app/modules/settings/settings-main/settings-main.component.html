@@ -2,33 +2,117 @@
 <app-sidebar [isSidebarClosed]="getSidebarToggle"></app-sidebar>
 
 
-<div class="main-container"  [class.shifted]="isSidebarClosed">
+<div class="main-container" [class.shifted]="isSidebarClosed">
+
+  <div class="content-main">
+    <div class="header">
+      <h3>Settings</h3>
+    </div>
     <!-- <h3>Settings</h3> -->
     <div class="tab-container">
-        <!-- Tab Header -->
-        <div class="tab-header">
-          <button
-            *ngFor="let tab of tabs; let i = index"
-            class="tab-button"
-            [class.active]="activeTabIndex === i"
-            (click)="onTabClick($event, i)"
-          >
-            {{ tab }}
-          </button>
-          <!-- Optional Tab Indicator -->
-          <div
-            class="tab-indicator"
-            [style.width.px]="indicatorWidth"
-            [style.left.px]="indicatorLeft"
-          ></div>
-        </div>
-      
-        <!-- Tab Content -->
-        <div class="tab-content">
-          <div *ngIf="activeTabIndex === 0">Content for Tab 1</div>
-          <div *ngIf="activeTabIndex === 1">Content for Tab 2</div>
-          <div *ngIf="activeTabIndex === 2">Content for Tab 3</div>
-        </div>
+      <!-- Tab Header -->
+      <div class="tab-header">
+        <button *ngFor="let tab of tabs; let i = index" class="tab-button" [class.active]="activeTabIndex === i"
+          (click)="onTabClick($event, i)">
+          {{ tab }}
+        </button>
+        <!-- Optional Tab Indicator -->
+        <div class="tab-indicator" [style.width.px]="indicatorWidth" [style.left.px]="indicatorLeft"></div>
       </div>
-      
+
+      <!-- Tab Content -->
+      <div class="tab-content mt-5">
+        <div *ngIf="activeTabIndex === 0">
+
+
+
+          <div class="main">
+            <form [formGroup]="resetPasswordForm" (ngSubmit)="onSubmit()">
+              <!-- Email -->
+              <div class="row mb-3">
+                <label for="email" class="col-sm-3 col-form-label">
+                  <span>Email</span><span class="text-danger ms-1">*</span>
+                </label>
+                <div class="col-sm-7">
+                  <input type="email" id="email" formControlName="email" class="form-control" required />
+                  <div *ngIf="resetPasswordForm.get('email')?.invalid && (resetPasswordForm.get('email')?.dirty || resetPasswordForm.get('email')?.touched)">
+                    <small class="text-danger" *ngIf="resetPasswordForm.get('email')?.errors?.['required']">
+                      Please enter your email.
+                    </small>
+                    <small class="text-danger" *ngIf="resetPasswordForm.get('email')?.errors?.['pattern']">
+                      Please enter a valid email address.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Password -->
+              <div class="row mb-3">
+                <label for="password" class="col-sm-3 col-form-label">
+                  <span>Password</span><span class="text-danger ms-1">*</span>
+                </label>
+                <div class="col-sm-7">
+                  <input type="password" id="password" formControlName="password" class="form-control" required />
+                  <div *ngIf="resetPasswordForm.get('password')?.invalid && (resetPasswordForm.get('password')?.dirty || resetPasswordForm.get('password')?.touched)">
+                    <small class="text-danger" *ngIf="resetPasswordForm.get('password')?.errors?.['required']">
+                      Password is required.
+                    </small>
+                    <small class="text-danger" *ngIf="resetPasswordForm.get('password')?.errors?.['pattern']">
+                      Password must meet the required pattern.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Confirm Password -->
+              <div class="row mb-3">
+                <label for="confirmPassword" class="col-sm-3 col-form-label">
+                  <span>Confirm Password</span><span class="text-danger ms-1">*</span>
+                </label>
+                <div class="col-sm-7">
+                  <input
+                    type="password"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    class="form-control"
+                    required
+                  />
+                  <div *ngIf="(resetPasswordForm.get('confirmPassword')?.invalid || resetPasswordForm.hasError('mismatch')) && (resetPasswordForm.get('confirmPassword')?.dirty || resetPasswordForm.get('confirmPassword')?.touched)">
+                    <!-- Required -->
+                    <small class="text-danger" *ngIf="resetPasswordForm.get('confirmPassword')?.errors?.['required']">
+                      Please confirm your password.
+                    </small>
+                    <!-- Invalid Pattern -->
+                    <small class="text-danger" *ngIf="!resetPasswordForm.get('confirmPassword')?.errors?.['required'] && resetPasswordForm.get('confirmPassword')?.errors?.['pattern']">
+                      Password confirmation does not meet the required pattern.
+                    </small>
+                    <!-- Mismatch -->
+                    <small class="text-danger" *ngIf="!resetPasswordForm.get('confirmPassword')?.errors && resetPasswordForm.hasError('mismatch')">
+                      Passwords do not match.
+                    </small>
+                  </div>
+                </div>
+              </div>
+            
+              <!-- Submit Buttons -->
+              <div class="row mt-5">
+                <div class="col-12 d-flex justify-content-center">
+                  <button type="button" class="btn btn-secondary me-2" [routerLink]="['/dashboard']">Cancel</button>
+                  <button type="submit" class="btn btn-success" [disabled]="false ">Submit</button>
+                </div>
+              </div>
+            </form>
+            
+
+          </div>
+
+        </div>
+
+        <div *ngIf="activeTabIndex === 1">Profile Edit</div>
+        <div *ngIf="activeTabIndex === 2">Content </div>
+      </div>
+    </div>
+  </div>
+
+
 </div>
