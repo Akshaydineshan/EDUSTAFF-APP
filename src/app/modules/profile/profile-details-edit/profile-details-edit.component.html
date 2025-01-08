@@ -2,14 +2,14 @@
 
 
     <div class="profile-main mt-4">
-        <form  autocomplete="off">
+        <form [formGroup]="profileEditForm" autocomplete="off">
 
             <div class="row mb-3">
                 <label class="col-sm-4 col-form-label"><span>First Name</span><span
                         class="text-danger ms-1 mad-f">*</span>
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="pen" required>
+                    <input type="text" formControlName="firstName" class="form-control" id="pen" required>
 
                 </div>
             </div>
@@ -18,7 +18,7 @@
                         class="text-danger ms-1 mad-f">*</span>
                 </label>
                 <div class="col-sm-7">
-                    <input type="text" class="form-control" id="pen" required>
+                    <input type="text" formControlName="lastName"  class="form-control" id="pen" required>
 
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <label class="col-sm-4 col-form-label"><span>Email</span><span class="text-danger ms-1 mad-f">*</span>
                 </label>
                 <div class="col-sm-7">
-                    <input type="email" class="form-control" id="pen" required>
+                    <input type="email" formControlName="email"  class="form-control" id="pen" required>
 
                 </div>
             </div>
@@ -35,7 +35,7 @@
                         class="text-danger ms-1 mad-f">*</span>
                 </label>
                 <div class="col-sm-7">
-                    <input type="date" class="form-control" id="pen" required>
+                    <input type="date" formControlName="dob"  class="form-control" id="pen" required>
 
                 </div>
             </div>
@@ -46,7 +46,7 @@
 
                     <button type="button" class="btn btn-secondary me-2" [routerLink]="['/dashboard']">Cancel</button>
 
-                    <button type="submit" class="btn btn-success">
+                    <button type="button" class="btn btn-success" (click)="onSubmit()">
                         Submit
                     </button>
                 </div>

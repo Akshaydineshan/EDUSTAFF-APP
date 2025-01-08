@@ -29,7 +29,7 @@
 .tab-header {
   display: flex;
   position: relative;
-  // border-bottom: 2px solid #ccc;
+  // border-bottom: 1px solid #ccc;
 }
 
 .tab-button {
@@ -42,6 +42,9 @@
   border: none;
   cursor: pointer;
   font-size: 16px;
+}
+.tab-button:First-child{
+  margin-left: 0px;
 }
 
 .tab-button.active {
@@ -63,22 +66,5 @@
   font-size: 16px;
 }
 
-.eye-ic {
-  position: absolute;
-  top: 50%;
-  right: 18px;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 1;
-  font-size: 14px;
-}
 
-.main {
-  display: flex;
-  align-items: center;
-  justify-content: center;
 
-  form {
-    width: 50%;
-  }
-}
