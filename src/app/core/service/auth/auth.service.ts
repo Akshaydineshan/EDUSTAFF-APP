@@ -44,5 +44,12 @@ export class AuthService {
         })
       );
   }
+
+  passwordResetWithEmail(data: any): Observable<any> {
+    return this.http.post(this.apiUrl + 'PasswordReset/reset-password', data);
+  }
   
+  forgotPassword(data:any){
+    return this.http.post(this.apiUrl + 'PasswordReset/forgot-password', data);
+  }
 }

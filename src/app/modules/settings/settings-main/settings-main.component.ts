@@ -8,9 +8,9 @@ import { Component } from '@angular/core';
 })
 export class SettingsMainComponent {
   isSidebarClosed: boolean = false;
-  tabs = ['Reset Password', 'Edit Profile', 'Email Config','Remove Account',]; // Tab labels
+  tabs = ['Reset Password', 'Edit Profile',]; // Tab labels
   activeTabIndex = 0; // Tracks the active tab index
-  indicatorWidth = 239; // Width of the tab indicator
+  indicatorWidth = 135; // Width of the tab indicator
   indicatorLeft = 0; // Left offset of the tab indicator
 
 

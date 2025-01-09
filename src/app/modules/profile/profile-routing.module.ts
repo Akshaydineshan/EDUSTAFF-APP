@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: '', component: ViewProfileComponent },
   { path: 'view', component: ViewProfileComponent },
   { path: 'edit', component: EditProfileComponent },
-  { path: 'forgot-password/:id', component: ForgotPasswordComponent },
+  { path: 'reset-password/:token', component: ForgotPasswordComponent },
 ];
 
 @NgModule({

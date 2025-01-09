@@ -433,3 +433,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
 }
+
+
+// input password eye-icon
+.eye-ic {
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 1;
+  font-size: 14px;
+}
