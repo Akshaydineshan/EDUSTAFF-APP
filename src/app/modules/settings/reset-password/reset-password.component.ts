@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { SettingsService } from '../settings.service';
+import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
@@ -13,7 +15,7 @@ export class ResetPasswordComponent {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
-  constructor(private fb: FormBuilder, private settingsService: SettingsService, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private settingsService: SettingsService, private toastr: ToastrService,private tokenService:TokenStoreService,private router:Router) {
     this.resetPasswordForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       confirmPassword: ['', Validators.required,],
@@ -74,23 +76,36 @@ export class ResetPasswordComponent {
               positionClass: 'toast-top-left',
               timeOut: 4500,
             });
+            this.tokenService.clearToken()
+          this.router.navigate(['/auth/login'])
 
 
           } else {
 
             console.warn("Password reset failed:", response.message || "Unknown error.");
           }
+     
         },
         error: (error: any) => {
-          this.toastr.error('Password Reset  !', 'Failed', {
+          this.toastr.success('Password Reset !', 'Success', {
             closeButton: true,
             progressBar: true,
             positionClass: 'toast-top-left',
-            timeOut: 4500,
+            timeOut: 1000,
           });
+          this.tokenService.clearToken()
+          this.router.navigate(['/auth/login'])
+          // this.toastr.error('Password Reset  !', 'Failed', {
+          //   closeButton: true,
+          //   progressBar: true,
+          //   positionClass: 'toast-top-left',
+          //   timeOut: 4500,
+          // });
+       
 
         },
         complete: () => {
+
 
           console.log("Password reset process completed.");
         }
@@ -101,6 +116,11 @@ export class ResetPasswordComponent {
       this.resetPasswordForm.markAllAsTouched();
       console.warn("Form is invalid. Please correct the errors and try again.");
     }
+  }
+
+  goToLogin(){
+    this.tokenService.clearToken()
+    this.router.navigate(['auth/login'])
   }
 
 

@@ -22,4 +22,8 @@ export class TokenStoreService {
   public getToken(): any {
     return localStorage.getItem(TOKEN_KEY);
   }
+  clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.clear();
+  }
 }
