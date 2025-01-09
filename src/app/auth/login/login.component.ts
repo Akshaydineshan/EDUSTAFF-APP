@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/service/auth/auth.service';
+import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   username!: string;
   password!: string;
   firstName!: string;
@@ -35,10 +36,15 @@ export class LoginComponent {
     { id: 3, name: 'Manager' }
   ];
 
-  constructor(private authService: AuthService, private router: Router,private fb:FormBuilder) { 
+  constructor(private authService: AuthService, private router: Router,private fb:FormBuilder, private tokenStore: TokenStoreService,) { 
      this.forgotPasswordForm=this.fb.group({
       email:['',Validators.required]
      })
+  }
+  ngOnInit(): void {
+   if(this.tokenStore.getToken()){
+    this.router.navigate(['dashboard'])
+   }
   }
 
   toggleForgotPassword() {

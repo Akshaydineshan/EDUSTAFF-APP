@@ -30,7 +30,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/non-teachers/non-teachers.module').then(m => m.NonTeachersModule)
   },
   {
-    canActivate: [AuthGuard],
+  
     path: 'profile',
     loadChildren: () => import('./modules/profile/profile.module').then(m => m.ProfileModule)
   },

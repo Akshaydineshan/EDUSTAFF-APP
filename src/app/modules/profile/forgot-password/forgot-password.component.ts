@@ -10,24 +10,55 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent {
+
   isSidebarClosed: boolean = false;
- resetPasswordForm: FormGroup;
+  resetPasswordForm: FormGroup;
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
-  token: string =''
+  token: string = '';
 
-  constructor(private fb: FormBuilder, private settingsService: SettingsService, private toastr: ToastrService,private route:ActivatedRoute) {
-    this.resetPasswordForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
-      confirmPassword: ['', Validators.required,],
-      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
-     
-    },
-      { validator: this.passwordMatchValidator });
+  constructor(
+    private fb: FormBuilder,
+    private settingsService: SettingsService,
+    private toastr: ToastrService,
+    private route: ActivatedRoute
+  ) {
+    this.resetPasswordForm = this.fb.group(
+      {
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(8),
+            Validators.pattern(/^[a-zA-Z0-9]+$/), // Add complexity
+          ],
+        ],
+        confirmPassword: ['', Validators.required],
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/),
+          ],
+        ],
+      },
+      { validator: this.passwordMatchValidator }
+    );
   }
+
   ngOnInit(): void {
-    this.token = this.route.snapshot.paramMap.get('token') ||'';
-    console.log('Reset Token:',this.token);
+    // Retrieve the token from the URL params and validate it
+    this.token = this.route.snapshot.paramMap.get('token') || '';
+    if (!this.token) {
+      this.toastr.error('Invalid or expired token!', 'Error', {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-left',
+        timeOut: 4500,
+      });
+      return;
+    }
+    console.log('Reset Token:', this.token);
   }
 
   // Custom Validator for Password Match
@@ -46,16 +77,13 @@ export class ForgotPasswordComponent {
   }
 
   onSubmit() {
-    // Debugger to pause execution during development
-    debugger;
-
+    
     if (this.resetPasswordForm.valid) {
       const formValue = this.resetPasswordForm.value;
 
-      // Retrieve token from local storage
-      const token = this.token;
-      if (!token) {
-        console.error("No token found in local storage.");
+      // Verify that the token is valid on the backend before proceeding
+      if (!this.token) {
+        console.error('No token found in URL.');
         return;
       }
 
@@ -64,60 +92,59 @@ export class ForgotPasswordComponent {
         password: formValue.password,
         confirmPassword: formValue.confirmPassword,
         email: formValue.email,
-        token: token
+        token: this.token, // Token from URL
       };
 
-      console.log("Submitting data:", data);
+      console.log('Submitting data:', data);
 
       // Call the password reset service
       this.settingsService.passwordResetWithEmail(data).subscribe({
         next: (response: any) => {
-
-
           if (response) {
-            this.toastr.success('Password Reset !', 'Success', {
+            this.toastr.success('Password Reset Successful!', 'Success', {
               closeButton: true,
               progressBar: true,
               positionClass: 'toast-top-left',
               timeOut: 4500,
             });
-
-
+            // Optionally redirect to login page after success
           } else {
-
-            console.warn("Password reset failed:", response.message || "Unknown error.");
+            console.warn('Password reset failed:', response?.message || 'Unknown error.');
+            this.toastr.error('Password Reset Failed!', 'Error', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
           }
         },
         error: (error: any) => {
-          this.toastr.error('Password Reset  !', 'Failed', {
+          this.toastr.error('An error occurred during password reset.', 'Error', {
             closeButton: true,
             progressBar: true,
             positionClass: 'toast-top-left',
             timeOut: 4500,
           });
-
         },
         complete: () => {
-
-          console.log("Password reset process completed.");
-        }
+          console.log('Password reset process completed.');
+        },
       });
-
     } else {
       // Mark all fields as touched to trigger validation messages
       this.resetPasswordForm.markAllAsTouched();
-      console.warn("Form is invalid. Please correct the errors and try again.");
+      console.warn('Form is invalid. Please correct the errors and try again.');
     }
   }
 
-
-
-
-  // topBar-sidebar 
+  // Sidebar functionality
   toggleSidebar() {
     this.isSidebarClosed = !this.isSidebarClosed;
   }
+
   get getSidebarToggle() {
     return this.isSidebarClosed;
   }
 }
+
+
