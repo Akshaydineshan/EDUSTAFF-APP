@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class ResetPasswordComponent {
   resetPasswordForm: FormGroup;
   showPassword: boolean = false;
+  showOldPassword: boolean = false;
   showConfirmPassword: boolean = false;
 
   constructor(private fb: FormBuilder, private settingsService: SettingsService, private toastr: ToastrService,private tokenService:TokenStoreService,private router:Router) {
@@ -20,6 +21,7 @@ export class ResetPasswordComponent {
       password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       confirmPassword: ['', Validators.required,],
       email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
+      oldPassword:['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]]
      
     },
       { validator: this.passwordMatchValidator });
@@ -34,6 +36,9 @@ export class ResetPasswordComponent {
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+  toggleOldPasswordVisibility() {
+    this.showOldPassword = !this.showOldPassword;
   }
 
   toggleConfirmPasswordVisibility() {
@@ -59,7 +64,8 @@ export class ResetPasswordComponent {
         password: formValue.password,
         confirmPassword: formValue.confirmPassword,
         email: formValue.email,
-        token: token
+        token: token,
+        oldPassword:formValue.oldPassword
       };
 
       console.log("Submitting data:", data);
