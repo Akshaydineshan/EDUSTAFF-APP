@@ -10,6 +10,7 @@ import { TestDemoComponent } from './test-demo/test-demo.component';
 import { SchoolwiseTeacherListComponent } from './schoolwise-teacher-list/schoolwise-teacher-list.component';
 import { SchoolSectionViewComponent } from './school-section-view/school-section-view.component';
 import { VacantPositionAddComponent } from './vacant-position-add/vacant-position-add.component';
+import { SchoolwiceStaffListComponent } from './schoolwice-staff-list/schoolwice-staff-list.component';
 
 const routes: Routes = [
   { path: '', component: SchoolSectionViewComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'view/:id', component: ViewSchoolComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
   { path: 'teacher-list', component: SchoolwiseTeacherListComponent },
+  { path: 'staff-list', component: SchoolwiceStaffListComponent },
   { path: 'vacant-position-add', component:VacantPositionAddComponent  },
   {
     path: '**',

@@ -9,7 +9,7 @@
     <app-back-button [url]="'/dashboard'" class=""></app-back-button>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4> Teachers List
+        <h4>Staff List
             <span class="badge badge-secondary ">{{ teacherList.length }}</span>
         </h4>
         <div class="d-flex justify-content-between align-items-end gap-3">
@@ -177,12 +177,14 @@
 
 
         </div>
-        <div class="col-6 col-sm-4 col-md-3">
-
-
-
-            <ng-multiselect-dropdown [placeholder]="'Select School Type'" [(ngModel)]="selectedSchoolTypeFromDropdownList"
-                [settings]="schoolTypeDropdownSettings" [data]="schoolTypeDropDownListForFilter"
+        <div class="col-6 col-sm-3 col-md-2">
+            <ng-multiselect-dropdown [placeholder]="'Select School Type'"
+                [(ngModel)]="selectedSchoolTypeFromDropdownList" [settings]="schoolTypeDropdownSettings"
+                [data]="schoolTypeDropDownListForFilter" (onSelect)="onFilterChange()" />
+        </div>
+        <div class="col-6 col-sm-3 col-md-2">
+            <ng-multiselect-dropdown [placeholder]="'Select Staff Type'" [(ngModel)]="selectedStaffTypeFromDropdownList"
+                [settings]="staffTypeDropdownSettings" [data]="staffTypeDropDownListForFilter"
                 (onSelect)="onFilterChange()" />
         </div>
     </div>

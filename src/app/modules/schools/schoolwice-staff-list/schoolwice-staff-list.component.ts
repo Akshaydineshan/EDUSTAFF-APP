@@ -16,11 +16,11 @@ interface PagonationConfig {
   paginationPageSizeSelector: number[]
 }
 @Component({
-  selector: 'app-schoolwise-teacher-list',
-  templateUrl: './schoolwise-teacher-list.component.html',
-  styleUrls: ['./schoolwise-teacher-list.component.scss']
+  selector: 'app-schoolwice-staff-list',
+  templateUrl: './schoolwice-staff-list.component.html',
+  styleUrls: ['./schoolwice-staff-list.component.scss']
 })
-export class SchoolwiseTeacherListComponent {
+export class SchoolwiceStaffListComponent {
   @ViewChild('transferModal') transferModal!: ElementRef;
   isSidebarClosed = false;
 
@@ -43,6 +43,7 @@ export class SchoolwiseTeacherListComponent {
   selectedSchool: any = null;
   selectedSchoolFromDropdownList:any
   selectedSchoolTypeFromDropdownList:any
+  selectedStaffTypeFromDropdownList:any
 
   // Table Column MoreBtn Click Related(transfer and leave)
   transferRequestForm!: FormGroup
@@ -87,7 +88,7 @@ export class SchoolwiseTeacherListComponent {
     closeDropDownOnSelection: true,
     unSelectAllText: 'UnSelect All',
 
-    itemsShowLimit: 3,
+    itemsShowLimit: 2,
     allowSearchFilter: true,
 
   };
@@ -100,7 +101,19 @@ export class SchoolwiseTeacherListComponent {
     selectAllText: 'Select All',
     closeDropDownOnSelection: true,
     unSelectAllText: 'UnSelect All',
-    itemsShowLimit: 2,
+    itemsShowLimit: 1,
+    allowSearchFilter: true,
+
+  };
+
+  staffTypeDropdownSettings: IDropdownSettings = {
+    singleSelection: false,
+    idField: 'staffTypeID',
+    textField: 'staffTypeName',
+    selectAllText: 'Select All',
+    closeDropDownOnSelection: true,
+    unSelectAllText: 'UnSelect All',
+    itemsShowLimit: 1,
     allowSearchFilter: true,
 
   };
@@ -134,6 +147,7 @@ export class SchoolwiseTeacherListComponent {
   fileName: any;
   schoolDropDownListForFilter!: any[];
   schoolTypeDropDownListForFilter!: any[];
+  staffTypeDropDownListForFilter: any[]=[{staffTypeID:1,staffTypeName:"Teacher"},{staffTypeID:2,staffTypeName:"NonTeacher"}]
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone,private schoolService:SchoolService) {
@@ -528,7 +542,7 @@ export class SchoolwiseTeacherListComponent {
       schoolTypeId: this.selectedSchoolTypeFromDropdownList?.[0]?.schoolTypeID ?? null
   };
     console.log("data",data)
-    let url=`Teacher/GetAllTeacherBySchoolID/${data.schoolId}`
+    let url=`Teacher/GetAllNonTeacherBySchoolID/${data.schoolId}`
     this.schoolService.getTableListData(url).subscribe(
     // this.dataService.getTeachersData().subscribe(
       (data:any) => {
@@ -1275,6 +1289,5 @@ export class SchoolwiseTeacherListComponent {
 
     this.loadTeachersList()
   }
-
 
 }
