@@ -83,6 +83,17 @@ export class SchoolService {
       })
     );
   }
+
+  getEmployeeDataByFilter(url: string,data:any): Observable<any[]> {
+    
+    return this.http.post<any[]>(this.baseUrl + url,data).pipe(
+
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
  
 
   

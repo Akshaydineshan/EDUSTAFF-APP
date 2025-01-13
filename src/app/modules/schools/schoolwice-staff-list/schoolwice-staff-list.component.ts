@@ -30,7 +30,7 @@ export class SchoolwiceStaffListComponent {
   teacherTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
-  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', ];
+  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber',];
 
   // Table Column Hover Related
   selectedTeacher: any = null;
@@ -41,9 +41,9 @@ export class SchoolwiceStaffListComponent {
   showPopup: boolean = false;
   showSchoolPopup: boolean = false;
   selectedSchool: any = null;
-  selectedSchoolFromDropdownList:any
-  selectedSchoolTypeFromDropdownList:any
-  selectedStaffTypeFromDropdownList:any
+  selectedSchoolFromDropdownList: any
+  selectedSchoolTypeFromDropdownList: any = []
+  selectedStaffTypeFromDropdownList: any = []
 
   // Table Column MoreBtn Click Related(transfer and leave)
   transferRequestForm!: FormGroup
@@ -147,10 +147,10 @@ export class SchoolwiceStaffListComponent {
   fileName: any;
   schoolDropDownListForFilter!: any[];
   schoolTypeDropDownListForFilter!: any[];
-  staffTypeDropDownListForFilter: any[]=[{staffTypeID:1,staffTypeName:"Teacher"},{staffTypeID:2,staffTypeName:"NonTeacher"}]
+  staffTypeDropDownListForFilter: any[] = [{ staffTypeID: 1, staffTypeName: "Teacher" }, { staffTypeID: 2, staffTypeName: "NonTeacher" }]
 
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone,private schoolService:SchoolService) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone, private schoolService: SchoolService) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -168,7 +168,7 @@ export class SchoolwiceStaffListComponent {
   }
 
   ngOnInit(): void {
-   
+
     this.loadDropdownDataForFilterClick()
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -535,19 +535,36 @@ export class SchoolwiceStaffListComponent {
   // Getting Teacher Table Data
   loadTeachersList(): void {
     debugger
+    console.log("TYpes", this.selectedSchoolTypeFromDropdownList, this.selectedStaffTypeFromDropdownList)
+    // Checking if selectedSchoolTypeFromDropdownList exists and mapping to get schoolTypeID values.
+    let schoolTypes: any = this.selectedSchoolTypeFromDropdownList
+      ? this.selectedSchoolTypeFromDropdownList.map((item: any) => item.schoolTypeID)
+      : [];
 
-    console.log(this.selectedSchoolFromDropdownList)
+    // Checking if staffTypeDropDownListForFilter exists and mapping to get staffTypeID values.
+    let employeeTypes: any = this.selectedStaffTypeFromDropdownList
+      ? this.selectedStaffTypeFromDropdownList.map((item: any) => item.staffTypeID)
+      : [];
+
+    // Constructing the data object to send to the backend.
     let data: any = {
-      schoolId: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null,
-      schoolTypeId: this.selectedSchoolTypeFromDropdownList?.[0]?.schoolTypeID ?? null
-  };
-    console.log("data",data)
-    let url=`Teacher/GetAllNonTeacherBySchoolID/${data.schoolId}`
-    this.schoolService.getTableListData(url).subscribe(
-    // this.dataService.getTeachersData().subscribe(
-      (data:any) => {
+      schoolID: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null, // Using nullish coalescing to default to null if schoolId is undefined.
+      schoolTypeIDs: schoolTypes, // Assigning the mapped schoolTypeIDs.
+      employeeTypeIDs: employeeTypes // Assigning the mapped employeeTypeIDs.
+    };
+
+    console.log("data", data)
+    let url = `Teacher/GetEmployeesBySchoolIDAndSchoolTypeIDAndEmployeeTypeID`
+
+    if(!data.schoolID){
+     return 
+    }
+
+    this.schoolService.getEmployeeDataByFilter(url, data).subscribe(
+      // this.dataService.getTeachersData().subscribe(
+      (data: any) => {
         debugger
-        console.log("response",data)
+        console.log("response", data)
         this.teacherList = data.map((teacher: Teacher) => ({
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
@@ -695,7 +712,7 @@ export class SchoolwiceStaffListComponent {
             field: "phoneNumber", filter: true, floatingFilter: false,
             valueFormatter: (params: any) => `+91 ${params.value}`,
           },
-        
+
           // {
           //   field: "documentStatus",
           //   filter: true,
@@ -757,12 +774,12 @@ export class SchoolwiceStaffListComponent {
 
     forkJoin({
       schools: this.dataService.getSchoolList(),
-      schoolTypes:this.schoolService.getSchoolTypes()
+      schoolTypes: this.schoolService.getSchoolTypes()
 
     }).subscribe({
       next: (results: any) => {
         this.schoolDropDownListForFilter = results.schools;
-        this.schoolTypeDropDownListForFilter=results.schoolTypes
+        this.schoolTypeDropDownListForFilter = results.schoolTypes
 
       },
       error: (error: any) => {
@@ -1287,6 +1304,28 @@ export class SchoolwiceStaffListComponent {
 
   onFilterChange() {
 
+    this.loadTeachersList()
+  }
+
+  onSelectAllEmployeeType(event: any) {
+    // this.selectedStaffTypeFromDropdownList=event;
+    // this.loadTeachersList()
+    // console.log("Type",event,this.selectedStaffTypeFromDropdownList)
+  }
+  onDeSelectAllEmployeeType(event: any) {
+    // this.selectedStaffTypeFromDropdownList=event;
+    // this.loadTeachersList()
+  }
+  onSelectAllSchoolType(event: any) {
+    // this.selectedSchoolTypeFromDropdownList=event;
+    // this.loadTeachersList()
+    // console.log("Type",event,this.selectedStaffTypeFromDropdownList)
+  }
+  onDeSelectAllSchoolType(event: any) {
+    // this.selectedSchoolTypeFromDropdownList=event;
+  }
+  onModelChange(event: any) {
+    console.log("ERt", event)
     this.loadTeachersList()
   }
 

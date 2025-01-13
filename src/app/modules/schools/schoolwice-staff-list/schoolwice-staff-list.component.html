@@ -180,12 +180,12 @@
         <div class="col-6 col-sm-3 col-md-2">
             <ng-multiselect-dropdown [placeholder]="'Select School Type'"
                 [(ngModel)]="selectedSchoolTypeFromDropdownList" [settings]="schoolTypeDropdownSettings"
-                [data]="schoolTypeDropDownListForFilter" (onSelect)="onFilterChange()" />
+                [data]="schoolTypeDropDownListForFilter" (onSelect)="onFilterChange()"(onSelectAll)="onSelectAllSchoolType($event)" (onDeSelectAll)="onDeSelectAllSchoolType($event)" (ngModelChange)="onModelChange($event)"   />
         </div>
         <div class="col-6 col-sm-3 col-md-2">
             <ng-multiselect-dropdown [placeholder]="'Select Staff Type'" [(ngModel)]="selectedStaffTypeFromDropdownList"
                 [settings]="staffTypeDropdownSettings" [data]="staffTypeDropDownListForFilter"
-                (onSelect)="onFilterChange()" />
+                (ngModelChange)="onModelChange($event)" (onSelect)="onFilterChange()" (onSelectAll)="onSelectAllEmployeeType($event)" (onDeSelectAll)="onDeSelectAllEmployeeType($event)" />
         </div>
     </div>
 

@@ -30,7 +30,7 @@ export class SchoolwiseTeacherListComponent {
   teacherTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
-  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber', ];
+  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber',];
 
   // Table Column Hover Related
   selectedTeacher: any = null;
@@ -41,8 +41,8 @@ export class SchoolwiseTeacherListComponent {
   showPopup: boolean = false;
   showSchoolPopup: boolean = false;
   selectedSchool: any = null;
-  selectedSchoolFromDropdownList:any
-  selectedSchoolTypeFromDropdownList:any
+  selectedSchoolFromDropdownList: any
+  selectedSchoolTypeFromDropdownList: any
 
   // Table Column MoreBtn Click Related(transfer and leave)
   transferRequestForm!: FormGroup
@@ -105,6 +105,7 @@ export class SchoolwiseTeacherListComponent {
 
   };
 
+
   file: any;
 
   apiUrl = environment.imageBaseUrl;
@@ -136,7 +137,7 @@ export class SchoolwiseTeacherListComponent {
   schoolTypeDropDownListForFilter!: any[];
 
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone,private schoolService:SchoolService) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone, private schoolService: SchoolService) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -154,7 +155,7 @@ export class SchoolwiseTeacherListComponent {
   }
 
   ngOnInit(): void {
-   
+
     this.loadDropdownDataForFilterClick()
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
@@ -522,18 +523,23 @@ export class SchoolwiseTeacherListComponent {
   loadTeachersList(): void {
     debugger
 
-    console.log(this.selectedSchoolFromDropdownList)
+    console.log(this.selectedSchoolTypeFromDropdownList)
+    let schoolTypes: any = this.selectedSchoolTypeFromDropdownList
+      ? this.selectedSchoolTypeFromDropdownList.map((item: any) => item.schoolTypeID)
+      : null;
+
+     
     let data: any = {
-      schoolId: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null,
-      schoolTypeId: this.selectedSchoolTypeFromDropdownList?.[0]?.schoolTypeID ?? null
-  };
-    console.log("data",data)
-    let url=`Teacher/GetAllTeacherBySchoolID/${data.schoolId}`
-    this.schoolService.getTableListData(url).subscribe(
-    // this.dataService.getTeachersData().subscribe(
-      (data:any) => {
+      schoolID: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null,
+      schoolTypeIDs: schoolTypes
+    };
+    console.log("data", data)
+    let url = `Teacher/GetAllTeacherBySchoolIDAndSchoolTypeIDAndEmployeeTypeID`
+    this.schoolService.getEmployeeDataByFilter(url, data).subscribe(
+      // this.dataService.getTeachersData().subscribe(
+      (data: any) => {
         debugger
-        console.log("response",data)
+        console.log("response", data)
         this.teacherList = data.map((teacher: Teacher) => ({
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
@@ -681,7 +687,7 @@ export class SchoolwiseTeacherListComponent {
             field: "phoneNumber", filter: true, floatingFilter: false,
             valueFormatter: (params: any) => `+91 ${params.value}`,
           },
-        
+
           // {
           //   field: "documentStatus",
           //   filter: true,
@@ -743,12 +749,12 @@ export class SchoolwiseTeacherListComponent {
 
     forkJoin({
       schools: this.dataService.getSchoolList(),
-      schoolTypes:this.schoolService.getSchoolTypes()
+      schoolTypes: this.schoolService.getSchoolTypes()
 
     }).subscribe({
       next: (results: any) => {
         this.schoolDropDownListForFilter = results.schools;
-        this.schoolTypeDropDownListForFilter=results.schoolTypes
+        this.schoolTypeDropDownListForFilter = results.schoolTypes
 
       },
       error: (error: any) => {
