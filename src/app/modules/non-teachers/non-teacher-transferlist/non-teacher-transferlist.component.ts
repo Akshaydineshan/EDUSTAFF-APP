@@ -25,7 +25,7 @@ export class NonTeacherTransferlistComponent implements OnInit {
 
   isSidebarClosed = false;
   // { headerName: 'Requested School', field: 'toSchoolOneName' },
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'Requested School', field: 'toSchoolOneName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'Name', field: 'employeeName' }, { headerName: 'Current School', field: 'fromSchoolName' }, { headerName: 'Requested School', field: 'toSchoolOneName' }, { headerName: 'To School', field: 'toApprovedSchoolName' }, { headerName: 'Requested Date', field: 'requestDate' }, { headerName: 'With Efffect From', field: 'transferDate' }, { headerName: 'Comment', field: 'requestorComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;

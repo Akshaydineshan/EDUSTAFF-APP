@@ -24,7 +24,7 @@ export class PromotionCompletedListComponent {
 
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedToSchool' },{ headerName: 'To School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'Name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedToSchool' },{ headerName: 'To School', field: 'promotedFromSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;

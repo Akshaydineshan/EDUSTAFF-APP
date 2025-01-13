@@ -25,7 +25,7 @@ export class PromotionRequestComponent {
 
 
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' },{ headerName: 'To School', field: 'promotedToSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'Name', field: 'employeeName' }, { headerName: 'From School', field: 'promotedFromSchool' },{ headerName: 'To School', field: 'promotedToSchool' }, { headerName: 'From Designation', field: 'promotedFromDesignation' },{ headerName: 'To Designation', field: 'promotedToDesignation' },{ headerName: 'Requested Date', field: 'requestDate' },{ headerName: 'Promotion Date', field: 'promotionDate' }, { headerName: 'Comment', field: 'requestorCommand' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   transferList: any[] = [];
   transferTableRows: any;

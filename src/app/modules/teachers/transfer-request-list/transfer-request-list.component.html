@@ -5,7 +5,7 @@
   (click)="overlayClick()">
   <app-back-button [url]="'/dashboard'" class=""></app-back-button>
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>TransferRequest List
+    <h4>Transfer Request List
       <span class="badge badge-secondary">{{ this.transferList.length }}</span>
     </h4>
 
@@ -19,7 +19,7 @@
           <form [formGroup]="filterForm" (ngSubmit)="applyFilters()">
             <h5>Filter</h5>
             <div class="form-group">
-              <label for="school">School</label>
+              <label for="school">Current School</label>
               <!-- <input formControlName="schoolNameFilter" type="text" class="form-control"
                           placeholder="School Name"> -->
               <select name="" id="" class="form-control" formControlName="schoolNameFilter">

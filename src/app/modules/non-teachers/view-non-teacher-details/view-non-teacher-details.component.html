@@ -10,7 +10,7 @@
                                 <img [src]="getImage || 'assets/icons/user.png' "
                                         class="prof-img img-fluid rounded-circle " alt="Profile Image" />
                                 <div class=" prof-sec-text ms-2 ">
-                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + currentTeacher.lastName}}</p>
+                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + ' ' + currentTeacher.lastName}}</p>
                                         <p class="text-muted mb-0 p-d mt-1">{{currentTeacher.departmentName}}</p>
                                         <p class="text-muted mb-0 p-a">
                                                 {{currentTeacher.schoolDTO?.schoolName?currentTeacher.schoolDTO.schoolName + ",":""}}

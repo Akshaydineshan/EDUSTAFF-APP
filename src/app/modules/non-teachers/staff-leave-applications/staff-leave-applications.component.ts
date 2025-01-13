@@ -25,7 +25,7 @@ interface PagonationConfig {
 export class StaffLeaveApplicationsComponent {
   apiUrl = environment.imageBaseUrl;
   isSidebarClosed = false;
-  displayColumns: any[] = [{ headerName: 'name', field: 'employeeName' }, { headerName: 'Start Date', field: 'fromDate' }, { headerName: 'End Date', field: 'toDate' }, { headerName: 'Applied Date', field: 'requestDate' }, { headerName: 'Reason', field: 'requestorComment' }, { headerName: 'ManagerComment', field: 'approverComment' }, { headerName: 'Status', field: 'status' }];
+  displayColumns: any[] = [{ headerName: 'Name', field: 'employeeName' }, { headerName: 'Start Date', field: 'fromDate' }, { headerName: 'End Date', field: 'toDate' }, { headerName: 'Applied Date', field: 'requestDate' }, { headerName: 'Reason', field: 'requestorComment' }, { headerName: 'Manager Comment', field: 'approverComment' }, { headerName: 'Status', field: 'status' }];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   leaveList: any[] = [];
   leaveTableRows: any;
