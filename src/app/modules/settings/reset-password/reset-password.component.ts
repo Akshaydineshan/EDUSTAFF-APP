@@ -20,7 +20,7 @@ export class ResetPasswordComponent {
     this.resetPasswordForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
       confirmPassword: ['', Validators.required,],
-      email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
+      // email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
       oldPassword:['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]]
      
     },
@@ -61,10 +61,10 @@ export class ResetPasswordComponent {
 
       // Prepare data payload
       const data = {
-        password: formValue.password,
-        confirmPassword: formValue.confirmPassword,
-        email: formValue.email,
-        token: token,
+        newPassword: formValue.password,
+        confirmNewPassword: formValue.confirmPassword,
+        // email: formValue.email,
+        // token: token,
         oldPassword:formValue.oldPassword
       };
 
@@ -93,20 +93,14 @@ export class ResetPasswordComponent {
      
         },
         error: (error: any) => {
-          this.toastr.success('Password Reset !', 'Success', {
+       
+         
+          this.toastr.error('Password Reset  !', 'Failed', {
             closeButton: true,
             progressBar: true,
             positionClass: 'toast-top-left',
-            timeOut: 1000,
+            timeOut: 4500,
           });
-          this.tokenService.clearToken()
-          this.router.navigate(['/auth/login'])
-          // this.toastr.error('Password Reset  !', 'Failed', {
-          //   closeButton: true,
-          //   progressBar: true,
-          //   positionClass: 'toast-top-left',
-          //   timeOut: 4500,
-          // });
        
 
         },

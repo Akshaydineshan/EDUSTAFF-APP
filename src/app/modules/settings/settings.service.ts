@@ -11,7 +11,7 @@ export class SettingsService {
   constructor(private http: HttpClient,) { }
 
   passwordResetWithEmail(data: any): Observable<any> {
-    return this.http.post(this.apiUrl + 'PasswordReset/reset-password', data);
+    return this.http.post(this.apiUrl + 'User/ResetPasswordByUser', data);
   }
 
 
