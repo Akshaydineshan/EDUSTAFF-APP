@@ -520,21 +520,232 @@ export class SchoolwiseTeacherListComponent {
 
 
   // Getting Teacher Table Data
-  loadTeachersList(): void {
-    debugger
+  // loadTeachersList(): void {
+  //   debugger
 
-    console.log(this.selectedSchoolTypeFromDropdownList)
-    let schoolTypes: any = this.selectedSchoolTypeFromDropdownList
-      ? this.selectedSchoolTypeFromDropdownList.map((item: any) => item.schoolTypeID)
-      : null;
+  //   console.log(this.selectedSchoolTypeFromDropdownList)
+  //   let schoolTypes: any = this.selectedSchoolTypeFromDropdownList
+  //     ? this.selectedSchoolTypeFromDropdownList.map((item: any) => item.schoolTypeID)
+  //     : null;
 
      
+  //   let data: any = {
+  //     schoolID: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null,
+  //     schoolTypeIDs: schoolTypes
+  //   };
+  //   console.log("data", data)
+  //   let url = `Teacher/GetAllTeacherBySchoolIDAndSchoolTypeIDAndEmployeeTypeID`
+  //   this.schoolService.getEmployeeDataByFilter(url, data).subscribe(
+  //     // this.dataService.getTeachersData().subscribe(
+  //     (data: any) => {
+  //       debugger
+  //       console.log("response", data)
+  //       this.teacherList = data.map((teacher: Teacher) => ({
+  //         ...teacher,
+  //         documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
+  //       }));
+
+
+  //       this.teacherTableRows = this.teacherList
+  //       this.teacherTableColumns = [
+  //         {
+  //           field: "name", filter: true, floatingFilter: true, width: 180,
+  //           cellRenderer: (params: any) => {
+
+  //             const div = document.createElement('div');
+  //             div.style.display = "flex"
+  //             div.style.justifyContent = "space-between"
+
+
+  //             // Create anchor element for the name
+  //             const divSub = document.createElement('div');
+  //             divSub.style.height = "100%"
+  //             divSub.style.width = "75%";
+  //             divSub.style.overflow = "hidden";
+  //             divSub.style.textOverflow = "ellipsis";
+
+
+
+
+  //             const nameLink = document.createElement('a');
+  //             nameLink.style.cursor = 'pointer';
+  //             nameLink.style.color = '#246CC1';
+
+  //             nameLink.textContent = params.value;
+
+
+  //             this.ngZone.run(() => {
+  //               divSub.addEventListener('mouseover', (event) => {
+  //                 debugger
+
+  //                 if (params.onNameHover) {
+  //                   params.onNameHover(event, params);
+
+  //                 }
+  //               });
+  //             })
+
+  //             this.ngZone.run(() => {
+  //               divSub.addEventListener('mouseout', (event) => {
+  //                 debugger
+
+  //                 if (params.onNameHover) {
+  //                   params.onNameHoverOut(event, params);
+
+  //                 }
+  //               });
+
+  //             })
+
+  //             this.ngZone.run(() => {
+  //               divSub.addEventListener('mouseleave', (event) => {
+  //                 debugger
+
+  //                 if (params.onNameHover) {
+  //                   params.onNameHoverOut(event, params);
+
+  //                 }
+  //               });
+
+  //             })
+
+  //             this.ngZone.run(() => {
+  //               nameLink.addEventListener('click', (event) => {
+  //                 debugger
+  //                 if (params.onNameClick) {
+  //                   params.onNameClick(event, params);
+
+  //                 }
+  //               });
+
+  //             })
+
+
+
+
+  //             // Create another anchor element for the plus button
+  //             const plusButton = document.createElement('a');
+  //             plusButton.classList.add("menuButton")
+
+
+  //             // plusButton.style.float = 'right';
+  //             plusButton.innerHTML = '<i  style="color:black;display:none;" class="bi bi-three-dots-vertical"></i>';
+  //             this.ngZone.run(() => {
+  //               plusButton.addEventListener('click', (event) => {
+  //                 if (params.onPlusButtonClick) {
+  //                   params.onPlusButtonClick(event, params);
+  //                 }
+  //               });
+  //             })
+  //             this.ngZone.run(() => {
+  //               plusButton.addEventListener('mouseleave', (event) => {
+  //                 if (params.onPlusButtonHoverout) {
+  //                   params.onPlusButtonHoverout(event, params);
+  //                 }
+  //               });
+  //             })
+
+  //             // Append the elements to the div
+  //             divSub.appendChild(nameLink)
+  //             div.appendChild(divSub);
+  //             div.appendChild(plusButton);
+
+  //             return div;
+  //           },
+  //           cellRendererParams: {
+  //             onNameClick: (event: MouseEvent, params: any) => {
+  //               this.onCellClicked(params)
+  //             },
+  //             onNameHover: (event: MouseEvent, params: any) => {
+  //               this.nameColumnHover(params, event)
+  //             },
+  //             onNameHoverOut: (event: MouseEvent, params: any) => {
+  //               this.rowMouseHoverOut(params)
+  //             },
+
+  //             onPlusButtonClick: (event: MouseEvent, params: any) => {
+  //               this.menuBtnEventFunction(event, params)
+
+  //             },
+  //             onPlusButtonHoverout: (event: MouseEvent, params: any) => {
+  //               this.menuBtnhoverOut(event, params)
+  //             },
+  //           }
+
+
+  //         },
+  //         {
+  //           field: "schoolName", filter: true, floatingFilter: false, width: 300,
+  //           cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
+  //         },
+  //         { field: "designation", filter: true, floatingFilter: false },
+  //         { field: "subject", filter: true, floatingFilter: false },
+
+  //         { field: "experienceYear", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner' : `${params.value}`, },
+  //         { field: "age", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` },
+  //         {
+  //           field: "phoneNumber", filter: true, floatingFilter: false,
+  //           valueFormatter: (params: any) => `+91 ${params.value}`,
+  //         },
+
+  //         // {
+  //         //   field: "documentStatus",
+  //         //   filter: true,
+  //         //   floatingFilter: false,
+  //         //   cellRenderer: (params: any) => {
+  //         //     const iconClass = params.value?.icon || '';
+  //         //     const text = params.value?.text || '0';
+  //         //     const hasIconClass = iconClass ? 'doc-count' : '';
+
+
+  //         //     return `
+  //         //   <span class="${hasIconClass}">
+  //         //     <i class="${iconClass}"></i> ${text}
+  //         //   </span>`;
+  //         //   }
+
+
+  //         // },
+  //       ];
+
+  //       this.updatePaginatedData();
+
+
+
+
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching teachers data:', error);
+  //     }
+
+  //   );
+
+
+  // }
+  loadTeachersList(): void {
+    debugger
+    console.log("TYpes", this.selectedSchoolTypeFromDropdownList, )
+    // Checking if selectedSchoolTypeFromDropdownList exists and mapping to get schoolTypeID values.
+    let schoolTypes: any = this.selectedSchoolTypeFromDropdownList
+      ? this.selectedSchoolTypeFromDropdownList.map((item: any) => item.schoolTypeID)
+      : [];
+
+   
+
+    // Constructing the data object to send to the backend.
     let data: any = {
-      schoolID: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null,
-      schoolTypeIDs: schoolTypes
+      schoolID: this.selectedSchoolFromDropdownList?.[0]?.schoolId ?? null, // Using nullish coalescing to default to null if schoolId is undefined.
+      schoolTypeIDs: schoolTypes, // Assigning the mapped schoolTypeIDs.
+      employeeTypeIDs: [] // Assigning the mapped employeeTypeIDs.
     };
+
     console.log("data", data)
-    let url = `Teacher/GetAllTeacherBySchoolIDAndSchoolTypeIDAndEmployeeTypeID`
+    let url = `Teacher/GetEmployeesBySchoolIDAndSchoolTypeIDAndEmployeeTypeID`
+
+    if(!data.schoolID){
+     return 
+    }
+
     this.schoolService.getEmployeeDataByFilter(url, data).subscribe(
       // this.dataService.getTeachersData().subscribe(
       (data: any) => {
@@ -1279,6 +1490,11 @@ export class SchoolwiseTeacherListComponent {
 
   onFilterChange() {
 
+    this.loadTeachersList()
+  }
+
+  onModelChange(event: any) {
+    console.log("ERt", event)
     this.loadTeachersList()
   }
 

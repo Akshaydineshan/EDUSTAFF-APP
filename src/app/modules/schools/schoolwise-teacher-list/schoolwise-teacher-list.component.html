@@ -183,7 +183,7 @@
 
             <ng-multiselect-dropdown [placeholder]="'Select School Type'" [(ngModel)]="selectedSchoolTypeFromDropdownList"
                 [settings]="schoolTypeDropdownSettings" [data]="schoolTypeDropDownListForFilter"
-                (onSelect)="onFilterChange()" />
+                (onSelect)="onFilterChange()"  (ngModelChange)="onModelChange($event)" />
         </div>
     </div>
 
