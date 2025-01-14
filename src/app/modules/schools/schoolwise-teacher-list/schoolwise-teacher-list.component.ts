@@ -10,6 +10,7 @@ import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/uti
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import { environment } from 'src/environments/environment';
 import { SchoolService } from '../school.service';
+import { DatePipe } from '@angular/common';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -18,7 +19,8 @@ interface PagonationConfig {
 @Component({
   selector: 'app-schoolwise-teacher-list',
   templateUrl: './schoolwise-teacher-list.component.html',
-  styleUrls: ['./schoolwise-teacher-list.component.scss']
+  styleUrls: ['./schoolwise-teacher-list.component.scss'],
+    providers: [DatePipe]
 })
 export class SchoolwiseTeacherListComponent {
   @ViewChild('transferModal') transferModal!: ElementRef;
@@ -30,7 +32,7 @@ export class SchoolwiseTeacherListComponent {
   teacherTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   paginatedData: any[] = [];
-  displayColumns: string[] = ['name', 'schoolName', 'designation', 'experienceYear', 'age', 'phoneNumber',];
+  displayColumns: string[] = ['name', 'dob', 'phone', 'joinDate', 'position', 'subject',"employeeType"];
 
   // Table Column Hover Related
   selectedTeacher: any = null;
@@ -137,7 +139,7 @@ export class SchoolwiseTeacherListComponent {
   schoolTypeDropDownListForFilter!: any[];
 
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone, private schoolService: SchoolService) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone, private schoolService: SchoolService,private datePipe:DatePipe) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -760,7 +762,7 @@ export class SchoolwiseTeacherListComponent {
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
           {
-            field: "name", filter: true, floatingFilter: true, width: 180,
+            field: "name",header:"Name", filter: true, floatingFilter: true, width: 180,
             cellRenderer: (params: any) => {
 
               const div = document.createElement('div');
@@ -885,18 +887,19 @@ export class SchoolwiseTeacherListComponent {
 
 
           },
-          {
-            field: "schoolName", filter: true, floatingFilter: false, width: 300,
-            cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
-          },
-          { field: "designation", filter: true, floatingFilter: false },
+      
+          { field: "employeeType", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },
 
-          { field: "experienceYear", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner' : `${params.value}`, },
-          { field: "age", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` },
+          { field: "phone", filter: true, floatingFilter: false, valueFormatter: (params: any) => `+91 ${params.value}`, },
+          { field: "dob", filter: true, floatingFilter: false, valueFormatter: (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy') },
           {
-            field: "phoneNumber", filter: true, floatingFilter: false,
-            valueFormatter: (params: any) => `+91 ${params.value}`,
+            field: "joinDate", filter: true, floatingFilter: false, valueFormatter: (params: any) => this.datePipe.transform(params.value, 'dd/MM/yyyy')
+
+          },
+          {
+            field: "position", filter: true, floatingFilter: false,
+
           },
 
           // {
@@ -918,6 +921,7 @@ export class SchoolwiseTeacherListComponent {
 
           // },
         ];
+
 
         this.updatePaginatedData();
 

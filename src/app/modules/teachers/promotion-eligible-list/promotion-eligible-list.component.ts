@@ -33,7 +33,7 @@ export class PromotionEligibleListComponent {
   promotionEligibleTableRows: any[] = []
   promotionEligibleTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] };
-  displayColumns: string[] = ['Name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject'];
+  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject'];
   promotionEligibleList: any[] = [];
 
   //table hover popup related variable
@@ -122,6 +122,7 @@ export class PromotionEligibleListComponent {
         this.promotionEligibleTableColumns = this.displayColumns.map((column: any) => {
           return {
             field: column,
+            headers:column,
             filter: true,
             floatingFilter: column === 'name',
             ... (column === 'name' ? {

@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="row g-0">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                         <div class="sec basic-detils">
                                                 <p class="head">Basic Profile</p>
                                                 <div class="tbl">
@@ -92,14 +92,15 @@
                                                                 </tr>
                                                                 <tr>
                                                                         <td>School Types</td>
-                                                                       
-                                                                                <td>
-                                                                                        <ng-container *ngFor="let item of currentSchool.getSchoolTypes;">
-                                                                                                {{item.schoolTypeName}} ,
-                                                                                        </ng-container>
-                                                                                </td>
-                                                                 
-                                                                       
+
+                                                                        <td>
+                                                                                <ng-container
+                                                                                        *ngFor="let item of currentSchool.getSchoolTypes;">
+                                                                                        {{item.schoolTypeName}} ,
+                                                                                </ng-container>
+                                                                        </td>
+
+
                                                                 </tr>
                                                                 <tr>
                                                                         <td>State</td>
@@ -120,7 +121,7 @@
                                 </div>
 
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
 
                                         <div class="sec">
 
@@ -155,57 +156,6 @@
                                         </div>
 
                                 </div>
-                        </div>
-
-
-
-                        <div class="row g-0 ">
-                                <div class="col-sm-8" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
-                                        <div class="teacher-sec">
-                                                <p class="head">Teacher List
-                                                        <span class="text-danger ms-3"></span>
-
-                                                </p>
-                                                <div class="tbl">
-                                                        <table>
-
-                                                                <tr>
-                                                                        <th>Name</th>
-                                                                        <th>Age</th>
-                                                                        <th>Phone Number</th>
-                                                                        <th>Designation</th>
-                                                                        <th>Subject</th>
-
-                                                                </tr>
-                                                                <ng-container *ngIf="teacherTableData.length">
-                                                                        <tr
-                                                                                *ngFor="let item of teacherTableData;let i=index;">
-                                                                                <td>{{item.name}}</td>
-                                                                                <td>{{item.age}}</td>
-                                                                                <td>{{item.phoneNumber}}</td>
-                                                                                <td>{{item.designation}}</td>
-                                                                                <td>{{item.subject}}</td>
-
-                                                                        </tr>
-                                                                </ng-container>
-
-                                                                <tr *ngIf="!teacherTableData.length"
-                                                                        style="text-align: center; vertical-align: middle; height: 40px;">
-                                                                        <td colspan="5">No Data Found</td>
-                                                                </tr>
-
-
-
-
-                                                        </table>
-                                                </div>
-
-
-                                        </div>
-
-                                </div>
-
-
                                 <div class="col-sm-4" *ngIf="standards.length">
 
                                         <div class="std-sec">
@@ -247,11 +197,17 @@
                                                                         <th style="width: 50%">Division</th>
                                                                         <th style="width: 50%">Student Count</th>
                                                                 </tr>
-                                                                <tr
+                                                                <ng-container
                                                                         *ngFor="let division of standards[currentIndex].divisionData">
-                                                                        <td>{{ division.division }}</td>
-                                                                        <td>{{ division.studentCount }}</td>
-                                                                </tr>
+                                                                        <tr
+                                                                                *ngIf="division.division && division.studentCount > 0">
+                                                                                <td>{{ division.division
+                                                                                        }}</td>
+                                                                                <td>{{ division.studentCount
+                                                                                        }}
+                                                                                </td>
+                                                                        </tr>
+                                                                </ng-container>
                                                         </table>
 
 
@@ -260,8 +216,8 @@
                                                 </div>
 
                                                 <ng-container *ngIf="printMode">
-                                                        <ng-container *ngFor="let std of standards; ">
-                                                                <div class="tbl">
+                                                        <ng-container *ngFor="let std of standards; let i=index; ">
+                                                                <div class="tbl mt-1">
                                                                         <!-- Header Section -->
                                                                         <div
                                                                                 class="std-head-sec d-flex justify-content-center">
@@ -270,7 +226,7 @@
                                                                                 <div
                                                                                         class="center d-flex align-items-center justify-content-center">
                                                                                         Standard {{
-                                                                                        standards[currentIndex].standard
+                                                                                        standards[i].standard
                                                                                         }}
                                                                                 </div>
 
@@ -283,12 +239,18 @@
                                                                                         <th style="width: 50%">Student
                                                                                                 Count</th>
                                                                                 </tr>
-                                                                                <tr
-                                                                                        *ngFor="let division of standards[currentIndex].divisionData">
-                                                                                        <td>{{ division.division }}</td>
-                                                                                        <td>{{ division.studentCount }}
-                                                                                        </td>
-                                                                                </tr>
+                                                                                <ng-container
+                                                                                        *ngFor="let division of standards[i].divisionData">
+                                                                                        <tr
+                                                                                                *ngIf="division.division && division.studentCount > 0">
+                                                                                                <td>{{ division.division
+                                                                                                        }}</td>
+                                                                                                <td>{{ division.studentCount
+                                                                                                        }}
+                                                                                                </td>
+                                                                                        </tr>
+                                                                                </ng-container>
+
                                                                         </table>
 
 
@@ -348,12 +310,64 @@
 
 
                                 </div>
+                        </div>
+
+
+
+                        <div class="row g-0 ">
+                                <div class="col-sm-12" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
+                                        <div class="teacher-sec">
+                                                <p class="head">Teacher List
+                                                        <span class="text-danger ms-3"></span>
+
+                                                </p>
+                                                <div class="tbl">
+                                                        <table>
+
+                                                                <tr>
+                                                                        <th>Name</th>
+                                                                        <th>Age</th>
+                                                                        <th>Phone Number</th>
+                                                                        <th>Designation</th>
+                                                                        <th>Subject</th>
+
+                                                                </tr>
+                                                                <ng-container *ngIf="teacherTableData.length">
+                                                                        <tr
+                                                                                *ngFor="let item of teacherTableData;let i=index;">
+                                                                                <td>{{item.name}}</td>
+                                                                                <td>{{item.age}}</td>
+                                                                                <td>{{item.phoneNumber}}</td>
+                                                                                <td>{{item.designation}}</td>
+                                                                                <td>{{item.subject}}</td>
+
+                                                                        </tr>
+                                                                </ng-container>
+
+                                                                <tr *ngIf="!teacherTableData.length"
+                                                                        style="text-align: center; vertical-align: middle; height: 40px;">
+                                                                        <td colspan="5">No Data Found</td>
+                                                                </tr>
+
+
+
+
+                                                        </table>
+                                                </div>
+
+
+                                        </div>
+
+                                </div>
+
+
+
 
 
                         </div>
 
                         <div class="row g-0 mb-5">
-                                <div class="col-sm-8" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
+                                <div class="col-sm-12" [ngClass]="!standards.length ? 'col-sm-12': 'col-sm-8'">
                                         <div class="teacher-sec">
                                                 <p class="head">Non Teacher List
                                                         <span class="text-danger ms-3"></span>

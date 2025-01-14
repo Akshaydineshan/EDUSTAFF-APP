@@ -296,8 +296,7 @@ li {
 
   .std-sec {
     padding: 17px;
-
-
+ 
     p.head {
       font-family: Roboto;
       font-size: 14px;
@@ -503,10 +502,13 @@ li {
     display: none;
   }
 
-  table {
+  table ,.tbl {
     page-break-inside: avoid;
    
   }
+  // .tbl{
+  //   page-break-inside: avoid;
+  // }
 
   tr {
     page-break-inside: avoid;

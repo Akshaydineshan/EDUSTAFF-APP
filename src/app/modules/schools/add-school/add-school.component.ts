@@ -220,6 +220,79 @@ export class AddSchoolComponent implements OnInit {
 
   }
 
+  private handleFormSubmission(photoID: string | null, formDataValue: any, classDivisionData: any) {
+    let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => ({
+      schoolTypeID: item.schoolTypeID,
+    }));
+    const data: SchoolData = {
+      schoolName: formDataValue.schoolName,
+      [this.isEdited ? "updateSchoolTypes" : "addSchoolTypes"]: schoolTypeIds,
+      address: formDataValue.address,
+      cityID: formDataValue.cityID.cityID,
+      state: formDataValue.state,
+      pincode: formDataValue.pincode,
+      email: formDataValue.email,
+      phone: formDataValue.phone,
+      photoID: photoID || null,
+      principalID: this.isEdited ? this.school.principalID : null,
+      vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
+      [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
+    };
+
+    console.log("data", data);
+
+    if (this.isEdited) {
+      this.schoolService.updateSchool(data, this.school.schoolID).subscribe({
+        next: (response) => {
+          this.schoolDetailsForm.reset();
+          this.submitted = false;
+          this.submitting = false;
+          this.toastr.success('School Update', 'Success', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
+          this.router.navigate(['/schools/school-list']);
+        },
+        error: (err) => {
+          this.submitted = false;
+          this.submitting = false;
+
+          this.toastr.error('School Update', 'Failed', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
+        },
+      });
+    } else {
+      this.schoolService.addSchool(data).subscribe({
+        next: (response) => {
+          this.schoolDetailsForm.reset();
+          this.submitted = false;
+          this.submitting = false;
+          this.toastr.success('School Add', 'Success', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
+          this.router.navigate(['/schools/school-list']);
+        },
+        error: (err) => {
+
+          this.toastr.error('School Add', 'Failed', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
+        },
+      });
+    }
+  }
 
 
 
@@ -229,18 +302,19 @@ export class AddSchoolComponent implements OnInit {
     this.errorMsgForInvalidDivision = []
 
 
-
-
     let classDivisionData: any = this.standardData.map((item: any, index: number) => {
       debugger
+
 
       if (!item.divisionData.length) {
         this.errorMsgForEmptyDivision.push(`${getOrdinalSuffix(item.standard)} `);
         return
-      } else if (!item.divisionData.every((div: any) => div.division && div.studentCount)) {
+      } else if (!item.divisionData.every((div: any) => div.division && (div.studentCount || div.studentCount == 0 && (div.studentCount !== '' && div.studentCount !== null)))) {
+      
         this.errorMsgForInvalidDivision.push(`${getOrdinalSuffix(item.standard)} `);
         return
       }
+      console.log("error", this.errorMsgForInvalidDivision)
 
 
       return {
@@ -272,126 +346,151 @@ export class AddSchoolComponent implements OnInit {
         debugger
         let formDataValue: any = this.schoolDetailsForm.value;
         console.log("FORM DAAT", formDataValue)
-        let photoObj = formDataValue.photoID
+        let photoObj = formDataValue.photoID || null
 
-        this.updateSchoolImage(photoObj).subscribe((response: any) => {
-          if (response) {
-            console.log("formDa", formDataValue)
+        // this.updateSchoolImage(photoObj).subscribe((response: any) => {
+        //   if (response) {
+        //     console.log("formDa", formDataValue)
 
-            let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => ({ schoolTypeID: item.schoolTypeID }))
-            const data: SchoolData = {
-              schoolName: formDataValue.schoolName,
-              [this.isEdited ? "updateSchoolTypes" : "addSchoolTypes"]: schoolTypeIds,
-              address: formDataValue.address,
-              cityID: formDataValue.cityID.cityID,
-              state: formDataValue.state,
-              pincode: formDataValue.pincode,
-              email: formDataValue.email,
-              phone: formDataValue.phone,
-              photoID: response.photoID || null,
-              principalID: this.isEdited ? this.school.principalID : null,
-              vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
-              // [this.isEdited ? "updateDivisions" : "addClasses"]: formDataValue.divisions.map((item: any, index: number) => {
-              //   return { division: index + 1, studentCount: parseInt(item.studentCount) }
-              // }),
+        //     let schoolTypeIds: any = formDataValue.schoolTypeID.map((item: any) => ({ schoolTypeID: item.schoolTypeID }))
+        //     const data: SchoolData = {
+        //       schoolName: formDataValue.schoolName,
+        //       [this.isEdited ? "updateSchoolTypes" : "addSchoolTypes"]: schoolTypeIds,
+        //       address: formDataValue.address,
+        //       cityID: formDataValue.cityID.cityID,
+        //       state: formDataValue.state,
+        //       pincode: formDataValue.pincode,
+        //       email: formDataValue.email,
+        //       phone: formDataValue.phone,
+        //       photoID: response.photoID || null,
+        //       principalID: this.isEdited ? this.school.principalID : null,
+        //       vicePrincipalID: this.isEdited ? this.school.vicePrincipalID : null,
+        //       // [this.isEdited ? "updateDivisions" : "addClasses"]: formDataValue.divisions.map((item: any, index: number) => {
+        //       //   return { division: index + 1, studentCount: parseInt(item.studentCount) }
+        //       // }),
 
-              [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
+        //       [this.isEdited ? "updateClasses" : "addClasses"]: classDivisionData,
 
 
 
+        //     }
+        //     console.log("data", data)
+        //     debugger;
+
+        //     if (this.isEdited) {
+        //       // data.photoID = formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
+
+        //       this.schoolService.updateSchool(data, this.school.schoolID)
+        //         .subscribe({
+        //           next: (response) => {
+
+        //             // Reset form and submitted flag if needed
+        //             this.schoolDetailsForm.reset();
+        //             this.submitted = false;
+        //             this.submitting = false;
+        //             this.toastr.success('School Updated !', 'Success', {
+        //               closeButton: true,
+        //               progressBar: true,
+        //               positionClass: 'toast-top-left',
+        //               timeOut: 4500,
+        //             });
+
+        //             this.router.navigate(['/schools/school-list'])
+        //           },
+        //           error: (err) => {
+        //             this.submitted = false
+        //             this.submitting = false
+        //             console.error('Error adding school:', err);
+        //             this.toastr.error('Teacher Update', 'Failed', {
+        //               closeButton: true,
+        //               progressBar: true,
+        //               positionClass: 'toast-top-left',
+        //               timeOut: 4500,
+        //             });
+        //           },
+        //           complete: () => {
+        //             this.submitted = false
+        //             this.submitting = false
+
+        //           }
+        //         });
+
+        //     } else {
+        //       this.schoolService.addSchool(data)
+        //         .subscribe({
+        //           next: (response) => {
+
+        //             // Reset form and submitted flag if needed
+        //             this.schoolDetailsForm.reset();
+        //             this.submitted = false
+        //             this.submitting = false
+        //             this.toastr.success('School Added !', 'Success', {
+        //               closeButton: true,
+        //               progressBar: true,
+        //               positionClass: 'toast-top-left',
+        //               timeOut: 4500,
+        //             });
+
+        //             this.router.navigate(['/schools/school-list'])
+        //           },
+        //           error: (err) => {
+        //             this.submitted = false
+        //             this.submitting = false
+        //             console.error('Error adding school:', err);
+        //             this.toastr.error('Teacher Add', 'Failed', {
+        //               closeButton: true,
+        //               progressBar: true,
+        //               positionClass: 'toast-top-left',
+        //               timeOut: 4500,
+        //             });
+        //           },
+        //           complete: () => {
+
+        //             this.submitted = false
+        //             this.submitting = false
+        //           }
+        //         });
+
+        //     }
+        //   }
+
+
+
+
+        // },
+        //   (error: any) => {
+        //     this.toastr.error('File Upload', 'Failed', {
+        //       closeButton: true,
+        //       progressBar: true,
+        //       positionClass: 'toast-top-left',
+        //       timeOut: 4500,
+        //     });
+        //   })
+
+        // let photoObj = formDataValue.photoID;
+
+        // Check if photoObj exists
+        if (photoObj) {
+          this.updateSchoolImage(photoObj).subscribe(
+            (response: any) => {
+              if (response) {
+                this.handleFormSubmission(response.photoID, formDataValue, classDivisionData);
+              }
+            },
+            (error: any) => {
+              this.toastr.error('File Upload', 'Failed', {
+                closeButton: true,
+                progressBar: true,
+                positionClass: 'toast-top-left',
+                timeOut: 4500,
+              });
             }
-            console.log("data", data)
-            debugger;
+          );
+        } else {
+          // Proceed with form submission without photo upload
+          this.handleFormSubmission(null, formDataValue, classDivisionData);
+        }
 
-            if (this.isEdited) {
-              // data.photoID = formDataValue.photoID.photoID ? formDataValue.photoID.photoID : this.school.photoId
-
-              this.schoolService.updateSchool(data, this.school.schoolID)
-                .subscribe({
-                  next: (response) => {
-
-                    // Reset form and submitted flag if needed
-                    this.schoolDetailsForm.reset();
-                    this.submitted = false;
-                    this.submitting = false;
-                    this.toastr.success('School Updated !', 'Success', {
-                      closeButton: true,
-                      progressBar: true,
-                      positionClass: 'toast-top-left',
-                      timeOut: 4500,
-                    });
-
-                    this.router.navigate(['/schools/school-list'])
-                  },
-                  error: (err) => {
-                    this.submitted = false
-                    this.submitting = false
-                    console.error('Error adding school:', err);
-                    this.toastr.error('Teacher Update', 'Failed', {
-                      closeButton: true,
-                      progressBar: true,
-                      positionClass: 'toast-top-left',
-                      timeOut: 4500,
-                    });
-                  },
-                  complete: () => {
-                    this.submitted = false
-                    this.submitting = false
-
-                  }
-                });
-
-            } else {
-              this.schoolService.addSchool(data)
-                .subscribe({
-                  next: (response) => {
-
-                    // Reset form and submitted flag if needed
-                    this.schoolDetailsForm.reset();
-                    this.submitted = false
-                    this.submitting = false
-                    this.toastr.success('School Added !', 'Success', {
-                      closeButton: true,
-                      progressBar: true,
-                      positionClass: 'toast-top-left',
-                      timeOut: 4500,
-                    });
-
-                    this.router.navigate(['/schools/school-list'])
-                  },
-                  error: (err) => {
-                    this.submitted = false
-                    this.submitting = false
-                    console.error('Error adding school:', err);
-                    this.toastr.error('Teacher Add', 'Failed', {
-                      closeButton: true,
-                      progressBar: true,
-                      positionClass: 'toast-top-left',
-                      timeOut: 4500,
-                    });
-                  },
-                  complete: () => {
-
-                    this.submitted = false
-                    this.submitting = false
-                  }
-                });
-
-            }
-          }
-
-
-
-
-        },
-          (error: any) => {
-            this.toastr.error('File Upload', 'Failed', {
-              closeButton: true,
-              progressBar: true,
-              positionClass: 'toast-top-left',
-              timeOut: 4500,
-            });
-          })
 
 
 
@@ -560,25 +659,78 @@ export class AddSchoolComponent implements OnInit {
     this.schoolService.getDivisionDetailsBySchoolType(schoolTypeId).subscribe({
       next: (response: any) => {
         if (response) {
+
           const classes = response.classes || [];
+          console.log("schoolTypeIds", schoolTypeId, classes)
           if (this.isEdited && this.standardData) {
             // Map existing `standardData` by standard for efficient lookup
             const dataMap = new Map(
               this.standardData.map((item: any) => [item.standard, item])
             );
 
+            this.standardData = classes.map((cls: any) => {
+              console.log("CLas", cls)
+              if (dataMap.has(cls)) {
+                return dataMap.get(cls);
+              }
+
+              if (cls === 11 || cls === 12) {
+                return {
+                  standard: cls,
+                  divisionData: [
+                    { division: 'Science', studentCount: '' },
+                    { division: 'Commerce', studentCount: '' },
+                    { division: 'Humanities', studentCount: '' },
+
+                  ],
+                };
+              }
+
+              return {
+                standard: cls,
+                divisionData: [{ division: 'A', studentCount: '' }],
+              };
+            });
+            console.log("s", this.standardData)
+
+
             // Merge existing data with fetched classes
-            this.standardData = classes.map((cls: any) =>
-              dataMap.has(cls) ? dataMap.get(cls) : { standard: cls, divisionData: [{ division: 'A', studentCount: '' }] }
-            );
+            // this.standardData = classes.map((cls: any) => {
+            //   dataMap.has(cls) ? dataMap.get(cls) : (cls == 11 || cls == 12) ? {
+            //     standard: cls, divisionData: [{ division: 'Science', studentCount: '0' },
+            //     { division: 'Commerce', studentCount: '0' },
+            //     { division: 'Humanities', studentCount: '0' },
+            //     { division: 'Mathematics', studentCount: '0' },
+            //     { division: 'Biology', studentCount: '0' },
+            //     { division: 'Computer Science', studentCount: '0' },
+            //     { division: 'Arts', studentCount: '0' }]
+            //   } : { standard: cls, divisionData: [{ division: 'A', studentCount: '' }] }
+            // }
+            // );
           } else {
             // Initialize new standardData with empty divisionData
             this.currentIndex = 0;
             this.standardData = [];
-            this.standardData = classes.map((item: any) => ({
-              standard: item,
-              divisionData: [{ division: 'A', studentCount: '' }]
-            }));
+            this.standardData = classes.map((item: any) => {
+              if (true && (item == 11 || item == 12)) {
+                return {
+                  standard: item,
+                  divisionData: [{ division: 'Science', studentCount: '' },
+                  { division: 'Commerce', studentCount: '' },
+                  { division: 'Humanities', studentCount: '' },
+                  ]
+                }
+              } else {
+                return {
+                  standard: item,
+                  divisionData: [{ division: 'A', studentCount: '' }]
+                }
+              }
+
+
+
+            });
+
 
             // Update the `divisions` property
             // this.divisions = [...classes];
@@ -820,6 +972,14 @@ export class AddSchoolComponent implements OnInit {
     }
   }
 
+  addBranchInClass(index: number) {
+    this.standardData[index].divisionData.push({
+      division: "",
+      studentCount: ""
+    })
+
+  }
+
   addDivisionInClass(index: number) {
     this.standardData[index].divisionData.push({
       division: String.fromCharCode(65 + this.standardData[index].divisionData.length),
@@ -829,9 +989,23 @@ export class AddSchoolComponent implements OnInit {
   }
 
   removeDivisionInClass(index: number, index1: number) {
-    this.standardData[index].divisionData.splice(index1, 1)
-
+    if (window.confirm("Are you sure you want to remove this division?")) {
+      this.standardData[index].divisionData.splice(index1, 1);
+    }
   }
+  
+
+  formatBranchName(item: any): void {
+    if (item.division) {
+      // Trim extra spaces, convert to lowercase, and capitalize first letters
+      item.division = item.division
+        .trim() // Remove leading and trailing spaces
+        .replace(/\s+/g, ' ') // Replace multiple spaces with a single space
+        .toLowerCase()
+        .replace(/\b\w/g, (char: any) => char.toUpperCase()); // Capitalize each word
+    }
+  }
+
 
 }
 

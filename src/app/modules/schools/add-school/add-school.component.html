@@ -241,8 +241,8 @@
                                 <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
                                 <p class="lab">Drag File To Upload</p>
                                 <p class="or">or</p>
-                                <input (change)="onSchoolImageChange($event)" #fileInput type="file"
-                                    accept=".jpeg,.jpg" style="display: none;">
+                                <input (change)="onSchoolImageChange($event)" #fileInput type="file" accept=".jpeg,.jpg"
+                                    style="display: none;">
                                 <button type="button" class="btn btn-primary" (click)=" fileInput.click()">Browse
                                     File</button>
                             </div>
@@ -323,7 +323,7 @@
                                         <!-- <td style="border:none"></td> -->
 
                                         <td>Division {{item.division}}hh
-                                           
+
                                         </td>
                                         <td><input type="number" class="text-box" [(ngModel)]="item.studentCount"
                                                 [ngModelOptions]="{standalone: true}" (input)="change()"
@@ -496,7 +496,7 @@
                                 </button>
                             </div>
                             <div class="center d-flex align-items-center">
-                                Standard {{ standardData[currentIndex].standard  | roman}}
+                                Standard {{ standardData[currentIndex].standard | roman}}
                             </div>
                             <!-- Next Button -->
                             <div class="right d-flex align-items-center">
@@ -523,14 +523,20 @@
 
                                         <th
                                             style="border-left:0.8px solid #D9D9D9;display: flex;justify-content: space-between;">
-                                            <input class="text-box" type="number" placeholder="Enter number of division"
+                                            <input
+                                            [style.visibility]="standardData[currentIndex].standard === 11 || standardData[currentIndex].standard === 12 ? 'hidden' : 'visible'"
+                                                class="text-box" type="number" placeholder="Enter number of division"
                                                 [(ngModel)]="divisionCount[currentIndex]"
                                                 [ngModelOptions]="{standalone: true}"
                                                 (input)="updateDivisions(currentIndex)" />
                                             <!-- <i style="float:right; color: #8F0000;position: relative;left:15px;"
                                                 class="bi bi-plus-circle"></i> -->
-                                            <img  title="Add Division" (click)="addDivisionInClass(currentIndex)" class="add-ic"
-                                                src="../../../../assets/icons/class-add.png" alt="">
+                                            <img *ngIf="standardData[currentIndex].standard !== 11 && standardData[currentIndex].standard !== 12 ;"
+                                                title="Add Division" (click)="addDivisionInClass(currentIndex)"
+                                                class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
+                                            <img *ngIf="!(standardData[currentIndex].standard !== 11 && standardData[currentIndex].standard !== 12 )"
+                                                title="Add Branch" (click)="addBranchInClass(currentIndex)"
+                                                class="add-ic" src="../../../../assets/icons/class-add.png" alt="">
                                         </th>
                                         <th>
                                             <p class="status-msg ms-4">
@@ -543,16 +549,31 @@
                                         *ngFor="let item of standardData[currentIndex].divisionData;let j=index;">
 
 
-                                        <td >Division {{item.division}}
-                                             <i  title="Remove Division" style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"   *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
+                                        <td
+                                            *ngIf="(standardData[currentIndex].standard !== 11 && standardData[currentIndex].standard !== 12 )">
+                                            Division {{item.division}}
+                                            <i title="Remove Division"
+                                                style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"
+                                                *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
                                                 (click)="removeDivisionInClass(currentIndex,j)"
-                                                   class="bi bi-dash-circle"></i>
-                                                <!-- <img title="Remove Division"  (click)="removeDivisionInClass(currentIndex,j)" class="add-ic" *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
-                                                src="../../../../assets/icons/class-remove.png" alt=""> -->
+                                                class="bi bi-dash-circle"></i>
+
                                         </td>
-                                        <td style="border-left:none;"><input type="number" class="text-box" [(ngModel)]="item.studentCount"
-                                                [ngModelOptions]="{standalone: true}" (input)="change()"
-                                                placeholder="Enter count" /></td>
+                                        <td
+                                            *ngIf="!(standardData[currentIndex].standard !== 11 && standardData[currentIndex].standard !== 12 )">
+                                            <input type="text" class="text-box-branch" [(ngModel)]="item.division"
+                                                [ngModelOptions]="{standalone: true}" placeholder="Enter Branch " (input)="formatBranchName(item)" />
+
+                                            <i title="Remove Branch"
+                                                style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"
+                                                *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
+                                                (click)="removeDivisionInClass(currentIndex,j)"
+                                                class="bi bi-dash-circle"></i>
+
+                                        </td>
+                                        <td style="border-left:none;"><input type="number" class="text-box"
+                                                [(ngModel)]="item.studentCount" [ngModelOptions]="{standalone: true}"
+                                                (input)="change()" placeholder="Enter count" /></td>
                                     </tr>
 
                                 </table>
@@ -570,17 +591,17 @@
 
                 <div class="ms-1" *ngIf="errorMsgForEmptyDivision.length > 0 || errorMsgForInvalidDivision.length > 0">
                     <!-- Prioritize missing divisions error message -->
-                    <small  *ngIf="errorMsgForEmptyDivision.length > 0 && errorMsgForInvalidDivision.length === 0"
+                    <small *ngIf="errorMsgForEmptyDivision.length > 0 && errorMsgForInvalidDivision.length === 0"
                         class="text-danger">
                         <i class="fas fa-exclamation-circle"></i> <!-- Error icon -->
-                        Standard ({{ errorMsgForEmptyDivision.join(",") }})  are missing divisions. Please add at least
+                        Standard ({{ errorMsgForEmptyDivision.join(",") }}) are missing divisions. Please add at least
                         one division.
                     </small>
 
                     <!-- Display invalid divisions error message only if there are no missing divisions -->
-                    <small  *ngIf="errorMsgForInvalidDivision.length > 0" class="text-danger">
+                    <small *ngIf="errorMsgForInvalidDivision.length > 0" class="text-danger">
                         <i class="fas fa-exclamation-triangle"></i> <!-- Warning icon -->
-                        Please ensure that each division in standards ({{ errorMsgForInvalidDivision.join(",") }})  has a
+                        Please ensure that each division in standards ({{ errorMsgForInvalidDivision.join(",") }}) has a
                         valid name and student count.
                     </small>
                 </div>
