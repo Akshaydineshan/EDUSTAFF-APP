@@ -25,16 +25,20 @@ export class TeacherDetailsComponent {
 
   }
   get getImage() {
-    let result = '';
-    result=this.fullFormData.photoId.profilePreview;
-    
-    //   let image=this.fullFormData?.photoId?.photoImageName;
-    // if(this.fullFormData?.photoId?.photoImageName=='No Photo assigned' || null || '') image=""
+    let previewUrls = this.fullFormData.photoId.profilePreview;
+    if (previewUrls) {
+      return previewUrls;
+    }
 
-    // if (this.apiUrl && image) {
-    //   result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName.replace(/^\/+/, '');
-    // }
-  
+    let result = '';
+    let image = this.fullFormData.photoId.photoImageName;
+    if (this.fullFormData.photoId.photoImageName == 'No Photo assigned' || null || '') image = ""
+
+    if (this.apiUrl && image) {
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName?.replace(/^\/+/, '');
+    }
+    // If the result is an empty string, it will fallback to emptyImage in the template
+    console.log("result", result)
     return result;
   }
   getCertificate(certificate:any){

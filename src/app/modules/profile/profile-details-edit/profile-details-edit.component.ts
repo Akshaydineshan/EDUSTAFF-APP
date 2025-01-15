@@ -42,6 +42,7 @@ export class ProfileDetailsEditComponent implements OnInit {
       this.profileService.getProfile().subscribe({
         next: (response: any) => {
           if (response) {
+            console.log("get profile",response)
             this.patchForm(response);
           
           } else {

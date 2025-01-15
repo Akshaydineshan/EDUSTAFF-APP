@@ -24,16 +24,40 @@ export class AddNonTeacherPreviewComponent {
   ngOnInit() {
 
   }
+  // get getImage() {
+  //   let result = '';
+
+  //   let image=this.fullFormData?.photoId?.photoImageName;
+  //   if(this.fullFormData?.photoId?.photoImageName =='No Photo assigned' || null || '') image=""
+
+  //   if (this.apiUrl && image) {
+  //     result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName.replace(/^\/+/, '');
+  //   }
+  //   // If the result is an empty string, it will fallback to emptyImage in the template
+  //   return result;
+  // }
+
   get getImage() {
+    //   let result = '';
+    //   result=this.fullFormData.photoId.profilePreview;
+
+
+
+    //   return result;
+    let previewUrls = this.fullFormData.photoId.profilePreview;
+    if (previewUrls) {
+      return previewUrls;
+    }
+
     let result = '';
-    
-    let image=this.fullFormData?.photoId?.photoImageName;
-    if(this.fullFormData?.photoId?.photoImageName =='No Photo assigned' || null || '') image=""
+    let image = this.fullFormData.photoId.photoImageName;
+    if (this.fullFormData.photoId.photoImageName == 'No Photo assigned' || null || '') image = ""
 
     if (this.apiUrl && image) {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName.replace(/^\/+/, '');
+      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.fullFormData.photoId.photoImageName?.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
+    console.log("result", result)
     return result;
   }
 
@@ -47,13 +71,13 @@ export class AddNonTeacherPreviewComponent {
     this.EditBtnClickPreview.emit()
   }
 
-  getCertificate(certificate:any){
-    let  result = this.apiUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, ''); 
+  getCertificate(certificate: any) {
+    let result = this.apiUrl.replace(/\/+$/, '') + '/' + certificate.replace(/^\/+/, '');
     return result;
-   }
-   
-   pdfClick(url:any){
+  }
+
+  pdfClick(url: any) {
     //  window.location.href= this.getCertificate(url)
-     window.open(this.getCertificate(url),"_blank")
-   }
+    window.open(this.getCertificate(url), "_blank")
+  }
 }

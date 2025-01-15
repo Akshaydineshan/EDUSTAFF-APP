@@ -15,7 +15,7 @@ export class ProfileService {
   }
 
   getProfile(){
-    return this.http.get<any[]>(this.apiUrl + 'user/GetAllActiveTeachersList', { headers: { accept: '*/*' } })
+    return this.http.get<any[]>(this.apiUrl + 'User/get-user', { headers: { accept: '*/*' } })
   }
 
   updateUser(){

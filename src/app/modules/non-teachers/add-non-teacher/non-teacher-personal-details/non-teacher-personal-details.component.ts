@@ -19,6 +19,7 @@ export class NonTeacherPersonalDetailsComponent {
   @Input() maritalStatuses!: any[];
   @Output() personalDetailsFormChange = new EventEmitter<any>();
   @ViewChild('fileInput') fileInput!: ElementRef; // Reference to the file input
+  previewUrls!: string;
 
   profileImage: string | ArrayBuffer | null = null;
   file!: File | null;
@@ -53,22 +54,53 @@ export class NonTeacherPersonalDetailsComponent {
     }
   }
 
+  // onFileSelected(event: any): void {
+  //   debugger
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
+  //     if (file.size > maxSize) {
+  //       this.maxSizeExceeded = true; // Show the error message
+    
+  //       return;
+  //     }
+
+     
+  //     this.file = file;
+
+  //   }
+  //   this.uploadFile()
+  // }
   onFileSelected(event: any): void {
     debugger
     const file = event.target.files[0];
     if (file) {
+
+      this.file = file;
+
       const maxSize = 2 * 1024 * 1024; // 2 MB in bytes
       if (file.size > maxSize) {
         this.maxSizeExceeded = true; // Show the error message
-    
+
         return;
       }
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrls = reader.result as string;
 
-     
-      this.file = file;
+        let photoIdControl = this.personalDetailsForm.get('photoId');
+        console.log("PHOTO ID COntrol",photoIdControl)
+        let photoId = photoIdControl?.value?.photoId || null;
+        photoIdControl?.patchValue({
+          photoId: photoId, photoImageName: file.name, file: file, profilePreview: this.previewUrls
+        })
+
+      };
+      reader.readAsDataURL(file);
+
 
     }
-    this.uploadFile()
+
   }
 
  
@@ -107,16 +139,33 @@ export class NonTeacherPersonalDetailsComponent {
     // this,this.teacherService.setProfileImage("")
   }
 
-  get getprofileImage(){
-    let result = '';
+  // get getprofileImage(){
+  //   let result = '';
 
-     let image=this.personalDetailsForm.get('photoId')?.value.photoImageName;
-    if(this.personalDetailsForm.get('photoId')?.value.photoImageName=='No Photo assigned' || null || '') image=""
+  //    let image=this.personalDetailsForm.get('photoId')?.value.photoImageName;
+  //   if(this.personalDetailsForm.get('photoId')?.value.photoImageName=='No Photo assigned' || null || '') image=""
     
+  //   if (this.apiImageBaseURL && image) {
+  //     result = this.apiImageBaseURL.replace(/\/+$/, '') + '/' + this.personalDetailsForm.get('photoId')?.value?.photoImageName?.replace(/^\/+/, '');
+  //   }
+  //   // If the result is an empty string, it will fallback to emptyImage in the template
+  //   return result;
+  // }
+  get getprofileImage() {
+    this.previewUrls=this.personalDetailsForm.get('photoId')?.value.profilePreview;
+    if (this.previewUrls) {
+      return this.previewUrls;
+    }
+
+    let result = '';
+    let image = this.personalDetailsForm.get('photoId')?.value.photoImageName;
+    if (this.personalDetailsForm.get('photoId')?.value.photoImageName == 'No Photo assigned' || null || '') image = ""
+
     if (this.apiImageBaseURL && image) {
       result = this.apiImageBaseURL.replace(/\/+$/, '') + '/' + this.personalDetailsForm.get('photoId')?.value?.photoImageName?.replace(/^\/+/, '');
     }
     // If the result is an empty string, it will fallback to emptyImage in the template
+    console.log("result", result)
     return result;
   }
 
