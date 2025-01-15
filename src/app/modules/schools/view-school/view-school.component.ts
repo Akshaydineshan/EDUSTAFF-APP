@@ -74,8 +74,8 @@ export class ViewSchoolComponent implements OnInit {
   }
 
   loadTeacherDataBySchool(id:number){
-     let teacherUrl=`Teacher/GetAllTeacherBySchoolID/${id}`;
-     let nonTeacherUrl=`NonTeacher/GetAllNonTeacherBySchoolID/${id}`;
+     let teacherUrl=`Teacher/GetTeachersBySchoolID/${id}`;
+     let nonTeacherUrl=`NonTeacher/GetNonTeachersBySchoolID/${id}`;
       forkJoin({
         teachers:this.schoolService.getTableListData(teacherUrl),
         nonTeachers:this.schoolService.getTableListData(nonTeacherUrl),
