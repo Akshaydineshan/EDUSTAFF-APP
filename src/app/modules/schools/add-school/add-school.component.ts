@@ -988,8 +988,9 @@ export class AddSchoolComponent implements OnInit {
 
   }
 
-  removeDivisionInClass(index: number, index1: number) {
-    if (window.confirm("Are you sure you want to remove this division?")) {
+  removeDivisionInClass(index: number, index1: number,item:any) {
+    let division:any=item.division;
+    if (window.confirm(`Are you sure you want to remove the ${division} division?`)) {
       this.standardData[index].divisionData.splice(index1, 1);
     }
   }

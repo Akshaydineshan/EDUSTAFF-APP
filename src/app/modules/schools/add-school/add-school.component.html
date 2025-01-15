@@ -555,7 +555,7 @@
                                             <i title="Remove Division"
                                                 style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"
                                                 *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
-                                                (click)="removeDivisionInClass(currentIndex,j)"
+                                                (click)="removeDivisionInClass(currentIndex,j,item)"
                                                 class="bi bi-dash-circle"></i>
 
                                         </td>
@@ -566,8 +566,8 @@
 
                                             <i title="Remove Branch"
                                                 style="float:right; color: #8F0000;position: relative;left:15px;background-color: white;"
-                                                *ngIf="standardData[currentIndex].divisionData.length-1 === j &&  j!==0"
-                                                (click)="removeDivisionInClass(currentIndex,j)"
+                                                
+                                                (click)="removeDivisionInClass(currentIndex,j,item)"
                                                 class="bi bi-dash-circle"></i>
 
                                         </td>
