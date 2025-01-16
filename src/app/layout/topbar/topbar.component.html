@@ -20,8 +20,8 @@
         <div class="user-info">
             <img src="https://teachers.prod-app.in/Uploads/profile/Employee/man.jpeg" alt="User Profile">
             <div class="user-details">
-              <p class="user-name">James Thomas</p>
-              <p class="user-role ms-1">System Admin</p> <!-- User Role -->
+              <p class="user-name">{{loggedUserDetails.firstName + " "+ loggedUserDetails.lastName }}</p>
+              <p class="user-role ms-1">{{loggedUserDetails.roleName}}</p> <!-- User Role -->
             </div>
           </div>
       

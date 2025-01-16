@@ -18,8 +18,8 @@ export class ProfileService {
     return this.http.get<any[]>(this.apiUrl + 'User/get-user', { headers: { accept: '*/*' } })
   }
 
-  updateUser(){
-    return this.http.patch<any[]>(this.apiUrl + 'user/GetAllActiveTeachersList', { headers: { accept: '*/*' } })
+  updateUser(userId:number,data:any){
+    return this.http.patch<any[]>(this.apiUrl + 'User/UpdateUser/' + userId,data )
   }
 
   

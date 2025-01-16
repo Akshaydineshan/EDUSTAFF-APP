@@ -12,10 +12,10 @@
                 <img [src]="getImage || 'assets/icons/user.png' " class="prof-img img-fluid rounded-circle "
                     alt="Profile Image" />
                 <div class=" prof-sec-text ms-2 ">
-                    <p class="mb-0 p-n ">James thomas</p>
-                    <p class="text-muted mb-0 p-d mt-1">Department</p>
+                    <p class="mb-0 p-n ">{{currentUser.firstName + " " + currentUser.lastName}}</p>
+                    <p class="text-muted mb-0 p-d mt-1">{{currentUser.email}}</p>
                     <p class="text-muted mb-0 p-a">
-                        THSN Neruvambram ,Kannur
+                       {{currentUser.roleName}}
                     </p>
                 </div>
             </div>
@@ -67,15 +67,23 @@
                     <ul class="info-list">
                         <li >
                             <strong class="field"> Name:</strong>
-                            <span class="field-val">James Thomas </span>
+                            <span class="field-val">{{currentUser.firstName + " " + currentUser.lastName}} </span>
                         </li>
                         <li >
-                            <strong class="field">Phone Number</strong>
-                            <span class="field-val">+91 7876564577 </span>
+                            <strong class="field">Email</strong>
+                            <span class="field-val">{{currentUser.email}}</span>
                         </li>
                         <li >
-                            <strong class="field">Address</strong>
-                            <span class="field-val">Kakkanad,kochi,kerala </span>
+                            <strong class="field">User Name</strong>
+                            <span class="field-val">{{currentUser.username}} </span>
+                        </li>
+                        <li >
+                            <strong class="field">Role</strong>
+                            <span class="field-val">{{currentUser.roleName}} </span>
+                        </li>
+                        <li >
+                            <strong class="field">Date Of Birth</strong>
+                            <span class="field-val">{{currentUser.dateOfBirth | date:'MMM d, y'}} </span>
                         </li>
                     
                        

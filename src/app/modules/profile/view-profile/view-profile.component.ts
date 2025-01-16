@@ -1,6 +1,8 @@
 import { Component, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/core/service/auth/auth.service';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { UserService } from 'src/app/core/service/user.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -11,31 +13,31 @@ import { environment } from 'src/environments/environment';
 export class ViewProfileComponent {
  isSidebarClosed: boolean = false;
 
-  currentTeacher!: any
+ currentUser!: any
   apiUrl = environment.imageBaseUrl;
   itemId: any
 
 
-  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router, private ngZone: NgZone) {
+  constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router, private ngZone: NgZone,private userService:UserService,private authService:AuthService) {
 
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      debugger
-      let itemId = params['id'];
-      this.itemId = itemId;
-      // this.loadItemDetails(itemId);
+    // this.route.params.subscribe(params => {
+    //   debugger
+    //   let itemId = params['id'];
+    //   this.itemId = itemId;
+      this.loadItemDetails();
      
-    });
+    // });
   }
 
-  loadItemDetails(teacherId: any) {
+  loadItemDetails() {
     debugger
-    this.dataService.getTeacherById(teacherId).subscribe({
-      next: (response) => {
+    this.authService.getProfile().subscribe({
+      next: (response:any) => {
         console.log(response)
-        this.currentTeacher = response
+        this.currentUser = response
 
       },
       error: (error) => {
@@ -52,12 +54,12 @@ export class ViewProfileComponent {
   get getImage() {
     let result = '';
 
-     let image=this.currentTeacher?.photoDTO.photoName;
-    if(this.currentTeacher?.photoDTO.photoName=='No Photo assigned' || null || '') image=""
+    //  let image=this.currentUser?.photoDTO.photoName;
+    // if(this.currentUser?.photoDTO.photoName=='No Photo assigned' || null || '') image=""
 
-    if (this.apiUrl && image ) {
-      result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentTeacher?.photoDTO.photoName.replace(/^\/+/, '');
-    }
+    // if (this.apiUrl && image ) {
+    //   result = this.apiUrl.replace(/\/+$/, '') + '/' + this.currentUser?.photoDTO.photoName.replace(/^\/+/, '');
+    // }
     // If the result is an empty string, it will fallback to emptyImage in the template
     return result;
   }

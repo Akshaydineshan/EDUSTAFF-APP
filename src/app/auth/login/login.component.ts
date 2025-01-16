@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from 'src/app/core/service/auth/auth.service';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
+import { UserService } from 'src/app/core/service/user.service';
 
 @Component({
   selector: 'app-login',
@@ -28,7 +30,7 @@ export class LoginComponent implements OnInit {
   errorMessage!: string;
   roleID!: number;
 
-  forgotPasswordForm !:FormGroup
+  forgotPasswordForm !: FormGroup
 
   roles = [
     { id: 1, name: 'Admin' },
@@ -36,15 +38,15 @@ export class LoginComponent implements OnInit {
     { id: 3, name: 'Manager' }
   ];
 
-  constructor(private authService: AuthService, private router: Router,private fb:FormBuilder, private tokenStore: TokenStoreService,) { 
-     this.forgotPasswordForm=this.fb.group({
-      email:['',Validators.required]
-     })
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService) {
+    this.forgotPasswordForm = this.fb.group({
+      email: ['', Validators.required]
+    })
   }
   ngOnInit(): void {
-   if(this.tokenStore.getToken()){
-    this.router.navigate(['dashboard'])
-   }
+    if (this.tokenStore.getToken()) {
+      this.router.navigate(['dashboard'])
+    }
   }
 
   toggleForgotPassword() {
@@ -75,53 +77,116 @@ export class LoginComponent implements OnInit {
   }
 
   onResetSubmit() {
-   let formValue=this.forgotPasswordForm.value
-   let data={
-    "email": formValue.email,
-    "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password/<token>"
-  }
-  this.authService.forgotPassword(data).subscribe({
-    next:(response:any)=>{
-        console.log("forgot response",response)
-    },
-    error:(error:any)=>{
-
-    },
-    complete:()=>{
-
+    let formValue = this.forgotPasswordForm.value
+    let data = {
+      "email": formValue.email,
+      "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password/<token>"
     }
-  })
+    this.authService.forgotPassword(data).subscribe({
+      next: (response: any) => {
+        console.log("forgot response", response)
+      },
+      error: (error: any) => {
 
-   }
+      },
+      complete: () => {
 
-  onLogin() {
-    if (this.email && this.password) {
-      this.authService.login(this.email, this.password, this.rememberMe).subscribe(
-        response => {
-          if (response) {
-           
-            this.errorMessage = '';
-            this.router.navigate(['/dashboard']);
-          }
-        },
-        error => {
-          debugger
-          // console.error('Login failed', error);
-          // this.errorMessage = 'Login failed. Please check your credentials.';
-          // this.router.navigate(['auth/login']);
-          if (error.status === 401 && error.error.message === 'Invalid credentials') {
-            this.errorMessage = 'Invalid credentials. Please try again.';
-          } else {
-            this.errorMessage = 'Something went wrong. Please try again later.';
-          }
-          
-          this.router.navigate(['auth/login']);
-        }
-      );
-    } else {
+      }
+    })
+
+  }
+
+  // onLogin() {
+  //   if (this.email && this.password) {
+  //     this.authService.login(this.email, this.password, this.rememberMe).subscribe(
+  //       response => {
+  //         if (response) {
+
+  //           this.authService.getProfile().subscribe({
+  //             next: (response: any) => {
+  //               if (response) {
+  //                 let loggedUser: any = response;
+  //                 this.userService.setUserDetails(loggedUser)
+  //                 this.errorMessage = '';
+  //                 this.router.navigate(['/dashboard']);
+  //               }
+
+  //             },
+  //             error: (error: any) => {
+  //               this.errorMessage = 'Something went wrong. Please try again later.';
+  //               console.error('Error loading profile:', error);
+
+  //             },
+  //             complete: () => {
+
+  //             }
+  //           })
+
+  //         }
+  //       },
+  //       error => {
+  //         debugger
+  //         // console.error('Login failed', error);
+  //         // this.errorMessage = 'Login failed. Please check your credentials.';
+  //         // this.router.navigate(['auth/login']);
+  //         if (error.status === 401 && error.error.message === 'Invalid credentials') {
+  //           this.errorMessage = 'Invalid credentials. Please try again.';
+  //         } else {
+  //           this.errorMessage = 'Something went wrong. Please try again later.';
+  //         }
+
+  //         this.router.navigate(['auth/login']);
+  //       }
+  //     );
+  //   } else {
+  //     this.errorMessage = 'Username and password are required.';
+  //   }
+  // }
+
+  onLogin(): void {
+    if (!this.email || !this.password) {
       this.errorMessage = 'Username and password are required.';
+      return;
     }
+  
+    this.authService
+      .login(this.email, this.password, this.rememberMe)
+      .pipe(
+        switchMap(() => this.authService.getProfile()), // Switch to getProfile after login
+        catchError((error) => {
+          this.handleLoginError(error);
+          return throwError(() => error); // Re-throw to stop execution
+        })
+      )
+      .subscribe({
+        next: (profile: any) => {
+          this.userService.setUserDetails(profile); // Set user details globally
+          this.errorMessage = '';
+          this.router.navigate(['/dashboard']); // Navigate to dashboard
+        },
+        error: (error: any) => {
+          this.handleProfileError(error); // Handle profile-specific errors
+        },
+      });
   }
+  
+  // Separate error handling for login errors
+  private handleLoginError(error: any): void {
+    if (error.status === 401 && error.error.message === 'Invalid credentials') {
+      this.errorMessage = 'Invalid credentials. Please try again.';
+    } else {
+      this.errorMessage = 'Something went wrong. Please try again later.';
+    }
+    console.error('Login error:', error);
+    this.router.navigate(['auth/login']);
+  }
+  
+  // Separate error handling for profile errors
+  private handleProfileError(error: any): void {
+    this.errorMessage = 'Something went wrong while fetching user details. Please try again later.';
+    console.error('Profile fetch error:', error);
+  }
+  
 
   onRegister() {
     this.authService.register(
@@ -139,11 +204,11 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/auth/login']);
       },
       error: (error) => {
-       
+
         this.errorMessage = 'Registration failed. Please check your input and try again.';  // More general error message
       }
     });
   }
-  
+
 
 }

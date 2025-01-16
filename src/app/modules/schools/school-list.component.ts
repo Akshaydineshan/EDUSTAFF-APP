@@ -75,12 +75,39 @@ export class SchoolListComponent implements OnInit {
           headerName: column.headerName,
           field: column.field,
           filter: true,
-          floatingFilter: column.field === 'name', // For example, only these columns have floating filters
-          ... (column.field === 'name' ? {
-            cellRenderer: (params: any) => `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>`,
-            width:300
-          } : {})
+          floatingFilter: column.field === 'name', // Floating filter for 'name' field only
+          ...(column.field === 'name'
+            ? {
+              // Custom rendering for the 'name' column
+              cellRenderer: (params: any) => {
+                if (params.data) {
+                  const name = params.data.name || '';
+                  const city = params.data.city || '';
+                  return `<a style="cursor: pointer; color: #246CC1;" target="_blank">${name} (${city})</a>`;
+                }
+                return '';
+              },
+              width: 300,
+            }
+            : {}),
+
+            ...(column.field === 'schoolType'
+              ? {
+                // Custom rendering for the 'name' column
+                cellRenderer: (params: any) => {
+                  console.log("parmsData",params)
+                  if (params.data.getSchoolTypes.length) {
+                    let schoolTypes:any=params.data.getSchoolTypes.map((item:any)=>(item.schoolTypeName))
+                    return  schoolTypes.join( ',')
+                  }
+                  return 'N/A';
+                },
+                width: 300,
+              }
+              : {}),
+
         }));
+
 
 
 
@@ -179,7 +206,7 @@ export class SchoolListComponent implements OnInit {
 
 
   rowMouseHover(event: any) {
-    
+
     const rowNode: any = event.node;
     const rowData = rowNode.data;
     if (event.colDef.field === "principal") {

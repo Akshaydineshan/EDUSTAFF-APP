@@ -52,4 +52,8 @@ export class AuthService {
   forgotPassword(data:any){
     return this.http.post(this.apiUrl + 'PasswordReset/forgot-password', data);
   }
+
+  getProfile(){
+    return this.http.get<any[]>(this.apiUrl + 'User/get-user', { headers: { accept: '*/*' } })
+  }
 }
