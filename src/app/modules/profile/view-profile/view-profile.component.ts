@@ -41,7 +41,7 @@ export class ViewProfileComponent {
 
       },
       error: (error) => {
-        this.router.navigate(['/teachers/teacher-list'])
+        
 
       },
       complete: () => {
