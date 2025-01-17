@@ -15,6 +15,7 @@ import { RetiredTeacherListComponent } from './retired-teacher-list/retired-teac
 import { PromotionEligiblePriorityComponent } from './promotion-eligible-priority/promotion-eligible-priority.component';
 import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
 import { TeacherSectionViewComponent } from './teacher-section-view/teacher-section-view.component';
+import { roleGuard } from 'src/app/core/gurads/role/role.guard';
 
 const routes: Routes = [
   { path: '', component: TeacherSectionViewComponent },
@@ -23,8 +24,8 @@ const routes: Routes = [
   { path: 'leave', component: LeaveRequestListComponent },
   { path: 'promotion-requests', component: PromotionRequestComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
-  { path: 'add-teacher', component: AddTeacherComponent },
-  { path: 'add-teacher/:id', component: AddTeacherComponent },
+  { path: 'add-teacher', component: AddTeacherComponent,canActivate:[roleGuard] },
+  { path: 'add-teacher/:id', component: AddTeacherComponent,canActivate:[roleGuard] },
   { path: 'teacher-details', component: TeacherDetailsComponent },
   { path: 'view-teacher/:id', component: TeacherViewComponent },
   { path: 'promotion-completed', component: PromotionCompletedListComponent },

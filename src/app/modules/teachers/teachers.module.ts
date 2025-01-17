@@ -23,6 +23,7 @@ import { PromotionEligiblePriorityComponent } from './promotion-eligible-priorit
 import { DocumentsUploadComponent } from './add-teacher/documents-upload/documents-upload.component';
 import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
 import { TeacherSectionViewComponent } from './teacher-section-view/teacher-section-view.component';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -50,10 +51,12 @@ import { TeacherSectionViewComponent } from './teacher-section-view/teacher-sect
     TeachersRoutingModule,
     SharedModule,
     FormsModule,
+    CoreModule,
     ReactiveFormsModule,
     NgxDaterangepickerBootstrapModule.forRoot()
    
   ],
+ 
   exports:[DocumentsUploadComponent],
   providers: [NgxDaterangepickerLocaleService],
 })

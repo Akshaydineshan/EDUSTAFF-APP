@@ -23,6 +23,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { BackButtonComponent } from './components/back-button/back-button.component';
 import { NoDataFoundComponent } from './components/no-data-found/no-data-found.component';
 import { RomanPipe } from './pipes/roman.pipe';
+import { AppRoleDirective } from '../core/directive/app-role.directive';
+import { CoreModule } from '../core/core.module';
 
 
 @NgModule({
@@ -42,17 +44,17 @@ import { RomanPipe } from './pipes/roman.pipe';
     EmployeeMenuClickListMenuComponent,
     BackButtonComponent,
     NoDataFoundComponent,
-    RomanPipe
+    RomanPipe,
+    
     
   ],
   imports: [
     CommonModule,
     SharedRoutingModule,
     AgGridModule,
-    
-   
     MatProgressSpinnerModule,
     ToastrModule.forRoot(),
+    CoreModule,
     NgMultiSelectDropDownModule.forRoot()
   ],
   exports: [

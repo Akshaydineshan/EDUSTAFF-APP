@@ -7,9 +7,12 @@
     <h4>School Vacant Position Lists
       <span class="badge badge-secondary">{{ this.vacantPositionList.length }}</span>
     </h4>
-    <button class="btn btn-success" [routerLink]="['/schools/vacant-position-add']">
-      <i class="fas fa-plus-circle"></i> Add Position
-    </button>
+   
+      <button class="btn btn-success" [routerLink]="['/schools/vacant-position-add']"  *appAppRole="'Staff'" >
+        <i class="fas fa-plus-circle"></i> Add Position
+      </button>
+   
+  
   </div>
 
   <!-- <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="hoveredEmployee"

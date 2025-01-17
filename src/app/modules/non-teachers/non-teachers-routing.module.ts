@@ -11,12 +11,13 @@ import { StaffTransferCompletedListComponent } from './staff-transfer-completed-
 import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
 import { StaffSectionViewComponent } from './staff-section-view/staff-section-view.component';
+import { roleGuard } from 'src/app/core/gurads/role/role.guard';
 
 const routes: Routes = [
   { path: '', component: StaffSectionViewComponent },
   { path: 'non-teacher-list', component: NonTeacherListComponent },
-  { path: 'add', component: AddNonTeacherComponent },
-  { path: 'add/:id', component: AddNonTeacherComponent },
+  { path: 'add', component: AddNonTeacherComponent,canActivate:[roleGuard] },
+  { path: 'add/:id', component: AddNonTeacherComponent,canActivate:[roleGuard] },
   { path: 'add', component: AddNonTeacherComponent },
   { path: 'view/:id', component: ViewNonTeacherDetailsComponent},
   { path: 'transfer-request', component:NonTeacherTransferlistComponent },

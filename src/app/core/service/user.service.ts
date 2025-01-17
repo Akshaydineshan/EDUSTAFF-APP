@@ -33,4 +33,16 @@ export class UserService {
     localStorage.removeItem(this.userDetailsKey); // Clear from localStorage
     localStorage.removeItem('token'); // Clear token
   }
+
+
+  get userDetails(){
+    return this.userDetailsSubject
+  }
+
+
+    // Utility method to check roles
+    hasRole(role: string): boolean {
+      const userDetails = this.userDetailsSubject.value;
+      return userDetails?.roleName === role;
+    }
 }

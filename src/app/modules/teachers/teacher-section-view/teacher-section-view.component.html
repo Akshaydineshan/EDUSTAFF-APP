@@ -72,11 +72,11 @@
                         <img src="../../../assets/icons/teach.png" alt="Help Icon" >
                         <h6>Teachers List</h6>
                     </div>
-                    <div class="sub-card" title=" Add New Teacher" [routerLink]="['/teachers/add-teacher']">
+                    <div class="sub-card" title=" Add New Teacher" [routerLink]="['/teachers/add-teacher']"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon" >
                         <h6>Add New Teacher</h6>
                     </div>
-                    <div class="sub-card" title="Update Teacher">
+                    <div class="sub-card" title="Update Teacher"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" >
                         <h6>Update Teacher Details</h6>
                     </div>

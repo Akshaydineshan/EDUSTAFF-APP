@@ -8,6 +8,7 @@ import { forkJoin } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import dayjs, { Dayjs } from 'dayjs';
+import { UserService } from 'src/app/core/service/user.service';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -87,7 +88,7 @@ export class TransferRequestListComponent implements OnInit {
   schoolList: any = []
   gridOptions: any
 
-  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router,) {
+  constructor(private dataService: DataService, private datePipe: DatePipe, private fb: FormBuilder, private toastr: ToastrService, private ngZone: NgZone, private router: Router, private userService: UserService) {
 
     this.filterForm = this.fb.group({
       designationFilter: [''],
@@ -311,39 +312,44 @@ export class TransferRequestListComponent implements OnInit {
                     nameLink.style.color = '#FFBE18';
                     divSub.style.display = "flex";
                     divSub.style.gap = "5px"
+                    if (this.userService.hasRole('Manager')) {
 
-                    let approveBtn = document.createElement('button');
-                    approveBtn.classList.add('btn', 'btn-sm', 'btn-outline-success', 'status-btn');
-                    approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
-                    approveBtn.style.width = '86px';
-                    approveBtn.style.paddingRight = "10px"
-                    approveBtn.setAttribute('title', 'Approve Transfer Request')
-
-
-
-                    let rejectBtn = document.createElement('button');
-                    rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
-                    rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
-                    rejectBtn.style.width = '80px';
-                    rejectBtn.setAttribute('title', 'Reject Transfer Request')
-
-                    divSub.appendChild(approveBtn);
-                    divSub.appendChild(rejectBtn)
+                      let approveBtn = document.createElement('button');
+                      approveBtn.classList.add('btn', 'btn-sm', 'btn-outline-success', 'status-btn');
+                      approveBtn.innerHTML = '<i class="bi bi-check-lg  " style="font-size:16px"></i>Approve';
+                      approveBtn.style.width = '86px';
+                      approveBtn.style.paddingRight = "10px"
+                      approveBtn.setAttribute('title', 'Approve Transfer Request')
 
 
-                    this.ngZone.run(() => {
-                      approveBtn.addEventListener('click', (event: any) => {
-                        if (params.onApproveClick) {
-                          params.onApproveClick(event, params);
-                        }
-                      }),
-                        rejectBtn.addEventListener('click', (event: any) => {
-                          if (params.onRejectClick) {
-                            params.onRejectClick(event, params);
+
+                      let rejectBtn = document.createElement('button');
+                      rejectBtn.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'status-btn');
+                      rejectBtn.innerHTML = '<i class="bi bi-x  " style="font-size:16px"></i> Reject';
+                      rejectBtn.style.width = '80px';
+                      rejectBtn.setAttribute('title', 'Reject Transfer Request')
+
+                      divSub.appendChild(approveBtn);
+                      divSub.appendChild(rejectBtn)
+                      this.ngZone.run(() => {
+                        approveBtn.addEventListener('click', (event: any) => {
+                          if (params.onApproveClick) {
+                            params.onApproveClick(event, params);
                           }
-                        });
+                        }),
+                          rejectBtn.addEventListener('click', (event: any) => {
+                            if (params.onRejectClick) {
+                              params.onRejectClick(event, params);
+                            }
+                          });
 
-                    })
+                      })
+
+                    }
+
+
+
+
 
                     // div.appendChild(plusButton);
 

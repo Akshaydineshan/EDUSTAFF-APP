@@ -73,11 +73,11 @@
                         <img src="../../../assets/icons/school-list.png" alt="Help Icon" width="30" height="30">
                         <h6>School List</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/schools/add-school']" title="Add New School">
+                    <div class="sub-card" [routerLink]="['/schools/add-school']" title="Add New School"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/school-add.png" alt="Help Icon" width="30" height="30">
                         <h6>Add New School</h6>
                     </div>
-                    <div class="sub-card"  title="Update School">
+                    <div class="sub-card"  title="Update School"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" width="30" height="30">
                         <h6>Update School Details</h6>
                     </div>

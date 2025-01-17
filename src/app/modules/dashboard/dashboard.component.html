@@ -82,11 +82,11 @@
                         <img src="../../../assets/icons/teach.png" alt="Help Icon" >
                         <h6>Teachers List</h6>
                     </div>
-                    <div class="sub-card" title=" Add New Teacher" [routerLink]="['/teachers/add-teacher']">
+                    <div class="sub-card" title=" Add New Teacher" [routerLink]="['/teachers/add-teacher']"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon" >
                         <h6>Add New Teacher</h6>
                     </div>
-                    <div class="sub-card" title="Update Teacher">
+                    <div class="sub-card" title="Update Teacher"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" >
                         <h6>Update Teacher Details</h6>
                     </div>
@@ -141,11 +141,11 @@
                         <img src="../../../assets/icons/staff.png" alt="Help Icon" >
                         <h6>List</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/non-teachers/add']" title="Add New ">
+                    <div class="sub-card" [routerLink]="['/non-teachers/add']" title="Add New "  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon" >
                         <h6>Add New</h6>
                     </div>
-                    <div class="sub-card" title="Update Non Teacher">
+                    <div class="sub-card" title="Update Non Teacher" *appAppRole="'Staff'">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" >
                         <h6>Update Details</h6>
                     </div>
@@ -197,11 +197,11 @@
                         <img src="../../../assets/icons/school-list.png" alt="Help Icon" width="30" height="30">
                         <h6>School List</h6>
                     </div>
-                    <div class="sub-card" [routerLink]="['/schools/add-school']" title="Add New School">
+                    <div class="sub-card" [routerLink]="['/schools/add-school']" title="Add New School"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/school-add.png" alt="Help Icon" width="30" height="30">
                         <h6>Add New School</h6>
                     </div>
-                    <div class="sub-card"  title="Update School">
+                    <div class="sub-card"  title="Update School"  *appAppRole="'Staff'">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon" width="30" height="30">
                         <h6>Update School Details</h6>
                     </div>

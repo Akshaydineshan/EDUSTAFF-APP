@@ -9,6 +9,7 @@ import { LayoutModule } from 'src/app/layout/layout.module';
 import { TopbarComponent } from 'src/app/layout/topbar/topbar.component';
 import { SidebarComponent } from 'src/app/layout/sidebar/sidebar.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     DashboardRoutingModule,
     HttpClientModule,
-    SharedModule
+    SharedModule,CoreModule
     // LayoutModule
     
   ],

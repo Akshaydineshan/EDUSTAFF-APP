@@ -91,7 +91,6 @@ export class ProfileDetailsEditComponent implements OnInit {
       let data: any = {
         "firstName": formValue.firstName,
         "lastName": formValue.lastName,
-        "email": formValue.email,
         "dateOfBirth": formValue.dob
       }
       this.profileService.updateUser(userId,data).subscribe({

@@ -11,19 +11,20 @@ import { SchoolwiseTeacherListComponent } from './schoolwise-teacher-list/school
 import { SchoolSectionViewComponent } from './school-section-view/school-section-view.component';
 import { VacantPositionAddComponent } from './vacant-position-add/vacant-position-add.component';
 import { SchoolwiceStaffListComponent } from './schoolwice-staff-list/schoolwice-staff-list.component';
+import { roleGuard } from 'src/app/core/gurads/role/role.guard';
 
 const routes: Routes = [
   { path: '', component: SchoolSectionViewComponent },
   { path: 'school-list', component: SchoolListComponent },
   { path: 'demo', component: TestDemoComponent },
   { path: 'vacant-positions', component: SchoolVacantPositionsComponent },
-  { path: 'add-school', component: AddSchoolComponent },
-  { path: 'add-school/:id', component: AddSchoolComponent },
+  { path: 'add-school', component: AddSchoolComponent ,canActivate:[roleGuard]},
+  { path: 'add-school/:id', component: AddSchoolComponent,canActivate:[roleGuard] },
   { path: 'view/:id', component: ViewSchoolComponent },
   { path: 'eligible-promotions', component: PromotionEligibleListComponent },
   { path: 'teacher-list', component: SchoolwiseTeacherListComponent },
   { path: 'staff-list', component: SchoolwiceStaffListComponent },
-  { path: 'vacant-position-add', component:VacantPositionAddComponent  },
+  { path: 'vacant-position-add', component:VacantPositionAddComponent ,canActivate:[roleGuard] },
   {
     path: '**',
     component: PageNotFoundComponent

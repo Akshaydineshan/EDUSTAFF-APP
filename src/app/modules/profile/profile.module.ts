@@ -8,6 +8,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProfileDetailsEditComponent } from './profile-details-edit/profile-details-edit.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { CoreModule } from 'src/app/core/core.module';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     ProfileRoutingModule,
     SharedModule,
     FormsModule,
+    CoreModule,
     ReactiveFormsModule,
   ],
   exports:[ProfileDetailsEditComponent]

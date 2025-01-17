@@ -15,6 +15,8 @@ import { SchoolwiseTeacherListComponent } from './schoolwise-teacher-list/school
 import { SchoolSectionViewComponent } from './school-section-view/school-section-view.component';
 import { VacantPositionAddComponent } from './vacant-position-add/vacant-position-add.component';
 import { SchoolwiceStaffListComponent } from './schoolwice-staff-list/schoolwice-staff-list.component';
+import { CoreModule } from 'src/app/core/core.module';
+import { AppRoleDirective } from 'src/app/core/directive/app-role.directive';
 
 @NgModule({
   declarations: [
@@ -27,15 +29,19 @@ import { SchoolwiceStaffListComponent } from './schoolwice-staff-list/schoolwice
     SchoolwiseTeacherListComponent,
     SchoolSectionViewComponent,
     VacantPositionAddComponent,
-    SchoolwiceStaffListComponent
+    SchoolwiceStaffListComponent,
+   
+   
   ],
   imports: [
     CommonModule,
     SchoolsRoutingModule,
     SharedModule,
     FormsModule,
+    CoreModule,
     ReactiveFormsModule,
     NgMultiSelectDropDownModule.forRoot()
   ]
+  
 })
 export class SchoolsModule { }
