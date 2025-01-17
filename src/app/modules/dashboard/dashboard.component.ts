@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { interval, map, take } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
+import { UserService } from 'src/app/core/service/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,14 +20,19 @@ export class DashboardComponent implements OnInit {
     promotionEligible: 0
   };
   error: string | null = null;
+  loggedUserDetails: any;
 
   constructor(
     private tokenStore: TokenStoreService,
     private dataService: DataService,
-    private router: Router
+    private router: Router,
+    private userService:UserService
   ) { }
   ngOnInit(): void {
     this.loadDashboardStats();
+    this.userService.getUserDetails$().subscribe((res:any)=>{
+      this.loggedUserDetails=res;
+    })
   }
 
   loadDashboardStats(): void {

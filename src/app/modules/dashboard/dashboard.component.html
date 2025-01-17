@@ -4,7 +4,7 @@
 
 <div class="container" [class.shifted]="isSidebarClosed">
     <div class="stats-panel">
-        <h2 class=" mb-4" style="padding: 0px 2rem;">Welcome Admin</h2>
+        <h2 class=" mb-4" style="padding: 0px 2rem;">Welcome {{loggedUserDetails.firstName + " " + loggedUserDetails.lastName}} !  You are logged in as {{loggedUserDetails.roleName}}.</h2>
 
         <!-- <div class="d-flex" > -->
             <div class="row" style="padding: 0px  0px 0px 2rem ;">
