@@ -17,6 +17,7 @@ import { VacantPositionAddComponent } from './vacant-position-add/vacant-positio
 import { SchoolwiceStaffListComponent } from './schoolwice-staff-list/schoolwice-staff-list.component';
 import { CoreModule } from 'src/app/core/core.module';
 import { AppRoleDirective } from 'src/app/core/directive/app-role.directive';
+import { AuthoritiesListComponent } from './authorities-list/authorities-list.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AppRoleDirective } from 'src/app/core/directive/app-role.directive';
     SchoolSectionViewComponent,
     VacantPositionAddComponent,
     SchoolwiceStaffListComponent,
+    AuthoritiesListComponent,
    
    
   ],
