@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Toast } from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { DataService } from 'src/app/core/service/data/data.service';
+import { UserService } from 'src/app/core/service/user.service';
 interface PagonationConfig {
   pagination: boolean,
   paginationPageSize: number,
@@ -20,7 +21,7 @@ export class PromotionEligibleListComponent {
   // column menu hover related 
   selectMenuRowData: any;
   menuListItems: any[] = [
-    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest',icons:'bi bi-trophy' },]
+    { name: 'Promotion Request', icon: "assets/icons/transfer-request.jpg", value: 'promotionRequest', icons: 'bi bi-trophy' },]
   isMenuVisible: boolean = false;
   mouseMenuX: number = 0;
   mouseMenuY: number = 0;
@@ -43,15 +44,15 @@ export class PromotionEligibleListComponent {
   hoveredEmployee: any;
   showPopup!: boolean;
 
-  constructor(private dataService: DataService, private ngZone: NgZone, private router: Router, private fb: FormBuilder,private toastr:ToastrService) { }
+  constructor(private dataService: DataService, private ngZone: NgZone, private router: Router, private fb: FormBuilder, private toastr: ToastrService,private userService:UserService) { }
 
   ngOnInit(): void {
     this.loadPromotionEligibleList();
 
     this.promotionRequestForm = this.fb.group({
-      fromSchool:[''],
-      fromDesignation:[''],
-      toDesignation:[''],
+      fromSchool: [''],
+      fromDesignation: [''],
+      toDesignation: [''],
       documentUrl: [''],
       comment: ['']
     })
@@ -122,7 +123,7 @@ export class PromotionEligibleListComponent {
         this.promotionEligibleTableColumns = this.displayColumns.map((column: any) => {
           return {
             field: column,
-            headers:column,
+            headers: column,
             filter: true,
             floatingFilter: column === 'name',
             ... (column === 'name' ? {
@@ -196,36 +197,39 @@ export class PromotionEligibleListComponent {
                   });
 
                 })
+                   // Append the elements to the div
+                   divSub.appendChild(nameLink)
+                   div.appendChild(divSub);
 
 
+                if (this.userService.hasRole('Staff')) {
+                  // Create another anchor element for the plus button
+                  const plusButton = document.createElement('a');
+                  plusButton.classList.add("menuButton")
 
 
-                // Create another anchor element for the plus button
-                const plusButton = document.createElement('a');
-                plusButton.classList.add("menuButton")
+                  // plusButton.style.float = 'right';
+                  plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
+                  this.ngZone.run(() => {
+                    plusButton.addEventListener('click', (event) => {
+                      if (params.onPlusButtonClick) {
+                        params.onPlusButtonClick(event, params);
+                      }
+                    });
+                  })
+                  this.ngZone.run(() => {
+                    plusButton.addEventListener('mouseleave', (event) => {
+                      if (params.onPlusButtonHoverout) {
+                        params.onPlusButtonHoverout(event, params);
+                      }
+                    });
+                  })
 
 
-                // plusButton.style.float = 'right';
-                plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
-                this.ngZone.run(() => {
-                  plusButton.addEventListener('click', (event) => {
-                    if (params.onPlusButtonClick) {
-                      params.onPlusButtonClick(event, params);
-                    }
-                  });
-                })
-                this.ngZone.run(() => {
-                  plusButton.addEventListener('mouseleave', (event) => {
-                    if (params.onPlusButtonHoverout) {
-                      params.onPlusButtonHoverout(event, params);
-                    }
-                  });
-                })
+                  div.appendChild(plusButton);
+                }
 
-                // Append the elements to the div
-                divSub.appendChild(nameLink)
-                div.appendChild(divSub);
-                div.appendChild(plusButton);
+
 
                 return div;
               },
@@ -280,7 +284,7 @@ export class PromotionEligibleListComponent {
         "employeeID": employee.id,
         "requestorComment": formValue.comment,
         "filePath": formValue.documentUrl
-     
+
       }
 
 

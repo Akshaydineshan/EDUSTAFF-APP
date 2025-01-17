@@ -11,6 +11,7 @@ import { forkJoin } from 'rxjs';
 import { minAndMaxDateValidator } from 'src/app/utils/validators/date-range-validator';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { getFileName, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
+import { UserService } from 'src/app/core/service/user.service';
 
 interface PagonationConfig {
   pagination: boolean,
@@ -121,7 +122,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   schoolDropDownListForFilter!: any[];
 
 
-  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone) {
+  constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone,private userService:UserService) {
     this.filterForm = this.fb.group({
       subjectFilter: [''],
       retiringInMonths: [],
@@ -508,7 +509,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
     this.dataService.getTeachersData().subscribe(
       (data) => {
-         console.log("teacher List->",data);
+        console.log("teacher List->", data);
         this.teacherList = data.map((teacher: Teacher) => ({
           ...teacher,
           documentStatus: this.getDocumentStatus(teacher.documentCount, teacher.error)
@@ -589,35 +590,41 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
               })
 
-
-
-
-              // Create another anchor element for the plus button
-              const plusButton = document.createElement('a');
-              plusButton.classList.add("menuButton")
-
-
-              // plusButton.style.float = 'right';
-              plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
-              this.ngZone.run(() => {
-                plusButton.addEventListener('click', (event) => {
-                  if (params.onPlusButtonClick) {
-                    params.onPlusButtonClick(event, params);
-                  }
-                });
-              })
-              this.ngZone.run(() => {
-                plusButton.addEventListener('mouseleave', (event) => {
-                  if (params.onPlusButtonHoverout) {
-                    params.onPlusButtonHoverout(event, params);
-                  }
-                });
-              })
-
-              // Append the elements to the div
               divSub.appendChild(nameLink)
               div.appendChild(divSub);
-              div.appendChild(plusButton);
+              if (this.userService.hasRole('Staff')) {
+
+                // Create another anchor element for the plus button
+                const plusButton = document.createElement('a');
+                plusButton.classList.add("menuButton")
+
+
+                // plusButton.style.float = 'right';
+                plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
+                this.ngZone.run(() => {
+                  plusButton.addEventListener('click', (event) => {
+                    if (params.onPlusButtonClick) {
+                      params.onPlusButtonClick(event, params);
+                    }
+                  });
+                })
+                this.ngZone.run(() => {
+                  plusButton.addEventListener('mouseleave', (event) => {
+                    if (params.onPlusButtonHoverout) {
+                      params.onPlusButtonHoverout(event, params);
+                    }
+                  });
+                })
+
+                // Append the elements to the div
+
+                div.appendChild(plusButton);
+
+              }
+
+
+
+
 
               return div;
             },
