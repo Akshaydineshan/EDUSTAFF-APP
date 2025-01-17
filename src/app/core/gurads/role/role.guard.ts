@@ -13,7 +13,7 @@ export const roleGuard: CanActivateFn = (route, state) => {
   const userDetails = userService.userDetails.value;
   console.log("user details inside guard", userDetails)
 
-  if (userDetails && userDetails.roleName === 'Manager') {
+  if (userDetails && userDetails.roleName === 'Staff') {
     return true;
   }
   toastr.warning('Access Denied !', 'Warning', {
