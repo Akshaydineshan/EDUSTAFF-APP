@@ -82,12 +82,16 @@ export class LoginComponent implements OnInit {
       "email": formValue.email,
       "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password/<token>"
     }
+    console.log("data",data)
     this.authService.forgotPassword(data).subscribe({
       next: (response: any) => {
         console.log("forgot response", response)
+        this.forgotPasswordMode=false;
+        this.registerMode=false;
       },
       error: (error: any) => {
-
+        this.forgotPasswordMode=false;
+        this.registerMode=false;
       },
       complete: () => {
 

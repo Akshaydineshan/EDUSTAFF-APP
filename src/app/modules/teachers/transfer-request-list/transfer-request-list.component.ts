@@ -224,7 +224,7 @@ export class TransferRequestListComponent implements OnInit {
 
   @HostListener('mousemove', ['$event'])
   updateMousePosition(event: MouseEvent): void {
-    const offset = 15; // Offset for positioning
+    const offset = 10; // Offset for positioning
     this.mouseX = event.clientX + offset;
     this.mouseY = event.clientY + offset;
     const popupWidth = 420; // Assume a fixed width for the popup
@@ -550,7 +550,7 @@ export class TransferRequestListComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 450);
+      },this.dataService.hoverTime);
     }
   }
 
@@ -586,7 +586,7 @@ export class TransferRequestListComponent implements OnInit {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 450);
+      },this.dataService.hoverTime);
     }
   }
   onTeacherMouseOut(): void {

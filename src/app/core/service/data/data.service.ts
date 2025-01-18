@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DataService {
+  hoverTime:number=560;
 
   apiUrl = environment.apiUrl;
 

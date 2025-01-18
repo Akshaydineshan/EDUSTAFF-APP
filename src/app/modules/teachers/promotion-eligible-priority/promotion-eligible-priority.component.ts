@@ -193,7 +193,7 @@ export class PromotionEligiblePriorityComponent {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 300);
+      },this.dataService.hoverTime);
     }
   }
 
@@ -229,7 +229,7 @@ export class PromotionEligiblePriorityComponent {
             console.error('Error fetching teacher details:', error);
           }
         );
-      }, 200);
+      },this.dataService.hoverTime);
     }
   }
   onTeacherMouseOut(): void {

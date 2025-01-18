@@ -143,7 +143,7 @@ export class SchoolVacantPositionsComponent implements OnInit {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 560);
+      },this.dataService.hoverTime);
     }
   }
 

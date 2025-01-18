@@ -962,7 +962,7 @@ export class SchoolwiceStaffListComponent {
         //     console.error('Error fetching teacher details:', error);
         //   }
         // );
-      }, 450);
+      },this.dataService.hoverTime);
     }
   }
 
@@ -988,7 +988,7 @@ export class SchoolwiceStaffListComponent {
             console.error('Error fetching school details:', error);
           }
         );
-      }, 450);
+      },this.dataService.hoverTime);
     }
   }
 
