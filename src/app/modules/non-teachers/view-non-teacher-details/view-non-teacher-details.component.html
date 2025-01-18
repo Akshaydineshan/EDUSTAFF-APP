@@ -338,6 +338,10 @@
                                         <ul class="info-list mt-2"
                                                 *ngFor="let item of currentTeacher.getEducations; let i = index;">
                                                 <p class="s-h">Education {{i+1}}</p>
+                                                <li *ngIf="item.educationTypeName">
+                                                        <strong class="field">Education Type:</strong>
+                                                        <span class="field-val">{{ item.educationTypeName }}</span>
+                                                </li>
                                                 <li *ngIf="item.courseText !='Others'; else otherName">
                                                         <strong class="field">Course Name:</strong>
                                                         <span class="field-val">{{ item.courseText }}</span>
