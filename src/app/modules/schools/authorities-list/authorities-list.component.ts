@@ -21,7 +21,7 @@ export class AuthoritiesListComponent {
   // table related vaiables
 
   displayColumns: any[] = [{ headerName: 'SchoolName', field: 'schoolName' }, { headerName: 'Principal Name', field: 'principalName' }, { headerName: 'Principal Phone', field: 'principalPhone' }, { headerName: 'Vice Principal Name', field: 'vicePrincipalName' }, { headerName: 'Vice Principal Phone', field: 'vicePrincipalPhone' },];
-  paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
+  paginationConfig: PagonationConfig = { pagination: false, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
   tableRows: any;
   tableColumns!: { field: string; filter: boolean; floatingFilter: boolean }[];
@@ -236,5 +236,9 @@ export class AuthoritiesListComponent {
     this.showPopup = false;
     this.showSchoolPopup = false;
 
+  }
+
+  print(){
+    window.print()
   }
 }

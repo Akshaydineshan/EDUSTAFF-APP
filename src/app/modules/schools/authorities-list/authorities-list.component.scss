@@ -1,12 +1,33 @@
 .main-container {
 
-    padding: 2rem;
-    margin-left: 60px;
-    padding-top: 50px  !important;
-    padding-bottom: 2rem;
-    transition: margin-left 0.3s;
+  padding: 2rem;
+  margin-left: 60px;
+  padding-top: 50px !important;
+  padding-bottom: 2rem;
+  transition: margin-left 0.3s;
+}
+
+.main-container.shifted {
+  margin-left: 0 !important;
+}
+
+@media print {
+  @page {
+    margin: 5in;
+    /* Set the page margin to 1 inch on all sides */
   }
-  
-  .main-container.shifted {
-    margin-left: 0 !important;
+  button{
+    display: none;
   }
+
+  app-topbar,
+  app-sidebar {
+    display: none;
+    /* Hide these elements during print */
+  }
+
+  .main-container {
+    margin: 0px;
+    padding: 0px;
+  }
+}

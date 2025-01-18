@@ -1502,5 +1502,8 @@ export class SchoolwiseTeacherListComponent {
     this.loadTeachersList()
   }
 
+  print(){
+    window.print()
+  }
 
 }

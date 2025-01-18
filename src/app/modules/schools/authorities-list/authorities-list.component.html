@@ -8,6 +8,9 @@
         <h4>Authority List
             <span class="badge badge-secondary">{{ this.tableDataList.length }}</span>
         </h4>
+        <button class="btn btn-success" (click)="print()" *ngIf="tableDataList.length">
+            <i class="bi bi-printer"></i> Print
+        </button>
         <!-- <button class="btn btn-success" [routerLink]="['/schools/add-school']">
       <i class="fas fa-plus-circle"></i> Add School Details
     </button> -->

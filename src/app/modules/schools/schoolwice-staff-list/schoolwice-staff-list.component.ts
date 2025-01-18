@@ -1332,4 +1332,9 @@ export class SchoolwiceStaffListComponent {
     this.loadTeachersList()
   }
 
+  
+  print(){
+    window.print()
+  }
+
 }

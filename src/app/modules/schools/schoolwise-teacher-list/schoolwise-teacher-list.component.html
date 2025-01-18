@@ -125,6 +125,10 @@
                 <i class="fas fa-plus-circle"></i> Add Teacher Details
             </button> -->
         </div>
+
+        <button class="btn btn-success" (click)="print()" *ngIf="teacherList.length">
+            <i class="bi bi-printer"></i> Print
+        </button>
     </div>
 
     <!-- 
@@ -181,9 +185,10 @@
 
 
 
-            <ng-multiselect-dropdown [placeholder]="'Select School Type'" [(ngModel)]="selectedSchoolTypeFromDropdownList"
-                [settings]="schoolTypeDropdownSettings" [data]="schoolTypeDropDownListForFilter"
-                (onSelect)="onFilterChange()"  (ngModelChange)="onModelChange($event)" />
+            <ng-multiselect-dropdown [placeholder]="'Select School Type'"
+                [(ngModel)]="selectedSchoolTypeFromDropdownList" [settings]="schoolTypeDropdownSettings"
+                [data]="schoolTypeDropDownListForFilter" (onSelect)="onFilterChange()"
+                (ngModelChange)="onModelChange($event)" />
         </div>
     </div>
 
