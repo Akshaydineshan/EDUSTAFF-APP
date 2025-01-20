@@ -90,5 +90,9 @@ export class ViewNonTeacherDetailsComponent {
     return this.isSidebarClosed;
   }
 
+  print(){
+    window.print()
+  }
+
 
 }

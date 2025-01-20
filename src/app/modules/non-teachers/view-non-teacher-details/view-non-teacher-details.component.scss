@@ -208,3 +208,37 @@ img.pdf-icon:hover {
     color: #0056b3;
     /* Darker blue on hover */
 }
+
+
+@media print {
+
+    app-topbar,
+    app-sidebar {
+        display: none;
+        /* Hide these elements during print */
+    }
+
+    .main-container {
+
+       margin-top:0px;
+        margin: 0px;
+        padding: 0px;
+
+
+    }
+
+    button {
+        display: none;
+    }
+
+    .li,
+    .upload-doc {
+        page-break-inside: avoid;
+
+    }
+   
+
+
+
+
+}
