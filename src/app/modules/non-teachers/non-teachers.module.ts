@@ -19,6 +19,7 @@ import { TeachersModule } from '../teachers/teachers.module';
 import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
 import { StaffSectionViewComponent } from './staff-section-view/staff-section-view.component';
+import { CoreModule } from 'src/app/core/core.module';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { StaffSectionViewComponent } from './staff-section-view/staff-section-vi
     TeachersModule,
     SharedModule,
     FormsModule,
+    CoreModule,
     ReactiveFormsModule,
     NgxDaterangepickerBootstrapModule.forRoot()
   ]
