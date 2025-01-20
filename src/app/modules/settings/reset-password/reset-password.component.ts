@@ -18,10 +18,10 @@ export class ResetPasswordComponent {
 
   constructor(private fb: FormBuilder, private settingsService: SettingsService, private toastr: ToastrService,private tokenService:TokenStoreService,private router:Router) {
     this.resetPasswordForm = this.fb.group({
-      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]],
+      password: ['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{8,20}$/)]],
       confirmPassword: ['', Validators.required,],
       // email: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/)]],
-      oldPassword:['', [Validators.required, Validators.minLength(6), Validators.pattern(/^[a-zA-Z0-9]+$/)]]
+      oldPassword:['', [Validators.required, Validators.minLength(6), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{8,20}$/)]]
      
     },
       { validator: this.passwordMatchValidator });
