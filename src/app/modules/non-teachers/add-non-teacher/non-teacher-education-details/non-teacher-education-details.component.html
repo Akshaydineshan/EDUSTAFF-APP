@@ -19,17 +19,12 @@
           </div>
         </div>
         <div class="col-sm-2">
-          <button 
-          type="button" 
-          class="btn btn-danger btn-sm d-flex align-items-center gap-1" 
-          (click)="removeCourse(i)" 
-          *ngIf="educations.length > 1" 
-          aria-label="Remove Course" 
-          data-bs-toggle="tooltip" 
-          title="Remove this education">
-          <i class="bi bi-x-circle"></i>
-         
-        </button>
+          <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1" (click)="removeCourse(i)"
+            *ngIf="educations.length > 1" aria-label="Remove Course" data-bs-toggle="tooltip"
+            title="Remove this education">
+            <i class="bi bi-x-circle"></i>
+
+          </button>
         </div>
       </div>
 
@@ -208,10 +203,15 @@
               </div>
             </div>
           </div>
+          <div *ngIf="course.get('certificate')?.invalid  && (course.get('certificate')?.touched || submitted)">
+            <small class="text-danger" *ngIf="course.get('certificate')?.errors?.['required']">
+              Please Select File .
+            </small>
+          </div>
         </div>
       </div>
 
-      
+
       <div class="row mb-2 mt-3" *ngIf="getDocument(i)">
         <div class="col-sm-3">
 
@@ -221,17 +221,17 @@
             <div class="uploaded-file">
               <div style="display: flex; align-items: center; gap: 9px; padding:0 0px; ">
                 <!-- <i class="bi bi-filetype-pdf" style="height:30px; font-size: 24px;"></i> -->
-                <img  [src]="transform(getDocument(i))" alt="" style="width:28px; height:30px;">
+                <img [src]="transform(getDocument(i))" alt="" style="width:28px; height:30px;">
 
                 <div class="r-l " style="display: flex; flex-direction: column; align-items: start; ">
-                  <p class="f-n" style="margin: 0;"   >{{ getTruncatedFileName(fileName[i], 25) }}</p>
-              
-                  <p class="f-s" *ngIf="fileSize[i]" style="margin:0;" >{{fileSize[i]}} - 100% uploaded</p>
+                  <p class="f-n" style="margin: 0;">{{ getTruncatedFileName(fileName[i], 25) }}</p>
+
+                  <p class="f-s" *ngIf="fileSize[i]" style="margin:0;">{{fileSize[i]}} - 100% uploaded</p>
                 </div>
               </div>
 
               <div class="right me-3">
-                <i  (click)="removeLeaveApplicationDocument(i)"  class="fa-regular fa-trash-can"></i>
+                <i (click)="removeLeaveApplicationDocument(i)" class="fa-regular fa-trash-can"></i>
               </div>
 
             </div>
@@ -255,7 +255,7 @@
         </button>
         </div>
       </div> -->
-      
+
       <!-- <div class="row mb-3 ">
         <div class="col-sm-2 offset-sm-3">
           <button 
@@ -275,11 +275,8 @@
 
   <div class="row mb-4">
     <div class="col-sm-3 text-end offset-sm-9">
-      <button 
-        type="button" 
-        class="btn btn-primary btn-sm d-flex align-items-center justify-content-center py-1 px-2" 
-        (click)="addCourse()"
-      >
+      <button type="button" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center py-1 px-2"
+        (click)="addCourse()">
         <i class="bi bi-plus-circle me-1"></i> Add Course
       </button>
     </div>

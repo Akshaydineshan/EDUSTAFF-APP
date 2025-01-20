@@ -39,13 +39,59 @@ export class DocumentsUploadComponent implements OnInit {
     return this.documentForm.get('documents') as FormArray;
   }
 
+  validateNonRequiredDocSetError(index: number): boolean {
+    const documentTypeControl = this.documents.at(index).get('documentType');
+    const documentFileControl = this.documents.at(index).get('documentFile');
+    console.log( this.showValidations[index], !documentTypeControl?.value,documentFileControl)
+    const isInvalid =
+    
+      !documentTypeControl?.value &&
+      index === 0 &&
+      documentFileControl?.value;
+  
+    if (isInvalid) {
+      documentTypeControl?.setErrors({ required: true });
+    }else{
+      documentTypeControl?.setErrors(null)
+    }
+    return isInvalid;
+  }
+  validateNonRequiredDocFileSetError(index: number): boolean {
+    const documentTypeControl = this.documents.at(index).get('documentType');
+    const documentFileControl = this.documents.at(index).get('documentFile');
+    console.log( this.showValidations[index], !documentTypeControl?.value,documentFileControl)
+    const isInvalid =
+     documentTypeControl?.value &&
+      index == 0 &&
+      !documentFileControl?.value 
+  
+    if (isInvalid) {
+      documentFileControl?.setErrors({ required: true });
+    }else{
+      documentFileControl?.setErrors(null)
+    }
+    return isInvalid;
+  }
+
 
   // Add a new document entry
   addDocument(): void {
-    const documentForm = this.fb.group({
-      documentType: ['', Validators.required],
-      documentFile: [null, Validators.required]
-    });
+    let  documentForm :any
+    console.log("docu",this.documents.length)
+    if ( this.documents.length == 0) {
+     documentForm = this.fb.group({
+        documentType: ['',],
+        documentFile: [null,]
+      });
+    } else {
+       documentForm = this.fb.group({
+        documentType: ['', Validators.required],
+        documentFile: [null, Validators.required]
+      });
+    }
+
+    console.log("f",documentForm)
+
 
     this.documents.push(documentForm);
   }
@@ -166,7 +212,7 @@ export class DocumentsUploadComponent implements OnInit {
   //     }else{
   //       documents.at(index).get('documentFile')?.patchValue({ documentName: this.files[index].name, documentID: documents.at(index).get('documentFile')?.value.documentID })
   //     }
-     
+
   //     // Generate preview URL
   //     console.log("files", this.files);
   //     const reader = new FileReader();
@@ -226,13 +272,13 @@ export class DocumentsUploadComponent implements OnInit {
     if (file) {
       this.files[index] = file;
       this.fileName[index] = file.name;
-  
+
       // Calculate file size
       let totalBytes = file.size;
       this.fileSize[index] = totalBytes < 1000000
         ? Math.floor(totalBytes / 1000) + 'KB'
         : Math.floor(totalBytes / 1000000) + 'MB';
-  
+
       // Update FormArray with file details
       const documents = this.documentForm.get('documents') as FormArray;
       const documentFileControl = documents.at(index).get('documentFile');
@@ -242,8 +288,8 @@ export class DocumentsUploadComponent implements OnInit {
         documentID: documentID
       });
 
-      console.log("file select",documents)
-  
+      console.log("file select", documents)
+
       // Generate preview URL
       const reader = new FileReader();
       reader.onload = () => {
@@ -251,24 +297,26 @@ export class DocumentsUploadComponent implements OnInit {
         console.log(`${sourceType} preview`, this.previewUrls);
       };
       reader.readAsDataURL(file);
-  
+
       // Emit event with updated files and preview URLs
       this.FileChange.emit({ files: this.files, previewUrl: this.previewUrls });
     }
   }
-  
+
   onFileSelected(event: any, index: number): void {
     debugger;
     const file = event.target.files[0];
+    this.showValidations[index] = true;
     this.handleFileSelection(file, index, 'onFileSelected');
   }
-  
+
   onFileSelectedDragAndDrop(event: any, index: number): void {
     debugger;
     const file = event.dataTransfer.files[0];
+    this.showValidations[index] = true;
     this.handleFileSelection(file, index, 'onFileSelectedDragAndDrop');
   }
-  
+
 
   uploadCertificate(index: any, documentType: any): void {
     debugger
@@ -306,7 +354,7 @@ export class DocumentsUploadComponent implements OnInit {
     // console.log("DOCUMENTFILE", this.documents.at(index)?.get('documentFile')?.value?)
 
     let image = this.documents.at(index)?.get('documentFile')?.value?.documentName;
-    console.log("image",image)
+    console.log("image", image)
     if (
       this.documents.at(index)?.get('documentType')?.value?.documentName === 'No Document' ||
       this.documents.at(index)?.get('documentType')?.value?.documentName === null ||

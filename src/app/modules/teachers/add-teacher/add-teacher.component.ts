@@ -335,7 +335,7 @@ export class AddTeacherComponent implements OnInit {
           ],
 
           toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
-          certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
+          certificate: [(education.documentID && education.documentpath) ? { documentID: education.documentID, documentName: education.documentpath } : null, [Validators.required]]
         },
           {
             validators: dateRangeValidator('fromDate', 'toDate')
@@ -372,15 +372,15 @@ export class AddTeacherComponent implements OnInit {
       documentData.map((doc: any) => {
         if (doc.documentID === null) {
           return this.fb.group({
-            documentType: "",
-            documentFile: { documentID: "", documentName: "" }
+            documentType: ["", documentData.length > 1 ? Validators.required : null],
+            documentFile: [{ documentID: "", documentName: "" }, documentData.length > 1 ? Validators.required : null]
 
           }
           )
         }
         return this.fb.group({
-          documentType: doc.documentName,
-          documentFile: { documentID: doc.documentID, documentName: doc.documentpath }
+          documentType: [doc.documentName, documentData.length > 1 ? Validators.required : null],
+          documentFile: [{ documentID: doc.documentID, documentName: doc.documentpath }, documentData.length > 1 ? Validators.required : null]
 
         }
         )
@@ -647,7 +647,7 @@ export class AddTeacherComponent implements OnInit {
       schoolName: ['',],
       fromDate: ['',],
       toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
-      certificate: ['']
+      certificate: ['',Validators.required]
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
     );
@@ -753,7 +753,7 @@ export class AddTeacherComponent implements OnInit {
     this.submitBtnStatus[statusKey] = true;
 
     // Check form validity or allow the final step
-    if (currentForm.valid || this.currentStep === 4) {
+    if (currentForm.valid) {
       this.currentStep++;
       if (this.currentStep === this.steps.length) {
         this.onSubmit(); // Collect form data for preview

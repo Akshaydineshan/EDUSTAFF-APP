@@ -470,58 +470,63 @@
     <div class="row g-0 " *ngIf="fullFormData.documents.length">
       <div class="col-md-6  mt-3">
 
-        <h5 class="det-header">Documents Details</h5>
+      
         <ul class="list-unstyled" *ngFor="let item of fullFormData.documents;let i=index;">
-          <h4>Documents {{i+1}}</h4>
-          <li class="key-value-item">
-            <strong>Document Type:</strong> <span>{{item.documentType}}</span>
-          </li>
-
-
-          <!-- <li class="key-value-item"
-            *ngIf="item.documentFile['documentName'] && item.documentFile['documentID']&& item.documentFile['documentName'] != 'No Document' && item.documentFile['documentName'] != '' ">
-            <strong>Document File:</strong>
-            <span class="certificate-preview">
-           
-              <img (click)="pdfClick(item.documentFile['documentName'])" [src]="'../../../../assets/icons/pdf-file.png'"
-                alt="PDF file" class="pdf-icon" />
-            
-              <span class="pdf-file-name" (click)="pdfClick(item.documentFile['documentName'])">
-                {{ item.documentFile['documentName']?.substring(item.documentFile['documentName'].lastIndexOf('/') + 1)
-                }}
-              </span>
-            </span>
-          </li> -->
-
-          <li class="key-value-item" *ngIf="!item.documentFile.documentID  ">
-            <strong>Document File:</strong>
-            <span class="certificate-preview">
-
-              <img (click)="pdfClick(item.documentFile)" [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF file"
-                class="pdf-icon" />
-
-              <span class="pdf-file-name" (click)="pdfClick(item.documentFile)">
-                {{ item.documentFile['documentName']
-                }}
-              </span>
-            </span>
-          </li>
-
-          <li class="key-value-item" *ngIf="item.documentFile.documentID && item.documentFile.documentID != '' ">
-            <strong>Document File:</strong>
-            <span class="certificate-preview">
-
-              <img (click)="pdfClick(item.documentFile.documentName)" [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF file"
-                class="pdf-icon" />
-
-                <span class="pdf-file-name" (click)="pdfClick(item.documentFile['documentName'])" >
-                  {{ item.documentFile['documentName']?.substring(item.documentFile['documentName'].lastIndexOf('/') + 1) }}
+         
+          <ng-container *ngIf="item.documentType &&  item.documentFile ">
+            <h5 class="det-header">Documents Details</h5>
+            <h4>Documents {{i+1}}</h4>
+            <li class="key-value-item" >
+              <strong>Document Type:</strong> <span>{{item.documentType}}</span>
+            </li>
+  
+  
+            <!-- <li class="key-value-item"
+              *ngIf="item.documentFile['documentName'] && item.documentFile['documentID']&& item.documentFile['documentName'] != 'No Document' && item.documentFile['documentName'] != '' ">
+              <strong>Document File:</strong>
+              <span class="certificate-preview">
+             
+                <img (click)="pdfClick(item.documentFile['documentName'])" [src]="'../../../../assets/icons/pdf-file.png'"
+                  alt="PDF file" class="pdf-icon" />
+              
+                <span class="pdf-file-name" (click)="pdfClick(item.documentFile['documentName'])">
+                  {{ item.documentFile['documentName']?.substring(item.documentFile['documentName'].lastIndexOf('/') + 1)
+                  }}
                 </span>
-            </span>
-          </li>
-
-
-
+              </span>
+            </li> -->
+  
+            <li class="key-value-item" *ngIf=" !item.documentFile.documentID   ">
+              <strong>Document File:</strong>
+              <span class="certificate-preview">
+  
+                <img (click)="pdfClick(item.documentFile)" [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF file"
+                  class="pdf-icon" />
+  
+                <span class="pdf-file-name" (click)="pdfClick(item.documentFile)">
+                  {{ item.documentFile['documentName']
+                  }}
+                </span>
+              </span>
+            </li>
+  
+            <li class="key-value-item" *ngIf="item.documentFile.documentID && item.documentFile.documentID != '' ">
+              <strong>Document File:</strong>
+              <span class="certificate-preview">
+  
+                <img (click)="pdfClick(item.documentFile.documentName)" [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF file"
+                  class="pdf-icon" />
+  
+                  <span class="pdf-file-name" (click)="pdfClick(item.documentFile['documentName'])" >
+                    {{ item.documentFile['documentName']?.substring(item.documentFile['documentName'].lastIndexOf('/') + 1) }}
+                  </span>
+              </span>
+            </li>
+  
+  
+  
+          </ng-container>
+      
 
         </ul>
       </div>

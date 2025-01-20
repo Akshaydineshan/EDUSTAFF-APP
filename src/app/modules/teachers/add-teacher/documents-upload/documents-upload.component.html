@@ -10,31 +10,27 @@
 
         <div class="col-sm-6">
           <input formControlName="documentType" placeholder="Enter document type" class="form-control" />
+          <div
+            *ngIf="document.get('documentType')?.invalid &&  i !==0 && !showValidations[i] && (document.get('documentType')?.touched || submitted)">
+            <small class="text-danger" *ngIf="document.get('documentType')?.errors?.['required']">
+              Document Type is required.
+            </small>
+          </div>
         </div>
-        <div
-          *ngIf="document.get('documentType')?.invalid && !showValidations[i] && (document.get('documentType')?.touched || submitted)">
-          <small class="text-danger" *ngIf="document.get('documentType')?.errors?.['required']">
-            Document Type is required.
-          </small>
-        </div>
+
         <div class="col-sm-4"></div>
         <div class="col-sm-2">
-          <button 
-          type="button" 
-          class="btn btn-danger btn-sm d-flex align-items-center gap-1" 
-          (click)="removeDocument(i)" *ngIf="documents.length > 1"
-         
-          aria-label="Remove document" 
-          data-bs-toggle="tooltip" 
-          title="Remove this document">
-          <i class="bi bi-x-circle"></i>
-         
-        </button>
+          <button type="button" class="btn btn-danger btn-sm d-flex align-items-center gap-1"
+            (click)="removeDocument(i)" *ngIf="documents.length > 1" aria-label="Remove document"
+            data-bs-toggle="tooltip" title="Remove this document">
+            <i class="bi bi-x-circle"></i>
+
+          </button>
         </div>
 
         <!-- Validation message for missing document type -->
-        <small class="text-danger" *ngIf="showValidations[i] && !document.get('documentType')?.value">
-          Please enter the document type before uploading the file .
+        <small class="text-danger" *ngIf="validateNonRequiredDocSetError(0) && submitted && i==0">
+          Please enter the document type.
         </small>
       </div>
 
@@ -50,16 +46,25 @@
                 <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
                 <p class="lab">Drag File To Upload</p>
                 <p class="or">or</p>
-                <input (change)="onFileSelected($event, i)" #fileInput type="file"
-                  accept=".pdf,.docx,.jpeg,.jpg" style="display: none;">
+                <input (change)="onFileSelected($event, i)" #fileInput type="file" accept=".pdf,.docx,.jpeg,.jpg"
+                  style="display: none;">
                 <button class="btn btn-primary" (click)="fileInput.click()">Browse File</button>
               </div>
             </div>
           </div>
+          <div
+            *ngIf="document.get('documentFile')?.invalid && i !=0  && (document.get('documentFile')?.touched || submitted)">
+            <small class="text-danger" *ngIf="document.get('documentFile')?.errors?.['required']">
+              Please Select File .
+            </small>
+          </div>
+          <small class="text-danger" *ngIf="validateNonRequiredDocFileSetError(0) && submitted && i==0">
+            Please Select File.
+          </small>
         </div>
       </div>
 
-      <div class="row mb-2 mt-3" *ngIf="getDocument(i)  " >
+      <div class="row mb-2 mt-3" *ngIf="getDocument(i)  ">
         <div class="col-sm-10">
           <div class="uploaded-file">
             <div style="display: flex; align-items: center; gap: 9px; padding: 0 0px;">
@@ -108,8 +113,7 @@
       <div class="col-md-10 d-flex justify-content-end">
 
 
-        <button type="button"
-          class="btn btn-primary btn-sm d-flex align-items-center justify-content-center py-1 px-2"
+        <button type="button" class="btn btn-primary btn-sm d-flex align-items-center justify-content-center py-1 px-2"
           (click)="addDocument()">
           <i class="bi bi-plus-circle me-1"></i> Add
         </button>

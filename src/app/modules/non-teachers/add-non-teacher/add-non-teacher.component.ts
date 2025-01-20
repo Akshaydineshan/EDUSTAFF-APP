@@ -364,7 +364,8 @@ export class AddNonTeacherComponent {
               : [minAndMaxDateValidator('1900-01-01', true, true), Validators.required],
           ],
           toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01',true,true),Validators.required]],
-          certificate: [{ documentID: education.documentID, documentName: education.documentpath }]
+         
+          certificate: [(education.documentID && education.documentpath) ? { documentID: education.documentID, documentName: education.documentpath } : null, [Validators.required]]
         },
           {
             validators: dateRangeValidator('fromDate', 'toDate')
@@ -535,17 +536,43 @@ export class AddNonTeacherComponent {
 
 
   }
+  // patchDocumentsFormData() {
+
+  //   const documentData = this.employee.getEmployeeDocuments;
+  //   this.documentForm.setControl('documents', this.fb.array(
+  //     documentData.map((doc: any) => this.fb.group({
+
+  //       documentType: doc.documentName,
+  //       documentFile: { documentID: doc.documentID, documentName: doc.documentpath }
+
+  //     }
+  //     ))
+  //   ));
+
+  //   this.documentForm = new FormGroup(this.documentForm.controls);
+  //   this.documentForm.enable()
+  // }
   patchDocumentsFormData() {
 
     const documentData = this.employee.getEmployeeDocuments;
+    console.log("patch doc", documentData)
     this.documentForm.setControl('documents', this.fb.array(
-      documentData.map((doc: any) => this.fb.group({
+      documentData.map((doc: any) => {
+        if (doc.documentID === null) {
+          return this.fb.group({
+            documentType: ["", documentData.length > 1 ? Validators.required:null],
+            documentFile: [{ documentID: "", documentName: "" },documentData.length > 1 ? Validators.required:null]
 
-        documentType: doc.documentName,
-        documentFile: { documentID: doc.documentID, documentName: doc.documentpath }
+          }
+          )
+        }
+        return this.fb.group({
+          documentType: [doc.documentName,documentData.length > 1 ? Validators.required:null],
+          documentFile: [{ documentID: doc.documentID, documentName: doc.documentpath },documentData.length > 1 ? Validators.required:null]
 
-      }
-      ))
+        }
+        )
+      })
     ));
 
     this.documentForm = new FormGroup(this.documentForm.controls);
@@ -766,7 +793,7 @@ export class AddNonTeacherComponent {
       schoolName: ['',],
       fromDate: ['',],
       toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
-      certificate: ['']
+      certificate: ['',Validators.required]
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
     );
@@ -861,7 +888,7 @@ export class AddNonTeacherComponent {
     this.submitBtnStatus[statusKey] = true;
 
     // Check form validity or allow the final step
-    if (currentForm.valid || this.currentStep === 4) {
+    if (currentForm.valid ) {
       this.currentStep++;
       if (this.currentStep === this.steps.length) {
         this.onSubmit(); // Collect form data for preview
