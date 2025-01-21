@@ -62,6 +62,7 @@ export class ForgotPasswordComponent {
 
         easeTime: 300,
       });
+      this.router.navigate(['dashboard'])
 
 
     }
@@ -86,9 +87,11 @@ export class ForgotPasswordComponent {
 
   // Custom Validator for Password Match
   passwordMatchValidator(form: FormGroup) {
+   
     return form.get('password')?.value === form.get('confirmPassword')?.value
       ? null
       : { mismatch: true };
+     
   }
 
   togglePasswordVisibility() {
