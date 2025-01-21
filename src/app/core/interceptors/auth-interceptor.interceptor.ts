@@ -140,21 +140,21 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-       
+
         if (!skipSpinner) {
           this.spinnerService.hide(); // Hide spinner if it was shown
         }
         if (error.status === 0) {
-          
-           if (!navigator.onLine) {
-          
+
+          if (!navigator.onLine) {
+
             alert("No internet connection detected. Please check your network and try again. !")
           } else {
             // Server unreachable
             alert("Unable to reach the server. Please try again later !")
-           
+
           }
-           
+
           // this.toaster.warning('', 'Warning', {
           //   closeButton: true,
           //   progressBar: true,
@@ -163,13 +163,13 @@ export class AuthInterceptor implements HttpInterceptor {
           // })
         }
         if (error.status === 401) {
-            this.authService.logout();
-            this.router.navigate(['/login']);
-          } else {
-            console.error('HTTP Error:', error); // Log other errors
-          }
-          return throwError(() => error); // Rethrow error for further handling
-        }),
+          this.authService.logout();
+          this.router.navigate(['/login']);
+        } else {
+          console.error('HTTP Error:', error); // Log other errors
+        }
+        return throwError(() => error); // Rethrow error for further handling
+      }),
       finalize(() => {
         if (!skipSpinner) {
           this.spinnerService.hide(); // Hide spinner if it was shown

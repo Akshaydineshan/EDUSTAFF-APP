@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from 'src/app/core/service/auth/auth.service';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit {
     { id: 3, name: 'Manager' }
   ];
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService) {
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService,private toastr:ToastrService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', Validators.required]
     })
@@ -80,19 +81,35 @@ export class LoginComponent implements OnInit {
     let formValue = this.forgotPasswordForm.value
     let data = {
       "email": formValue.email,
-      "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password/<token>"
+      "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password"
     }
     console.log("data",data)
     this.authService.forgotPassword(data).subscribe({
       next: (response: any) => {
-        console.log("forgot response", response)
-        this.forgotPasswordMode=false;
-        this.registerMode=false;
+        if (response.statusCode === 200) {
+          console.log("Forgot password response:", response);
+          this.forgotPasswordMode = false;
+          this.registerMode = false;
+          this.toastr.success('A password reset link has been sent to your email!', 'Success', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500,
+          });
+        }
       },
       error: (error: any) => {
-        this.forgotPasswordMode=false;
-        this.registerMode=false;
+        console.log("Error:", error);
+        this.forgotPasswordMode = false;
+        this.registerMode = false;
+        this.toastr.error('Something went wrong! Please try again later.', 'Failed', {
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-top-left',
+          timeOut: 4500,
+        });
       },
+      
       complete: () => {
 
       }

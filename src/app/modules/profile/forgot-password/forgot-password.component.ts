@@ -17,13 +17,14 @@ export class ForgotPasswordComponent {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
   token: string = '';
+  // email: any;
 
   constructor(
     private fb: FormBuilder,
     private settingsService: SettingsService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private tokenStore:TokenStoreService,private router:Router,
+    private tokenStore: TokenStoreService, private router: Router,
   ) {
     this.resetPasswordForm = this.fb.group(
       {
@@ -32,7 +33,7 @@ export class ForgotPasswordComponent {
           [
             Validators.required,
             Validators.minLength(8),
-            Validators.pattern(/^[a-zA-Z0-9]+$/), // Add complexity
+            Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{8,20}$/), // Add complexity
           ],
         ],
         confirmPassword: ['', Validators.required],
@@ -49,22 +50,28 @@ export class ForgotPasswordComponent {
   }
 
   ngOnInit(): void {
-    if(this.tokenStore.getToken()){
+    console.log("this.tokenStore.getToken()",this.tokenStore.getToken())
+    if (this.tokenStore.getToken()) {
       this.toastr.warning('You are already logged in.', 'Warning', {
         closeButton: true,
         progressBar: true,
         positionClass: 'toast-top-left',
         timeOut: 4500,
         extendedTimeOut: 2000,
-        tapToDismiss: true,    
-       
-        easeTime: 300,          
-      });
-      this.router.navigate(['dashboard'])
+        tapToDismiss: true,
 
-     }
+        easeTime: 300,
+      });
+
+
+    }
     // Retrieve the token from the URL params and validate it
-    this.token = this.route.snapshot.paramMap.get('token') || '';
+    this.route.queryParams.subscribe((params) => {
+      this.token = params['token'] || '';
+      // this.email = params['email'] || '';
+      console.log('Token:', this.token);
+    });
+    console.log("token", this.token)
     if (!this.token) {
       this.toastr.error('Invalid or expired token!', 'Error', {
         closeButton: true,
@@ -93,7 +100,7 @@ export class ForgotPasswordComponent {
   }
 
   onSubmit() {
-    
+
     if (this.resetPasswordForm.valid) {
       const formValue = this.resetPasswordForm.value;
 
@@ -125,7 +132,7 @@ export class ForgotPasswordComponent {
             });
             this.tokenStore.clearToken()
             this.router.navigate(['/auth/login'])
-            
+
             // Optionally redirect to login page after success
           } else {
             console.warn('Password reset failed:', response?.message || 'Unknown error.');
@@ -164,7 +171,7 @@ export class ForgotPasswordComponent {
     }
   }
 
-  goToLogin(){
+  goToLogin() {
     this.tokenStore.clearToken()
     this.router.navigate(['auth/login'])
   }
