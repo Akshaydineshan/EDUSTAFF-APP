@@ -10,7 +10,8 @@
                                 <img [src]="getImage || 'assets/icons/user.png' "
                                         class="prof-img img-fluid rounded-circle " alt="Profile Image" />
                                 <div class=" prof-sec-text ms-2 ">
-                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + ' '+ currentTeacher.lastName}}</p>
+                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + ' '+ currentTeacher.lastName}}
+                                        </p>
                                         <p class="text-muted mb-0 p-d mt-1">{{currentTeacher.departmentName}}</p>
                                         <p class="text-muted mb-0 p-a">
                                                 {{currentTeacher.schoolDTO?.schoolName?currentTeacher.schoolDTO.schoolName
@@ -27,7 +28,7 @@
                                 <span class="me-5 mt-2">
                                         <p class="uq-id">{{currentTeacher.uniqueID}}</p>
                                 </span>
-                                <div class="dropdown me-2 "  *appAppRole="'Staff'">
+                                <div class="dropdown me-2 " *appAppRole="'Staff'">
                                         <button class="btn btn-light" type="button" id="dropdownMenuButton"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
@@ -342,9 +343,7 @@
 
 
                                         </ul> -->
-                                        <ul class="info-list mt-2"  
-                                        
-                                        
+                                        <ul class="info-list mt-2"
                                                 *ngFor="let item of currentTeacher.getEducations; let i = index;">
                                                 <p class="s-h">Education {{i+1}}</p>
                                                 <li *ngIf="item.educationTypeName">
@@ -541,6 +540,102 @@
                                         </ul>
                                 </div>
                         </div>
+
+
+<!-- 
+                        <div class="card mt-3">
+                                <div class="history-header">Teacher History</div>
+                                <div class="card-body">
+                                        <div class="tbl">
+                                                <table>
+                                                     
+                                                        <tr>
+                                                                 <th>Date</th>
+                                                                <th>Type (Promotion/Transfer)</th>
+                                                                <th>Previous Position/Location</th>
+                                                                <th>New Position/Location</th>
+                                                                <th>Remarks</th>
+                                                                
+                                                        </tr>
+                                                        <ng-container *ngIf="historyTableData.length">
+                                                                <tr *ngFor="let item of historyTableData;let i=index;">
+                                                                        <td>{{item.changeDate | date}}</td>
+                                                                        <td>{{item.changedtypeName}}</td>
+                                                                        <td>
+                                                                                {{ item.changeTypeID === 6 ? (item.fromPosition || 'N/A') : (item.fromSchoolName || 'N/A') }}
+                                                                              </td>
+                                                                              <td>
+                                                                                {{ item.changeTypeID === 6 ? (item.toPosition || 'N/A') : (item.toSchoolName || 'N/A') }}
+                                                                              </td>
+                                                                              <td>{{item.
+                                                                                changeDescription}}</td>
+                                                                      
+                                                          
+                
+                                                                </tr>
+                                                        </ng-container>
+                
+                                                        <tr *ngIf="!historyTableData.length"                                                                style="text-align: center; vertical-align: middle; height: 40px;">
+                                                                <td colspan="5">No Data Found</td>
+                                                        </tr>
+                
+                
+                
+                
+                                                </table>
+                                        </div>
+
+                                </div>
+                        </div> -->
+
+                        <div class="accordion mt-3" id="teacherHistoryAccordion">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="historyHeading">
+                                        <button class="accordion-button custom-header" type="button" data-bs-toggle="collapse" data-bs-target="#historyCollapse" aria-expanded="true" aria-controls="historyCollapse">
+                                            Teacher History
+                                        </button>
+                                    </h2>
+                                    <div id="historyCollapse" class="accordion-collapse collapse show" aria-labelledby="historyHeading" data-bs-parent="#teacherHistoryAccordion">
+                                        <div class="accordion-body">
+                                            <div class="tbl">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Date</th>
+                                                            <th>Type (Promotion/Transfer)</th>
+                                                            <th>Previous Position/Location</th>
+                                                            <th>New Position/Location</th>
+                                                            <th>Remarks</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <ng-container *ngIf="historyTableData.length">
+                                                            <tr *ngFor="let item of historyTableData; let i = index;">
+                                                                <td>{{ item.changeDate | date }}</td>
+                                                                <td>{{ item.changedtypeName }}</td>
+                                                                <td>
+                                                                    {{ item.changeTypeID === 6 ? (item.fromPosition || 'N/A') : (item.fromSchoolName || 'N/A') }}
+                                                                </td>
+                                                                <td>
+                                                                    {{ item.changeTypeID === 6 ? (item.toPosition || 'N/A') : (item.toSchoolName || 'N/A') }}
+                                                                </td>
+                                                                <td>{{ item.changeDescription }}</td>
+                                                            </tr>
+                                                        </ng-container>
+                                                        <tr *ngIf="!historyTableData.length" style="text-align: center; vertical-align: middle; height: 40px;">
+                                                            <td colspan="5">No Data Found</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+
+                 
 
 
                 </div>

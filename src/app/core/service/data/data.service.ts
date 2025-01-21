@@ -473,6 +473,10 @@ export class DataService {
   getTeacherById(teacherId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}Teacher/get-employee/${teacherId}`);
   }
+  getTeacherHistoryById(teacherId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}TeacherHistory/GetHistoryListById/${teacherId}`);
+  }
+
 
 
   getAllStatuses(): Observable<any> {

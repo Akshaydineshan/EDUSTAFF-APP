@@ -14,6 +14,7 @@ export class TeacherViewComponent implements OnInit {
   currentTeacher!: any
   apiUrl = environment.imageBaseUrl;
   itemId: any
+  historyTableData: any=[];
 
 
   constructor(private route: ActivatedRoute, private dataService: DataService,private router:Router, private ngZone: NgZone) {
@@ -26,6 +27,9 @@ export class TeacherViewComponent implements OnInit {
       let itemId = params['id'];
       this.itemId = itemId;
       this.loadItemDetails(itemId);
+      this.loadTeacherHistory(itemId)
+
+
      
     });
   }
@@ -40,6 +44,27 @@ export class TeacherViewComponent implements OnInit {
       },
       error: (error) => {
         this.router.navigate(['/teachers/teacher-list'])
+
+      },
+      complete: () => {
+
+      }
+    })
+
+  }
+
+
+  loadTeacherHistory(teacherId: any) {
+    debugger
+    this.dataService.getTeacherHistoryById(teacherId).subscribe({
+      next: (response) => {
+        console.log(response)
+        this.historyTableData = response
+        console.log("History",this.historyTableData)
+
+      },
+      error: (error) => {
+        // this.router.navigate(['/teachers/teacher-list'])
 
       },
       complete: () => {
