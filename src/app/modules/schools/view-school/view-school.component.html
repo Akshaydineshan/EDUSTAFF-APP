@@ -37,7 +37,7 @@
 
                         <div class="  d-flex  align-items-center ">
 
-                                <div class="dropdown me-2 "  *appAppRole="'Staff'">
+                                <div class="dropdown me-2 " *appAppRole="'Staff'">
                                         <button class="btn btn-light " type="button" id="dropdownMenuButton"
                                                 data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
@@ -319,7 +319,8 @@
                                         <div class="teacher-sec">
                                                 <p class="head">Teacher List
                                                         <span class="text-danger ms-3"></span>
-                                                        <span class="badge badge-secondary ">{{teacherTableData.length }}</span>
+                                                        <span class="badge badge-secondary ">{{teacherTableData.length
+                                                                }}</span>
 
                                                 </p>
                                                 <div class="tbl">
@@ -327,22 +328,24 @@
 
                                                                 <tr>
                                                                         <th>Name</th>
-                                                                        <th>Age</th>
                                                                         <th>Phone Number</th>
-                                                                        <th>Designation</th>
+                                                                        <th>Date Of Birth</th>
+                                                                        <th>Join Date</th>
+                                                                        <th>Position</th>
                                                                         <th>Subject</th>
+                                                                      
 
                                                                 </tr>
                                                                 <ng-container *ngIf="teacherTableData.length">
                                                                         <tr
                                                                                 *ngFor="let item of teacherTableData;let i=index;">
                                                                                 <td>{{item.name}}</td>
-                                                                                <td>{{item.age}}</td>
-                                                                                <td>{{item.phoneNumber}}</td>
-                                                                                <td>{{item.designation}}</td>
+                                                                                <td>{{item.phone}}</td>
+                                                                                <td>{{item.dob |date}}</td>
+                                                                                <td>{{item.joinDate |date}}</td>
+                                                                                <td>{{item.position}}</td>
                                                                                 <td>{{item.subject}}</td>
-
-                                                                        </tr>
+                                                                         </tr>
                                                                 </ng-container>
 
                                                                 <tr *ngIf="!teacherTableData.length"
@@ -372,7 +375,8 @@
                                         <div class="teacher-sec">
                                                 <p class="head">Non Teacher List
                                                         <span class="text-danger ms-3"></span>
-                                                        <span class="badge badge-secondary ">{{nonTeacherTableData.length }}</span>
+                                                        <span class="badge badge-secondary ">{{nonTeacherTableData.length
+                                                                }}</span>
 
                                                 </p>
                                                 <div class="tbl">
@@ -380,19 +384,21 @@
 
                                                                 <tr>
                                                                         <th>Name</th>
-                                                                        <th>Age</th>
                                                                         <th>Phone Number</th>
-                                                                        <th>Designation</th>
-
-
-                                                                </tr>
+                                                                        <th>Date Of Birth</th>
+                                                                        <th>Join Date</th>
+                                                                        <th>Position</th>
+                                                                       
+                                                                 </tr>
                                                                 <ng-container *ngIf="nonTeacherTableData.length">
                                                                         <tr
                                                                                 *ngFor="let item of nonTeacherTableData;let i=index;">
                                                                                 <td>{{item.name}}</td>
-                                                                                <td>{{item.age}}</td>
-                                                                                <td>{{item.phoneNumber}}</td>
-                                                                                <td>{{item.designation}}</td>
+                                                                                <td>{{item.phone}}</td>
+                                                                                <td>{{item.dob |date}}</td>
+                                                                                <td>{{item.joinDate |date}}</td>
+                                                                                <td>{{item.position}}</td>
+                                                                               
 
                                                                         </tr>
                                                                 </ng-container>
