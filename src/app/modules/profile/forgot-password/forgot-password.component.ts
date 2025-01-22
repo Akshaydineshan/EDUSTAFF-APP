@@ -52,17 +52,18 @@ export class ForgotPasswordComponent {
   ngOnInit(): void {
     console.log("this.tokenStore.getToken()",this.tokenStore.getToken())
     if (this.tokenStore.getToken()) {
-      this.toastr.warning('You are already logged in.', 'Warning', {
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-left',
-        timeOut: 4500,
-        extendedTimeOut: 2000,
-        tapToDismiss: true,
+      // this.toastr.warning('You are already logged in.', 'Warning', {
+      //   closeButton: true,
+      //   progressBar: true,
+      //   positionClass: 'toast-top-left',
+      //   timeOut: 4500,
+      //   extendedTimeOut: 2000,
+      //   tapToDismiss: true,
 
-        easeTime: 300,
-      });
-      this.router.navigate(['dashboard'])
+      //   easeTime: 300,
+      // });
+      this.tokenStore.clearToken()
+      // this.router.navigate(['dashboard'])
 
 
     }

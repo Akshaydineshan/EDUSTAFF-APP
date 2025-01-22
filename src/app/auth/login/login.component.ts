@@ -48,9 +48,9 @@ export class LoginComponent implements OnInit {
     })
   }
   ngOnInit(): void {
-    if (this.tokenStore.getToken()) {
-      this.router.navigate(['dashboard'])
-    }
+    // if (this.tokenStore.getToken()) {
+    //   this.router.navigate(['dashboard'])
+    // }
   }
 
   toggleForgotPassword() {
