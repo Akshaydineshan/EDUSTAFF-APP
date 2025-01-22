@@ -602,9 +602,11 @@
                                                     <thead>
                                                         <tr>
                                                             <th>Date</th>
-                                                            <th>Type (Promotion/Transfer)</th>
-                                                            <th>Previous Position/Location</th>
-                                                            <th>New Position/Location</th>
+                                                            <th>Type </th>
+                                                            <th>Previous School</th>
+                                                            <th>New School </th>
+                                                            <th>Previous Designation</th>
+                                                            <th>New Designation </th>
                                                             <th>Remarks</th>
                                                         </tr>
                                                     </thead>
@@ -614,11 +616,13 @@
                                                                 <td>{{ item.changeDate | date }}</td>
                                                                 <td>{{ item.changedtypeName }}</td>
                                                                 <td>
-                                                                    {{ item.changeTypeID === 6 ? (item.fromPosition || 'N/A') : (item.fromSchoolName || 'N/A') }}
+                                                                    {{(item.fromSchoolName || 'N/A') }}
                                                                 </td>
                                                                 <td>
-                                                                    {{ item.changeTypeID === 6 ? (item.toPosition || 'N/A') : (item.toSchoolName || 'N/A') }}
+                                                                    {{(item.toSchoolName || 'N/A') }}
                                                                 </td>
+                                                                <td>{{(item.fromPosition || 'N/A')}}</td>
+                                                                <td>{{(item.toPosition || 'N/A')}}</td>
                                                                 <td>{{ item.changeDescription }}</td>
                                                             </tr>
                                                         </ng-container>
