@@ -38,8 +38,9 @@ export class LoginComponent implements OnInit {
     { id: 2, name: 'User' },
     { id: 3, name: 'Manager' }
   ];
+  successMessage!: string;
 
-  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService,private toastr:ToastrService) {
+  constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService, private toastr: ToastrService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', Validators.required]
     })
@@ -53,16 +54,19 @@ export class LoginComponent implements OnInit {
   toggleForgotPassword() {
     this.forgotPasswordMode = !this.forgotPasswordMode;
     this.registerMode = false;
+    this.errorMessage = ""
   }
 
   toggleRegister() {
     this.registerMode = !this.registerMode;
     this.forgotPasswordMode = false;
+    this.errorMessage = ""
   }
 
   toggleLogin() {
     this.registerMode = false;
     this.forgotPasswordMode = false;
+    this.errorMessage = ""
   }
 
   togglePasswordVisibility() {
@@ -83,39 +87,45 @@ export class LoginComponent implements OnInit {
       "email": formValue.email,
       "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password"
     }
-    console.log("data",data)
+    console.log("data", data)
     this.authService.forgotPassword(data).subscribe({
       next: (response: any) => {
         if (response.statusCode === 200) {
           console.log("Forgot password response:", response);
-          this.forgotPasswordMode = false;
-          this.registerMode = false;
-          this.toastr.success('A password reset link has been sent to your email!', 'Success', {
-            closeButton: true,
-            progressBar: true,
-            positionClass: 'toast-top-left',
-            timeOut: 4500,
-          });
+          // this.forgotPasswordMode = false;
+          // this.registerMode = false;
+          // this.toastr.success('A password reset link has been sent to your email!', 'Success', {
+          //   closeButton: true,
+          //   progressBar: true,
+          //   positionClass: 'toast-top-left',
+          //   timeOut: 4500,
+          // });
+          this.successMessage = 'A password reset link has been sent to your email'
         }
       },
       error: (error: any) => {
         console.log("Error:", error);
         this.forgotPasswordMode = false;
         this.registerMode = false;
-        this.toastr.error('Something went wrong! Please try again later.', 'Failed', {
-          closeButton: true,
-          progressBar: true,
-          positionClass: 'toast-top-left',
-          timeOut: 4500,
-        });
+        // this.toastr.error('Something went wrong! Please try again later.', 'Failed', {
+        //   closeButton: true,
+        //   progressBar: true,
+        //   positionClass: 'toast-top-left',
+        //   timeOut: 4500,
+        // });
+        this.handleForgotPasswordError(error)
       },
-      
+
       complete: () => {
 
       }
     })
 
   }
+  private handleForgotPasswordError(error: any): void {
+    this.errorMessage = 'Something went wrong. Please try again later.';
+    console.error(' error:', error);
+   }
 
   // onLogin() {
   //   if (this.email && this.password) {
@@ -169,7 +179,7 @@ export class LoginComponent implements OnInit {
       this.errorMessage = 'Username and password are required.';
       return;
     }
-  
+
     this.authService
       .login(this.email, this.password, this.rememberMe)
       .pipe(
@@ -190,7 +200,7 @@ export class LoginComponent implements OnInit {
         },
       });
   }
-  
+
   // Separate error handling for login errors
   private handleLoginError(error: any): void {
     if (error.status === 401 && error.error.message === 'Invalid credentials') {
@@ -201,13 +211,13 @@ export class LoginComponent implements OnInit {
     console.error('Login error:', error);
     this.router.navigate(['auth/login']);
   }
-  
+
   // Separate error handling for profile errors
   private handleProfileError(error: any): void {
     this.errorMessage = 'Something went wrong while fetching user details. Please try again later.';
     console.error('Profile fetch error:', error);
   }
-  
+
 
   onRegister() {
     this.authService.register(

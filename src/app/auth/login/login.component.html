@@ -223,6 +223,7 @@
           </div>
 
           <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+        
 
           <form class="loginForm" #loginForm="ngForm" (ngSubmit)="onLogin()">
             <div class="mb-3">
@@ -285,6 +286,8 @@
           </div>
 
           <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+          <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
 
           <form class="loginForm" [formGroup]="forgotPasswordForm">
             <div class="mb-3">
