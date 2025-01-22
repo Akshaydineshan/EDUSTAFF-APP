@@ -223,15 +223,17 @@
           </div>
 
           <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-        
+
 
           <form class="loginForm" #loginForm="ngForm" (ngSubmit)="onLogin()">
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
               <input type="email" [(ngModel)]="email" class="form-control" id="email" name="email"
-                placeholder="Enter your email" required #emailInput="ngModel">
+                placeholder="Enter your email" pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$" required
+                #emailInput="ngModel">
               <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger">
-                <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
+                <small *ngIf="emailInput.errors?.['required']">Email is required.</small>
+                <small *ngIf="emailInput.errors?.['pattern']">Please Enter Valid Email.</small>
               </div>
             </div>
 
@@ -240,14 +242,16 @@
               <div style="position: relative;">
                 <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" class="form-control"
                   id="password" name="password" placeholder="Enter your password" required maxlength="50" minlength="6"
-                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{8,20}$" #passwordInput="ngModel">
+                  pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[A-Za-z\d\S]{8,20}$"
+                  #passwordInput="ngModel">
                 <i class="fas" [ngClass]="!showPassword ? 'fa-eye-slash' : 'fa-eye'"
                   (click)="togglePasswordVisibility()"
                   style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
               </div>
               <div *ngIf="passwordInput.invalid && (passwordInput.dirty || passwordInput.touched)" class="text-danger">
-                <div *ngIf="passwordInput.errors?.['required']">Password is required.</div>
-                <div *ngIf="passwordInput.errors?.['pattern']">Password must be 8–20 characters with uppercase, lowercase, number, and special character.</div>
+                <small *ngIf="passwordInput.errors?.['required']">Password is required.</small>
+                <small *ngIf="passwordInput.errors?.['pattern']">Password must be 8–20 characters with uppercase,
+                  lowercase, number, and special character.</small>
               </div>
             </div>
 
@@ -276,8 +280,8 @@
             <img src="../../../assets/icons/forgot1.png" alt="EduStaff Logo" width="50" height="50"> -->
             <img src="../../../assets/icons/forgot3.png" alt="EduStaff Logo" width="72" height="72">
             <!-- <img src="../../../assets/icons/forgot3.png" alt="EduStaff Logo" width="50" height="50"> -->
-            
-            
+
+
             <!-- <span class="d-flex" style="justify-content: center;">
                 <img src="assets/images/logo.jpg" alt="EduStaff Logo" width="50" height="50">
                 <h3><b>Edu</b>Staff</h3>
@@ -292,10 +296,14 @@
           <form class="loginForm" [formGroup]="forgotPasswordForm">
             <div class="mb-3">
               <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" formControlName="email" id="email" name="email" placeholder="Enter your email">
-              <!-- <div *ngIf="emailInput.invalid && (emailInput.dirty || emailInput.touched)" class="text-danger">
-                  <div *ngIf="emailInput.errors?.['required']">Email is required.</div>
-                </div> -->
+              <input type="email" class="form-control" formControlName="email" id="email" name="email"  
+                placeholder="Enter your email">
+                <div 
+                *ngIf="forgotPasswordForm.get('email')?.invalid && (forgotPasswordForm.get('email')?.dirty || forgotPasswordForm.get('email')?.touched)" 
+                class="text-danger">
+                <small *ngIf="forgotPasswordForm.get('email')?.errors?.['required']">Email is required.</small>
+                <small *ngIf="forgotPasswordForm.get('email')?.errors?.['pattern']">Please enter a valid email address.</small>
+              </div>
             </div>
 
             <!-- <div class="mb-3 position-relative">
@@ -325,7 +333,8 @@
 
           <div class="d-flex justify-content-center  mt-3">
             <!-- <p>Don’t have an account? <a (click)="toggleRegister()">Sign Up</a></p> -->
-            <p class="link-lab"><a style="text-decoration: underline; letter-spacing: 1.5px;" (click)="forgotPasswordMode = false ;registerMode=false">login</a>
+            <p class="link-lab"><a style="text-decoration: underline; letter-spacing: 1.5px;"
+                (click)="toggleLogin()">login</a>
             </p>
           </div>
 

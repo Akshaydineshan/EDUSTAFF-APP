@@ -6,6 +6,7 @@ import { catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from 'src/app/core/service/auth/auth.service';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
 import { UserService } from 'src/app/core/service/user.service';
+import { isValidEmail } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 
 @Component({
   selector: 'app-login',
@@ -39,10 +40,11 @@ export class LoginComponent implements OnInit {
     { id: 3, name: 'Manager' }
   ];
   successMessage!: string;
+  isValidEmail = isValidEmail
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService, private toastr: ToastrService) {
     this.forgotPasswordForm = this.fb.group({
-      email: ['', Validators.required]
+      email: ['', [Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$')]]
     })
   }
   ngOnInit(): void {
@@ -66,8 +68,10 @@ export class LoginComponent implements OnInit {
   toggleLogin() {
     this.registerMode = false;
     this.forgotPasswordMode = false;
-    this.errorMessage = ""
+    this.errorMessage="";
+    this.successMessage=""
   }
+
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
@@ -82,50 +86,45 @@ export class LoginComponent implements OnInit {
   }
 
   onResetSubmit() {
-    let formValue = this.forgotPasswordForm.value
-    let data = {
-      "email": formValue.email,
-      "clientURl": "https://edustaff-sys-adm.netlify.app/profile/reset-password"
+    this.errorMessage = ''
+    this.successMessage = ''
+    let formValue = this.forgotPasswordForm.value;
+    if (this.forgotPasswordForm.valid) {
+      const data = {
+        email: this.forgotPasswordForm.value.email,
+        clientURl: "https://edustaff-sys-adm.netlify.app/profile/reset-password",
+      };
+    
+      console.log("Forgot Password Request Data:", data);
+    
+      this.authService.forgotPassword(data).subscribe({
+        next: (response: any) => {
+          if (response.statusCode === 200) {
+            console.log("Forgot Password Response:", response);
+            this.successMessage = 'A password reset link has been sent to your email.';
+            this.errorMessage = ""; // Clear previous error message if any
+          } else {
+            this.errorMessage = 'Unexpected response. Please try again later.';
+          }
+        },
+        error: (error: any) => {
+          console.error("Forgot Password Error:", error);
+          this.handleForgotPasswordError(error); // Custom error handler
+        },
+        complete: () => {
+          console.log("Forgot Password API call completed.");
+        },
+      });
+    } else {
+      this.forgotPasswordForm.markAllAsTouched(); // Highlight all invalid fields
     }
-    console.log("data", data)
-    this.authService.forgotPassword(data).subscribe({
-      next: (response: any) => {
-        if (response.statusCode === 200) {
-          console.log("Forgot password response:", response);
-          // this.forgotPasswordMode = false;
-          // this.registerMode = false;
-          // this.toastr.success('A password reset link has been sent to your email!', 'Success', {
-          //   closeButton: true,
-          //   progressBar: true,
-          //   positionClass: 'toast-top-left',
-          //   timeOut: 4500,
-          // });
-          this.successMessage = 'A password reset link has been sent to your email'
-        }
-      },
-      error: (error: any) => {
-        console.log("Error:", error);
-        this.forgotPasswordMode = false;
-        this.registerMode = false;
-        // this.toastr.error('Something went wrong! Please try again later.', 'Failed', {
-        //   closeButton: true,
-        //   progressBar: true,
-        //   positionClass: 'toast-top-left',
-        //   timeOut: 4500,
-        // });
-        this.handleForgotPasswordError(error)
-      },
-
-      complete: () => {
-
-      }
-    })
-
+    
+  
   }
   private handleForgotPasswordError(error: any): void {
     this.errorMessage = 'Something went wrong. Please try again later.';
     console.error(' error:', error);
-   }
+  }
 
   // onLogin() {
   //   if (this.email && this.password) {
