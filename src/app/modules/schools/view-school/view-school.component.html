@@ -138,13 +138,13 @@
                                                                 <tr>
                                                                         <td>{{currentSchool.principalName}}</td>
                                                                         <td>Principal</td>
-                                                                        <td>{{currentSchool.principalPhone}}
+                                                                        <td>{{ '+91 ' +currentSchool.principalPhone}}
                                                                         </td>
                                                                 </tr>
                                                                 <tr>
                                                                         <td>{{currentSchool.vicePrincipalName}}</td>
                                                                         <td>Vice Principal</td>
-                                                                        <td>{{currentSchool.vicePrincipalPhone}}
+                                                                        <td>{{ '+91 ' +currentSchool.vicePrincipalPhone}}
                                                                         </td>
                                                                 </tr>
 
@@ -340,7 +340,7 @@
                                                                         <tr
                                                                                 *ngFor="let item of teacherTableData;let i=index;">
                                                                                 <td>{{item.name}}</td>
-                                                                                <td>{{item.phone}}</td>
+                                                                                <td>{{ '+91 ' +item.phone}}</td>
                                                                                 <td>{{item.dob |date}}</td>
                                                                                 <td>{{item.joinDate |date}}</td>
                                                                                 <td>{{item.position}}</td>
@@ -394,7 +394,7 @@
                                                                         <tr
                                                                                 *ngFor="let item of nonTeacherTableData;let i=index;">
                                                                                 <td>{{item.name}}</td>
-                                                                                <td>{{item.phone}}</td>
+                                                                                <td>{{'+91 ' +item.phone}}</td>
                                                                                 <td>{{item.dob |date}}</td>
                                                                                 <td>{{item.joinDate |date}}</td>
                                                                                 <td>{{item.position}}</td>
