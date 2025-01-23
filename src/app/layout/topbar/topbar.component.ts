@@ -26,16 +26,19 @@ export class TopbarComponent implements OnInit {
     })
     this.userService.getUserDetails$().subscribe((res: any) => {
       this.loggedUserDetails = res;
+     
     })
   }
   ngOnInit(): void {
-    // let exptime = this.tokenStore.getTokenExpirationTime() || 0
-    // debugger
-    // this.tokenStore.startTimer(exptime)
+    let exptime = this.tokenStore.getTokenExpirationTime() || 0
+    debugger
+    this.tokenStore.startTimer(exptime)
 
-    // this.tokenStore.formatTime().subscribe((time: any) => {
-    //   this.tokenTimer = time
-    //  })
+    this.tokenStore.formatTime().subscribe((time: any) => {
+      console.log("time--",time)
+      this.tokenTimer = time
+  
+     })
   }
   toggleSidebar() {
     debugger
@@ -66,14 +69,15 @@ export class TopbarComponent implements OnInit {
     this.router.navigate(['/auth']);
   }
 
-  // isTokenTimerValid(): boolean {
-  //   if (this.tokenTimer === '00:00:00') return false;
+  isTokenTimerValid(): boolean {
+    // return true
+    if (this.tokenTimer === '00:00:00') return false;
 
-  //   const [hours, minutes, seconds] = this.tokenTimer.split(':').map(Number);
-  //   const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    const [hours, minutes, seconds] = this.tokenTimer.split(':').map(Number);
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
 
-  //   const minRequiredSeconds = 10 * 60; // '00:10:00' in seconds
-  //   return totalSeconds < minRequiredSeconds;
-  // }
+    const minRequiredSeconds =  30 * 60; // '00:10:00' in seconds
+    return totalSeconds < minRequiredSeconds;
+  }
 
 }

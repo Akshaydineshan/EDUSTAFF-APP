@@ -5,65 +5,66 @@
             <span><b>Edu</b>Staff</span>
         </div>
         <div class="user-info">
-            <span> <i class="bi bi-person-circle ms-2 profile-ic popup-trigger" title="Profile"  aria-hidden="true" (click)="profileDropdownToggle()"></i></span>
+            <span> <i class="bi bi-person-circle ms-2 profile-ic popup-trigger" title="Profile" aria-hidden="true"
+                    (click)="profileDropdownToggle()"></i></span>
             <i class="fas fa-bell me-3"></i>
-            <!-- <span *ngIf="tokenTimer != '00:00:00' && isTokenTimerValid() ">{{tokenTimer}}</span> -->
-         <!-- <i class="fas fa-sign-out-alt" matTooltip="Logout" (click)="logout()"></i> -->
+            <span *ngIf="tokenTimer != '00:00:00' && isTokenTimerValid()" title="Session Timer">
+                {{ tokenTimer }}
+            </span>
+            <!-- <i class="fas fa-sign-out-alt" matTooltip="Logout" (click)="logout()"></i> -->
         </div>
     </div>
-    
-    
+
+
     <div class="profile-menu-wrapper " [ngClass]="{'open': isMenuOpen}">
-      <div class="profile-menu">
-         
-      
+        <div class="profile-menu">
 
-        <div class="user-info">
-            <img src="https://teachers.prod-app.in/Uploads/profile/Employee/man.jpeg" alt="User Profile">
-            <div class="user-details">
-              <p class="user-name">{{loggedUserDetails.firstName + " "+ loggedUserDetails.lastName }}</p>
-              <p class="user-role ms-1">{{loggedUserDetails.roleName}}</p> <!-- User Role -->
+
+
+            <div class="user-info">
+                <img src="https://teachers.prod-app.in/Uploads/profile/Employee/man.jpeg" alt="User Profile">
+                <div class="user-details">
+                    <p class="user-name">{{loggedUserDetails.firstName + " "+ loggedUserDetails.lastName }}</p>
+                    <p class="user-role ms-1">{{loggedUserDetails.roleName}}</p> <!-- User Role -->
+                </div>
             </div>
-          </div>
-      
 
-        <hr style=" margin-right: -16px;margin-left: -19px;">
-         <a class="sub-menu-link" routerLink="/profile/view" (click)="this.topbarService.setPopupValue(false)">
-            <img src="../../../assets/icons/account.png" alt="">
-            <p class="para"> Profile</p>
-            <span>></span>
-        </a>
 
-        <a  class="sub-menu-link" routerLink="/profile/edit"  (click)="this.topbarService.setPopupValue(false)">
-            <img src="../../../assets/icons/user-avatar.png" alt="">
-            <p class="para">Edit Profile</p>
-            <span>></span>
-        </a>
-        
-        <a  class="sub-menu-link" routerLink="/settings" (click)="this.topbarService.setPopupValue(false)"  >
-            
-            <img src="../../../assets/icons/setting.png" alt="">
-            <p class="para">Settings & Privacy</p>
-            <span>></span>
-        </a>
-        
-        <a  class="sub-menu-link" (click)="this.topbarService.setPopupValue(false)"  >
-            <img src="../../../assets/icons/question.png" alt="">
+            <hr style=" margin-right: -16px;margin-left: -19px;">
+            <a class="sub-menu-link" routerLink="/profile/view" (click)="this.topbarService.setPopupValue(false)">
+                <img src="../../../assets/icons/account.png" alt="">
+                <p class="para"> Profile</p>
+                <span>></span>
+            </a>
 
-            <p class="para">Help & Support</p>
-            <span>></span>
-        </a>
-        
-        <a  class="sub-menu-link" (click)="logout();topbarService.setPopupValue(false)">
-            <img src="../../../assets/icons/exit.png" alt="">
-            <p class="para">Sign Out</p>
-            <span>></span>
-        </a>
-        
+            <a class="sub-menu-link" routerLink="/profile/edit" (click)="this.topbarService.setPopupValue(false)">
+                <img src="../../../assets/icons/user-avatar.png" alt="">
+                <p class="para">Edit Profile</p>
+                <span>></span>
+            </a>
 
-      </div>
+            <a class="sub-menu-link" routerLink="/settings" (click)="this.topbarService.setPopupValue(false)">
+
+                <img src="../../../assets/icons/setting.png" alt="">
+                <p class="para">Settings & Privacy</p>
+                <span>></span>
+            </a>
+
+            <a class="sub-menu-link" (click)="this.topbarService.setPopupValue(false)">
+                <img src="../../../assets/icons/question.png" alt="">
+
+                <p class="para">Help & Support</p>
+                <span>></span>
+            </a>
+
+            <a class="sub-menu-link" (click)="logout();topbarService.setPopupValue(false)">
+                <img src="../../../assets/icons/exit.png" alt="">
+                <p class="para">Sign Out</p>
+                <span>></span>
+            </a>
+
+
+        </div>
     </div>
 
 </div>
-
-

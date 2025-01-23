@@ -15,6 +15,7 @@ export class TokenStoreService {
   constructor(private router: Router) { }
 
   logout() {
+   
     localStorage.removeItem(TOKEN_KEY);
     localStorage.clear();
   }
@@ -58,7 +59,7 @@ export class TokenStoreService {
     if (!token) return true; // If no token, consider it expired
 
     const payload = this.decodeTokenPayload(token);
-
+    // payload.exp=payload.exp - 29 * 60-40
     if (!payload || !payload.exp) return true; // Invalid token structure
 
     const expirationTime = payload.exp * 1000; // Convert expiration time to milliseconds
@@ -74,54 +75,63 @@ export class TokenStoreService {
 
 
 
-  // getTokenExpirationTime(): number | null {
-  //   // Replace with your service's method to fetch token expiration time
-  //   const token = localStorage.getItem('token'); // Example
-  //   if (!token) return null;
+  getTokenExpirationTime(): number | null {
+    // Replace with your service's method to fetch token expiration time
+    const token = localStorage.getItem('token'); // Example
+    if (!token) return null;
 
-  //   const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
-    
-  //   if (!payload || !payload.exp) return null;
+    const payload = JSON.parse(atob(token.split('.')[1])); // Decode JWT payload
+    // payload.exp=payload.exp - 29 * 60-40
+    if (!payload || !payload.exp) return null;
 
-  //   return payload.exp * 1000; // Expiration time in milliseconds
-  // }
+    return payload.exp * 1000; // Expiration time in milliseconds
+  }
 
-  // startTimer(expirationTime: number): void {
-  //   debugger
-  //   const now = Date.now();
-  //   this.timeRemaining = expirationTime - now;
+  startTimer(expirationTime: number): void {
+    debugger
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe(); // Avoid multiple subscriptions
+    }
+    this.timeRemaining=0;
+    const now = Date.now();
+    this.timeRemaining = expirationTime - now;
 
-  //   // Update the timer every second
-  //   this.timerSubscription = interval(1000).subscribe(() => {
-  //     debugger
-  //     const currentTime = Date.now()
-  //     this.timeRemaining = expirationTime - currentTime;
-  //     console.log("TIMEREM", this.timeRemaining)
-  //     if (this.timeRemaining <= 0) {
-  //       this.timeRemaining = 0;
-  //       this.timerSubscription?.unsubscribe();
+    // Update the timer every second
+    this.timerSubscription = interval(1000).subscribe(() => {
+      debugger
+      const currentTime = Date.now()
+      this.timeRemaining = expirationTime - currentTime;
+     
+      if (this.timeRemaining <= 0) {
+        this.formattedTime.next('')
+        this.timeRemaining = 0;
+       this.timerSubscription?.unsubscribe();
+        this.logout()
+        alert("Your session has expired. Please log in again to continue.");
+        this.router.navigate(['/auth/login'])
+       
 
-  //     }
+      }
 
-  //     this.formatTime();
-  //   });
-  // }
+      this.formatTime();
+    });
+  }
 
-  // formatTime() {
-  //   debugger
-  //   const seconds = Math.floor(this.timeRemaining / 1000);
-  //   const minutes = Math.floor(seconds / 60);
-  //   const hours = Math.floor(minutes / 60);
+  formatTime() {
+    debugger
+    const seconds = Math.floor(this.timeRemaining / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
 
-  //   const displaySeconds = seconds % 60;
-  //   const displayMinutes = minutes % 60;
+    const displaySeconds = seconds % 60;
+    const displayMinutes = minutes % 60;
+       console.log(`${this.padNumber(hours)}:${this.padNumber(displayMinutes)}:${this.padNumber(displaySeconds)}`)
+    this.formattedTime.next(`${this.padNumber(hours)}:${this.padNumber(displayMinutes)}:${this.padNumber(displaySeconds)}`)
+    return this.formattedTime.asObservable()
 
-  //   this.formattedTime.next(`${this.padNumber(hours)}:${this.padNumber(displayMinutes)}:${this.padNumber(displaySeconds)}`)
-  //   return this.formattedTime.asObservable()
+  }
 
-  // }
-
-  // padNumber(num: number): string {
-  //   return num < 10 ? `0${num}` : `${num}`;
-  // }
+  padNumber(num: number): string {
+    return num < 10 ? `0${num}` : `${num}`;
+  }
 }
