@@ -19,9 +19,22 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> | Promise<boolean> | boolean {
     const token = this.tokenStore.getToken();
     if (token) {
-      return true;
+     
+      if (this.tokenStore.isAuthenticated()) {
+        return true;
+      } else {
+        window.alert("Session Expired")
+        this.tokenStore.clearToken()
+        this.router.navigate(['auth/login']);
+        return false;
+      }
+    } else {
+      this.router.navigate(['auth/login']);
+      return false;
     }
-    this.router.navigate(['auth/login']);
-    return false;
+
+
   }
+
+
 }

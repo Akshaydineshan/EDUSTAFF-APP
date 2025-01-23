@@ -44,13 +44,19 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router, private fb: FormBuilder, private tokenStore: TokenStoreService, private userService: UserService, private toastr: ToastrService) {
     this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$')]]
+      email: ['', [Validators.required, Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$')]]
     })
   }
   ngOnInit(): void {
-    // if (this.tokenStore.getToken()) {
-    //   this.router.navigate(['dashboard'])
-    // }
+ 
+    const token = this.tokenStore.getToken()
+    if (token) {
+      if (this.tokenStore.isAuthenticated()) {
+        this.router.navigate(['dashboard'])
+      }
+    }
+
+
   }
 
   toggleForgotPassword() {
@@ -68,8 +74,8 @@ export class LoginComponent implements OnInit {
   toggleLogin() {
     this.registerMode = false;
     this.forgotPasswordMode = false;
-    this.errorMessage="";
-    this.successMessage=""
+    this.errorMessage = "";
+    this.successMessage = ""
   }
 
 
@@ -94,9 +100,9 @@ export class LoginComponent implements OnInit {
         email: this.forgotPasswordForm.value.email,
         clientURl: "https://edustaff-sys-adm.netlify.app/profile/reset-password",
       };
-    
+
       console.log("Forgot Password Request Data:", data);
-    
+
       this.authService.forgotPassword(data).subscribe({
         next: (response: any) => {
           if (response.statusCode === 200) {
@@ -118,8 +124,8 @@ export class LoginComponent implements OnInit {
     } else {
       this.forgotPasswordForm.markAllAsTouched(); // Highlight all invalid fields
     }
-    
-  
+
+
   }
   private handleForgotPasswordError(error: any): void {
     this.errorMessage = 'Something went wrong. Please try again later.';
