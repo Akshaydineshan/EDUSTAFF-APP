@@ -17,6 +17,7 @@ export class ForgotPasswordComponent {
   showPassword: boolean = false;
   showConfirmPassword: boolean = false;
   token: string = '';
+  email: any;
   // email: any;
 
   constructor(
@@ -39,10 +40,10 @@ export class ForgotPasswordComponent {
         confirmPassword: ['', Validators.required],
         email: [
           '',
-          [
-            Validators.required,
-            Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/),
-          ],
+          // [
+          //   Validators.required,
+          //   Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|net|org|edu)$/),
+          // ],
         ],
       },
       { validator: this.passwordMatchValidator }
@@ -70,7 +71,7 @@ export class ForgotPasswordComponent {
     // Retrieve the token from the URL params and validate it
     this.route.queryParams.subscribe((params) => {
       this.token = params['token'] || '';
-      // this.email = params['email'] || '';
+      this.email = params['email'] || '';
       console.log('Token:', this.token);
     });
     console.log("token", this.token)
@@ -118,7 +119,7 @@ export class ForgotPasswordComponent {
       const data = {
         password: formValue.password,
         confirmPassword: formValue.confirmPassword,
-        email: formValue.email,
+        email: this.email,
         token: this.token, // Token from URL
       };
 
