@@ -1,0 +1,12 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+
+
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed"
+    (click)="overlayClick()">
+
+    <app-back-button [url]="'/dashboard'" class=""></app-back-button>
+
+    <h4>Promotion Relinquishment</h4>
+</div>

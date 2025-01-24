@@ -24,6 +24,7 @@ import { DocumentsUploadComponent } from './add-teacher/documents-upload/documen
 import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.component';
 import { TeacherSectionViewComponent } from './teacher-section-view/teacher-section-view.component';
 import { CoreModule } from 'src/app/core/core.module';
+import { PromotionRelinquishmentComponent } from './promotion-relinquishment/promotion-relinquishment.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { CoreModule } from 'src/app/core/core.module';
     PromotionEligiblePriorityComponent,
     DocumentsUploadComponent,
     OnLeaveTeacherComponent,
-    TeacherSectionViewComponent
+    TeacherSectionViewComponent,
+    PromotionRelinquishmentComponent
   ],
   imports: [
     CommonModule,

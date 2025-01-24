@@ -1,3 +1,4 @@
+import { PromotionRelinquishmentComponent } from './promotion-relinquishment/promotion-relinquishment.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TeacherListComponent } from './teacher-list.component';
@@ -33,9 +34,7 @@ const routes: Routes = [
   { path: 'retired-teachers', component: RetiredTeacherListComponent },
   { path: 'promotion-priorities', component: PromotionEligiblePriorityComponent },
   { path: 'onleave', component: OnLeaveTeacherComponent },
-
-
-  
+  {path:'Promotion-relinquishment',component:PromotionRelinquishmentComponent},
   { 
     path: '**',
     component: PageNotFoundComponent
