@@ -167,5 +167,8 @@
     font-size: 20px; /* Font size for the initial */
     font-weight: bold; /* Bold text */
     text-transform: uppercase; /* Capitalize the letter */
+    border: 2px solid #ffffff; /* Optional border for better design */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Optional shadow */
     margin-right: 10px;
+    cursor: pointer;
   }

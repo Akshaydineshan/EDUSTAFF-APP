@@ -13,7 +13,7 @@
                     alt="Profile Image" /> -->
                     <div class="profile-image">
                         <!-- Dynamically display the first letter -->
-                        {{ currentUser.firstName.charAt(0) }}
+                        {{ currentUser.firstName.charAt(0) + currentUser.lastName.charAt(0) }}
                     </div>
                 <div class=" prof-sec-text ms-2 ">
                     <p class="mb-0 p-n ">{{currentUser.firstName + " " + currentUser.lastName}}</p>

@@ -23,9 +23,9 @@
 
             <div class="user-info">
                 <!-- <img  alt="User Profile"> -->
-                <div class="profile-image">
+                <div class="profile-image" [title]="loggedUserDetails.firstName + ' ' + loggedUserDetails.lastName">
                     <!-- Dynamically display the first letter -->
-                    {{ loggedUserDetails.firstName.charAt(0) }}
+                    {{ loggedUserDetails.firstName.charAt(0) +  loggedUserDetails.lastName.charAt(0) }}
                 </div>
                 <div class="user-details">
                     <p class="user-name">{{loggedUserDetails.firstName + " "+ loggedUserDetails.lastName }}</p>
