@@ -25,6 +25,7 @@ import { NoDataFoundComponent } from './components/no-data-found/no-data-found.c
 import { RomanPipe } from './pipes/roman.pipe';
 import { AppRoleDirective } from '../core/directive/app-role.directive';
 import { CoreModule } from '../core/core.module';
+import { SessionTimerComponent } from './components/session-timer/session-timer.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { CoreModule } from '../core/core.module';
     BackButtonComponent,
     NoDataFoundComponent,
     RomanPipe,
+    SessionTimerComponent,
     
     
   ],

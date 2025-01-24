@@ -8,9 +8,8 @@
             <span> <i class="bi bi-person-circle ms-2 profile-ic popup-trigger" title="Profile" aria-hidden="true"
                     (click)="profileDropdownToggle()"></i></span>
             <i class="fas fa-bell me-3"></i>
-            <span *ngIf="tokenTimer != '00:00:00' && isTokenTimerValid()" title="Session Timer">
-                {{ tokenTimer }}
-            </span>
+
+          <app-session-timer></app-session-timer>
             <!-- <i class="fas fa-sign-out-alt" matTooltip="Logout" (click)="logout()"></i> -->
         </div>
     </div>
@@ -63,7 +62,7 @@
 
             <a class="sub-menu-link" (click)="logout();topbarService.setPopupValue(false)">
                 <img src="../../../assets/icons/exit.png" alt="">
-                <p title={{tokenTimer}} class="para">Sign Out</p>
+                <p [title]="'Session expires in ' + tokenTimer + ' seconds'" class="para">Sign Out</p>
                 <span>></span>
             </a>
 

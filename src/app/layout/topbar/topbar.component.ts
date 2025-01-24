@@ -19,14 +19,14 @@ export class TopbarComponent implements OnInit {
 
   constructor(
     private tokenStore: TokenStoreService,
-    private router: Router, public topbarService: TopbarService, private userService: UserService, private authService: AuthService, 
+    private router: Router, public topbarService: TopbarService, private userService: UserService, private authService: AuthService,
   ) {
     this.topbarService.getPopupToggle().subscribe((res: any) => {
       this.isMenuOpen = res
     })
     this.userService.getUserDetails$().subscribe((res: any) => {
       this.loggedUserDetails = res;
-     
+
     })
   }
   ngOnInit(): void {
@@ -35,10 +35,10 @@ export class TopbarComponent implements OnInit {
     this.tokenStore.startTimer(exptime)
 
     this.tokenStore.formatTime().subscribe((time: any) => {
-      console.log("time--",time)
+      console.log("time--", time)
       this.tokenTimer = time
-  
-     })
+
+    })
   }
   toggleSidebar() {
     debugger
@@ -69,15 +69,6 @@ export class TopbarComponent implements OnInit {
     this.router.navigate(['/auth']);
   }
 
-  isTokenTimerValid(): boolean {
-    // return true
-    if (this.tokenTimer === '00:00:00') return false;
 
-    const [hours, minutes, seconds] = this.tokenTimer.split(':').map(Number);
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
-
-    const minRequiredSeconds =  30 * 60; // '00:10:00' in seconds
-    return totalSeconds < minRequiredSeconds;
-  }
 
 }
