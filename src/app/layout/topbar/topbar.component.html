@@ -5,7 +5,7 @@
             <span><b>Edu</b>Staff</span>
         </div>
         <div class="user-info">
-            <span> <i class="bi bi-person-circle ms-2 profile-ic popup-trigger" title="Profile" aria-hidden="true"
+            <span> <i class="bi bi-person-circle ms-2 profile-ic popup-trigger" [title]="loggedUserDetails.firstName + ' ' + loggedUserDetails.lastName" aria-hidden="true"
                     (click)="profileDropdownToggle()"></i></span>
             <i class="fas fa-bell me-3"></i>
 
