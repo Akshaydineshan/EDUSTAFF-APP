@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
       if (this.tokenStore.isAuthenticated()) {
         return true;
       } else {
-        window.alert("Session Expired")
+        alert("Your session has expired. Please log in again .");
         this.tokenStore.clearToken()
         this.router.navigate(['auth/login']);
         return false;
