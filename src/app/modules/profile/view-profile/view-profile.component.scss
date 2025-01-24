@@ -280,3 +280,25 @@ span.pdf-name {
 
 
 }
+
+.profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 108px;
+    height: 108px;
+    // top: 154px;
+    // left: 120px;
+    position: relative;
+    bottom: 5px;
+    object-fit: cover;
+    transition: 0.5s ease;
+
+    border-radius: 50%; /* Makes it circular */
+    background-color: #9d50c7 ; /* Placeholder background color */
+    color: #fff; /* Text color */
+    font-size: 34px; /* Font size for the initial */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* Capitalize the letter */
+    
+  }

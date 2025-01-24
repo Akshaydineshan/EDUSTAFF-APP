@@ -22,7 +22,11 @@
 
 
             <div class="user-info">
-                <img src="https://teachers.prod-app.in/Uploads/profile/Employee/man.jpeg" alt="User Profile">
+                <!-- <img  alt="User Profile"> -->
+                <div class="profile-image">
+                    <!-- Dynamically display the first letter -->
+                    {{ loggedUserDetails.firstName.charAt(0) }}
+                </div>
                 <div class="user-details">
                     <p class="user-name">{{loggedUserDetails.firstName + " "+ loggedUserDetails.lastName }}</p>
                     <p class="user-role ms-1">{{loggedUserDetails.roleName}}</p> <!-- User Role -->
@@ -59,7 +63,7 @@
 
             <a class="sub-menu-link" (click)="logout();topbarService.setPopupValue(false)">
                 <img src="../../../assets/icons/exit.png" alt="">
-                <p  title={{tokenTimer}} class="para">Sign Out</p>
+                <p title={{tokenTimer}} class="para">Sign Out</p>
                 <span>></span>
             </a>
 

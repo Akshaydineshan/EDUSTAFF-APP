@@ -155,3 +155,17 @@
 
 }
 
+.profile-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px; /* Circle size */
+    height: 50px; /* Circle size */
+    border-radius: 50%; /* Makes it circular */
+    background-color: #9d50c7; /* Placeholder background color */
+    color: #fff; /* Text color */
+    font-size: 20px; /* Font size for the initial */
+    font-weight: bold; /* Bold text */
+    text-transform: uppercase; /* Capitalize the letter */
+    margin-right: 10px;
+  }
