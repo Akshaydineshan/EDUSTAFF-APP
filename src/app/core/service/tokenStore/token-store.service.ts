@@ -125,7 +125,7 @@ export class TokenStoreService {
 
     const displaySeconds = seconds % 60;
     const displayMinutes = minutes % 60;
-       console.log(`${this.padNumber(hours)}:${this.padNumber(displayMinutes)}:${this.padNumber(displaySeconds)}`)
+
     this.formattedTime.next(`${this.padNumber(hours)}:${this.padNumber(displayMinutes)}:${this.padNumber(displaySeconds)}`)
     return this.formattedTime.asObservable()
 

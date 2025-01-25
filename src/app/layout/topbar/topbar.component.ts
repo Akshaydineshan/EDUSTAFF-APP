@@ -35,7 +35,7 @@ export class TopbarComponent implements OnInit {
     this.tokenStore.startTimer(exptime)
 
     this.tokenStore.formatTime().subscribe((time: any) => {
-      console.log("time--", time)
+ 
       this.tokenTimer = time
 
     })

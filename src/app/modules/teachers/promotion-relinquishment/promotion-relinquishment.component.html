@@ -9,15 +9,15 @@
 
     <h4>Promotion Relinquishment</h4>
     <div style="width: 100%; height:100%; display: flex; justify-content: center;">
-        <form style="width:100%; max-width: 500px;">
+        <form style="width:100%; max-width: 500px;" [formGroup]="relinquishmentForm">
 
             <div class="row g-4 mb-4">
                 <div class="col-md-12 ">
                     <label for="" class="mb-1">
                         <span>Teacher</span>
                         <span class="text-danger ms-1 mad-f"></span>
-                    </label> <ng-multiselect-dropdown [placeholder]="'Select Teacher'" [(ngModel)]="selectedTeacher"
-                        [settings]="teacherDropdownSettings" [data]="teacherDropdownData"
+                    </label> <ng-multiselect-dropdown [placeholder]="'Select Teacher'" 
+                        [settings]="teacherDropdownSettings" [data]="teacherDropdownData" formControlName="teacher"
                         (onSelect)="onTeacherFilterChange()" />
                 </div>
             </div>
@@ -28,7 +28,13 @@
                         <span>Date</span>
                         <span class="text-danger ms-1 mad-f"></span>
                     </label>
-                    <input type="date" class="form-control">
+                    <!-- <input type="date" class="form-control"> -->
+
+                    <select class="form-select" id="yearSelector" formControlName="date">
+                        <option value="" [disabled]="true">Select Date</option>
+                        <option [ngValue]="item" *ngFor="let item of generateYears">{{ item }}</option>
+                    </select>
+                    
                 </div>
             </div>
 
@@ -46,7 +52,7 @@
                                 <i class="bi bi-cloud-upload" style="font-size: 30px; color: #000000;"></i>
                                 <p class="lab">Drag File To Upload</p>
                                 <p class="or">or</p>
-                                <input (change)="onSchoolImageChange($event)" #fileInput type="file" accept=".jpeg,.jpg"
+                                <input (change)="onDocumentChange($event)" #fileInput type="file" accept=".jpeg,.jpg"
                                     style="display: none;">
                                 <button type="button" class="btn btn-primary" (click)=" fileInput.click()">Browse
                                     File</button>
@@ -80,7 +86,7 @@
                   
                     <button type="button" class="btn btn-secondary me-2" [routerLink]="['/dashboard']">Cancel</button>
     
-                    <button type="submit" class="btn btn-success" >
+                    <button type="button" class="btn btn-success" (click)="onSubmit()">
                     Submit   
                     </button>
                 </div>
