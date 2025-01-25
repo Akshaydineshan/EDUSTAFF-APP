@@ -20,6 +20,12 @@ export class PromotionRelinquishmentComponent implements OnInit {
   fileName: any;
   relinquishmentForm!: FormGroup
 
+  currentDate:any=new Date()
+  nextYear: Date = new Date(this.currentDate.getFullYear() + 1, 11, this.currentDate.getDate());
+
+  // Convert dates to ISO string format (YYYY-MM-DD)
+  currentDateISO: string = this.currentDate.toISOString().split('T')[0];
+  nextYearISO: string = this.nextYear.toISOString().split('T')[0];
 
   getTruncatedFileName = getTruncatedFileName;
   getFileName = getFileName;
