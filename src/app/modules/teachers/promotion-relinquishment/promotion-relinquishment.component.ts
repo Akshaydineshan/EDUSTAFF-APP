@@ -54,6 +54,10 @@ export class PromotionRelinquishmentComponent implements OnInit {
 
   }
 
+  loadDropDownData(){
+    
+  }
+
 
 
 
