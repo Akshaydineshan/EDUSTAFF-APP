@@ -41,7 +41,7 @@ export class TokenStoreService {
  */
   private decodeTokenPayload(token: string): any | null {
     try {
-      debugger
+    
       const payload = token.split('.')[1]; // Extract the payload part
       return JSON.parse(atob(payload)); // Decode the base64 payload
     } catch (error) {
@@ -54,7 +54,7 @@ export class TokenStoreService {
    * Check if the token is expired
    */
   public isTokenExpired(): boolean {
-    debugger
+   
     const token = this.getToken();
     if (!token) return true; // If no token, consider it expired
 
@@ -88,7 +88,7 @@ export class TokenStoreService {
   }
 
   startTimer(expirationTime: number): void {
-    debugger
+
     if (this.timerSubscription) {
       this.timerSubscription.unsubscribe(); // Avoid multiple subscriptions
     }
@@ -98,7 +98,7 @@ export class TokenStoreService {
 
     // Update the timer every second
     this.timerSubscription = interval(1000).subscribe(() => {
-      debugger
+  
       const currentTime = Date.now()
       this.timeRemaining = expirationTime - currentTime;
      
@@ -118,7 +118,7 @@ export class TokenStoreService {
   }
 
   formatTime() {
-    debugger
+
     const seconds = Math.floor(this.timeRemaining / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);

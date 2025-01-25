@@ -186,6 +186,23 @@ export class DataService {
       })
     );
   }
+
+  getDropdownData(url: string): Observable<any[]> {
+    debugger
+    return this.http.get<any[]>(this.apiUrl + url, { headers: { accept: '*/*' } }).pipe(
+
+      catchError((error) => {
+        console.error('Error fetching teachers data:', error);
+        return throwError(error);
+      })
+    );
+  }
+
+  createRelinquishment(data: any): Observable<any> {
+
+    return this.http.post(this.apiUrl + 'Promotion/CreatePromotionRelinquishment', data);
+  }
+
   getPromotionEligiblePriorityListData(data: any): Observable<any[]> {
     let params = new HttpParams();
 

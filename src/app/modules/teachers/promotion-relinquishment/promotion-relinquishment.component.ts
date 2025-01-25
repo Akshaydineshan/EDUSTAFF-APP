@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ToastrService } from 'ngx-toastr';
+import { DataService } from 'src/app/core/service/data/data.service';
 import { getFileName, getOrdinalSuffix, getTruncatedFileName } from 'src/app/utils/utilsHelper/utilsHelperFunctions';
 import { environment } from 'src/environments/environment';
 
@@ -15,7 +18,7 @@ export class PromotionRelinquishmentComponent implements OnInit {
   teacherDropdownData: any[] = []
   fileSize: any;
   fileName: any;
-  relinquishmentForm!:FormGroup
+  relinquishmentForm!: FormGroup
 
 
   getTruncatedFileName = getTruncatedFileName;
@@ -24,38 +27,50 @@ export class PromotionRelinquishmentComponent implements OnInit {
 
   teacherDropdownSettings: IDropdownSettings = {
     singleSelection: true,
-    idField: 'schoolId',
-    textField: 'schoolName',
+    idField: 'employeeID',
+    textField: 'employeeName',
     selectAllText: 'Select All',
     closeDropDownOnSelection: true,
     unSelectAllText: 'UnSelect All',
 
-    itemsShowLimit: 2,
+    itemsShowLimit: 1,
     allowSearchFilter: true,
 
   };
   file!: File;
   previewUrl!: string;
-  apiUrl: any=environment.imageBaseUrl
+  apiUrl: any = environment.imageBaseUrl
 
-  constructor(private fb:FormBuilder){
+  constructor(private fb: FormBuilder, private dataService: DataService, private toastr: ToastrService,private router:Router) {
 
   }
   ngOnInit(): void {
-    this.relinquishmentForm=this.fb.group({
-      teacher:[''],
-      date:[''],
-      document:['']
+    this.loadDropDownData()
+    this.relinquishmentForm = this.fb.group({
+      teacher: [''],
+      date: [''],
+      document: ['']
     })
-  
+
   }
 
   onTeacherFilterChange() {
 
   }
 
-  loadDropDownData(){
-    
+  loadDropDownData() {
+    let url: any = "Teacher/GetPromotionEligibleEmployeeList"
+    this.dataService.getDropdownData(url).subscribe({
+      next: (response: any) => {
+        if (response) {
+          console.log("r", response)
+          this.teacherDropdownData = response;
+        }
+      },
+      error: (error: any) => {
+
+      }
+    })
   }
 
 
@@ -106,7 +121,7 @@ export class PromotionRelinquishmentComponent implements OnInit {
     this.handleDocumentFileChange(file)
   }
 
-  
+
 
 
   onDragOver(event: any) {
@@ -117,7 +132,7 @@ export class PromotionRelinquishmentComponent implements OnInit {
   onDropSuccess(event: any) {
     event.preventDefault();
 
-    const file: File =  event.dataTransfer.files[0]
+    const file: File = event.dataTransfer.files[0]
     this.handleDocumentFileChange(file);
 
   }
@@ -140,7 +155,7 @@ export class PromotionRelinquishmentComponent implements OnInit {
 
 
     this.fileName = this.getFileName(result); // Get the file name
-    console.log("resiult", this.fileName)
+
     return result;
   }
 
@@ -173,8 +188,89 @@ export class PromotionRelinquishmentComponent implements OnInit {
     return years
   }
 
-  onSubmit(){
-    console.log("form",this.relinquishmentForm.value)
+  onSubmit() {
+    console.log("form", this.relinquishmentForm.value);
+
+    if (this.relinquishmentForm.valid) {
+      console.log('Form data:', this.relinquishmentForm.value);
+      let formValue = this.relinquishmentForm.value;
+
+      // Call the upload API to get the document ID first
+
+      let uploadFile = formValue.document?.file
+      let uploadFileType = "RelinquishmentFile"
+      this.dataService.uploadDocumentByDocumentType(uploadFile, uploadFileType).subscribe({
+        next: (uploadResponse: any) => {
+          console.log("upload", uploadResponse)
+          if (uploadResponse.documentID) {
+            let documentID = uploadResponse.documentID;
+
+            // Prepare the data after getting the document ID
+            let data: any = {
+              "employeeID": formValue.teacher[0].employeeID,
+              "relinquishmentYear": formValue.date,
+              "documentID": documentID // Use the retrieved document ID here
+            };
+            console.log("data", data)
+
+            // Call the relinquishment API after getting the document ID
+            this.dataService.createRelinquishment(data).subscribe({
+              next: (response: any) => {
+                console.log('Update response:', response);
+                if (response.statusCode === 200) {
+
+                  this.toastr.success('Saved successfully!', 'Success', {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: 'toast-top-left',
+                    timeOut: 4500
+                  });
+                  this.router.navigate(['dashboard'])
+                } else {
+                  this.toastr.error('Failed. Please try again.', 'Error', {
+                    closeButton: true,
+                    progressBar: true,
+                    positionClass: 'toast-top-left',
+                    timeOut: 4500
+                  });
+                }
+              },
+              error: (error: any) => {
+                this.toastr.error('Failed. Please try again.', 'Error', {
+                  closeButton: true,
+                  progressBar: true,
+                  positionClass: 'toast-top-left',
+                  timeOut: 4500
+                });
+              }
+            });
+          } else {
+            this.toastr.error('Failed to upload document. Please try again.', 'Error', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500
+            });
+          }
+        },
+        error: (error: any) => {
+          this.toastr.error('Failed to upload document. Please try again.', 'Error', {
+            closeButton: true,
+            progressBar: true,
+            positionClass: 'toast-top-left',
+            timeOut: 4500
+          });
+        }
+      });
+    } else {
+      this.relinquishmentForm.markAllAsTouched(); // Highlight invalid fields
+      this.toastr.warning('Invalid Form', 'Warning', {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-left',
+        timeOut: 4500
+      });
+    }
   }
 
   overlayClick() {

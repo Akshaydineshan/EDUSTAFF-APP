@@ -34,7 +34,7 @@ export class PromotionEligibleListComponent {
   promotionEligibleTableRows: any[] = []
   promotionEligibleTableColumns: any[] = []
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] };
-  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject'];
+  displayColumns: string[] = ['name', 'age', 'experienceYear', 'fromDesignation', 'toDesignation', 'schoolName', 'phoneNumber', 'subject','promotionRelinquishment'];
   promotionEligibleList: any[] = [];
 
   //table hover popup related variable
@@ -126,6 +126,19 @@ export class PromotionEligibleListComponent {
             headers: column,
             filter: true,
             floatingFilter: column === 'name',
+            ...(column === 'promotionRelinquishment' ? {
+              cellRenderer: (params:any) => {
+                if (params.value) {
+                  // For true, return tick icon with green color
+                  return `<span style="color: green; font-size: 16px;">&#9989;</span>`;
+                } else {
+                  // For false, return untick icon with red color
+                  // return `<span style="color: red; font-size: 16px;">✖</span>`;
+                  return `<span style="color: red; font-size: 16px;">	⬜</span>`;
+                }
+              }
+            } :{}),
+         
             ... (column === 'name' ? {
               // cellRenderer: (params: any) => `<a style="cursor: pointer; color:  #246CC1;" target="_blank">${params.value}</a>`
               cellRenderer: (params: any) => {
