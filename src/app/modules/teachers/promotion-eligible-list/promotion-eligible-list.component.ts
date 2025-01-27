@@ -130,11 +130,11 @@ export class PromotionEligibleListComponent {
               cellRenderer: (params:any) => {
                 if (params.value) {
                   // For true, return tick icon with green color
-                  return `<span style="color: green; font-size: 16px;">&#9989;</span>`;
+                  return `<span style="color: green; font-size: 16px;">&#10004;</span>`;
                 } else {
                   // For false, return untick icon with red color
-                  // return `<span style="color: red; font-size: 16px;">✖</span>`;
-                  return `<span style="color: red; font-size: 16px;">	⬜</span>`;
+                  return `<span style="color: red; font-size: 16px;">✖</span>`;
+                  // return `<span style="color: red; font-size: 16px;">	⬜</span>`;
                 }
               }
             } :{}),
