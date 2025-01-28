@@ -215,7 +215,7 @@ export class PromotionEligibleListComponent {
                    div.appendChild(divSub);
 
 
-                if (this.userService.hasRole('Staff')) {
+                if (this.userService.hasRole('Staff') &&  !params.data.promotionRelinquishment ) {
                   // Create another anchor element for the plus button
                   const plusButton = document.createElement('a');
                   plusButton.classList.add("menuButton")

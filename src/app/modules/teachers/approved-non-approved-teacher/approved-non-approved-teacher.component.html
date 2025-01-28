@@ -1,0 +1,40 @@
+<app-topbar (toggleSidebarEvent)="isSidebarClosed = !isSidebarClosed"></app-topbar>
+<app-sidebar [isSidebarClosed]="isSidebarClosed"></app-sidebar>
+
+<div class="main-container mt-4" [class.shifted]="isSidebarClosed" (click)="overlayClick()">
+    <app-back-button [url]="'/dashboard'" class=""></app-back-button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Approved & Non-Approved Teachers
+          
+        </h4>
+    </div>
+     <!-- Tabs for Approved and Non-Approved Teachers -->
+   
+        <div class="tabs">
+            <button class="tab" [class.active]="isApprovedTab" (click)="changeTab('approved')">
+              <i class="fa fa-check-circle"></i> Approved <span class="badge badge-secondary">{{ 0 }}</span>
+            </button>
+            <button class="tab" [class.active]="!isApprovedTab" (click)="changeTab('non-approved')">
+                 <i class="fa fa-times-circle"></i> Non-Approved <span class="badge badge-secondary">{{0 }}</span>
+            </button>
+        </div>
+
+
+  
+
+    <app-employee-hover-popup [showToggle]="showPopup" [selectedTeacher]="hoveredEmployee"
+        [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+
+    <app-school-hover-popup [showToggle]="showSchoolPopup" [selectedSchool]="selectedSchool"
+        [position]="{'top.px': mouseY, 'left.px': mouseX}" />
+    <div class="table-responsive" *ngIf="tableDataList.length">
+
+        <!-- table start -->
+        <app-table [rowData]="tableRows" [colDefs]="tableColumns" [paginationConfig]="paginationConfig"
+            (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
+            (onCellClickedEvent)="onCellClicked($event)"></app-table>
+        <!-- table end -->
+
+    </div>
+    <app-no-data-found *ngIf="!tableDataList.length"></app-no-data-found>
+</div>
