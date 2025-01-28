@@ -658,7 +658,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
           { field: "subject", filter: true, floatingFilter: false },
 
           { field: "experienceYear", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner' : `${params.value}`, },
-          { field: "age", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` },
+          { field: "age", filter: true, floatingFilter: false, valueFormatter: (params: any) => params.value <= 0 ? '--' : `${params.value}` },
           {
             field: "phoneNumber", filter: true, floatingFilter: false,
             valueFormatter: (params: any) => `+91 ${params.value}`,

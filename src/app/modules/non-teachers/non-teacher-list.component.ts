@@ -363,7 +363,7 @@ export class NonTeacherListComponent implements OnInit {
 
             } : {}),
             ... (column === 'experienceYear' ? { valueFormatter: (params: any) => params.value <= 0 ? 'New Joiner' : `${params.value}` } : {}),
-            ... (column === 'age' ? { valueFormatter: (params: any) => params.value <= 0 ? 'N/A' : `${params.value}` } : {}),
+            ... (column === 'age' ? { valueFormatter: (params: any) => params.value <= 0 ? '--' : `${params.value}` } : {}),
 
             ... (column === 'schoolName' ? { width: 300 } : {}),
             ...(column === "phoneNumber" ? { valueFormatter: (params: any) => `+91 ${params.value}`, } : {})

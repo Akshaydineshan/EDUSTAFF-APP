@@ -18,9 +18,21 @@
                         <span class="text-danger ms-1 mad-f"></span>
                     </label> <ng-multiselect-dropdown [placeholder]="'Select Teacher'" 
                         [settings]="teacherDropdownSettings" [data]="teacherDropdownData" formControlName="teacher"
-                        (onSelect)="onTeacherFilterChange()" />
+                        (ngModelChange)="onTeacherChange($event)" />
                 </div>
             </div>
+            <div class="row mb-3 mb-4">
+                <!-- <div class="col-md-4"></div> -->
+                <div class="col-md-12">
+                    <label for="" class="mb-1">
+                        <span>Designation</span>
+                        <span class="text-danger ms-1 mad-f"></span>
+                    </label>
+                    <input type="text"  class="form-control disabled-input" formControlName="designation" >
+                    
+                </div>
+            </div>
+            
             <div class="row mb-3 mb-4">
                 <!-- <div class="col-md-4"></div> -->
                 <div class="col-md-12">
@@ -37,6 +49,8 @@
                     
                 </div>
             </div>
+
+        
 
 
             <div class="row mb-3 g-0">

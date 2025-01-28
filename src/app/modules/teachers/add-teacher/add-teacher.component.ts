@@ -119,6 +119,7 @@ export class AddTeacherComponent implements OnInit {
       // trainingAttended: ['', Validators.required],
       eligibleTestQualified: ['', Validators.required],
       approvalType: ['', Validators.required],
+      approvalTypeReason:[''],
       protectedTeacher: ['', Validators.required]
     },
       //  { validators: dateRangeValidator('startDate', 'endDate') }
@@ -435,7 +436,7 @@ export class AddTeacherComponent implements OnInit {
         pran: this.employee.pran,
         SchoolID: this.employee.schoolDTO?.schoolId,
         ApprovalTypeID: this.employee.getApprovalTypeDTO?.approvalTypeID,
-
+        approvalTypeReason:this.employee.approvalTypeReason,
         categoryID: this.employee.getEmployeeCategoryDTO?.employeeCategoryId,
 
         // documentID: parseInt(this.fullFormData.documentID),
@@ -473,6 +474,7 @@ export class AddTeacherComponent implements OnInit {
         // trainingAttended: ['', Validators.required],
         eligibleTestQualified: professionalData.EligibilityTestQualified,
         approvalType: this.approvalTypes.find((apr: any) => apr.approvalTypeID === professionalData.ApprovalTypeID),
+        approvalTypeReason:professionalData.approvalTypeReason,
         protectedTeacher: professionalData.ProtectedTeacher
       })
 
@@ -1045,6 +1047,7 @@ export class AddTeacherComponent implements OnInit {
             pran: this.fullFormData.pran,
             SchoolID: parseInt(this.fullFormData.schoolName.schoolID),
             ApprovalTypeID: parseInt(this.fullFormData.approvalType.approvalTypeID),
+            approvalTypeReason:this.fullFormData.approvalTypeReason,
             // dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.dateOfJoin),
             // dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.dateOfJoinDepartment),
             categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),

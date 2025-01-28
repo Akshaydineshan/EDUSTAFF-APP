@@ -507,6 +507,13 @@
                                                                 currentTeacher.getApprovalTypeDTO?.approvalTypeName
                                                                 }}</span>
                                                 </li>
+                                                
+                                                <li *ngIf="currentTeacher.approvalTypeReason">
+                                                        <strong class="field">Approval Reason:</strong>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.approvalTypeReason
+                                                                }}</span>
+                                                </li>
 
 
 

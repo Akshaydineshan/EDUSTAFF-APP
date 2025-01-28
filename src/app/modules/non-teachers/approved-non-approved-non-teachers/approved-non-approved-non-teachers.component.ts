@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, HostListener, NgZone, OnInit } from '@angular/core';
+import { Component, HostListener, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/core/service/data/data.service';
 interface PagonationConfig {
@@ -8,13 +8,13 @@ interface PagonationConfig {
   paginationPageSizeSelector: number[]
 }
 @Component({
-  selector: 'app-approved-non-approved-teacher',
-  templateUrl: './approved-non-approved-teacher.component.html',
-  styleUrls: ['./approved-non-approved-teacher.component.scss'],
+  selector: 'app-approved-non-approved-non-teachers',
+  templateUrl: './approved-non-approved-non-teachers.component.html',
+  styleUrls: ['./approved-non-approved-non-teachers.component.scss'],
   providers: [DatePipe]
 })
-export class ApprovedNonApprovedTeacherComponent implements OnInit {
-  isSidebarClosed = false;
+export class ApprovedNonApprovedNonTeachersComponent {
+ isSidebarClosed = false;
 
 
 
@@ -79,8 +79,8 @@ export class ApprovedNonApprovedTeacherComponent implements OnInit {
   loadTeacherData() {
     // Determine the endpoint based on the selected tab
     const tableDataListApiEndPoint = this.isApprovedTab
-      ? "Teacher/GetAllApprovedTeacher"
-      : "Teacher/GetAllNonApprovedTeacher";
+      ? "NonTeacher/GetAllApprovedNonTeacher"
+      : "NonTeacher/GetAllNonApprovedNonTeacher";
 
     // Fetch data from the API
     this.dataService.getTableListData(tableDataListApiEndPoint).subscribe(

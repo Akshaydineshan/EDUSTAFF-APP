@@ -20,6 +20,7 @@ import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
 import { StaffSectionViewComponent } from './staff-section-view/staff-section-view.component';
 import { CoreModule } from 'src/app/core/core.module';
+import { ApprovedNonApprovedNonTeachersComponent } from './approved-non-approved-non-teachers/approved-non-approved-non-teachers.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CoreModule } from 'src/app/core/core.module';
     StaffTransferCompletedListComponent,
     RetiredStaffComponent,
     OnLeaveStaffComponent,
-    StaffSectionViewComponent
+    StaffSectionViewComponent,
+    ApprovedNonApprovedNonTeachersComponent
   ],
   imports: [
     CommonModule,

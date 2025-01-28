@@ -22,6 +22,7 @@ export class TeacherDetailsComponent {
 
 
   ngOnInit() {
+    console.log(":in",this.fullFormData)
 
   }
   get getImage() {

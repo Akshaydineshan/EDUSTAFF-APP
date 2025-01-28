@@ -55,13 +55,24 @@ export class PromotionRelinquishmentComponent implements OnInit {
     this.relinquishmentForm = this.fb.group({
       teacher: [''],
       date: [''],
-      document: ['']
+      document: [''],
+      designation:['Designation']
     })
 
   }
 
-  onTeacherFilterChange() {
+  onTeacherChange(event:any) {
+    console.log("event,",event)
+    let url=`Promotion/GetPromotedDesignationByEmployeeID/${event[0].employeeID}`
+     this.dataService.getDropdownData(url).subscribe({
+      next:(response:any)=>{
+        console.log("response",response)
 
+      },
+      error:(error:any)=>{
+        
+      }
+     })
   }
 
   loadDropDownData() {

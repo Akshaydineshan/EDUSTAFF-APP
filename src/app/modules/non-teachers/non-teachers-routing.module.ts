@@ -12,6 +12,7 @@ import { RetiredStaffComponent } from './retired-staff/retired-staff.component';
 import { OnLeaveStaffComponent } from './on-leave-staff/on-leave-staff.component';
 import { StaffSectionViewComponent } from './staff-section-view/staff-section-view.component';
 import { roleGuard } from 'src/app/core/gurads/role/role.guard';
+import { ApprovedNonApprovedNonTeachersComponent } from './approved-non-approved-non-teachers/approved-non-approved-non-teachers.component';
 
 const routes: Routes = [
   { path: '', component: StaffSectionViewComponent },
@@ -25,6 +26,7 @@ const routes: Routes = [
   { path: 'transfer-completed', component:StaffTransferCompletedListComponent },
   { path: 'retired-staff', component:RetiredStaffComponent },
   { path: 'onleave', component:OnLeaveStaffComponent },
+   {path:'by-approve',component:ApprovedNonApprovedNonTeachersComponent},
   
   { 
     path: '**',
