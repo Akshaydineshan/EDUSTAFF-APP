@@ -491,11 +491,17 @@
                                                         <strong class="field">PRAN:</strong>
                                                         <span class="field-val">{{ currentTeacher.pran }}</span>
                                                 </li>
+                                                <li *ngIf="currentTeacher.getApprovalTypeDTO?.approvalTypeName">
+                                                        <strong class="field">Approval Type:</strong>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.getApprovalTypeDTO?.approvalTypeName
+                                                                }}</span>
+                                                </li>
 
 
 
 
-                                                <li><strong class="field">Date OF Joining <span
+                                                <li><strong class="field">Date Of Joining <span
                                                                         class="ms-3">:</span></strong> <span
                                                                 class="field-val">{{currentTeacher.dateofJoin | date:
                                                                 'MMMM d, y'}}</span>
