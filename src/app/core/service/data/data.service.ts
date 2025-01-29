@@ -36,6 +36,13 @@ export class DataService {
     return `${year}-${month}-${day}`;
   }
 
+  formatYearmonthToLocal(dateString: string): string {
+    const dateObj = new Date(dateString);
+    const year = dateObj.getFullYear();
+    const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    return `${year}-${month}`;
+  }
+
   getTotalActiveTeachersCount(): Observable<{ count: number }> {
     return this.http.get<{ count: number }>(this.apiUrl + '/Teacher/GetAllActiveTeachersCount');
   }

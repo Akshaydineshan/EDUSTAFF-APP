@@ -172,10 +172,10 @@
             <strong>School/University :</strong> <span>{{item.schoolName}}</span>
           </li>
           <li class="key-value-item" *ngIf="item.fromDate"> 
-            <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM d, y' }}</span>
+            <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM y' }}</span>
           </li>
           <li class="key-value-item">
-            <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM d, y' }}</span>
+            <strong>To Date:</strong> <span>{{item.toDate | date: 'MMMM y' }}</span>
           </li>
           <!-- <li class="key-value-item" *ngIf=" item.certificate?.documentName || item.certificate?.documentID ">
             <strong>Certificate:</strong> <span><img (click)="pdfClick(item.certificate.documentName)" [src]="'../../../../assets/icons/pdf-file.png'" alt=""></span>

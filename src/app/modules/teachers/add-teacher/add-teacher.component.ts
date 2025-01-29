@@ -329,13 +329,13 @@ export class AddTeacherComponent implements OnInit {
           ],
 
           fromDate: [
-            education.fromDate ? this.dataService.formatDateToLocal(education.fromDate) : '',
+            education.fromDate ? this.dataService.formatYearmonthToLocal(education.fromDate) : '',
             education.educationTypeID === 5
               ? []
               : [minAndMaxDateValidator('1900-01-01', true, true), Validators.required],
           ],
 
-          toDate: [this.dataService.formatDateToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
+          toDate: [this.dataService.formatYearmonthToLocal(education.toDate), [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
           certificate: [(education.documentID && education.documentpath) ? { documentID: education.documentID, documentName: education.documentpath } : null, [Validators.required]]
         },
           {

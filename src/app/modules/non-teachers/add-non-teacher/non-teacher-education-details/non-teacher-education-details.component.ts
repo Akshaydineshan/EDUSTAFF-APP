@@ -19,7 +19,8 @@ export class NonTeacherEducationDetailsComponent {
   @Output() educationFormChange = new EventEmitter<any>();
 
   maxDate!: string;
-  minDate: any = new Date('1900-01-01');
+  min = new Date('1900-01-01');
+  minDate: any = `${this.min.getFullYear()}-${String(this.min.getMonth() + 1).padStart(2, '0')}`;
   selectedEducationType!: string;
   getTruncatedFileName = getTruncatedFileName
   getFileName = getFileName
@@ -45,7 +46,7 @@ export class NonTeacherEducationDetailsComponent {
   ngOnInit(): void {
     this.educationForm.disable()
     const today = new Date();
-    this.maxDate = today.toISOString().split('T')[0];
+    this.maxDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`; // Format as YYYY-MM
 
     this.educations = this.educationForm.get('educations') as FormArray;
 

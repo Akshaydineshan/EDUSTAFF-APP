@@ -21,7 +21,9 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   @Output() educationFormChange = new EventEmitter<any>();
 
   maxDate!: string;
-  minDate: any = new Date('1900-01-01');
+  min = new Date('1900-01-01');
+  minDate: any = `${this.min.getFullYear()}-${String(this.min.getMonth() + 1).padStart(2, '0')}`;
+
   selectedEducationType!: string;
   getTruncatedFileName = getTruncatedFileName
   getFileName = getFileName
@@ -47,7 +49,8 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.educationForm.disable()
     const today = new Date();
-    this.maxDate = today.toISOString().split('T')[0];
+    this.maxDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`; // Format as YYYY-MM
+
 
     this.educations = this.educationForm.get('educations') as FormArray;
 
@@ -78,7 +81,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
       schoolName: ['',],
       fromDate: [''],
       toDate: ['', [minAndMaxDateValidator('1900-01-01', true, true), Validators.required]],
-      certificate: ['',Validators.required]
+      certificate: ['', Validators.required]
     },
       { validators: dateRangeValidator('fromDate', 'toDate') }
     );
@@ -321,7 +324,7 @@ export class EducationalDetailsComponent implements OnInit, OnChanges {
   //   const file = event.target.files[0];
   //   if (file) {
   //     this.file = file;
-    
+
   //   }
   //   this.uploadCertificate(index)
   // }
