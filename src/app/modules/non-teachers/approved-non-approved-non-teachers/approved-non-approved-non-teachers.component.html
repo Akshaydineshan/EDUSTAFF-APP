@@ -12,10 +12,10 @@
    
         <div class="tabs">
             <button class="tab" [class.active]="isApprovedTab" (click)="changeTab('approved')">
-              <i class="fa fa-check-circle"></i> Approved <span class="badge badge-secondary">{{ 0 }}</span>
+              <i class="fa fa-check-circle"></i> Approved <span class="badge badge-secondary" *ngIf="tableDataList.length && isApprovedTab">{{tableDataList.length }}</span>
             </button>
             <button class="tab" [class.active]="!isApprovedTab" (click)="changeTab('non-approved')">
-                 <i class="fa fa-times-circle"></i> Non-Approved <span class="badge badge-secondary">{{0 }}</span>
+                 <i class="fa fa-times-circle"></i> Non-Approved <span class="badge badge-secondary"  *ngIf="tableDataList.length && !isApprovedTab">{{tableDataList.length}}</span>
             </button>
         </div>
 
