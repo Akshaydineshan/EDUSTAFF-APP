@@ -121,6 +121,7 @@ export class AddNonTeacherComponent {
       // trainingAttended: ['', Validators.required],
       eligibleTestQualified: ['', Validators.required],
       approvalType: ['', Validators.required],
+      approvalTypeReason:[''],
       protectedTeacher: ['', Validators.required]
     },
       //  { validators: dateRangeValidator('startDate', 'endDate') }
@@ -466,7 +467,7 @@ export class AddNonTeacherComponent {
         pran: this.employee.pran,
         SchoolID: this.employee.schoolDTO?.schoolId,
         ApprovalTypeID: this.employee.getApprovalTypeDTO?.approvalTypeID,
-
+        approvalTypeReason:this.employee.approvalTypeReason,
         categoryID: this.employee.getEmployeeCategoryDTO?.employeeCategoryId,
 
         // documentID: parseInt(this.fullFormData.documentID),
@@ -526,6 +527,7 @@ export class AddNonTeacherComponent {
         // trainingAttended: ['', Validators.required],
         eligibleTestQualified: professionalData.EligibilityTestQualified,
         approvalType: this.approvalTypes.find((apr: any) => apr.approvalTypeID === professionalData.ApprovalTypeID),
+        approvalTypeReason:professionalData.approvalTypeReason,
         protectedTeacher: professionalData.ProtectedTeacher
       })
 
@@ -1401,7 +1403,7 @@ export class AddNonTeacherComponent {
             pran: this.fullFormData.pran,
             SchoolID: parseInt(this.fullFormData.schoolName.schoolID),
             ApprovalTypeID: parseInt(this.fullFormData.approvalType.approvalTypeID),
-            
+            approvalTypeReason:this.fullFormData.approvalTypeReason,
             categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),
            
             eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified),

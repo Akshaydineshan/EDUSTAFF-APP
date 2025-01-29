@@ -345,6 +345,14 @@
           <li class="key-value-item">
             <strong>PRAN:</strong> <span>{{this.fullFormData.pran}}</span>
           </li>
+          <li class="key-value-item" *ngIf="fullFormData.approvalType.approvalTypeName">
+            <strong>Approval Type </strong> <span>{{this.fullFormData.approvalType.approvalTypeName
+              }}</span>
+          </li>
+          <li class="key-value-item" *ngIf="fullFormData.approvalTypeReason">
+            <strong>Approval Reason</strong> <span>{{this.fullFormData.approvalTypeReason
+              }}</span>
+          </li>
           <li class="key-value-item">
             <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
           </li>

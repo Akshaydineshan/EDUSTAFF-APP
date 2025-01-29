@@ -203,6 +203,18 @@
             </div>
         </div>
     </div>
+
+    <div class="row mb-3">
+        <label for="pran" class="col-sm-3 col-form-label">Approval Type Reason</label>
+        <div class="col-sm-9">
+            <input type="text" class="form-control"  formControlName="approvalTypeReason" placeholder="Reason">
+            <div *ngIf="professionalForm.get('approvalTypeReason')?.invalid && (professionalForm.get('approvalTypeReason')?.touched || professionalForm.get('approvalTypeReason')?.dirty ||submitted)"
+                class="text-danger">
+                <small *ngIf="professionalForm.get('approvalTypeReason')?.errors?.['required']">PRAN is required.</small>
+                <small *ngIf="professionalForm.get('approvalTypeReason')?.errors?.['pattern']">PRAN format is invalid.</small>
+            </div>
+        </div>
+    </div>
     
     <div class="row mb-3">
         <label for="trainingAttended" class="col-sm-3 col-form-label">Protected Teacher</label>
