@@ -568,13 +568,6 @@
           <li class="key-value-item">
             <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>
           </li>
-          <li class="key-value-item">
-            <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}
-              ,{{this.fullFormData.schoolName.cityName}}</span>
-          </li>
-          <li class="key-value-item">
-            <strong>Category :</strong> <span>{{this.fullFormData.pCategory.employeeCategoryName}}</span>
-          </li>
           <li class="key-value-item" *ngIf="fullFormData.approvalType.approvalTypeName">
             <strong>Approval Type </strong> <span>{{this.fullFormData.approvalType.approvalTypeName
               }}</span>
@@ -583,6 +576,22 @@
             <strong>Approval Reason</strong> <span>{{this.fullFormData.approvalTypeReason
               }}</span>
           </li>
+          <li class="key-value-item">
+            <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}
+              ,{{this.fullFormData.schoolName.cityName}}</span>
+          </li>
+
+          <li class="key-value-item">
+            <strong>Protected Teacher :</strong> <span> {{
+              (this.fullFormData.protectedTeacher === true || this.fullFormData.protectedTeacher === "true") ? 'Yes' :
+              (this.fullFormData.protectedTeacher === false || this.fullFormData.protectedTeacher === "false") ? 'No' :
+              ''
+              }}</span>
+          </li>
+          <li class="key-value-item">
+            <strong>Category :</strong> <span>{{this.fullFormData.pCategory.employeeCategoryName}}</span>
+          </li>
+
 
           <li class="key-value-item">
             <strong>Eligible Test Qualified:</strong> <span>{{this.fullFormData.eligibleTestQualified ? 'yes' :

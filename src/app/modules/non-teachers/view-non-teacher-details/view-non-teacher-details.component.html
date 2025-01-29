@@ -10,10 +10,12 @@
                                 <img [src]="getImage || 'assets/icons/user.png' "
                                         class="prof-img img-fluid rounded-circle " alt="Profile Image" />
                                 <div class=" prof-sec-text ms-2 ">
-                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + ' ' + currentTeacher.lastName}}</p>
+                                        <p class="mb-0 p-n ">{{currentTeacher.firstName + ' ' +
+                                                currentTeacher.lastName}}</p>
                                         <p class="text-muted mb-0 p-d mt-1">{{currentTeacher.departmentName}}</p>
                                         <p class="text-muted mb-0 p-a">
-                                                {{currentTeacher.schoolDTO?.schoolName?currentTeacher.schoolDTO.schoolName + ",":""}}
+                                                {{currentTeacher.schoolDTO?.schoolName?currentTeacher.schoolDTO.schoolName
+                                                + ",":""}}
                                                 {{currentTeacher.districtDTO?.districtName?currentTeacher.districtDTO?.districtName:""}}
                                         </p>
                                 </div>
@@ -26,14 +28,13 @@
                                 <span class="me-5 mt-2">
                                         <p class="uq-id">{{currentTeacher.uniqueID}}</p>
                                 </span>
-                                <div class="dropdown me-2 "  *appAppRole="'Staff'">
-                                        <button class="btn btn-light " type="button"
-                                                id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <div class="dropdown me-2 " *appAppRole="'Staff'">
+                                        <button class="btn btn-light " type="button" id="dropdownMenuButton"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
                                                 <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                <li><a class="dropdown-item"
-                                                               (click)="editClick()">Edit</a>
+                                                <li><a class="dropdown-item" (click)="editClick()">Edit</a>
                                                 </li>
 
 
@@ -43,7 +44,7 @@
                                 <button class="btn btn-success" (click)="print()">
                                         <i class="bi bi-printer"></i> Print
                                 </button>
-                                
+
 
 
                                 <!-- <button class="btn btn-outline-secondary me-2">
@@ -290,9 +291,12 @@
                                                 </li>
                                                 <li *ngIf="currentTeacher.maritalStatusDTO.maritalStatusName">
                                                         <strong class="field">Marital Status:</strong>
-                                                        <span class="field-val">{{ currentTeacher.maritalStatusDTO.maritalStatusName }}</span>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.maritalStatusDTO.maritalStatusName
+                                                                }}</span>
                                                 </li>
-                                                <ng-container *ngIf="currentTeacher.maritalStatusDTO.maritalStatusID == '2'">
+                                                <ng-container
+                                                        *ngIf="currentTeacher.maritalStatusDTO.maritalStatusID == '2'">
                                                         <li *ngIf="currentTeacher.spouseName">
                                                                 <strong class="field">Spouse's Name:</strong>
                                                                 <span class="field-val">{{ currentTeacher.spouseName
@@ -301,7 +305,8 @@
                                                         <li *ngIf="currentTeacher.spouseReligionDTO.religionName">
                                                                 <strong class="field">Spouse's Religion:</strong>
                                                                 <span class="field-val">{{
-                                                                        currentTeacher.spouseReligionDTO.religionName }}</span>
+                                                                        currentTeacher.spouseReligionDTO.religionName
+                                                                        }}</span>
                                                         </li>
                                                         <li *ngIf="currentTeacher.spouseCaste">
                                                                 <strong class="field">Spouse's Caste:</strong>
@@ -432,47 +437,22 @@
                                 <div class="card-header">Professional Details</div>
                                 <div class="card-body">
                                         <ul class="info-list">
-                                                <!-- <li><strong class="field">Department<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.departmentName}}</span>
-                                                </li>
 
-                                                <li><strong class="field">District<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.district}}</span>
-                                                </li>
-
-                                                <li><strong class="field">Designation<span
-                                                                        class="ms-3">:</span></strong> <span
-                                                                class="field-val">{{currentTeacher.designationName}}</span>
-                                                </li>
-
-
-                                                <li><strong class="field">Employee Type<span
-                                                                        class="ms-3">:</span></strong> <span
-                                                                class="field-val"></span></li>
-
-                                                <li><strong class="field"> Subject<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.subjectName}}</span>
-                                                </li>
-
-                                                <li><strong class="field">PF Number<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.pfNumber}}</span>
-                                                </li>
-
-                                                <li><strong class="field">PRAN<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.pran}}</span>
-                                                </li> -->
                                                 <li *ngIf="currentTeacher.department.employeeTypeName">
                                                         <strong class="field">Department:</strong>
-                                                        <span class="field-val">{{ currentTeacher.department.employeeTypeName
+                                                        <span class="field-val">{{
+                                                                currentTeacher.department.employeeTypeName
                                                                 }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.districtDTO?.districtName">
                                                         <strong class="field">District:</strong>
-                                                        <span class="field-val">{{ currentTeacher.districtDTO?.districtName }}</span>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.districtDTO?.districtName }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.designationDTO?.designationName">
                                                         <strong class="field">Designation:</strong>
-                                                        <span class="field-val">{{ currentTeacher.designationDTO?.designationName
+                                                        <span class="field-val">{{
+                                                                currentTeacher.designationDTO?.designationName
                                                                 }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.employeeType">
@@ -481,7 +461,8 @@
                                                 </li>
                                                 <li *ngIf="currentTeacher.getSubjectDTO?.subjectName ">
                                                         <strong class="field">Subject:</strong>
-                                                        <span class="field-val">{{ currentTeacher.getSubjectDTO?.subjectName }}</span>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.getSubjectDTO?.subjectName }}</span>
                                                 </li>
                                                 <li *ngIf="currentTeacher.pfNumber">
                                                         <strong class="field">PF Number:</strong>
@@ -491,26 +472,9 @@
                                                         <strong class="field">PRAN:</strong>
                                                         <span class="field-val">{{ currentTeacher.pran }}</span>
                                                 </li>
-                                                <li *ngIf="currentTeacher.getApprovalTypeDTO?.approvalTypeName">
-                                                        <strong class="field">Approval Type:</strong>
-                                                        <span class="field-val">{{
-                                                                currentTeacher.getApprovalTypeDTO?.approvalTypeName
-                                                                }}</span>
-                                                </li>
 
-                                                <!-- <li *ngIf="currentTeacher.getApprovalTypeDTO?.approvalTypeName">
-                                                        <strong class="field">Approval Type:</strong>
-                                                        <span class="field-val">{{
-                                                                currentTeacher.getApprovalTypeDTO?.approvalTypeName
-                                                                }}</span>
-                                                </li> -->
-                                                
-                                                <li *ngIf="currentTeacher.approvalTypeReason">
-                                                        <strong class="field">Approval Reason:</strong>
-                                                        <span class="field-val">{{
-                                                                currentTeacher.approvalTypeReason
-                                                                }}</span>
-                                                </li>
+
+
 
 
 
@@ -533,16 +497,45 @@
                                                                 date: 'MMMM d, y'
                                                                 }}</span></li>
 
+                                                <li *ngIf="currentTeacher.getApprovalTypeDTO?.approvalTypeName">
+                                                        <strong class="field">Approval Type:</strong>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.getApprovalTypeDTO?.approvalTypeName
+                                                                }}</span>
+                                                </li>
+
+                                                <li *ngIf="currentTeacher.approvalTypeReason">
+                                                        <strong class="field">Approval Reason:</strong>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.approvalTypeReason
+                                                                }}</span>
+                                                </li>
+                                                <li>
+                                                        <strong class="field">Protected Teacher<span
+                                                                        class="ms-3">:</span></strong>
+                                                        <span class="field-val">
+                                                                {{
+                                                                currentTeacher.protectedTeacher === true ||
+                                                                currentTeacher.protectedTeacher === "true" ? "Yes" :
+                                                                currentTeacher.protectedTeacher === false ||
+                                                                currentTeacher.protectedTeacher === "false" ? "No" :
+                                                                ""
+                                                                }}
+                                                        </span>
+                                                </li>
+
+
                                                 <li><strong class="field">School Name <span
                                                                         class="ms-3">:</span></strong> <span
                                                                 class="field-val">{{currentTeacher.schoolDTO?.schoolName}}</span>
                                                 </li>
 
                                                 <li><strong class="field">Category <span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.getEmployeeCategoryDTO?.employeeCategoryName}}</span>
+                                                        <span
+                                                                class="field-val">{{currentTeacher.getEmployeeCategoryDTO?.employeeCategoryName}}</span>
                                                 </li>
 
-                                                <li ><strong class="field">Eligible Test Qualified <span
+                                                <li><strong class="field">Eligible Test Qualified <span
                                                                         class="ms-3">:</span></strong> <span
                                                                 class="field-val">{{currentTeacher.eligibilityTestQualified
                                                                 ? "YES" : "NO"}}</span></li>

@@ -1057,7 +1057,7 @@ export class AddTeacherComponent implements OnInit {
             documentID: parseInt(this.fullFormData.documentID),
             eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified
             ),
-            ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
+            ProtectedTeacher: JSON.parse(this.fullFormData.protectedTeacher),
             // trainingAttended: Boolean(this.fullFormData.trainingAttended),
             designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
             subjectID: parseInt(this.fullFormData.subject.subjectID),

@@ -1407,7 +1407,7 @@ export class AddNonTeacherComponent {
             categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),
            
             eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified),
-            ProtectedTeacher: Boolean(this.fullFormData.protectedTeacher),
+            ProtectedTeacher: JSON.parse(this.fullFormData.protectedTeacher),
             // trainingAttended: Boolean(this.fullFormData.trainingAttended),
             designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
             // subjectID: parseInt(this.fullFormData.subject.subjectID),

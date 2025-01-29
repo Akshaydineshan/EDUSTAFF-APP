@@ -1,5 +1,3 @@
-
-
 <div>
   <div class="container-fluid top-banner"></div>
 
@@ -171,7 +169,7 @@
           <li class="key-value-item" *ngIf="item.schoolName">
             <strong>School/University :</strong> <span>{{item.schoolName}}</span>
           </li>
-          <li class="key-value-item" *ngIf="item.fromDate"> 
+          <li class="key-value-item" *ngIf="item.fromDate">
             <strong>From Date:</strong> <span>{{item.fromDate | date: 'MMMM y' }}</span>
           </li>
           <li class="key-value-item">
@@ -255,17 +253,17 @@
     <div class="row g-0 " *ngIf="fullFormData.documents.length">
       <div class="col-md-6  mt-3">
 
-      
+
         <ul class="list-unstyled" *ngFor="let item of fullFormData.documents;let i=index;">
-         
+
           <ng-container *ngIf="item.documentType &&  item.documentFile ">
             <h5 class="det-header">Documents Details</h5>
             <h4>Documents {{i+1}}</h4>
-            <li class="key-value-item" >
+            <li class="key-value-item">
               <strong>Document Type:</strong> <span>{{item.documentType}}</span>
             </li>
-  
-  
+
+
             <!-- <li class="key-value-item"
               *ngIf="item.documentFile['documentName'] && item.documentFile['documentID']&& item.documentFile['documentName'] != 'No Document' && item.documentFile['documentName'] != '' ">
               <strong>Document File:</strong>
@@ -280,44 +278,45 @@
                 </span>
               </span>
             </li> -->
-  
+
             <li class="key-value-item" *ngIf=" !item.documentFile.documentID   ">
               <strong>Document File:</strong>
               <span class="certificate-preview">
-  
-                <img (click)="pdfClick(item.documentFile)" [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF file"
-                  class="pdf-icon" />
-  
+
+                <img (click)="pdfClick(item.documentFile)" [src]="'../../../../assets/icons/pdf-file.png'"
+                  alt="PDF file" class="pdf-icon" />
+
                 <span class="pdf-file-name" (click)="pdfClick(item.documentFile)">
                   {{ item.documentFile['documentName']
                   }}
                 </span>
               </span>
             </li>
-  
+
             <li class="key-value-item" *ngIf="item.documentFile.documentID && item.documentFile.documentID != '' ">
               <strong>Document File:</strong>
               <span class="certificate-preview">
-  
-                <img (click)="pdfClick(item.documentFile.documentName)" [src]="'../../../../assets/icons/pdf-file.png'" alt="PDF file"
-                  class="pdf-icon" />
-  
-                  <span class="pdf-file-name" (click)="pdfClick(item.documentFile['documentName'])" >
-                    {{ item.documentFile['documentName']?.substring(item.documentFile['documentName'].lastIndexOf('/') + 1) }}
-                  </span>
+
+                <img (click)="pdfClick(item.documentFile.documentName)" [src]="'../../../../assets/icons/pdf-file.png'"
+                  alt="PDF file" class="pdf-icon" />
+
+                <span class="pdf-file-name" (click)="pdfClick(item.documentFile['documentName'])">
+                  {{ item.documentFile['documentName']?.substring(item.documentFile['documentName'].lastIndexOf('/') +
+                  1) }}
+                </span>
               </span>
             </li>
-  
-  
-  
+
+
+
           </ng-container>
-      
+
 
         </ul>
       </div>
 
     </div>
-    <hr class="my-0"  *ngIf="fullFormData.documents.length" />
+    <hr class="my-0" *ngIf="fullFormData.documents.length" />
 
     <div class="row g-0 ">
       <div class="col-md-6  mt-3 ">
@@ -330,28 +329,16 @@
           <li class="key-value-item">
             <strong>District:</strong> <span>{{this.fullFormData.district.districtName}}</span>
           </li>
-          <!-- <li class="key-value-item">
-                  <strong>Employee Type:</strong> <span>{{this.fullFormData.employeeType.employeeTypeName}}</span>
-                </li> -->
+
           <li class="key-value-item">
             <strong>Designation:</strong> <span>{{this.fullFormData.designation.designationName}}</span>
           </li>
-          <!-- <li class="key-value-item">
-                  <strong>Subject:</strong> <span>{{this.fullFormData.subject.subjectName}}</span>
-                </li> -->
+
           <li class="key-value-item">
             <strong>PF Number:</strong> <span>{{this.fullFormData.pfNumber}}</span>
           </li>
           <li class="key-value-item">
             <strong>PRAN:</strong> <span>{{this.fullFormData.pran}}</span>
-          </li>
-          <li class="key-value-item" *ngIf="fullFormData.approvalType.approvalTypeName">
-            <strong>Approval Type </strong> <span>{{this.fullFormData.approvalType.approvalTypeName
-              }}</span>
-          </li>
-          <li class="key-value-item" *ngIf="fullFormData.approvalTypeReason">
-            <strong>Approval Reason</strong> <span>{{this.fullFormData.approvalTypeReason
-              }}</span>
           </li>
           <li class="key-value-item">
             <strong>Date Of Join:</strong> <span>{{this.fullFormData.fromDate | date: 'MMMM d, y' }}</span>
@@ -363,22 +350,31 @@
           <li class="key-value-item">
             <strong>Retirement Date:</strong> <span>{{this.fullFormData.retirement | date: 'MMMM d, y' }}</span>
           </li>
+          <li class="key-value-item" *ngIf="fullFormData.approvalType.approvalTypeName">
+            <strong>Approval Type </strong> <span>{{this.fullFormData.approvalType.approvalTypeName
+              }}</span>
+          </li>
+          <li class="key-value-item" *ngIf="fullFormData.approvalTypeReason">
+            <strong>Approval Reason</strong> <span>{{this.fullFormData.approvalTypeReason
+              }}</span>
+          </li>
           <li class="key-value-item">
             <strong>School Name:</strong> <span>{{this.fullFormData.schoolName.schoolName}}
               ,{{this.fullFormData.schoolName.cityName}}</span>
           </li>
+
+          <li class="key-value-item">
+            <strong>Protected Teacher :</strong> <span> {{
+              (this.fullFormData.protectedTeacher === true || this.fullFormData.protectedTeacher === "true") ? 'Yes' :
+              (this.fullFormData.protectedTeacher === false || this.fullFormData.protectedTeacher === "false") ? 'No' :
+              ''
+              }}</span>
+          </li>
           <li class="key-value-item">
             <strong>Category :</strong> <span>{{this.fullFormData.pCategory.employeeCategoryName}}</span>
           </li>
-          <!-- <li class="key-value-item">
-                  <strong>School Type:</strong> <span>{{this.fullFormData.schoolType}}</span>
-                </li> -->
-          <!-- <li class="key-value-item">
-                  <strong>Trained:</strong> <span>{{this.fullFormData.trained === 'true' ? 'yes' : 'No'}}</span>
-                </li>
-                <li class="key-value-item">
-                  <strong>Training Attended:</strong> <span>{{this.fullFormData.trainingAttended  === 'true' ? 'yes' : 'No'}}</span>
-                </li> -->
+
+
           <li class="key-value-item">
             <strong>Eligible Test Qualified:</strong> <span>{{this.fullFormData.eligibleTestQualified ? 'yes' :
               'No'}}</span>

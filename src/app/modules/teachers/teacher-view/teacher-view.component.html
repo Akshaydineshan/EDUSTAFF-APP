@@ -436,35 +436,7 @@
                                 <div class="card-header">Professional Details</div>
                                 <div class="card-body">
                                         <ul class="info-list">
-                                                <!-- <li><strong class="field">Department<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.departmentName}}</span>
-                                                </li>
 
-                                                <li><strong class="field">District<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.district}}</span>
-                                                </li>
-
-                                                <li><strong class="field">Designation<span
-                                                                        class="ms-3">:</span></strong> <span
-                                                                class="field-val">{{currentTeacher.designationName}}</span>
-                                                </li>
-
-
-                                                <li><strong class="field">Employee Type<span
-                                                                        class="ms-3">:</span></strong> <span
-                                                                class="field-val"></span></li>
-
-                                                <li><strong class="field"> Subject<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.subjectName}}</span>
-                                                </li>
-
-                                                <li><strong class="field">PF Number<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.pfNumber}}</span>
-                                                </li>
-
-                                                <li><strong class="field">PRAN<span class="ms-3">:</span></strong>
-                                                        <span class="field-val">{{currentTeacher.pran}}</span>
-                                                </li> -->
                                                 <li *ngIf="currentTeacher.department.employeeTypeName">
                                                         <strong class="field">Department:</strong>
                                                         <span class="field-val">{{
@@ -501,19 +473,7 @@
                                                 </li>
 
 
-                                                <li *ngIf="currentTeacher.getApprovalTypeDTO?.approvalTypeName">
-                                                        <strong class="field">Approval Type:</strong>
-                                                        <span class="field-val">{{
-                                                                currentTeacher.getApprovalTypeDTO?.approvalTypeName
-                                                                }}</span>
-                                                </li>
-                                                
-                                                <li *ngIf="currentTeacher.approvalTypeReason">
-                                                        <strong class="field">Approval Reason:</strong>
-                                                        <span class="field-val">{{
-                                                                currentTeacher.approvalTypeReason
-                                                                }}</span>
-                                                </li>
+
 
 
 
@@ -535,6 +495,34 @@
                                                                 class="field-val">{{currentTeacher.retirementDate |
                                                                 date: 'MMMM d, y'
                                                                 }}</span></li>
+
+                                                <li *ngIf="currentTeacher.getApprovalTypeDTO?.approvalTypeName">
+                                                        <strong class="field">Approval Type:</strong>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.getApprovalTypeDTO?.approvalTypeName
+                                                                }}</span>
+                                                </li>
+
+                                                <li *ngIf="currentTeacher.approvalTypeReason">
+                                                        <strong class="field">Approval Reason:</strong>
+                                                        <span class="field-val">{{
+                                                                currentTeacher.approvalTypeReason
+                                                                }}</span>
+                                                </li>
+                                                <li>
+                                                        <strong class="field">Protected Teacher<span
+                                                                        class="ms-3">:</span></strong>
+                                                        <span class="field-val">
+                                                                {{
+                                                                currentTeacher.protectedTeacher === true ||
+                                                                currentTeacher.protectedTeacher === "true" ? "Yes" :
+                                                                currentTeacher.protectedTeacher === false ||
+                                                                currentTeacher.protectedTeacher === "false" ? "No" :
+                                                                ""
+                                                                }}
+                                                        </span>
+                                                </li>
+
 
                                                 <li><strong class="field">School Name <span
                                                                         class="ms-3">:</span></strong> <span
