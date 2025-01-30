@@ -1255,7 +1255,7 @@ export class AddNonTeacherComponent {
       debugger;
       await this.uploadFiles(); // Ensure this completes before moving forward
 
-      console.log("education", this.fullFormData.educations,this.fullFormData)
+      console.log("full form",this.fullFormData)
 
       
       const certificateUploadObservables = this.fullFormData.educations.map((edu: any) => {
@@ -1297,7 +1297,7 @@ export class AddNonTeacherComponent {
 
           }).filter((item: any) => item != null)
 
-          console.log("DOCS", documentData, documents)
+          console.log("DOCS", documentData, this.fullFormData)
 
 
 
@@ -1380,15 +1380,15 @@ export class AddNonTeacherComponent {
             caste: this.fullFormData.caste ? this.fullFormData.caste : "",
             bloodGroupID: parseInt(this.fullFormData.bloodGroup.bloodGroupID),
             // rationID: this.fullFormData.rationCardNumber,
-            differentlyAbled: Boolean(this.fullFormData.whetherDifferentlyAbled),
-            exServiceMen: Boolean(this.fullFormData.exServicemen),
+            differentlyAbled: JSON.parse(this.fullFormData.whetherDifferentlyAbled),
+            exServiceMen: JSON.parse(this.fullFormData.exServicemen),
             aadhaarID: this.fullFormData.aadharId ? this.fullFormData.aadharId : "",
             identificationMark1: this.fullFormData.identificationMarksOne ? this.fullFormData.identificationMarksOne : "",
             identificationMark2: this.fullFormData.identificationMarksTwo ? this.fullFormData.identificationMarksTwo : "",
             height: this.fullFormData.height ? this.fullFormData.height : "",
             fatherName: this.fullFormData.fathersName ? this.fullFormData.fathersName : "",
             motherName: this.fullFormData.mothersName ? this.fullFormData.mothersName : "",
-            interReligion: Boolean(this.fullFormData.interReligion),
+            interReligion: JSON.parse(this.fullFormData.interReligion),
             maritalStatusID: parseInt(this.fullFormData.maritalStatus.maritalStatusID),
             spouseName: this.fullFormData.spousesName ? this.fullFormData.spousesName : "",
             spouseReligionID: parseInt(this.fullFormData.spousesReligion.religionID),
@@ -1406,7 +1406,7 @@ export class AddNonTeacherComponent {
             approvalTypeReason:this.fullFormData.approvalTypeReason,
             categoryID: parseInt(this.fullFormData.pCategory.employeeCategoryId),
            
-            eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified),
+            eligibilityTestQualified: JSON.parse(this.fullFormData.eligibleTestQualified),
             ProtectedTeacher: JSON.parse(this.fullFormData.protectedTeacher),
             // trainingAttended: Boolean(this.fullFormData.trainingAttended),
             designationID: this.fullFormData.designation ? parseInt(this.fullFormData.designation.designationID) : null,
@@ -1415,7 +1415,7 @@ export class AddNonTeacherComponent {
             dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.fromDate),
             dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
             RetirementDate: this.dataService.formatDateToISO(this.fullFormData.retirement),
-            promotionEligible: Boolean(this.fullFormData.promotionEligible),
+            // promotionEligible: JSON.parse(this.fullFormData.promotionEligible),
             PhotoID: parseInt(this.fullFormData.photoId.photoID) || null,
             employeeDocuments: documentData,
           }

@@ -1007,7 +1007,7 @@ export class AddTeacherComponent implements OnInit {
 
 
 
-
+          console.log("full form",this.fullFormData)
           let data: any = {
             pen: this.fullFormData.permanentEmployeeNumber ? this.fullFormData.permanentEmployeeNumber : "",
             firstName: this.fullFormData.firstName ? this.fullFormData.firstName : "",
@@ -1023,15 +1023,15 @@ export class AddTeacherComponent implements OnInit {
             caste: this.fullFormData.caste ? this.fullFormData.caste : "",
             bloodGroupID: parseInt(this.fullFormData.bloodGroup.bloodGroupID),
             // rationID: this.fullFormData.rationCardNumber,
-            differentlyAbled: Boolean(this.fullFormData.whetherDifferentlyAbled),
-            exServiceMen: Boolean(this.fullFormData.exServicemen),
+            differentlyAbled: JSON.parse(this.fullFormData.whetherDifferentlyAbled),
+            exServiceMen: JSON.parse(this.fullFormData.exServicemen),
             aadhaarID: this.fullFormData.aadharId ? this.fullFormData.aadharId : "",
             identificationMark1: this.fullFormData.identificationMarksOne ? this.fullFormData.identificationMarksOne : "",
             identificationMark2: this.fullFormData.identificationMarksTwo ? this.fullFormData.identificationMarksTwo : "",
             height: this.fullFormData.height ? this.fullFormData.height : "",
             fatherName: this.fullFormData.fathersName ? this.fullFormData.fathersName : "",
             motherName: this.fullFormData.mothersName ? this.fullFormData.mothersName : "",
-            interReligion: Boolean(this.fullFormData.interReligion),
+            interReligion: JSON.parse(this.fullFormData.interReligion),
             maritalStatusID: parseInt(this.fullFormData.maritalStatus.maritalStatusID),
             spouseName: this.fullFormData.spousesName ? this.fullFormData.spousesName : "",
             spouseReligionID: parseInt(this.fullFormData.spousesReligion.religionID),
@@ -1055,7 +1055,7 @@ export class AddTeacherComponent implements OnInit {
             // fromDate: this.dataService.formatDateToISO(this.fullFormData.fromDate),
             // toDate: this.dataService.formatDateToISO(this.fullFormData.toDate),
             documentID: parseInt(this.fullFormData.documentID),
-            eligibilityTestQualified: Boolean(this.fullFormData.eligibleTestQualified
+            eligibilityTestQualified: JSON.parse(this.fullFormData.eligibleTestQualified
             ),
             ProtectedTeacher: JSON.parse(this.fullFormData.protectedTeacher),
             // trainingAttended: Boolean(this.fullFormData.trainingAttended),
@@ -1065,7 +1065,7 @@ export class AddTeacherComponent implements OnInit {
             dateOfJoin: this.dataService.formatDateToISO(this.fullFormData.fromDate),
             dateOfJoinDepartment: this.dataService.formatDateToISO(this.fullFormData.toDate),
             RetirementDate: this.dataService.formatDateToISO(this.fullFormData.retirement),
-            promotionEligible: Boolean(this.fullFormData.promotionEligible),
+            // promotionEligible: JSON.parse(this.fullFormData.promotionEligible),
             PhotoID: parseInt(this.fullFormData.photoId.photoID),
           }
 
