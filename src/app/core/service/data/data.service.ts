@@ -392,6 +392,9 @@ export class DataService {
   approveLeaveRequest(data: any, id: number): Observable<any> {
     return this.http.patch(this.apiUrl + `LeaveRequest/ApproveLeaveRequest/${id}`, data);
   }
+  approveRelinquishmentRequest( id: number,data:any): Observable<any> {
+    return this.http.put(this.apiUrl + `Promotion/ApprovePromotionRelinquishment/${id}`,data);
+  }
   rejectLeaveRequest(data: any, id: number): Observable<any> {
     return this.http.put(this.apiUrl + `LeaveRequest/RejectLeaveRequest/${id}`, data);
   }

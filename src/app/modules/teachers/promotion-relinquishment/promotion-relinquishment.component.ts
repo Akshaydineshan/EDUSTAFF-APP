@@ -56,7 +56,7 @@ export class PromotionRelinquishmentComponent implements OnInit {
       teacher: [''],
       date: [''],
       document: [''],
-      designation:['Designation']
+      designation:['']
     })
 
   }
@@ -66,7 +66,8 @@ export class PromotionRelinquishmentComponent implements OnInit {
     let url=`Promotion/GetPromotedDesignationByEmployeeID/${event[0].employeeID}`
      this.dataService.getDropdownData(url).subscribe({
       next:(response:any)=>{
-        console.log("response",response)
+        console.log("response",response.designationName)
+        this.relinquishmentForm.get("designation")?.patchValue(response.designationName)
 
       },
       error:(error:any)=>{

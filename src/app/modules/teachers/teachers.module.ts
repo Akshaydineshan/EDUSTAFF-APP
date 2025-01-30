@@ -26,6 +26,7 @@ import { TeacherSectionViewComponent } from './teacher-section-view/teacher-sect
 import { CoreModule } from 'src/app/core/core.module';
 import { PromotionRelinquishmentComponent } from './promotion-relinquishment/promotion-relinquishment.component';
 import { ApprovedNonApprovedTeacherComponent } from './approved-non-approved-teacher/approved-non-approved-teacher.component';
+import { PromotionRelinquishmentListComponent } from './promotion-relinquishment/promotion-relinquishment-list/promotion-relinquishment-list.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { ApprovedNonApprovedTeacherComponent } from './approved-non-approved-tea
     OnLeaveTeacherComponent,
     TeacherSectionViewComponent,
     PromotionRelinquishmentComponent,
-    ApprovedNonApprovedTeacherComponent
+    ApprovedNonApprovedTeacherComponent,
+    PromotionRelinquishmentListComponent
   ],
   imports: [
     CommonModule,

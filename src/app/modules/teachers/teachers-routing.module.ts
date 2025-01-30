@@ -18,6 +18,7 @@ import { OnLeaveTeacherComponent } from './on-leave-teacher/on-leave-teacher.com
 import { TeacherSectionViewComponent } from './teacher-section-view/teacher-section-view.component';
 import { roleGuard } from 'src/app/core/gurads/role/role.guard';
 import { ApprovedNonApprovedTeacherComponent } from './approved-non-approved-teacher/approved-non-approved-teacher.component';
+import { PromotionRelinquishmentListComponent } from './promotion-relinquishment/promotion-relinquishment-list/promotion-relinquishment-list.component';
 
 const routes: Routes = [
   { path: '', component: TeacherSectionViewComponent },
@@ -35,7 +36,8 @@ const routes: Routes = [
   { path: 'retired-teachers', component: RetiredTeacherListComponent },
   { path: 'promotion-priorities', component: PromotionEligiblePriorityComponent },
   { path: 'onleave', component: OnLeaveTeacherComponent },
-  {path:'Promotion-relinquishment',component:PromotionRelinquishmentComponent},
+  {path:'Promotion-relinquishment',component:PromotionRelinquishmentListComponent},
+  {path:'Promotion-relinquishment/create',component:PromotionRelinquishmentComponent},
   {path:'by-approve',component:ApprovedNonApprovedTeacherComponent},
   { 
     path: '**',
