@@ -23,7 +23,7 @@ export class PromotionRelinquishmentListComponent {
 
 
   // table related vaiables
-  displayColumns: any[] = [{ headerName: 'Name', field: 'employeeName' }, { headerName: 'RelinquishmentYear', field: 'relinquishmentYear' }, { headerName: 'Document', field: 'documentFile' }, { headerName: 'Status', field: 'approvalStatus' },
+  displayColumns: any[] = [{ headerName: 'Name', field: 'employeeName' }, { headerName: 'RelinquishmentYear', field: 'relinquishmentYear' }, { headerName: 'Designation', field: 'promotedDesignation' },{ headerName: 'Document', field: 'documentFile' }, { headerName: 'Status', field: 'approvalStatus' },
   ];
   paginationConfig: PagonationConfig = { pagination: true, paginationPageSize: 10, paginationPageSizeSelector: [5, 10, 15, 20, 25, 30, 35] }
   tableDataList: any[] = [];
@@ -95,7 +95,7 @@ export class PromotionRelinquishmentListComponent {
         this.tableColumns = this.displayColumns.map((column) => ({
           headerName: column.headerName,
           field: column.field,
-          filter: true, width: 250,
+          filter: true, width: 200,
           floatingFilter: column.field === 'name', // Floating filter for specific columns
 
           // Conditional formatting for date fields
@@ -181,7 +181,7 @@ export class PromotionRelinquishmentListComponent {
                   div.style.display = 'flex';
                   div.style.alignItems = 'center';
 
-             
+
                   const fileLink = document.createElement('a');
                   fileLink.style.cursor = 'pointer';
                   fileLink.style.color = '#246CC1';
@@ -195,10 +195,7 @@ export class PromotionRelinquishmentListComponent {
                   fileLink.setAttribute('href', fileUrl);
 
                   // Add the download functionality for the file
-                  fileLink.setAttribute('download',  'file');  // Use the file name for download
-
-                  console.log("FILE LINK ",fileLink)
-
+                  fileLink.setAttribute('download', 'file');  // Use the file name for download
                   // Add the file name if needed
                   const fileName = documentFile.split('/').pop();  // Extract file name
                   const fileNameDiv = document.createElement('div');
@@ -236,7 +233,7 @@ export class PromotionRelinquishmentListComponent {
 
   approveClick(event: any, params: any): void {
     const rowData: any = params.node.data;
-    console.log("row",rowData)
+    console.log("row", rowData)
     if (window.confirm(`Do you confirm the approval of ${rowData.employeeName}'s relinquishment for the year ${rowData.relinquishmentYear}?`)) {
 
       const data = { "approvalStatus": true };
@@ -267,7 +264,7 @@ export class PromotionRelinquishmentListComponent {
       });
     }
 
-   
+
   }
 
 

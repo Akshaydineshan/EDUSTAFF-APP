@@ -15,42 +15,56 @@
                 <div class="col-md-12 ">
                     <label for="" class="mb-1">
                         <span>Teacher</span>
-                        <span class="text-danger ms-1 mad-f"></span>
-                    </label> <ng-multiselect-dropdown [placeholder]="'Select Teacher'" 
+                        <span class="text-danger ms-1 mad-f">*</span>
+                    </label> <ng-multiselect-dropdown [placeholder]="'Select Teacher'"
                         [settings]="teacherDropdownSettings" [data]="teacherDropdownData" formControlName="teacher"
                         (ngModelChange)="onTeacherChange($event)" />
+                    <div
+                        *ngIf="relinquishmentForm.get('teacher')?.invalid && ( relinquishmentForm.get('teacher')?.['touched']  )">
+                        <small class="text-danger"
+                            *ngIf="relinquishmentForm.get('teacher')?.errors?.['required']">Please Select
+                            Teacher</small>
+
+                    </div>
                 </div>
             </div>
-            <div class="row mb-3 mb-4">
+            <div class="row mb-3 mb-4" *ngIf="relinquishmentForm.get('teacher')?.value">
                 <!-- <div class="col-md-4"></div> -->
                 <div class="col-md-12">
                     <label for="" class="mb-1">
                         <span>Designation</span>
                         <span class="text-danger ms-1 mad-f"></span>
                     </label>
-                    <input type="text"  class="form-control disabled-input" formControlName="designation" >
-                    
+                    <input type="text" class="form-control disabled-input" formControlName="designation">
+                  
                 </div>
             </div>
-            
+
             <div class="row mb-3 mb-4">
                 <!-- <div class="col-md-4"></div> -->
                 <div class="col-md-12">
                     <label for="" class="mb-1">
                         <span>Date</span>
-                        <span class="text-danger ms-1 mad-f"></span>
+                        <span class="text-danger ms-1 mad-f">*</span>
                     </label>
-                   
+
 
                     <select class="form-select" id="yearSelector" formControlName="date">
                         <option value="" [disabled]="true">Select Year</option>
                         <option [ngValue]="item" *ngFor="let item of generateYears">{{ item }}</option>
                     </select>
-                    
+                    <div
+                        *ngIf="relinquishmentForm.get('date')?.invalid && ( relinquishmentForm.get('date')?.['touched']  )">
+                        <small class="text-danger"
+                            *ngIf="relinquishmentForm.get('date')?.errors?.['required']">Please Select
+                            Year</small>
+
+                    </div>
+
                 </div>
             </div>
 
-        
+
 
 
             <div class="row mb-3 g-0">
@@ -72,6 +86,12 @@
                                     File</button>
                             </div>
                         </div>
+                    </div>
+                    <div
+                        *ngIf="relinquishmentForm.get('document')?.invalid && ( relinquishmentForm.get('document')?.['touched']  )">
+                        <small class="text-danger"
+                            *ngIf="relinquishmentForm.get('document')?.errors?.['required']">Please Select File</small>
+
                     </div>
                 </div>
             </div>
@@ -97,11 +117,11 @@
 
             <div class="row  mt-5">
                 <div class="col-12 d-flex justify-content-center">
-                  
+
                     <button type="button" class="btn btn-secondary me-2" [routerLink]="['/dashboard']">Cancel</button>
-    
+
                     <button type="button" class="btn btn-success" (click)="onSubmit()">
-                    Submit   
+                        Submit
                     </button>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ToastrService } from 'ngx-toastr';
@@ -53,9 +53,9 @@ export class PromotionRelinquishmentComponent implements OnInit {
   ngOnInit(): void {
     this.loadDropDownData()
     this.relinquishmentForm = this.fb.group({
-      teacher: [''],
-      date: [''],
-      document: [''],
+      teacher: ['',[Validators.required]],
+      date: ['',[Validators.required]],
+      document: ['',[Validators.required]],
       designation:['']
     })
 
@@ -63,7 +63,7 @@ export class PromotionRelinquishmentComponent implements OnInit {
 
   onTeacherChange(event:any) {
     console.log("event,",event)
-    let url=`Promotion/GetPromotedDesignationByEmployeeID/${event[0].employeeID}`
+    let url=`Teacher/GetPromotedDesignationByEmployeeID/${event[0].employeeID}`
      this.dataService.getDropdownData(url).subscribe({
       next:(response:any)=>{
         console.log("response",response.designationName)
@@ -282,12 +282,12 @@ export class PromotionRelinquishmentComponent implements OnInit {
       });
     } else {
       this.relinquishmentForm.markAllAsTouched(); // Highlight invalid fields
-      this.toastr.warning('Invalid Form', 'Warning', {
-        closeButton: true,
-        progressBar: true,
-        positionClass: 'toast-top-left',
-        timeOut: 4500
-      });
+      // this.toastr.warning('Invalid Form', 'Warning', {
+      //   closeButton: true,
+      //   progressBar: true,
+      //   positionClass: 'toast-top-left',
+      //   timeOut: 4500
+      // });
     }
   }
 
