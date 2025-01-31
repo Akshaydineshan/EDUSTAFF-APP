@@ -236,33 +236,38 @@ export class PromotionRelinquishmentListComponent {
 
   approveClick(event: any, params: any): void {
     const rowData: any = params.node.data;
+    console.log("row",rowData)
+    if (window.confirm(`Do you confirm the approval of ${rowData.employeeName}'s relinquishment for the year ${rowData.relinquishmentYear}?`)) {
 
-    const data = { "approvalStatus": true };
+      const data = { "approvalStatus": true };
 
-    this.dataService.approveRelinquishmentRequest(rowData.relinquishmentID, data).subscribe({
-      next: (response: any) => {
-        if (response.status === 200) {
-          this.toastr.success('Approved!', 'Success', {
+      this.dataService.approveRelinquishmentRequest(rowData.relinquishmentID, data).subscribe({
+        next: (response: any) => {
+          if (response.status === 200) {
+            this.toastr.success('Approved!', 'Success', {
+              closeButton: true,
+              progressBar: true,
+              positionClass: 'toast-top-left',
+              timeOut: 4500,
+            });
+            this.loadTableData();
+          }
+        },
+        error: (error: any) => {
+          this.toastr.error('Something went wrong!', 'Failed', {
             closeButton: true,
             progressBar: true,
             positionClass: 'toast-top-left',
             timeOut: 4500,
           });
-          this.loadTableData();
+        },
+        complete: () => {
+          // Optional: You can add any logic here when the request completes
         }
-      },
-      error: (error: any) => {
-        this.toastr.error('Something went wrong!', 'Failed', {
-          closeButton: true,
-          progressBar: true,
-          positionClass: 'toast-top-left',
-          timeOut: 4500,
-        });
-      },
-      complete: () => {
-        // Optional: You can add any logic here when the request completes
-      }
-    });
+      });
+    }
+
+   
   }
 
 
