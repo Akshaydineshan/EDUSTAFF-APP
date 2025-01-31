@@ -119,52 +119,52 @@
                 </div>
                 <div class="d-flex flex-wrap gap-3">
                     <div class="sub-card" title="Teacher List" [routerLink]="['/teachers/teacher-list']"
-                        *appAppRole="['Staff','Manager','SuperAdmin','Teacher']">
+                        *appAppRole="[Staff,Manager,Admin,Teacher]">
                         <img src="../../../assets/icons/teach.png" alt="Help Icon">
                         <h6>Teachers List</h6>
                     </div>
 
                     <div class="sub-card" title=" Add New Teacher" [routerLink]="['/teachers/add-teacher']"
-                        *appAppRole="['Staff','SuperAdmin']">
+                        *appAppRole="[Staff,Admin]">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon">
                         <h6>Add New Teacher</h6>
                     </div>
 
                     <!-- Head Master -->
-                    <div class="sub-card" title="Teacher List" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Teacher List" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/teach.png" alt="Help Icon">
                         <h6>Teachers List</h6>
                     </div>
-                    <div class="sub-card" title="Update Teacher" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Update Teacher" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/teacher-view.png" alt="Help Icon">
                         <h6>My Details</h6>
                     </div>
 
-                    <div class="sub-card" title="Update Teacher" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Update Teacher" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon">
                         <h6>Edit Details</h6>
                     </div>
 
-                    <div class="sub-card" title="Transfer Request" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Transfer Request" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon">
                         <h6>Transfer Request</h6>
                     </div>
 
-                    <div class="sub-card" title="Transfer Completed" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Transfer Completed" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/transfer-com.png" alt="Help Icon">
                         <h6>Transfer Completed</h6>
                     </div>
 
-                    <div class="sub-card" title="Leave Applications" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Leave Applications" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon">
                         <h6>Leave Application</h6>
                     </div>
 
-                    <div class="sub-card" title="Promotion Application" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Promotion Application" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/promotion.png" alt="Help Icon">
                         <h6>Promotion Application</h6>
                     </div>
-                    <div class="sub-card" title="Promotion Completed" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Promotion Completed" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/promotion-comm.png" alt="Help Icon">
                         <h6>Promotion Completed</h6>
                     </div>
@@ -176,36 +176,36 @@
 
                     <!-- teacher -->
 
-                    <div class="sub-card" title="Update Teacher" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Update Teacher"  *appAppRole="[Teacher]" >
                         <img src="../../../assets/icons/teacher-view.png" alt="Help Icon">
                         <h6>My Details</h6>
                     </div>
 
-                    <div class="sub-card" title="Update Teacher" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Update Teacher"  *appAppRole="[Teacher]">
                         <img src="../../../assets/icons/edit.png" alt="Help Icon">
                         <h6>Edit Details</h6>
                     </div>
 
-                    <div class="sub-card" title="Transfer Request" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Transfer Request"  *appAppRole="[Teacher]">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon">
                         <h6>Transfer Request</h6>
                     </div>
 
-                    <div class="sub-card" title="Transfer Completed" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Transfer Completed"  *appAppRole="[Teacher]">
                         <img src="../../../assets/icons/transfer-com.png" alt="Help Icon">
                         <h6>Transfer Completed</h6>
                     </div>
 
-                    <div class="sub-card" title="Leave Applications" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Leave Applications"  *appAppRole="[Teacher]">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon">
                         <h6>Leave Application</h6>
                     </div>
 
-                    <div class="sub-card" title="Promotion Application" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Promotion Application"  *appAppRole="[Teacher]">
                         <img src="../../../assets/icons/promotion.png" alt="Help Icon">
                         <h6>Promotion Application</h6>
                     </div>
-                    <div class="sub-card" title="Promotion Completed" *appAppRole="['Teacher']">
+                    <div class="sub-card" title="Promotion Completed"  *appAppRole="[Teacher]">
                         <img src="../../../assets/icons/promotion-comm.png" alt="Help Icon">
                         <h6>Promotion Completed</h6>
                     </div>
@@ -213,55 +213,55 @@
                     <!-- end teacher -->
 
                     <div class="sub-card" title="Transfer Request" [routerLink]="['/teachers/transfer-request-list']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                         *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon">
                         <h6>Transfer Request</h6>
                     </div>
                     <div class="sub-card" title="Transfer Completed" [routerLink]="['/teachers/transfer-completed']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/transfer-com.png" alt="Help Icon">
                         <h6>Transfer Completed</h6>
                     </div>
                     <div class="sub-card" title="Leave Applications" [routerLink]="['/teachers/leave']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon">
                         <h6>Leave Application</h6>
                     </div>
                     <div class="sub-card" title="Leave Applications" [routerLink]="['/teachers/onleave']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="https://img.icons8.com/3d-fluency/94/leave.png" alt="Help Icon">
                         <h6>On Leave</h6>
                     </div>
                     <div class="sub-card" title="Promotion Application" [routerLink]="['/teachers/promotion-requests']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/promotion.png" alt="Help Icon">
                         <h6>Promotion Application</h6>
                     </div>
                     <div class="sub-card" title="Promotion Completed" [routerLink]="['/teachers/promotion-completed']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/promotion-comm.png" alt="Help Icon">
                         <h6>Promotion Completed</h6>
                     </div>
                     <div class="sub-card" title="Retired Teachers" [routerLink]="['/teachers/retired-teachers']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/retired.png" alt="Help Icon">
                         <h6>Retired Techers</h6>
                     </div>
 
                     <div class="sub-card" title="Promotion Eligible Priorities"
-                        *appAppRole="['Staff','Manager','SuperAdmin']" [routerLink]="['/teachers/promotion-priorities']">
+                    *appAppRole="[Staff,Manager,Admin]" [routerLink]="['/teachers/promotion-priorities']">
                         <img src="../../../assets/icons/promotion-com.png" alt="Help Icon">
                         <h6>Promotion Eligible Priorities</h6>
                     </div>
 
-                    <div class="sub-card" title="Promotion Relinquishment" *appAppRole="['Staff','Manager','Admin']"
+                    <div class="sub-card" title="Promotion Relinquishment" *appAppRole="[Staff,Manager,Admin]"
                         [routerLink]="['/teachers/Promotion-relinquishment']">
                         <img src="../../../assets/icons/promotion-rel.png" alt="Help Icon">
                         <h6>Promotion Relinquishment</h6>
                     </div>
 
                     <div class="sub-card" title="Teacher List" [routerLink]="['/teachers/by-approve']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/teach.png" alt="Teacher Icon">
                         <h6>Approved & Non-Approved Teachers</h6>
                     </div>
@@ -270,7 +270,7 @@
         </div>
 
         <!-- Non-Teaching Staff Section -->
-        <div class="row mb-4" *appAppRole="['Staff','Manager','SuperAdmin','Head Master']">
+        <div class="row mb-4" *appAppRole="[Staff,Manager,Admin,HeadMaster]">
             <div class="col-12">
 
                 <div class="sub-head-container">
@@ -281,35 +281,35 @@
                 <div class="d-flex flex-wrap gap-3">
 
                     <!-- Head Master -->
-                    <div class="sub-card" title="Non Teachers list" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Non Teachers list" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/staff.png" alt="Help Icon">
                         <h6>Staff List</h6>
                     </div>
 
-                    <div class="sub-card" title="Transfer Request" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Transfer Request" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon" width="30" height="30">
                         <h6>Transfer Request</h6>
                     </div>
-                    <div class="sub-card" title="Transfer Complete" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Transfer Complete" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/transfer-com.png" alt="Help Icon">
                         <h6>Transfer Completed</h6>
                     </div>
-                    <div class="sub-card" title="Leave Application" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Leave Application" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
                         <h6>Leave Application</h6>
                     </div>
 
-                    <div class="sub-card" title="Leave" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Leave" *appAppRole="[HeadMaster]">
                         <img src="https://img.icons8.com/3d-fluency/94/leave.png" alt="Help Icon" width="30"
                             height="30">
                         <h6>On Leave</h6>
                     </div>
-                    <div class="sub-card" title="Retired Teachers" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Retired Teachers" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/retired.png" alt="Help Icon">
                         <h6>Retired Staffs</h6>
                     </div>
 
-                    <div class="sub-card" title="Teacher List" *appAppRole="['Head Master']">
+                    <div class="sub-card" title="Teacher List" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/staff.png" alt="Teacher Icon">
                         <h6>Approved & Non-Approved Staffs</h6>
                     </div>
@@ -319,12 +319,12 @@
 
 
                     <div class="sub-card" [routerLink]="['/non-teachers/non-teacher-list']" title="Non Teachers list"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                         *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/staff.png" alt="Help Icon">
                         <h6>List</h6>
                     </div>
                     <div class="sub-card" [routerLink]="['/non-teachers/add']" title="Add New "
-                        *appAppRole="['Staff','SuperAdmin']">
+                    *appAppRole="[Staff,Admin]">
                         <img src="../../../assets/icons/add-t.png" alt="Help Icon">
                         <h6>Add New</h6>
                     </div>
@@ -333,35 +333,35 @@
                         <h6>Update Details</h6>
                     </div> -->
                     <div class="sub-card" [routerLink]="['/non-teachers/transfer-request']" title="Transfer Request"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                         *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/transfer.png" alt="Help Icon" width="30" height="30">
                         <h6>Transfer Request</h6>
                     </div>
                     <div class="sub-card" [routerLink]="['/non-teachers/transfer-completed']" title="Transfer Complete"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/transfer-com.png" alt="Help Icon">
                         <h6>Transfer Completed</h6>
                     </div>
                     <div class="sub-card" [routerLink]="['/non-teachers/leave']" title="Leave Application"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/Group 1643.png" alt="Help Icon" width="30" height="30">
                         <h6>Leave Application</h6>
                     </div>
 
                     <div class="sub-card" [routerLink]="['/non-teachers/onleave']" title="Leave"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="https://img.icons8.com/3d-fluency/94/leave.png" alt="Help Icon" width="30"
                             height="30">
                         <h6>On Leave</h6>
                     </div>
                     <div class="sub-card" title="Retired Teachers" [routerLink]="['/non-teachers/retired-staff']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/retired.png" alt="Help Icon">
                         <h6>Retired Staffs</h6>
                     </div>
 
                     <div class="sub-card" title="Teacher List" [routerLink]="['/non-teachers/by-approve']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]">
                         <img src="../../../assets/icons/staff.png" alt="Teacher Icon">
                         <h6>Approved & Non-Approved Staffs</h6>
                     </div>
@@ -380,7 +380,7 @@
         </div>
 
         <!-- Schools Section -->
-        <div class="row" *appAppRole="['Staff','Manager','SuperAdmin','Teacher']">
+        <div class="row" *appAppRole="[Staff,Manager,Admin,Teacher]">
             <div class="col-12">
 
                 <div class="sub-head-container">
@@ -390,39 +390,39 @@
                 <div class="d-flex flex-wrap gap-3" title="School List">
 
                     <!-- HeadMaster -->
-                    <div class="sub-card" *appAppRole="['Head Master']">
+                    <div class="sub-card" *appAppRole="[HeadMaster]">
                         <img src="../../../assets/icons/school-list.png" alt="Help Icon" width="30" height="30">
                         <h6>School List</h6>
                     </div>
                     <!-- endHead master -->
 
                     <div class="sub-card" [routerLink]="['/schools/school-list']"
-                        *appAppRole="['Staff','Manager','SuperAdmin','Teacher']">
+                    *appAppRole="[Staff,Manager,Admin,Teacher]">
                         <img src="../../../assets/icons/school-list.png" alt="Help Icon" width="30" height="30">
                         <h6>School List</h6>
                     </div>
                     <div class="sub-card" [routerLink]="['/schools/add-school']" title="Add New School"
-                        *appAppRole="['Staff','SuperAdmin']">
+                    *appAppRole="[Staff,Admin]">
                         <img src="../../../assets/icons/school-add.png" alt="Help Icon" width="30" height="30">
                         <h6>Add New School</h6>
                     </div>
 
                     <div class="sub-card" [routerLink]="['/teachers/eligible-promotions']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']" title="Promotion Eligible List">
+                    *appAppRole="[Staff,Manager,Admin]" title="Promotion Eligible List">
                         <img src="../../../assets/icons/promotion-com.png" alt="Help Icon" width="30" height="30">
                         <h6>Promotion Eligible List</h6>
                     </div>
                     <div class="sub-card" title="Teacher List" [routerLink]="['/schools/teacher-list']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]" >
                         <img src="https://img.icons8.com/color/48/classroom.png" alt="Help Icon">
                         <h6>Teachers List</h6>
                     </div>
                     <div class="sub-card" title="Teacher List" [routerLink]="['/schools/staff-list']"
-                        *appAppRole="['Staff','Manager','SuperAdmin']">
+                    *appAppRole="[Staff,Manager,Admin]" >
                         <img src="../../../assets/icons/staff.png" alt="Help Icon">
                         <h6>Staff List</h6>
                     </div>
-                    <div class="sub-card" title="Teacher List" [routerLink]="['/schools/authority-list']" *appAppRole="['Staff','Manager','Admin','Teacher']">
+                    <div class="sub-card" title="Teacher List" [routerLink]="['/schools/authority-list']" *appAppRole="[Staff,Manager,Admin,Teacher]" >
                         <img src="../../../assets/icons/leader.png" alt="Help Icon">
                         <h6>Authority List</h6>
                     </div>

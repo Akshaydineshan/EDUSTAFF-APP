@@ -4,6 +4,7 @@ import { interval, map, take } from 'rxjs';
 import { DataService } from 'src/app/core/service/data/data.service';
 import { TokenStoreService } from 'src/app/core/service/tokenStore/token-store.service';
 import { UserService } from 'src/app/core/service/user.service';
+import { userRoles } from 'src/app/utils/constants/enums';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,12 @@ import { UserService } from 'src/app/core/service/user.service';
 })
 export class DashboardComponent implements OnInit {
   isSidebarClosed = false;
+
+  Staff= userRoles.Staff;
+  Manager= userRoles.Manager;
+  Teacher=userRoles.Teacher;
+  Admin=userRoles.Admin
+  HeadMaster=userRoles.HeadMaster
 
   dashboardStats: any = {
     activeTeachers: 0,
