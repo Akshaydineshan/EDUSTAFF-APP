@@ -136,17 +136,45 @@
                                                                 </tr>
 
                                                                 <tr>
-                                                                        <td>{{currentSchool.principalName}}</td>
+                                                                        <td
+                                                                                *ngIf="currentSchool.principalName; else noName">
+                                                                                {{ currentSchool.principalName }}
+                                                                        </td>
+                                                                        <ng-template #noName>
+                                                                                <td>----</td>
+                                                                        </ng-template>
                                                                         <td>Principal</td>
-                                                                        <td>{{ '+91 ' +currentSchool.principalPhone}}
+
+                                                                        <td
+                                                                                *ngIf="currentSchool.principalPhone; else noPhone">
+                                                                                {{ '+91 ' + currentSchool.principalPhone
+                                                                                }}
                                                                         </td>
+                                                                        <ng-template #noPhone>
+                                                                                <td>Not available</td>
+                                                                        </ng-template>
                                                                 </tr>
+
                                                                 <tr>
-                                                                        <td>{{currentSchool.vicePrincipalName}}</td>
-                                                                        <td>Vice Principal</td>
-                                                                        <td>{{ '+91 ' +currentSchool.vicePrincipalPhone}}
+                                                                        <td
+                                                                                *ngIf="currentSchool.vicePrincipalName; else noName">
+                                                                                {{ currentSchool.vicePrincipalName }}
                                                                         </td>
+                                                                        <ng-template #noName>
+                                                                                <td>----</td>
+                                                                        </ng-template>
+                                                                        <td>Vice Principal</td>
+
+                                                                        <td
+                                                                                *ngIf="currentSchool.vicePrincipalPhone; else noPhone">
+                                                                                {{ '+91 ' +
+                                                                                currentSchool.vicePrincipalPhone }}
+                                                                        </td>
+                                                                        <ng-template #noPhone>
+                                                                                <td>Not available</td>
+                                                                        </ng-template>
                                                                 </tr>
+
 
                                                         </table>
                                                 </div>
@@ -333,7 +361,7 @@
                                                                         <th>Join Date</th>
                                                                         <th>Position</th>
                                                                         <th>Subject</th>
-                                                                      
+
 
                                                                 </tr>
                                                                 <ng-container *ngIf="teacherTableData.length">
@@ -345,7 +373,7 @@
                                                                                 <td>{{item.joinDate |date}}</td>
                                                                                 <td>{{item.position}}</td>
                                                                                 <td>{{item.subject}}</td>
-                                                                         </tr>
+                                                                        </tr>
                                                                 </ng-container>
 
                                                                 <tr *ngIf="!teacherTableData.length"
@@ -388,8 +416,8 @@
                                                                         <th>Date Of Birth</th>
                                                                         <th>Join Date</th>
                                                                         <th>Position</th>
-                                                                       
-                                                                 </tr>
+
+                                                                </tr>
                                                                 <ng-container *ngIf="nonTeacherTableData.length">
                                                                         <tr
                                                                                 *ngFor="let item of nonTeacherTableData;let i=index;">
@@ -398,7 +426,7 @@
                                                                                 <td>{{item.dob |date}}</td>
                                                                                 <td>{{item.joinDate |date}}</td>
                                                                                 <td>{{item.position}}</td>
-                                                                               
+
 
                                                                         </tr>
                                                                 </ng-container>
