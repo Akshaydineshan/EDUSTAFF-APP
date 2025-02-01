@@ -269,6 +269,10 @@ export class TransferRequestListComponent implements OnInit {
 
           ...(column.field === 'employeeName' || column.field === "toApprovedSchoolName" || column.field === "fromSchoolName" ? {
             cellRenderer: (params: any) => {
+              if (!params.value || params.value === "Not Specified") {
+                return "N/A";
+            }
+              
               const div = document.createElement('div');
               div.style.display = "flex";
               div.style.justifyContent = "space-between";
