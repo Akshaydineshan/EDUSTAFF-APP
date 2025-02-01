@@ -518,141 +518,292 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
         this.teacherTableRows = this.teacherList
         this.teacherTableColumns = [
+          // {
+          //   field: "name", filter: true, floatingFilter: true, width: 180,
+          //   cellRenderer: (params: any) => {
+
+          //     const div = document.createElement('div');
+          //     div.style.display = "flex"
+          //     div.style.justifyContent = "space-between"
+
+
+          //     // Create anchor element for the name
+          //     const divSub = document.createElement('div');
+          //     divSub.style.height = "100%"
+          //     divSub.style.width = "75%";
+          //     divSub.style.overflow = "hidden";
+          //     divSub.style.textOverflow = "ellipsis";
+
+
+
+
+          //     const nameLink = document.createElement('a');
+          //     nameLink.style.cursor = 'pointer';
+          //     nameLink.style.color = '#246CC1';
+
+          //     nameLink.textContent = params.value;
+
+
+          //     this.ngZone.run(() => {
+          //       divSub.addEventListener('mouseover', (event) => {
+          //         debugger
+
+          //         if (params.onNameHover) {
+          //           params.onNameHover(event, params);
+
+          //         }
+          //       });
+          //     })
+
+          //     this.ngZone.run(() => {
+          //       divSub.addEventListener('mouseout', (event) => {
+          //         debugger
+
+          //         if (params.onNameHoverOut) {
+          //           params.onNameHoverOut(event, params);
+
+          //         }
+          //       });
+
+          //     })
+
+          //     this.ngZone.run(() => {
+          //       divSub.addEventListener('mouseleave', (event) => {
+          //         debugger
+
+          //         if (params.onNameHoverOut) {
+          //           params.onNameHoverOut(event, params);
+
+          //         }
+          //       });
+
+          //     })
+
+          //     this.ngZone.run(() => {
+          //       nameLink.addEventListener('click', (event) => {
+          //         debugger
+          //         if (params.onNameClick) {
+          //           params.onNameClick(event, params);
+
+          //         }
+          //       });
+
+          //     })
+
+          //     divSub.appendChild(nameLink)
+          //     div.appendChild(divSub);
+          //     if (this.userService.hasRole('Staff')) {
+
+          //       // Create another anchor element for the plus button
+          //       const plusButton = document.createElement('a');
+          //       plusButton.classList.add("menuButton")
+
+
+          //       // plusButton.style.float = 'right';
+          //       plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
+          //       this.ngZone.run(() => {
+          //         plusButton.addEventListener('click', (event) => {
+          //           if (params.onPlusButtonClick) {
+          //             params.onPlusButtonClick(event, params);
+          //           }
+          //         });
+          //       })
+          //       this.ngZone.run(() => {
+          //         plusButton.addEventListener('mouseleave', (event) => {
+          //           if (params.onPlusButtonHoverout) {
+          //             params.onPlusButtonHoverout(event, params);
+          //           }
+          //         });
+          //       })
+
+          //       // Append the elements to the div
+
+          //       div.appendChild(plusButton);
+
+          //     }
+
+
+
+
+
+          //     return div;
+          //   },
+          //   cellRendererParams: {
+          //     onNameClick: (event: MouseEvent, params: any) => {
+          //       this.onCellClicked(params)
+          //     },
+          //     onNameHover: (event: MouseEvent, params: any) => {
+          //       this.nameColumnHover(params, event)
+          //     },
+          //     onNameHoverOut: (event: MouseEvent, params: any) => {
+          //       this.rowMouseHoverOut(params)
+          //     },
+
+          //     onPlusButtonClick: (event: MouseEvent, params: any) => {
+          //       this.menuBtnEventFunction(event, params)
+
+          //     },
+          //     onPlusButtonHoverout: (event: MouseEvent, params: any) => {
+          //       this.menuBtnhoverOut(event, params)
+          //     },
+          //   }
+
+
+          // },
           {
-            field: "name", filter: true, floatingFilter: true, width: 180,
+            field: "name",
+            filter: true,
+            floatingFilter: true,
+            width: 180,
             cellRenderer: (params: any) => {
-
               const div = document.createElement('div');
-              div.style.display = "flex"
-              div.style.justifyContent = "space-between"
-
-
-              // Create anchor element for the name
+              div.style.display = "flex";
+              div.style.justifyContent = "space-between";
+          
+              // Create container for the link
               const divSub = document.createElement('div');
-              divSub.style.height = "100%"
-              divSub.style.width = "75%";
-              divSub.style.overflow = "hidden";
-              divSub.style.textOverflow = "ellipsis";
-
-
-
-
+              Object.assign(divSub.style, {
+                height: "100%",
+                width: "75%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              });
+          
+              // Create anchor element for the name
               const nameLink = document.createElement('a');
-              nameLink.style.cursor = 'pointer';
-              nameLink.style.color = '#246CC1';
-
+              Object.assign(nameLink.style, {
+                cursor: 'pointer',
+                color: '#246CC1',
+                textDecoration: 'none',
+                transition: 'text-decoration 0.2s ease-in-out',
+              });
+          
               nameLink.textContent = params.value;
-
-
-              this.ngZone.run(() => {
-                divSub.addEventListener('mouseover', (event) => {
-                  debugger
-
-                  if (params.onNameHover) {
-                    params.onNameHover(event, params);
-
-                  }
-                });
-              })
-
-              this.ngZone.run(() => {
-                divSub.addEventListener('mouseout', (event) => {
-                  debugger
-
-                  if (params.onNameHover) {
-                    params.onNameHoverOut(event, params);
-
-                  }
-                });
-
-              })
-
-              this.ngZone.run(() => {
-                divSub.addEventListener('mouseleave', (event) => {
-                  debugger
-
-                  if (params.onNameHover) {
-                    params.onNameHoverOut(event, params);
-
-                  }
-                });
-
-              })
-
+          
+              // Add event listeners inside Angular Zone
               this.ngZone.run(() => {
                 nameLink.addEventListener('click', (event) => {
-                  debugger
-                  if (params.onNameClick) {
-                    params.onNameClick(event, params);
-
-                  }
+                  if (params.onNameClick) params.onNameClick(event, params);
                 });
-
-              })
-
-              divSub.appendChild(nameLink)
+          
+                nameLink.addEventListener('mouseover', () => {
+                  nameLink.style.textDecoration = 'underline'; // Hover underline
+                });
+          
+                nameLink.addEventListener('mouseout', () => {
+                  nameLink.style.textDecoration = 'none'; // Remove underline
+                });
+          
+                divSub.addEventListener('mouseover', (event) => {
+                  if (params.onNameHover) params.onNameHover(event, params);
+                });
+          
+                ['mouseout', 'mouseleave'].forEach(eventType => {
+                  divSub.addEventListener(eventType, (event) => {
+                    if (params.onNameHoverOut) params.onNameHoverOut(event, params);
+                  });
+                });
+              });
+          
+              divSub.appendChild(nameLink);
               div.appendChild(divSub);
+          
+              // If user has 'Staff' role, add menu button
               if (this.userService.hasRole('Staff')) {
-
-                // Create another anchor element for the plus button
                 const plusButton = document.createElement('a');
-                plusButton.classList.add("menuButton")
-
-
-                // plusButton.style.float = 'right';
-                plusButton.innerHTML = '<i  style="color:black" class="bi bi-three-dots-vertical"></i>';
+                plusButton.classList.add("menuButton");
+                plusButton.innerHTML = '<i style="color:black" class="bi bi-three-dots-vertical"></i>';
+          
                 this.ngZone.run(() => {
                   plusButton.addEventListener('click', (event) => {
-                    if (params.onPlusButtonClick) {
-                      params.onPlusButtonClick(event, params);
-                    }
+                    if (params.onPlusButtonClick) params.onPlusButtonClick(event, params);
                   });
-                })
-                this.ngZone.run(() => {
+          
                   plusButton.addEventListener('mouseleave', (event) => {
-                    if (params.onPlusButtonHoverout) {
-                      params.onPlusButtonHoverout(event, params);
-                    }
+                    if (params.onPlusButtonHoverout) params.onPlusButtonHoverout(event, params);
                   });
-                })
-
-                // Append the elements to the div
-
+                });
+          
                 div.appendChild(plusButton);
-
               }
-
-
-
-
-
+          
               return div;
             },
             cellRendererParams: {
-              onNameClick: (event: MouseEvent, params: any) => {
-                this.onCellClicked(params)
-              },
-              onNameHover: (event: MouseEvent, params: any) => {
-                this.nameColumnHover(params, event)
-              },
-              onNameHoverOut: (event: MouseEvent, params: any) => {
-                this.rowMouseHoverOut(params)
-              },
-
-              onPlusButtonClick: (event: MouseEvent, params: any) => {
-                this.menuBtnEventFunction(event, params)
-
-              },
-              onPlusButtonHoverout: (event: MouseEvent, params: any) => {
-                this.menuBtnhoverOut(event, params)
-              },
-            }
-
-
+              onNameClick: (event: MouseEvent, params: any) => this.onCellClicked(params),
+              onNameHover: (event: MouseEvent, params: any) => this.nameColumnHover(params, event),
+              onNameHoverOut: (event: MouseEvent, params: any) => this.rowMouseHoverOut(params),
+              onPlusButtonClick: (event: MouseEvent, params: any) => this.menuBtnEventFunction(event, params),
+              onPlusButtonHoverout: (event: MouseEvent, params: any) => this.menuBtnhoverOut(event, params),
+            },
           },
+          
           {
             field: "schoolName", filter: true, floatingFilter: false, width: 300,
-            cellRenderer: (params: any) => `<a style="cursor: pointer; color: #246CC1;" target="_blank">${params.value}</a>`
+            cellRenderer: (params: any) => {
+              const div = document.createElement('div');
+              div.style.display = "flex";
+              div.style.justifyContent = "space-between";
+          
+              // Create container for the link
+              const divSub = document.createElement('div');
+              Object.assign(divSub.style, {
+                height: "100%",
+                width: "75%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              });
+          
+              // Create anchor element for the name
+              const nameLink = document.createElement('a');
+              Object.assign(nameLink.style, {
+                cursor: 'pointer',
+                color: '#246CC1',
+                textDecoration: 'none',
+                transition: 'text-decoration 0.2s ease-in-out',
+              });
+          
+              nameLink.textContent = params.value;
+          
+              // Add event listeners inside Angular Zone
+              this.ngZone.run(() => {
+                nameLink.addEventListener('click', (event) => {
+                  if (params.onNameClick) params.onNameClick(event, params);
+                });
+          
+                nameLink.addEventListener('mouseover', () => {
+                  nameLink.style.textDecoration = 'underline'; // Hover underline
+                });
+          
+                nameLink.addEventListener('mouseout', () => {
+                  nameLink.style.textDecoration = 'none'; // Remove underline
+                });
+          
+                divSub.addEventListener('mouseover', (event) => {
+                  if (params.onNameHover) params.onNameHover(event, params);
+                });
+          
+                ['mouseout', 'mouseleave'].forEach(eventType => {
+                  divSub.addEventListener(eventType, (event) => {
+                    if (params.onNameHoverOut) params.onNameHoverOut(event, params);
+                  });
+                });
+              });
+          
+              divSub.appendChild(nameLink);
+              div.appendChild(divSub);
+          
+              // If user has 'Staff' role, add menu button
+          
+          
+              return div;
+            },
+            cellRendererParams: {
+              onNameClick: (event: MouseEvent, params: any) => this.onCellClicked(params),
+              onNameHover: (event: MouseEvent, params: any) => this.rowMouseHover(params),
+              onNameHoverOut: (event: MouseEvent, params: any) => this.rowMouseHoverOut(params),
+             
+            },
           },
           { field: "designation", filter: true, floatingFilter: false },
           { field: "subject", filter: true, floatingFilter: false },

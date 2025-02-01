@@ -92,10 +92,80 @@ export class RetiredTeacherListComponent {
           field: column.field,
           filter: true,
           floatingFilter: column.field === 'name', // For example, only these columns have floating filters
-          ... (column.field === 'name' || column.field === "schoolName" ? {
-            cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
-            width: 220
+          // ... (column.field === 'name' || column.field === "schoolName" ? {
+          //   cellRenderer: (params: any) => params.value ? `<a style="cursor: pointer;  color: #246CC1;" target="_blank">${params.value}</a>` : `<a style="cursor: pointer;  " target="_blank">N/A</a>`,
+          //   width: 220
+          // } : {}),
+
+          ...(column.field === 'name' || column.field === "schoolName" ? {
+            cellRenderer: (params: any) => {
+
+              if(params.value=== 'Not Specified' || params.value==null){
+                return "N/A"
+              }
+              
+              const div = document.createElement('div');
+              div.style.display = "flex";
+              div.style.justifyContent = "space-between";
+          
+              // Create a container for the anchor element
+              const divSub = document.createElement('div');
+              Object.assign(divSub.style, {
+                height: "100%",
+                width: "80%",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              });
+          
+              const nameLink = document.createElement('a');
+              Object.assign(nameLink.style, {
+                cursor: 'pointer',
+                color: '#246CC1',
+                textDecoration: 'none',  // Initially no underline
+                transition: 'text-decoration 0.2s ease-in-out', // Smooth effect
+              });
+          
+              nameLink.textContent = params.value;
+          
+              // Event bindings inside Angular Zone for proper change detection
+              this.ngZone.run(() => {
+                nameLink.addEventListener('click', (event) => {
+                  if (params.onLinkClick) params.onLinkClick(event, params);
+                });
+          
+                nameLink.addEventListener('mouseover', () => {
+                  nameLink.style.textDecoration = 'underline';  // Show underline on hover
+                });
+          
+                nameLink.addEventListener('mouseout', () => {
+                  nameLink.style.textDecoration = 'none';  // Remove underline when not hovering
+                });
+          
+                divSub.addEventListener('mouseover', (event) => {
+                  if (params.onLinkHover) params.onLinkHover(event, params);
+                });
+          
+                ['mouseout', 'mouseleave'].forEach(eventType => {
+                  divSub.addEventListener(eventType, (event) => {
+                    if (params.onLinkHoverOut) params.onLinkHoverOut(event, params);
+                  });
+                });
+              });
+          
+              // Append elements
+              divSub.appendChild(nameLink);
+              div.appendChild(divSub);
+          
+              return div;
+            },
+            cellRendererParams: {
+              onLinkClick: (event: MouseEvent, params: any) => this.onCellClicked(params),
+              onLinkHover: (event: MouseEvent, params: any) => this.rowMouseHover(params),
+              onLinkHoverOut: (event: MouseEvent, params: any) => this.rowMouseHoverOut(params),
+            }, width: 220
           } : {}),
+
+          
           ... (column.field == 'experienceYear' ? {
             valueFormatter: (params: any) => params.value <= 0 ? 0 : `${params.value}`
           } : {}),
@@ -200,14 +270,12 @@ export class RetiredTeacherListComponent {
   rowMouseHover(event: any) {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
-    if (event.colDef.field === "employeeName") {
-      this.onTeacherHover(rowData.employeeID, rowData, event.event)
-    } else if (event.colDef.field === "fromSchoolName") {
-      this.onSchoolHover(rowData.fromSchoolID, rowData, event.event)
+    if (event.colDef.field === "name") {
+      this.onTeacherHover(rowData.teacherId, rowData, event.event)
+    } else if (event.colDef.field === "schoolName") {
+      this.onSchoolHover(rowData.schoolId, rowData, event.event)
     }
-    else if (event.colDef.field === "toApprovedSchoolName") {
-      this.onSchoolHover(rowData.toApprovedSchoolID, rowData, event.event)
-    }
+   
   }
   rowMouseHoverOut(event: any) {
     // if (event.colDef.field === "principalName") {
@@ -228,20 +296,17 @@ export class RetiredTeacherListComponent {
     const rowNode: any = event.node;
     const rowData = rowNode.data;
 
-    if (event.colDef.field === "employeeName") {
-      let teacherId: number = rowData.employeeID
+    if (event.colDef.field === "name") {
+      let teacherId: number = rowData.teacherId
 
       this.ngZone.run(() => {
         this.router.navigate(['/teachers/view-teacher', teacherId])
       })
 
-    } else if (event.colDef.field === "fromSchoolName") {
-      let schoolId: number = rowData.fromSchoolID
+    } else if (event.colDef.field === "schoolName") {
+      let schoolId: number = rowData.schoolId
       this.router.navigate(['/schools/view', schoolId])
-    } else if (event.colDef.field === "toSchoolName") {
-      let schoolId: number = rowData.toSchoolID
-      this.router.navigate(['/schools/view', schoolId])
-    }
+    } 
 
   }
 

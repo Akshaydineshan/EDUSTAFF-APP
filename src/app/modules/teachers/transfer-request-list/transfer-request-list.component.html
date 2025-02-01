@@ -107,9 +107,10 @@
 
     <!-- table start -->
     <app-table [rowData]="transferTableRows" [colDefs]="transferTableColumns" [paginationConfig]="paginationConfig"
-      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)"
-      (onCellClickedEvent)="onCellClicked($event)" [tableColorChange]="tableColorChange"
+     [tableColorChange]="tableColorChange"
       [gridOptions]="gridOptions"></app-table>
+      <!-- (onCellClickedEvent)="onCellClicked($event)"
+      (OnRowMouseOverEvent)="rowMouseHover($event)" (OnRowMouseOutEvent)="rowMouseHoverOut($event)" -->
     <!-- table end -->
 
   </div>
