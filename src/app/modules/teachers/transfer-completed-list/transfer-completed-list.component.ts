@@ -479,7 +479,7 @@ export class TransferCompletedListComponent {
 
     this.ngZone.run(() => {
       debugger
-      console.log("isSelected", this.selected)
+     
       const filters = this.filterForm.value;
 
       let filter: any = {

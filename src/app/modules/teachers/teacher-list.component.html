@@ -31,11 +31,9 @@
             <div class="form-group">
               <label for="subject">Subject</label>
               <select formControlName="subjectFilter" class="form-control">
-                <option value="">All Subjects</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="Physics">Physics</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="Malayalam">Malayalam</option>
+                <option value="" [disabled]="true">Select Subject</option>
+                <option [ngValue]="subj" *ngFor="let subj of subjectDropDownListForFilter;">{{subj.subjectName}}</option>
+              
               </select>
             </div>
 

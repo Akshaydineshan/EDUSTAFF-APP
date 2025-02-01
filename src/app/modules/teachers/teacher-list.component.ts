@@ -120,6 +120,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   fileSize: any;
   fileName: any;
   schoolDropDownListForFilter!: any[];
+  subjectDropDownListForFilter!:any[];
 
 
   constructor(private fb: FormBuilder, private dataService: DataService, private router: Router, private toastr: ToastrService, private ngZone: NgZone,private userService:UserService) {
@@ -141,6 +142,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.loadTeachersList();
+    this.loadDropdownDataForFilterClick()
     const today = new Date();
     this.minDate = today.toISOString().split('T')[0];
 
@@ -884,11 +886,14 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
   loadDropdownDataForFilterClick() {
 
     forkJoin({
-      schools: this.dataService.getSchoolList()
+      schools: this.dataService.getSchoolList(),
+      subjects: this.dataService.getAllSubjects()
 
     }).subscribe({
       next: (results: any) => {
+        
         this.schoolDropDownListForFilter = results.schools;
+        this.subjectDropDownListForFilter = results.subjects;
 
       },
       error: (error) => {
@@ -958,9 +963,9 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
 
 
   toggleFilterDropdown() {
-    console.log("filter click")
+    console.log("filter click", this.filterForm)
     this.ngZone.run(() => {
-      this.loadDropdownDataForFilterClick()
+      
       // this.minSelected=0;
       // this.maxSelected=100;
       // this.filterForm.reset()
@@ -980,6 +985,7 @@ export class TeacherListComponent implements OnInit, AfterViewInit {
     this.ngZone.run(() => {
       debugger
       const filters = this.filterForm.value;
+      
       filters.minExperienceYear = this.minSelected;
       filters.maxExperienceYear = this.maxSelected
 

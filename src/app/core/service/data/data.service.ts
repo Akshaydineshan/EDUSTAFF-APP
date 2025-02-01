@@ -318,7 +318,8 @@ export class DataService {
     debugger
 
     let params = new HttpParams();
-    if (filters.subjectFilter) params = params.append('subjectFilter', filters.subjectFilter);
+   
+    if (filters.subjectFilter) params = params.append('subjectId', filters.subjectFilter.subjectID);
     if (filters.retiringInMonths) params = params.append('retiringInMonths', filters.retiringInMonths);
     if (filters.schoolNameFilter[0]) params = params.append('schoolId', filters.schoolNameFilter[0].schoolId);
     if (filters.uniqueIdFilter) params = params.append('uniqueId', filters.uniqueIdFilter?.trim());
@@ -327,6 +328,7 @@ export class DataService {
     if (filters.maxExperienceYear) params = params.append('maxExperienceYear', filters.maxExperienceYear);
     if (filters.ExperienceYear) params = params.append('ExperienceYear', filters.ExperienceYear);
     if (filters.newRecruit) params = params.append('newRecruit', filters.newRecruit.toString());
+
     if (params) {
       return filters ? this.http.get<any[]>(`${this.apiUrl}Teacher/GetTeachersFilterList`, { params }).pipe(
         catchError((error) => {
